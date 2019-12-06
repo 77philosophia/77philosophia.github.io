@@ -1617,7 +1617,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ba81ed;
+  background: #1139cc;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1927,6 +1927,10 @@ pre .javascript .function {
   50%, 70% {
     transform: scale(1.1);
   }
+}
+.has-jax {
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .page-archive .posts-collapse .archive-move-on {
   background: #999;

@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://77philosophia.github.github.io/2019/12/06/paper-digginginto/</loc>
+    
+    <lastmod>2019-12-06T06:12:48.822Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://77philosophia.github.github.io/about/index.html</loc>
+    
+    <lastmod>2019-10-23T08:28:33.112Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://77philosophia.github.github.io/2019/08/06/dense-kitti-dataloader/</loc>
     
     <lastmod>2019-09-09T13:30:54.569Z</lastmod>

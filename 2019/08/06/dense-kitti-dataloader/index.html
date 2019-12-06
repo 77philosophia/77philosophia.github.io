@@ -6,7 +6,7 @@
 
 <html class="theme-next muse use-motion" lang="">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="generator" content="Hexo 3.9.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="​    这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 Kitti to dense准备​    KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map ​    KITTI的RGB数据用的是image_02。可以从官网下载到">
+  <meta name="description" content="​ 这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 Kitti to dense 准备 ​ KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map ​ KITTI的RGB数据用的是image_02。可以从官网下载到。Ra">
 <meta name="keywords" content="computer vision">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dense kitti dataloader">
 <meta property="og:url" content="http://77philosophia.github.github.io/2019/08/06/dense-kitti-dataloader/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="​    这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 Kitti to dense准备​    KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map ​    KITTI的RGB数据用的是image_02。可以从官网下载到">
+<meta property="og:description" content="​ 这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 Kitti to dense 准备 ​ KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map ​ KITTI的RGB数据用的是image_02。可以从官网下载到。Ra">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-09T13:30:54.569Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="dense kitti dataloader">
-<meta name="twitter:description" content="​    这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 Kitti to dense准备​    KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map ​    KITTI的RGB数据用的是image_02。可以从官网下载到">
+<meta name="twitter:description" content="​ 这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 Kitti to dense 准备 ​ KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map ​ KITTI的RGB数据用的是image_02。可以从官网下载到。Ra">
   <link rel="alternate" href="/atom.xml" title="Garfield's blog" type="application/atom+xml">
   <link rel="canonical" href="http://77philosophia.github.github.io/2019/08/06/dense-kitti-dataloader/">
 
@@ -115,13 +115,13 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
-  <div class="container sidebar-position-left">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -255,21 +255,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>​    这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
-<h1 id="Kitti-to-dense"><a href="#Kitti-to-dense" class="headerlink" title="Kitti to dense"></a>Kitti to dense</h1><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>​    KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php" target="_blank" rel="noopener">original depth map</a></p>
-<p>​    KITTI的RGB数据用的是image_02。可以从官网下载到。<a href="http://www.cvlibs.net/datasets/kitti/raw_data.php" target="_blank" rel="noopener">Raw data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
-<p>​    由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m" target="_blank" rel="noopener">深度补全函数</a></p>
-<h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><p>​    新建一个文件夹，将深度解压的文件夹 data_depth_annotated ，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹 data_depth_to_dense放到一个目录下。说明：data_depth_to_dense 我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
-<p>​    准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
-<p>​    运行主程序 main.m。</p>
-<h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p>可视化的代码：</p>
+        <p>​ 这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
+<h1 id="kitti-to-dense">Kitti to dense</h1>
+<h3 id="准备">准备</h3>
+<p>​ KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php" target="_blank" rel="noopener">original depth map</a></p>
+<p>​ KITTI的RGB数据用的是image_02。可以从官网下载到。<a href="http://www.cvlibs.net/datasets/kitti/raw_data.php" target="_blank" rel="noopener">Raw data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
+<p>​ 由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m" target="_blank" rel="noopener">深度补全函数</a></p>
+<h3 id="过程">过程</h3>
+<p>​ 新建一个文件夹，将深度解压的文件夹 data_depth_annotated ，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹 data_depth_to_dense放到一个目录下。说明：data_depth_to_dense 我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
+<p>​ 准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
+<p>​ 运行主程序 main.m。</p>
+<h3 id="可视化">可视化</h3>
+<p>可视化的代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">im =cv2.imread(<span class="string">'image/path'</span>)</span><br><span class="line">im_color = cv2.applyColorMap(im,cv2.COLORMAP_JET)</span><br></pre></td></tr></table></figure>
-
 <p>来自这个链接：<a href="https://github.com/QianshengGu/KITTI_Dense_Depth.git" target="_blank" rel="noopener">可视化</a></p>
 <p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
-<h3 id="kitti-dataloader"><a href="#kitti-dataloader" class="headerlink" title="kitti dataloader"></a>kitti dataloader</h3><p>​    这个dataloader与我上面说的文件路径是一致的。</p>
+<h3 id="kitti-dataloader">kitti dataloader</h3>
+<p>​ 这个dataloader与我上面说的文件路径是一致的。</p>
 <p>参考github我之后会放上去。</p>
-<p><a href="https://github.com/77philosophia/kitti_data_depth_loader" target="_blank" rel="noopener">https://github.com/77philosophia/kitti_data_depth_loader</a></p>
+<p><a href="https://github.com/77philosophia/kitti_data_depth_loader" class="uri" target="_blank" rel="noopener">https://github.com/77philosophia/kitti_data_depth_loader</a></p>
 
     </div>
 
@@ -350,7 +354,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">Artikel</span>
         </a>
       </div>
@@ -402,7 +406,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kitti-to-dense"><span class="nav-number">1.</span> <span class="nav-text">Kitti to dense</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.0.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过程"><span class="nav-number">1.0.2.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可视化"><span class="nav-number">1.0.3.</span> <span class="nav-text">可视化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kitti-dataloader"><span class="nav-number">1.0.4.</span> <span class="nav-text">kitti dataloader</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kitti-to-dense"><span class="nav-number">1.</span> <span class="nav-text">Kitti to dense</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.0.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过程"><span class="nav-number">1.0.2.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可视化"><span class="nav-number">1.0.3.</span> <span class="nav-text">可视化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kitti-dataloader"><span class="nav-number">1.0.4.</span> <span class="nav-text">kitti dataloader</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -501,13 +505,64 @@
   
 
   
+    
+      <script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', function() {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
+
+  
 
   
 
 
   
   <script src="/js/scrollspy.js?v=7.3.0"></script>
-<script src="/js/post-details.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>
