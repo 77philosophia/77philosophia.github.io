@@ -223,7 +223,7 @@
                 
               
 
-              <time title="Erstellt: 2019-12-06 14:07:25 / Geändert am: 14:27:20" itemprop="dateCreated datePublished" datetime="2019-12-06T14:07:25+08:00">2019-12-06</time>
+              <time title="Erstellt: 2019-12-06 14:07:25 / Geändert am: 14:31:35" itemprop="dateCreated datePublished" datetime="2019-12-06T14:07:25+08:00">2019-12-06</time>
             </span>
           
             
@@ -261,9 +261,7 @@ pe(I_{a},I_{b})=\frac{\alpha}{2}(1-SSIM(I_{a},I_{b}))+（1-\alpha)||I_{a}-I_{b}|
 <p>其中：<span class="math inline">\(d^{*}_{t}=d_{t}/\bar{d_{t}}\)</span> , 这样处理的目的是避免深度消失。</p>
 <h5 id="对损失函数的提高">3、对损失函数的提高</h5>
 <h6 id="a在目标frame和source-frame选择误差小的像素匹配这是为了拒绝被遮挡像素带来的误差增大的训练">a、在目标frame和source frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6>
-<figure>
-<img src="/.io//appearance-loss.png" alt="appearance loss"><figcaption>appearance loss</figcaption>
-</figure>
+<img src="/.io//12/06/paper-digginginto/appearance-loss.png">
 <p>所以： <span class="math inline">\(L_{p}=min\,pe(I_{t},I_{t^{&#39;}\rightarrow t})\)</span></p>
 <h6 id="bauto-masking-stationary-pixels">b、Auto-Masking Stationary Pixels</h6>
 <p>​ self-supervised monocular training基于的假设是moving camera和static scene。所以如果camera is static（比如车停下来画面不动）画面有object motion（有其他车辆经过）就会有'holes' of infinite depth in depth maps。针对这个问题作者提出一个mask。<span class="math inline">\(\mu \in \{0,1\}\)</span></p>
