@@ -20,19 +20,24 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="matlab调用百度API获取两地运输距离 1、 首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。 2、 获取距离的函数用python写的，python版本获取距离。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://77philosophia.github.io/2024/05/18/hello-world/index.html">
+<meta property="og:title" content="matlab调用百度API获取两地运输距离">
+<meta property="og:url" content="http://77philosophia.github.io/2020/08/08/BaiduApi/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="matlab调用百度API获取两地运输距离 1、 首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。 2、 获取距离的函数用python写的，python版本获取距离。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-05-18T03:20:10.799Z">
-<meta property="article:modified_time" content="2024-05-18T03:20:10.802Z">
+<meta property="og:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/pyversion.png">
+<meta property="og:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/%E7%9B%AE%E5%BD%95.png">
+<meta property="og:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/python.png">
+<meta property="og:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/distance.png">
+<meta property="article:published_time" content="2020-08-08T14:21:10.000Z">
+<meta property="article:modified_time" content="2024-05-20T15:24:34.462Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/pyversion.png">
 
-<link rel="canonical" href="http://77philosophia.github.io/2024/05/18/hello-world/">
+<link rel="canonical" href="http://77philosophia.github.io/2020/08/08/BaiduApi/">
 
 
 <script id="page-configurations">
@@ -45,7 +50,7 @@
   };
 </script>
 
-  <title>Hello World | Hexo</title>
+  <title>matlab调用百度API获取两地运输距离 | Hexo</title>
   
 
 
@@ -150,7 +155,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/18/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/08/BaiduApi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +168,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          matlab调用百度API获取两地运输距离
         </h1>
 
         <div class="post-meta">
@@ -173,8 +178,15 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2024-05-18 11:20:10" itemprop="dateCreated datePublished" datetime="2024-05-18T11:20:10+08:00">2024-05-18</time>
+              <time title="Created: 2020-08-08 22:21:10" itemprop="dateCreated datePublished" datetime="2020-08-08T22:21:10+08:00">2020-08-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 23:24:34" itemprop="dateModified" datetime="2024-05-20T23:24:34+08:00">2024-05-20</time>
+              </span>
 
           
 
@@ -187,29 +199,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very
-first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for
-more info. If you get any problems when using Hexo, you can find the
-answer in <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or
-you can ask me on <a
-target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h1
+id="matlab调用百度api获取两地运输距离">matlab调用百度API获取两地运输距离</h1>
+<p>1、
+首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。</p>
+<p>2、 获取距离的函数用python写的，<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/article/details/81098724">python版本获取距离</a>。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiduDistanceClass():</span><br><span class="line">    def __init__ (self,s1,s2,t1,t2):</span><br><span class="line">        self.s1 = str(s1)</span><br><span class="line">        self.s2 = str(s2)</span><br><span class="line">        self.t1 = str(t1)</span><br><span class="line">        self.t2 = str(t2)</span><br><span class="line">        </span><br><span class="line">    def getDistance(self):</span><br><span class="line">        a1=r&quot;http://api.map.baidu.com/routematrix/v2/driving?output=json&quot;</span><br><span class="line">        a2=r&quot;&amp;origins=&quot;+self.s1+&quot;,&quot;+self.s2</span><br><span class="line">        a3=r&quot;&amp;destinations=&quot;+self.t1+&quot;,&quot;+self.t2</span><br><span class="line">        a4=r&quot;&amp;coord_type=wgs84&quot;</span><br><span class="line">        a5=r&quot;&amp;tactics=11&quot;</span><br><span class="line">        a6=r&quot;&amp;ak=your_key&quot;</span><br><span class="line">        url=a1+a2+a3+a4+a5+a6</span><br><span class="line">        </span><br><span class="line">        b = urlopen(url)</span><br><span class="line">        c=b.read()</span><br><span class="line">        result = json.loads(c)</span><br><span class="line">        return result[&quot;result&quot;][0][&quot;distance&quot;][&quot;value&quot;]/1000</span><br></pre></td></tr></table></figure>
+<p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a
+target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
+<p><img src="/2020/08/08/BaiduApi/pyversion.png" /></p>
+<p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个"助教"目录下。</p>
+<p><img src="/2020/08/08/BaiduApi/目录.png" /></p>
+<p>接下来你就可以在matlab里面调用python函数了。创建一个python类：</p>
+<p><img src="/2020/08/08/BaiduApi/python.png" /></p>
+<p>调用函数得到距离。这里s1,s2是源地点的纬度，经度；t1,t2是目标地点的纬度，经度。我这里测试用的上海和北京并在高德地图上面验证符合。</p>
+<p><img src="/2020/08/08/BaiduApi/distance.png" /></p>
+<p>注意这里得到的是公里，因为程序除了1000，API直接返回的是米，如果要以米为单位可以不除。</p>
 
     </div>
 
@@ -225,10 +231,13 @@ target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/18/nuscenes/" rel="prev" title="nuscenes">
-      <i class="fa fa-chevron-left"></i> nuscenes
+    <a href="/2019/12/17/Object-Detection-Review/" rel="prev" title="Object-Detection-Review">
+      <i class="fa fa-chevron-left"></i> Object-Detection-Review
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/18/nuscenes/" rel="next" title="nuscenes">
+      nuscenes <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -287,7 +296,7 @@ target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#quick-start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#matlab%E8%B0%83%E7%94%A8%E7%99%BE%E5%BA%A6api%E8%8E%B7%E5%8F%96%E4%B8%A4%E5%9C%B0%E8%BF%90%E8%BE%93%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.</span> <span class="nav-text">matlab调用百度API获取两地运输距离</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

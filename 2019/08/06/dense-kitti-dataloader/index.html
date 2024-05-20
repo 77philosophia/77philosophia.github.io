@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="dense kitti dataloader 这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 kitti to dense 准备 KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map KITTI的RGB数据用的是image_0">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://77philosophia.github.io/2024/05/18/hello-world/index.html">
+<meta property="og:title" content="dense-kitti-dataloader">
+<meta property="og:url" content="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="dense kitti dataloader 这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。 kitti to dense 准备 KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。original depth map KITTI的RGB数据用的是image_0">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-05-18T03:20:10.799Z">
-<meta property="article:modified_time" content="2024-05-18T03:20:10.802Z">
+<meta property="article:published_time" content="2019-08-06T15:17:10.000Z">
+<meta property="article:modified_time" content="2024-05-20T15:18:29.556Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://77philosophia.github.io/2024/05/18/hello-world/">
+<link rel="canonical" href="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>Hello World | Hexo</title>
+  <title>dense-kitti-dataloader | Hexo</title>
   
 
 
@@ -150,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/18/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +163,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          dense-kitti-dataloader
         </h1>
 
         <div class="post-meta">
@@ -173,8 +173,15 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2024-05-18 11:20:10" itemprop="dateCreated datePublished" datetime="2024-05-18T11:20:10+08:00">2024-05-18</time>
+              <time title="Created: 2019-08-06 23:17:10" itemprop="dateCreated datePublished" datetime="2019-08-06T23:17:10+08:00">2019-08-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 23:18:29" itemprop="dateModified" datetime="2024-05-20T23:18:29+08:00">2024-05-20</time>
+              </span>
 
           
 
@@ -187,29 +194,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very
-first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for
-more info. If you get any problems when using Hexo, you can find the
-answer in <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or
-you can ask me on <a
-target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a
-target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h2 id="dense-kitti-dataloader">dense kitti dataloader</h2>
+<p>这篇文章介绍kitti的稀疏深度图生成dense depth
+map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
+<h3 id="kitti-to-dense">kitti to dense</h3>
+<h3 id="准备">准备</h3>
+<p>KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a
+target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php">original
+depth map</a></p>
+<p>KITTI的RGB数据用的是image_02。可以从官网下载到。<a
+target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/raw_data.php">Raw
+data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
+<p>由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a
+target="_blank" rel="noopener" href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m">深度补全函数</a></p>
+<h3 id="过程">过程</h3>
+<p>新建一个文件夹，将深度解压的文件夹 data_depth_annotated
+，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹
+data_depth_to_dense放到一个目录下。说明：data_depth_to_dense
+我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
+<p>准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
+<p>运行主程序 main.m。</p>
+<h3 id="可视化">可视化</h3>
+<p>可视化的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">im =cv2.imread(&#x27;image/path&#x27;)</span><br><span class="line">im_color = cv2.applyColorMap(im,cv2.COLORMAP_JET)</span><br></pre></td></tr></table></figure>
+<p>来自这个链接：<a
+target="_blank" rel="noopener" href="https://github.com/QianshengGu/KITTI_Dense_Depth.git">可视化</a></p>
+<p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground
+truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
+<h3 id="kitti-dataloader">kitti dataloader</h3>
+<p>这个dataloader与我上面说的文件路径是一致的。</p>
+<p>参考github我之后会放上去。</p>
+<p>https://github.com/77philosophia/kitti_data_depth_loader</p>
 
     </div>
 
@@ -224,11 +239,11 @@ target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment
 
         
     <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/08/18/nuscenes/" rel="prev" title="nuscenes">
-      <i class="fa fa-chevron-left"></i> nuscenes
-    </a></div>
       <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/06/paper-diggingInto/" rel="next" title="paper-diggingInto">
+      paper-diggingInto <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -287,7 +302,7 @@ target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#quick-start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dense-kitti-dataloader"><span class="nav-number">1.</span> <span class="nav-text">dense kitti dataloader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kitti-to-dense"><span class="nav-number">1.1.</span> <span class="nav-text">kitti to dense</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">可视化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kitti-dataloader"><span class="nav-number">1.5.</span> <span class="nav-text">kitti dataloader</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
