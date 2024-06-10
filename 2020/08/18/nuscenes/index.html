@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。 1.item名词 nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。">
+  <meta name="description" content="学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。 1.item名词nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nuscenes">
 <meta property="og:url" content="http://77philosophia.github.io/2020/08/18/nuscenes/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。 1.item名词 nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。">
+<meta property="og:description" content="学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。 1.item名词nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://77philosophia.github.io/2020/08/18/nuscenes/%E5%9B%BE%E7%89%871.png">
 <meta property="og:image" content="http://77philosophia.github.io/2020/08/18/nuscenes/%E5%9B%BE%E7%89%872.png">
@@ -40,7 +40,7 @@
 <meta property="og:image" content="http://77philosophia.github.io/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8714.png">
 <meta property="og:image" content="http://77philosophia.github.io/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8715.png">
 <meta property="article:published_time" content="2020-08-18T04:19:50.000Z">
-<meta property="article:modified_time" content="2024-05-20T15:24:11.518Z">
+<meta property="article:modified_time" content="2024-05-20T15:24:11.000Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://77philosophia.github.io/2020/08/18/nuscenes/%E5%9B%BE%E7%89%871.png">
@@ -208,193 +208,131 @@
 
       
         <p>学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。</p>
-<h3 id="item名词">1.item名词</h3>
-<p>nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所以我们得到数据的过程就是根据官方提供的接口和函数找接口取数据的过程。具体的栏目有：</p>
+<h3 id="1-item名词"><a href="#1-item名词" class="headerlink" title="1.item名词"></a>1.item名词</h3><p>nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所以我们得到数据的过程就是根据官方提供的接口和函数找接口取数据的过程。具体的栏目有：</p>
 <table>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 77%" />
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Item</th>
 <th>Description</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
+<tbody><tr>
 <td>Scene</td>
 <td>整个数据集一共1000个场景，Mini的有10个。每20s是一个场景</td>
 </tr>
-<tr class="even">
+<tr>
 <td>sample</td>
 <td>An annotated snapshot of a scene at a particular timestamp</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Sample_data</td>
 <td>Data collected from a particular sensor.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Instance</td>
 <td>Enumeration of all object instance we observed</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Category</td>
 <td>Taxonomy of object categories (e.g. vehicle, human).</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Attribute</td>
-<td>Property of an instance that can change while the category remains
-the same.</td>
+<td>Property of an instance that can change while the category remains the same.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Visibility</td>
 <td>可见性</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Sensor</td>
 <td>nuscenes有6个camera,1个lidar,5个radar.我们主要做的detection任务只涉及到camera.所以接下来只会涉及到camera.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Calibrated sensor</td>
-<td>Definition of a particular sensor as calibrated on a particular
-vehicle.进行坐标转换的时候主要用到的数据，上面的sensor其实只有一些基本信息，没有坐标转换参数。所以要进行坐标转换工作主要使用这类数据</td>
+<td>Definition of a particular sensor as calibrated on a particular vehicle.进行坐标转换的时候主要用到的数据，上面的sensor其实只有一些基本信息，没有坐标转换参数。所以要进行坐标转换工作主要使用这类数据</td>
 </tr>
-</tbody>
-</table>
-<h3 id="nuscenes涉及的几个坐标系">2. Nuscenes涉及的几个坐标系</h3>
-<ul>
-<li>global坐标系：一般的bbox，ego
-pose都是在全局坐标系下给出的，可以理解为人为设定的一个坐标系，具体也不知道在哪儿。</li>
-<li>ego坐标系：车体坐标系，注意calibrated
-sensor相机的外参是相对车体给出的。</li>
+</tbody></table>
+<h3 id="2-Nuscenes涉及的几个坐标系"><a href="#2-Nuscenes涉及的几个坐标系" class="headerlink" title="2. Nuscenes涉及的几个坐标系"></a>2. Nuscenes涉及的几个坐标系</h3><ul>
+<li>global坐标系：一般的bbox，ego pose都是在全局坐标系下给出的，可以理解为人为设定的一个坐标系，具体也不知道在哪儿。</li>
+<li>ego坐标系：车体坐标系，注意calibrated sensor相机的外参是相对车体给出的。</li>
 <li>摄像机坐标系</li>
 </ul>
-<h3 id="scene">3. Scene</h3>
-<p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
+<h3 id="3-Scene"><a href="#3-Scene" class="headerlink" title="3. Scene"></a>3. Scene</h3><p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
 <p><code>nusc.scene</code> 返回列表，可以根据下标去索引具体的scene.</p>
-<p><img src="/2020/08/18/nuscenes/图片1.png" /></p>
-<h3 id="sample">4.Sample</h3>
-<p>在scenes中，每半秒（2
-HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
-<p>•We define sample as an annotated keyframe of a scene at a given
-timestamp. A keyframe is a frame where the time-stamps of data from all
-the sensors should be very close to the time-stamp of the sample it
-points to.</p>
-<p><code>my_sample = nusc.get('sample',first_sample)</code></p>
-<p><img src="/2020/08/18/nuscenes/图片2.png" /></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%871.png"></p>
+<h3 id="4-Sample"><a href="#4-Sample" class="headerlink" title="4.Sample"></a>4.Sample</h3><p>在scenes中，每半秒（2 HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
+<p>•We define sample as an annotated keyframe of a scene at a given timestamp. A keyframe is a frame where the time-stamps of data from all the sensors should be very close to the time-stamp of the sample it points to.</p>
+<p><code>my_sample = nusc.get(&#39;sample&#39;,first_sample)</code></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%872.png"></p>
 <p><code>nusc.list_scene</code> 列举出所有的场景</p>
-<p><code>nusc.list_sample(my_sample_token["token"])</code> 列举出related
-sample_data keyframes and sample_annotation associated with a sample</p>
-<h3 id="sample_data">5. Sample_data</h3>
-<p>从一个sample中具体取出哪路相机数据。</p>
-<p><code>my_sample['data']</code> 列举出12个token,分别是6 camera 5 radar
-1 lidar</p>
-<p><img src="/2020/08/18/nuscenes/图片3.png" /></p>
+<p><code>nusc.list_sample(my_sample_token[&quot;token&quot;])</code> 列举出related sample_data keyframes and sample_annotation associated with a sample</p>
+<h3 id="5-Sample-data"><a href="#5-Sample-data" class="headerlink" title="5. Sample_data"></a>5. Sample_data</h3><p>从一个sample中具体取出哪路相机数据。</p>
+<p><code>my_sample[&#39;data&#39;]</code> 列举出12个token,分别是6 camera 5 radar 1 lidar</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%873.png"></p>
 <p>具体取出某个sensor的数据：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sensor = &#x27;CAM_FRONT&#x27;</span><br><span class="line">Cam_front_data = nusc.get(&#x27;sample_data&#x27;,my_sample[&#x27;data&#x27;][sensor])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片4.png" /></p>
+
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%874.png"></p>
 <p>根据sample_data的token取出路径、annotationh和相机内参的接口，检测任务的dataloader很好用.这个函数tutorial没有给，源代码有。传入的第二个可见性的参数是关于bbox的，具体可看源代码。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_path,box_list,cam_intrinsic = nusc.get_sample_data(token,visibility)</span><br></pre></td></tr></table></figure>
+
 <p>可视化某一个sample_data:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nusc.render_sample_data(cam_front_data[&#x27;token&#x27;])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片6.png" /></p>
-<h3 id="sample_annotation">6. Sample_annotation</h3>
-<p>sample_annotation refers to any bounding box defining the position of
-an object seen in a sample. All location data is given with respect to
-the global coordinate
-system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
-<p><img src="nuscenes/图片5.png" style="zoom:75%;" /></p>
+
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%876.png"></p>
+<h3 id="6-Sample-annotation"><a href="#6-Sample-annotation" class="headerlink" title="6. Sample_annotation"></a>6. Sample_annotation</h3><p>sample_annotation refers to any bounding box defining the position of an object seen in a sample. All location data is given with respect to the global coordinate system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
+<img src="nuscenes/图片5.png" style="zoom:75%;" />
+
 <p>可视化sample_annotation:</p>
-<p><img src="/2020/08/18/nuscenes/图片12.png" /></p>
-<h3 id="instance">7.instance</h3>
-<p>Object instance are instances that need to be detected or tracked by
-an AV.</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8712.png"></p>
+<h3 id="7-instance"><a href="#7-instance" class="headerlink" title="7.instance"></a>7.instance</h3><p>Object instance are instances that need to be detected or tracked by an AV.</p>
 <p><code>nusc.instance</code> 返回instance的列表，可以通过下标索引。</p>
-<h3 id="category">8. category</h3>
-<p><code>nusc.list_categories()</code></p>
-<p><img src="/2020/08/18/nuscenes/图片8.png" /></p>
-<h3 id="attribute">9. attribute</h3>
-<p>An attribute is a property of an instance that may change throughout
-different parts of a scene while the category remains the same.</p>
-<p><img src="/2020/08/18/nuscenes/图片9.png" /></p>
-<h3 id="visibility">10. visibility</h3>
-<p>visibility可视化及描述：</p>
+<h3 id="8-category"><a href="#8-category" class="headerlink" title="8. category"></a>8. category</h3><p><code>nusc.list_categories()</code></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%878.png"></p>
+<h3 id="9-attribute"><a href="#9-attribute" class="headerlink" title="9. attribute"></a>9. attribute</h3><p>An attribute is a property of an instance that may change throughout different parts of a scene while the category remains the same.</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%879.png"></p>
+<h3 id="10-visibility"><a href="#10-visibility" class="headerlink" title="10. visibility"></a>10. visibility</h3><p>visibility可视化及描述：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">anntoken=<span class="string">&#x27;a7d0722bce164f88adf03ada491ea0ba&#x27;</span></span><br><span class="line">visibility_token = nusc.get(<span class="string">&#x27;sample_annotation&#x27;</span>,anntoken)[<span class="string">&#x27;visibility_token&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Visibility:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(nusc.get(<span class="string">&#x27;visibility&#x27;</span>,visibility_token)))</span><br><span class="line">nusc.render_annotation(anntoken)</span><br></pre></td></tr></table></figure>
-<p>Visibility: {'description': 'visibility of whole object is between 80
-and 100%', 'token': '4', 'level': 'v80-100'}</p>
-<p><img src="/2020/08/18/nuscenes/图片10.png" /></p>
-<h3 id="sensor">11. sensor</h3>
-<p>1 lidar, 5 radar, 6 cameras</p>
-<h3 id="calibrated_sensor">12. Calibrated_sensor</h3>
-<p>calibrated_sensor consists of the definition of a particular sensor
-(lidar/radar/camera) as calibrated on a particular vehicle.
-注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
-<p><img src="/2020/08/18/nuscenes/图片14.png" /></p>
+
+<p>Visibility: {‘description’: ‘visibility of whole object is between 80 and 100%’, ‘token’: ‘4’, ‘level’: ‘v80-100’}</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8710.png"></p>
+<h3 id="11-sensor"><a href="#11-sensor" class="headerlink" title="11. sensor"></a>11. sensor</h3><p>1 lidar, 5 radar, 6 cameras</p>
+<h3 id="12-Calibrated-sensor"><a href="#12-Calibrated-sensor" class="headerlink" title="12. Calibrated_sensor"></a>12. Calibrated_sensor</h3><p>calibrated_sensor consists of the definition of a particular sensor (lidar&#x2F;radar&#x2F;camera) as calibrated on a particular vehicle. 注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8714.png"></p>
 <p>3D bounding box坐标：X points forward, Y to the left, Z up</p>
-<p>理解“with respect to ego vehicle body
-frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
-<p><span class="math display">\[(\left[ \begin{array}{l} x_{ego}\\\\
-y_{ego}\\\\ z_{ego} \end{array} \right] = R\left[ \begin{array}{l}
-x_{camera}\\\\ y_{camera}\\\\ z_{camera} \end{array} \right] +
-T)\]</span></p>
+<p>理解“with respect to ego vehicle body frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
+<p>$$(\left[ \begin{array}{l} x_{ego}\\ y_{ego}\\ z_{ego} \end{array} \right] &#x3D; R\left[ \begin{array}{l} x_{camera}\\ y_{camera}\\ z_{camera} \end{array} \right] + T)$$</p>
 <p>相应的把ego vehicle坐标系下的bbox转换到sensor coord system就是：</p>
-<p><img src="/2020/08/18/nuscenes/图片15.png" /></p>
-<h3 id="ego_pose">13. Ego_pose</h3>
-<p>go_pose contains information about the location (encoded in
-translation) and the orientation (encoded in rotation) of the ego
-vehicle, with respect to the <strong>global coordinate
-system</strong>.</p>
-<p>ego_pose的数量和sample_data是一样的，这两者是一一对应的关系。<u>其实我有点不懂为什么每一个sample_data对应有一个ego_pose，六路相机也就是一个sample不应该对应一个ego
-pose吗</u></p>
-<p>•描述的是车体自己（x forward,y left,z
-up）相对于全局坐标系的旋转R和平移T。这个R通过四元数给出。</p>
-<p>•理解ego pose的R和T都是相对于（with respect
-to）全局坐标系这句话;也就是ego坐标系中的一个坐标要变换到全局坐标系中就是</p>
-<p><span class="math inline">\(\left[ \begin{array}{l} x_{global}\\\\
-y_{global}\\\\ z_{global} \end{array} \right] = R\left[ \begin{array}{l}
-x_{ego}\\\\ y_{ego}\\\\ z_{ego} \end{array} \right] + T\)</span></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8715.png"></p>
+<h3 id="13-Ego-pose"><a href="#13-Ego-pose" class="headerlink" title="13. Ego_pose"></a>13. Ego_pose</h3><p>go_pose contains information about the location (encoded in translation) and the orientation (encoded in rotation) of the ego vehicle, with respect to the <strong>global coordinate system</strong>.</p>
+<p>ego_pose的数量和sample_data是一样的，这两者是一一对应的关系。<u>其实我有点不懂为什么每一个sample_data对应有一个ego_pose，六路相机也就是一个sample不应该对应一个ego pose吗</u></p>
+<p>•描述的是车体自己（x forward,y left,z up）相对于全局坐标系的旋转R和平移T。这个R通过四元数给出。</p>
+<p>•理解ego pose的R和T都是相对于（with respect to）全局坐标系这句话;也就是ego坐标系中的一个坐标要变换到全局坐标系中就是</p>
+<p>$\left[ \begin{array}{l} x_{global}\\ y_{global}\\ z_{global} \end{array} \right] &#x3D; R\left[ \begin{array}{l} x_{ego}\\ y_{ego}\\ z_{ego} \end{array} \right] + T$</p>
 <p>其中公式左边是全局坐标系中的坐标。</p>
-<h3
-id="nuscenes评测只涉及detection方面">14.nuscenes评测（只涉及detection方面）</h3>
-<p>•Nuscenes的评测程序可以在devkit中的eval找到。</p>
+<h3 id="14-nuscenes评测（只涉及detection方面）"><a href="#14-nuscenes评测（只涉及detection方面）" class="headerlink" title="14.nuscenes评测（只涉及detection方面）"></a>14.nuscenes评测（只涉及detection方面）</h3><p>•Nuscenes的评测程序可以在devkit中的eval找到。</p>
 <p>•README中规定了相应的sample_result的格式。prediction的结果要按照规定格式组织jason文件。sample_result的表和sample_annotation的表设计为一样的，所以完全可以用sample_annotation的工具和接口去操作sample_result.同时注意生成的结果即使没有识别出框，必须存在相应的token.</p>
-<p>•虽然nuscenes训练有23类，但是评测处理similar和rare的类别，考虑到每一类的frequency,最终只归纳了10类，并且每一类有个detection
-range(meters)。超过这个距离识别出来的框忽略。</p>
-<p><a
-target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#data-annotation">这个链接可以看到数据集各个类别的频率</a></p>
-<h5 id="预处理">1.预处理</h5>
-<p>GT和predition bboxes:</p>
-<p>•超过距离的移除；</p>
-<p>•Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
+<p>•虽然nuscenes训练有23类，但是评测处理similar和rare的类别，考虑到每一类的frequency,最终只归纳了10类，并且每一类有个detection range(meters)。超过这个距离识别出来的框忽略。</p>
+<p> <a target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#data-annotation">这个链接可以看到数据集各个类别的频率</a></p>
+<h5 id="1-预处理"><a href="#1-预处理" class="headerlink" title="1.预处理"></a>1.预处理</h5><p>GT和predition bboxes:</p>
+<p> •超过距离的移除；</p>
+<p> •Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
 <p>GT bboxes:</p>
-<p>•没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
-<h5 id="评测矩阵">2.评测矩阵</h5>
-<p>mAP:
-一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的IOU@0.3,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
-<p>TP metircs：其他因素的误差矩阵。Average of translation, velocity,
-scale, orientation and attribute errors.</p>
-<p>NDS(nuscenes detection score): the weighted sum of the
-above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP
-metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
-<h5 id="true-positive-metrics">3.True Positive metrics</h5>
-<p>•TP衡量translation/scale/orientation/velocity/attribute errors</p>
+<p> •没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
+<h5 id="2-评测矩阵"><a href="#2-评测矩阵" class="headerlink" title="2.评测矩阵"></a>2.评测矩阵</h5><p>mAP: 一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的<a href="mailto:&#x49;&#79;&#x55;&#64;&#x30;&#x2e;&#51;">&#x49;&#79;&#x55;&#64;&#x30;&#x2e;&#51;</a>,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
+<p>TP metircs：其他因素的误差矩阵。Average of translation, velocity, scale, orientation and attribute errors.</p>
+<p>NDS(nuscenes detection score): the weighted sum of the above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
+<h5 id="3-True-Positive-metrics"><a href="#3-True-Positive-metrics" class="headerlink" title="3.True Positive metrics"></a>3.True Positive metrics</h5><p>•TP衡量translation&#x2F;scale&#x2F;orientation&#x2F;velocity&#x2F;attribute errors</p>
 <p>•所以TP矩阵计算匹配时都要满足center distance在2m之类</p>
-<p>•最终计算平均在recall&gt;10%，达不到这个阈值某类的TP
-errors所有都会被设置为1.</p>
-<p>•Average Translation
-error(ATE):bbox的中心到ego原点的L2范数(meters)。即公式</p>
-<p><span class="math inline">\(\sqrt{ {(x1 - x2)^2} + {(y1 - y2)^2} +
-{(z1 - z2)^2} }\)</span></p>
-<p>. 区分于上面计算mAP作为阈值的distance:<span
-class="math inline">\(\sqrt{(z1-z2)^2}\)</span></p>
+<p>•最终计算平均在recall&gt;10%，达不到这个阈值某类的TP errors所有都会被设置为1.</p>
+<p>•Average Translation error(ATE):bbox的中心到ego原点的L2范数(meters)。即公式</p>
+<p>$\sqrt{ {(x1 - x2)^2} + {(y1 - y2)^2} + {(z1 - z2)^2} }$</p>
+<p>. 区分于上面计算mAP作为阈值的distance:$\sqrt{(z1-z2)^2}$</p>
 <p>•Average Scale Error(ASE): 对齐中心和朝向之后计算1-IOU</p>
-<p>•Average Orientation Error(AOE):最小的yaw
-angle差异（radians）.一般类都是360度衡量，barriers在180度衡量，cones忽略这个指标。</p>
-<p>•Average Velocity Error(AVE):absolute velocity error in
-m/s.barrier和cone忽略这个指标。</p>
-<p>•Average Attribute
-Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标</p>
+<p>•Average Orientation Error(AOE):最小的yaw angle差异（radians）.一般类都是360度衡量，barriers在180度衡量，cones忽略这个指标。</p>
+<p>•Average Velocity Error(AVE):absolute velocity error in m&#x2F;s.barrier和cone忽略这个指标。</p>
+<p>•Average Attribute Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标</p>
 <p>•TP矩阵每个类分别计算，对于所有类别取均值得到Map,mASE,mAOE,mAVE,mAAE.</p>
 
     </div>
@@ -476,7 +414,7 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#item%E5%90%8D%E8%AF%8D"><span class="nav-number">1.</span> <span class="nav-text">1.item名词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nuscenes%E6%B6%89%E5%8F%8A%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">2. Nuscenes涉及的几个坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scene"><span class="nav-number">3.</span> <span class="nav-text">3. Scene</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sample"><span class="nav-number">4.</span> <span class="nav-text">4.Sample</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sample_data"><span class="nav-number">5.</span> <span class="nav-text">5. Sample_data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sample_annotation"><span class="nav-number">6.</span> <span class="nav-text">6. Sample_annotation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#instance"><span class="nav-number">7.</span> <span class="nav-text">7.instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#category"><span class="nav-number">8.</span> <span class="nav-text">8. category</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attribute"><span class="nav-number">9.</span> <span class="nav-text">9. attribute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visibility"><span class="nav-number">10.</span> <span class="nav-text">10. visibility</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sensor"><span class="nav-number">11.</span> <span class="nav-text">11. sensor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#calibrated_sensor"><span class="nav-number">12.</span> <span class="nav-text">12. Calibrated_sensor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ego_pose"><span class="nav-number">13.</span> <span class="nav-text">13. Ego_pose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nuscenes%E8%AF%84%E6%B5%8B%E5%8F%AA%E6%B6%89%E5%8F%8Adetection%E6%96%B9%E9%9D%A2"><span class="nav-number">14.</span> <span class="nav-text">14.nuscenes评测（只涉及detection方面）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">14.0.1.</span> <span class="nav-text">1.预处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%84%E6%B5%8B%E7%9F%A9%E9%98%B5"><span class="nav-number">14.0.2.</span> <span class="nav-text">2.评测矩阵</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#true-positive-metrics"><span class="nav-number">14.0.3.</span> <span class="nav-text">3.True Positive metrics</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-item%E5%90%8D%E8%AF%8D"><span class="nav-number">1.</span> <span class="nav-text">1.item名词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Nuscenes%E6%B6%89%E5%8F%8A%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">2. Nuscenes涉及的几个坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Scene"><span class="nav-number">3.</span> <span class="nav-text">3. Scene</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Sample"><span class="nav-number">4.</span> <span class="nav-text">4.Sample</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Sample-data"><span class="nav-number">5.</span> <span class="nav-text">5. Sample_data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Sample-annotation"><span class="nav-number">6.</span> <span class="nav-text">6. Sample_annotation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-instance"><span class="nav-number">7.</span> <span class="nav-text">7.instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-category"><span class="nav-number">8.</span> <span class="nav-text">8. category</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-attribute"><span class="nav-number">9.</span> <span class="nav-text">9. attribute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-visibility"><span class="nav-number">10.</span> <span class="nav-text">10. visibility</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-sensor"><span class="nav-number">11.</span> <span class="nav-text">11. sensor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Calibrated-sensor"><span class="nav-number">12.</span> <span class="nav-text">12. Calibrated_sensor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-Ego-pose"><span class="nav-number">13.</span> <span class="nav-text">13. Ego_pose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-nuscenes%E8%AF%84%E6%B5%8B%EF%BC%88%E5%8F%AA%E6%B6%89%E5%8F%8Adetection%E6%96%B9%E9%9D%A2%EF%BC%89"><span class="nav-number">14.</span> <span class="nav-text">14.nuscenes评测（只涉及detection方面）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">14.0.1.</span> <span class="nav-text">1.预处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E8%AF%84%E6%B5%8B%E7%9F%A9%E9%98%B5"><span class="nav-number">14.0.2.</span> <span class="nav-text">2.评测矩阵</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-True-Positive-metrics"><span class="nav-number">14.0.3.</span> <span class="nav-text">3.True Positive metrics</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,7 +428,7 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

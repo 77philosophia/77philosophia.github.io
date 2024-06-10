@@ -145,6 +145,185 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/27/database/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/27/database/" class="post-title-link" itemprop="url">database</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-05-27 12:30:55" itemprop="dateCreated datePublished" datetime="2024-05-27T12:30:55+08:00">2024-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-30 01:20:58" itemprop="dateModified" datetime="2024-05-30T01:20:58+08:00">2024-05-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="course-https-www-coursera-org-learn-introduction-to-relational-databases-ungradedWidget-p0C8P-hands-on-lab-relational-model-concepts"><a href="#course-https-www-coursera-org-learn-introduction-to-relational-databases-ungradedWidget-p0C8P-hands-on-lab-relational-model-concepts" class="headerlink" title="course https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/p0C8P/hands-on-lab-relational-model-concepts"></a>course <a target="_blank" rel="noopener" href="https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/p0C8P/hands-on-lab-relational-model-concepts">https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/p0C8P/hands-on-lab-relational-model-concepts</a></h5><h3 id="关系模型的基本概念"><a href="#关系模型的基本概念" class="headerlink" title="关系模型的基本概念"></a>关系模型的基本概念</h3><p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvTGFiJTIwLSUyMFJlbGF0aW9uYWwlMjBNb2RlbCUyMENvbmNlcHRzL2luc3RydWN0aW9uYWwtbGFicy5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE2Mzg2ODN9.WVq3A1Cs9GKG5RgO8AaYx3S3ZI3iAmLe899AkdPantM">Hands-on Lab: Relational Model Concepts</a></p>
+<p><img src="/2024/05/27/database/image-20240527123715098.png" alt="image-20240527123715098"></p>
+<p><a target="_blank" rel="noopener" href="https://labs.cognitiveclass.ai/v2/tools/datasette?ulid=ulid-5cc4e56aa12f13251ff5e1bdda1219009104b784">load data</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/Yuntk/course-glossary">整体复习</a></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvZ2xvc3NhcnkvbTRfY291cnNlX2dsb3NzYXJ5Lm1kIiwidG9vbF90eXBlIjoiaW5zdHJ1Y3Rpb25hbC1sYWIiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNTQ3NX0.o7HjxQ6FDaJx6wmdINArHesmkZFTbPxDdIgSbawnP5c">https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvZ2xvc3NhcnkvbTRfY291cnNlX2dsb3NzYXJ5Lm1kIiwidG9vbF90eXBlIjoiaW5zdHJ1Y3Rpb25hbC1sYWIiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNTQ3NX0.o7HjxQ6FDaJx6wmdINArHesmkZFTbPxDdIgSbawnP5c</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/23/backend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/23/backend/" class="post-title-link" itemprop="url">backend</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-05-23 14:00:15" itemprop="dateCreated datePublished" datetime="2024-05-23T14:00:15+08:00">2024-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-24 19:14:29" itemprop="dateModified" datetime="2024-05-24T19:14:29+08:00">2024-05-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Week-1"><a href="#Week-1" class="headerlink" title="Week 1"></a>Week 1</h1><h4 id="1-Node-js"><a href="#1-Node-js" class="headerlink" title="1. Node js"></a>1. Node js</h4><p>Node js是javascript在服务器端的编程框架， express是其开发框架。</p>
+<p>server大概有三种：database server &#x2F; web server(http) &#x2F; application server</p>
+<p>js的特点：Event-driven, 异步asynchronous, 非阻塞，<a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9TZXJ2ZXJTaWRlSmF2YXNjcmlwdC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MTZ9.6yLbDHSnA7Ffyp8kq9u1jq8zNAs1QiwSi8fIG0quUxg">js了解</a></p>
+<h5 id="js-module"><a href="#js-module" class="headerlink" title="js module"></a>js module</h5><p><img src="/2024/05/23/backend/image-20240523143047893.png" alt="image-20240523143047893"></p>
+<p><img src="/2024/05/23/backend/image-20240523143135653.png" alt="image-20240523143135653"></p>
+<p><img src="/2024/05/23/backend/image-20240523143215979.png" alt="image-20240523143215979"></p>
+<p><img src="/2024/05/23/backend/image-20240523143324541.png" alt="image-20240523143324541"></p>
+<p><img src="/2024/05/23/backend/image-20240523143354049.png" alt="image-20240523143354049"></p>
+<p><img src="/2024/05/23/backend/image-20240523144020865.png" alt="image-20240523144020865"></p>
+<p><img src="/2024/05/23/backend/image-20240523144848936.png" alt="image-20240523144848936"></p>
+<p><img src="/2024/05/23/backend/image-20240523145015691.png" alt="image-20240523145015691"></p>
+<p><img src="/2024/05/23/backend/image-20240523145042861.png" alt="image-20240523145042861"></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9BZHZhbmNlZF9Ob2RlLmpzX21vZHVsZXMubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTUzfQ.oUQg6uIJbbEgp0GByD36iHMr_gMmReyJYVykaSrHGbA">高级js模块</a></p>
+<p><img src="/2024/05/23/backend/image-20240523145912229.png" alt="image-20240523145912229"></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMV9JbnRyb2R1Y3Rpb25Ub1NlcnZlclNpZGVKYXZhU2NyaXB0JTJGSGFuZHNPbl9MYWJfRmlyc3RTZXJ2ZXJTaWRlU2NyaXB0Lm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyNH0.4cNsJQ7n8QzVT8x1BO0QhMW5jb7Kp_aXW3VILCc2h9Y">lab:使用nodejs创建服务端程序</a></p>
+<p><img src="/2024/05/23/backend/image-20240523152832502.png" alt="image-20240523152832502"></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9HbG9zc2FyeS8yMDAzODkuMTFfTTFfR2xvc3NhcnkubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTQ0fQ.TuD3KX8yEEewo2CIDv2AyjGmWI1EMdClt8Tdw1m5MKY">一些概念</a></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTFfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MzV9.4M92HAb93JO5_DdTXT_jL2vJa-pfHrJ3Cxw2C_HASVE">服务器端js简介</a></p>
+<h1 id="Week-2"><a href="#Week-2" class="headerlink" title="Week 2"></a>Week 2</h1><p>nodejs通过非阻塞的方式调用所有io</p>
+<p><img src="/2024/05/23/backend/image-20240523154546786.png" alt="image-20240523154546786"></p>
+<p><img src="/2024/05/23/backend/image-20240523154705545.png" alt="image-20240523154705545"></p>
+<p><img src="/2024/05/23/backend/image-20240523185448246.png" alt="image-20240523185448246"></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb25Ub0FzeW5jQXdhaXQubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU3fQ.QLu1ThZK6P3pv6Q24iyROVj8RZZnSPyZzOIx3e7Kuz0">async&#x2F;await</a></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMl9Bc3luY19DYWxsYmFjayUyRkhhbmRzT25fTGFiX0FzeW5jX0NhbGxiYWNrLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUzMX0.qV1jLSpoScLWvGOZKXv95pbhkyzEOctJ9yOy5CscDQ4">异步回调编程</a></p>
+<p><img src="/2024/05/23/backend/image-20240524112320066.png" alt="image-20240524112320066"></p>
+<p><a href="">术语表 - 使用回调编程的异步 I&#x2F;O</a></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTJfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1Mzh9.JPvmEnhXrPQHLGLyZDW-7kzx2espu7krfqxdFJp9Ao0">Asynchronous I&#x2F;O with Callback Program</a></p>
+<h1 id="Express网络框架"><a href="#Express网络框架" class="headerlink" title="Express网络框架"></a>Express网络框架</h1><p>node js不是一个运行框架，是一个runtime environment用于在server上面运行js code</p>
+<p><img src="/2024/05/23/backend/image-20240524115011622.png" alt="image-20240524115011622"></p>
+<p><img src="/2024/05/23/backend/image-20240524115044107.png" alt="image-20240524115044107"></p>
+<p><img src="/2024/05/23/backend/image-20240524115606544.png" alt="image-20240524115606544"></p>
+<h4 id="中间件和路由器"><a href="#中间件和路由器" class="headerlink" title="中间件和路由器"></a>中间件和路由器</h4><p>本文将讨论<em>中间件</em> 和<em>路由</em>这两个术语。</p>
+<p>中间件是位于应用程序、数据库或服务之间的软件，允许这些不同的技术进行通信。它在分布式系统中为终端用户创建无缝交互。</p>
+<p>Express 是一个消息传递框架，用于处理路由和编写中间件。应用程序的前端使用 Express 来促进后端组件之间的通信，而前端和后端服务无需使用相同的语言。前端与中间件通信，而不是直接与后端通信。</p>
+<p>像 Express 这样的消息框架通常包含 JSON、REST API 和网络服务。旧的消息框架可能包含可扩展标记语言（XML）和简单对象访问协议（SOAP），而不是 JSON 和 REST API。消息传递框架提供了一种处理不同应用间数据传输的标准化方法。</p>
+<p>网络服务器是连接网站和数据库的中间件的一个例子。网络服务器处理业务逻辑，并根据请求从数据库路由数据。<em>路由</em> 是将 GET、POST 或 DELETE 等 HTTP 请求与 URL 以及处理该 URL 的函数相关联的代码部分。路由在网络开发中用于根据浏览器 URL 确定的规则分割应用程序的用户界面。</p>
+<p>路由器功能统称为 “中间件”。中间件负责响应 HTTP 请求或调用中间件链中的其他函数。Express 通过 Router 类处理路由器函数，如 Router.get()。顾名思义，Router.get() 负责处理 HTTP GET 请求。其他路由器函数包括 Router.post()、Router.put() 和 Router.delete()，使用方法基本相同。这些方法需要两个参数，一个 URL 路径和一个回调函数。</p>
+<p>除了路由之外，中间件还负责通过加密和解密数据来提供服务间的安全连接，通过将流量分配到不同的服务器来管理应用程序负载，以及在数据返回客户端之前对数据进行排序或过滤。</p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb24tdG8tQXV0aGVudGljYXRpb24ubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU1fQ.iKf3HQ4FD9ESfd0H1cH8R1eONRumBzDQAQYVyD3SO34">身份验证和授权</a></p>
+<p><a target="_blank" rel="noopener" href="https://d3c33hcgiwev3.cloudfront.net/L1T_uyeHSHGyROFLyqZRxQ_2ee09d6aa6ba4736920c2f6a31faa6f1_Writing-RESTful-APIs-Reading.docx.pdf?Expires=1716681600&Signature=IJLmbTFs~gRZ3Ij9yrXrNVeNbu5kADjvREy0SkQt7eovyMZNnOX6YaZFa7Cs2fOVg4Fg4JOsSBxmsgho3a~kMxWsDVQGpDO79Ai2NjvK1Jv5~pe0z7FlTvajvO62pgLJFpBaegWY12EM5mjzVwzMHDILZrSNF7luz~2R3gb8-3s_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A">http method&#x2F;rest api</a></p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlM19FeHByZXNzSlMlMkZIYW5kcy1vbl9MYWJfQ1JVRC5tZCIsInRvb2xfdHlwZSI6InRoZWlhIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MjZ9.30Vfc7qrnD9jo_XAW4oiq9zJ1ax_0swsPwmRIL34JLk">lab:crud with nodejs</a></p>
+<p><img src="/2024/05/23/backend/image-20240524174736995.png" alt="image-20240524174736995"></p>
+<p><img src="/2024/05/23/backend/image-20240524174805639.png" alt="image-20240524174805639"></p>
+<p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/developing-backend-apps-with-nodejs-and-express/ungradedWidget/IO1Oa/glossary-express-web-application-framework">express web术语</a></p>
+<p>test-project&#x2F;<br>   node_modules&#x2F;<br>   config&#x2F;<br>     db.js           &#x2F;&#x2F;Database connection and configuration<br>     credentials.js  &#x2F;&#x2F;Passwords&#x2F;API keys for external services used by your app<br>   models&#x2F;            &#x2F;&#x2F;For mongoose schemas<br>      items.js<br>      prices.js<br>   routes&#x2F;           &#x2F;&#x2F;All routes for different entities in different files<br>      items.js<br>      prices.js<br>   app.js<br>   routes.js         &#x2F;&#x2F;Require all routes in this and then require this file in<br>   package.json</p>
+<p><a target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGUHJhY3RpY2VQcm9qZWN0X0ZyaWVuZHNMaXN0X1dpdGhBdXRoJTJGaW5zdHJ1Y3Rpb25zLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyM30.0Rshfz3KAokqUCOpGERC0zmSL26a7aKKCtJLaZIUsKc">practice lab</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/20/frisbee-pickup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -190,34 +369,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="当参加飞盘的比赛">当参加飞盘的比赛</h2>
-<p>​
-距离接触飞盘已经两年了，中间受伤的一年没有如何运动，我几乎踩中了很多不利的因素：</p>
+          <h2 id="当参加飞盘的比赛"><a href="#当参加飞盘的比赛" class="headerlink" title="当参加飞盘的比赛"></a>当参加飞盘的比赛</h2><p>​	距离接触飞盘已经两年了，中间受伤的一年没有如何运动，我几乎踩中了很多不利的因素：</p>
 <ul>
 <li>错过最好的学校的大段时间训练和有场地、伙伴练习的机会，我玩飞盘已经是研究生快毕业的时候</li>
 <li>北漂互联网，在北京参加飞盘活动路上时间花费很多</li>
 <li>几乎没什么体育底子</li>
 </ul>
-<p>​ 为什么还要玩</p>
+<p>​	为什么还要玩</p>
 <ul>
 <li>上手容易，以及飞盘的规则是no touch，真的很不喜欢人碰我</li>
 <li>锻炼身体的动力</li>
 </ul>
-<p>​
-我不是很厉害的选手，所以没有长期训练的队伍，很多时候都在打皮卡。花了很多时间，当了很多次炮灰得到的感悟：</p>
+<p>​	我不是很厉害的选手，所以没有长期训练的队伍，很多时候都在打皮卡。花了很多时间，当了很多次炮灰得到的感悟：</p>
 <ul>
-<li>在皮卡的小比赛要珍惜每一次拿盘的机会，要去捡盘，一定要克服被打击而畏缩的惯性。我真的看到太多太多次，在皮卡，男生让女生不要捡盘，“让我捡”、“你不要碰”，而很多女生甚至视之为理所当然，“因为自己没有能力”，“会让队伍失分”，所以我们只能寄希望于好的队伍好的团体氛围。
-<ul>
+<li>在皮卡的小比赛要珍惜每一次拿盘的机会，要去捡盘，一定要克服被打击而畏缩的惯性。我真的看到太多太多次，在皮卡，男生让女生不要捡盘，“让我捡”、“你不要碰”，而很多女生甚至视之为理所当然，“因为自己没有能力”，“会让队伍失分”，所以我们只能寄希望于好的队伍好的团体氛围。<ul>
 <li>1.皮卡的目的是自己的进步，如果用一个优化函数定义自己的目标，那就是在短短的场上几十分钟的时间内，将自己暴露在尽可能多的尝试和失败当中。这个游戏规则其实很简单，练习越多，进步越快。在皮卡中队伍的输赢本不应该成为一个阻碍，考虑也只是均衡双方力量让比赛尽可能有竞争力的进行下去。</li>
 <li>2.能力不应该成为不控盘的理由。我多么希望自己能在早期就明白这个道理，在男生让我只是传dump给他的时候，在我即使捡盘也有近处一个男生让我直接给他的时候，在初次进入一个领域知道并坚持自己享有和其他人同等竞争的机会和权利，不要轻易放弃。</li>
-</ul></li>
-<li>参加一个比赛，跟着一个队伍“容易成为炮灰”，这种情况很多时候表示为：
-<ul>
+</ul>
+</li>
+<li>参加一个比赛，跟着一个队伍“容易成为炮灰”，这种情况很多时候表示为：<ul>
 <li>喊你的时候对方理由一般是缺人，但是后面喊的人越来越多，越多的人数分摊有限的上场机会。尤其是认识的人，往往不好“问的太多”显得很难对付。</li>
 <li>如果去参加一个皮卡的队伍，应该约定好你们准备招募多少个人，可以保证多少分的上场机会。（我在这方面当炮灰太多次了，因为没有队伍，因为处于弱势，所以我一度觉得这是我不得不接受的规则。直到后来我开始怀疑这个想法，如果我不接受这件事情就不会发生。我宁愿不参加比赛也不接受不平等的忽视和上场机会。不比赛依旧有很多方法可以去训练，依然可以进步。</li>
-</ul></li>
-<li>国内的很多比赛都是34
-43ABBA的赛制轮回，但是实际比赛我却发现真正执行到底的比赛不多。很多时候都是：“我们女生不够”让对方队伍不好拒绝，<strong>其实这种情况的解决方案本应该是女生不够的队伍可以认输</strong>，事实上每一次妥协都是在牺牲女性盘友的上场机会。因为对“人数不够”的场景的默认，虽然有这样的规则，女盘手的缺失不成为一个问题。</li>
+</ul>
+</li>
+<li>国内的很多比赛都是34 43ABBA的赛制轮回，但是实际比赛我却发现真正执行到底的比赛不多。很多时候都是：“我们女生不够”让对方队伍不好拒绝，<strong>其实这种情况的解决方案本应该是女生不够的队伍可以认输</strong>，事实上每一次妥协都是在牺牲女性盘友的上场机会。因为对“人数不够”的场景的默认，虽然有这样的规则，女盘手的缺失不成为一个问题。</li>
 </ul>
 
       
@@ -284,193 +459,131 @@
 
       
           <p>学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。</p>
-<h3 id="item名词">1.item名词</h3>
-<p>nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所以我们得到数据的过程就是根据官方提供的接口和函数找接口取数据的过程。具体的栏目有：</p>
+<h3 id="1-item名词"><a href="#1-item名词" class="headerlink" title="1.item名词"></a>1.item名词</h3><p>nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所以我们得到数据的过程就是根据官方提供的接口和函数找接口取数据的过程。具体的栏目有：</p>
 <table>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 77%" />
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Item</th>
 <th>Description</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
+<tbody><tr>
 <td>Scene</td>
 <td>整个数据集一共1000个场景，Mini的有10个。每20s是一个场景</td>
 </tr>
-<tr class="even">
+<tr>
 <td>sample</td>
 <td>An annotated snapshot of a scene at a particular timestamp</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Sample_data</td>
 <td>Data collected from a particular sensor.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Instance</td>
 <td>Enumeration of all object instance we observed</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Category</td>
 <td>Taxonomy of object categories (e.g. vehicle, human).</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Attribute</td>
-<td>Property of an instance that can change while the category remains
-the same.</td>
+<td>Property of an instance that can change while the category remains the same.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Visibility</td>
 <td>可见性</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Sensor</td>
 <td>nuscenes有6个camera,1个lidar,5个radar.我们主要做的detection任务只涉及到camera.所以接下来只会涉及到camera.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Calibrated sensor</td>
-<td>Definition of a particular sensor as calibrated on a particular
-vehicle.进行坐标转换的时候主要用到的数据，上面的sensor其实只有一些基本信息，没有坐标转换参数。所以要进行坐标转换工作主要使用这类数据</td>
+<td>Definition of a particular sensor as calibrated on a particular vehicle.进行坐标转换的时候主要用到的数据，上面的sensor其实只有一些基本信息，没有坐标转换参数。所以要进行坐标转换工作主要使用这类数据</td>
 </tr>
-</tbody>
-</table>
-<h3 id="nuscenes涉及的几个坐标系">2. Nuscenes涉及的几个坐标系</h3>
-<ul>
-<li>global坐标系：一般的bbox，ego
-pose都是在全局坐标系下给出的，可以理解为人为设定的一个坐标系，具体也不知道在哪儿。</li>
-<li>ego坐标系：车体坐标系，注意calibrated
-sensor相机的外参是相对车体给出的。</li>
+</tbody></table>
+<h3 id="2-Nuscenes涉及的几个坐标系"><a href="#2-Nuscenes涉及的几个坐标系" class="headerlink" title="2. Nuscenes涉及的几个坐标系"></a>2. Nuscenes涉及的几个坐标系</h3><ul>
+<li>global坐标系：一般的bbox，ego pose都是在全局坐标系下给出的，可以理解为人为设定的一个坐标系，具体也不知道在哪儿。</li>
+<li>ego坐标系：车体坐标系，注意calibrated sensor相机的外参是相对车体给出的。</li>
 <li>摄像机坐标系</li>
 </ul>
-<h3 id="scene">3. Scene</h3>
-<p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
+<h3 id="3-Scene"><a href="#3-Scene" class="headerlink" title="3. Scene"></a>3. Scene</h3><p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
 <p><code>nusc.scene</code> 返回列表，可以根据下标去索引具体的scene.</p>
-<p><img src="/2020/08/18/nuscenes/图片1.png" /></p>
-<h3 id="sample">4.Sample</h3>
-<p>在scenes中，每半秒（2
-HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
-<p>•We define sample as an annotated keyframe of a scene at a given
-timestamp. A keyframe is a frame where the time-stamps of data from all
-the sensors should be very close to the time-stamp of the sample it
-points to.</p>
-<p><code>my_sample = nusc.get('sample',first_sample)</code></p>
-<p><img src="/2020/08/18/nuscenes/图片2.png" /></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%871.png"></p>
+<h3 id="4-Sample"><a href="#4-Sample" class="headerlink" title="4.Sample"></a>4.Sample</h3><p>在scenes中，每半秒（2 HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
+<p>•We define sample as an annotated keyframe of a scene at a given timestamp. A keyframe is a frame where the time-stamps of data from all the sensors should be very close to the time-stamp of the sample it points to.</p>
+<p><code>my_sample = nusc.get(&#39;sample&#39;,first_sample)</code></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%872.png"></p>
 <p><code>nusc.list_scene</code> 列举出所有的场景</p>
-<p><code>nusc.list_sample(my_sample_token["token"])</code> 列举出related
-sample_data keyframes and sample_annotation associated with a sample</p>
-<h3 id="sample_data">5. Sample_data</h3>
-<p>从一个sample中具体取出哪路相机数据。</p>
-<p><code>my_sample['data']</code> 列举出12个token,分别是6 camera 5 radar
-1 lidar</p>
-<p><img src="/2020/08/18/nuscenes/图片3.png" /></p>
+<p><code>nusc.list_sample(my_sample_token[&quot;token&quot;])</code> 列举出related sample_data keyframes and sample_annotation associated with a sample</p>
+<h3 id="5-Sample-data"><a href="#5-Sample-data" class="headerlink" title="5. Sample_data"></a>5. Sample_data</h3><p>从一个sample中具体取出哪路相机数据。</p>
+<p><code>my_sample[&#39;data&#39;]</code> 列举出12个token,分别是6 camera 5 radar 1 lidar</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%873.png"></p>
 <p>具体取出某个sensor的数据：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sensor = &#x27;CAM_FRONT&#x27;</span><br><span class="line">Cam_front_data = nusc.get(&#x27;sample_data&#x27;,my_sample[&#x27;data&#x27;][sensor])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片4.png" /></p>
+
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%874.png"></p>
 <p>根据sample_data的token取出路径、annotationh和相机内参的接口，检测任务的dataloader很好用.这个函数tutorial没有给，源代码有。传入的第二个可见性的参数是关于bbox的，具体可看源代码。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_path,box_list,cam_intrinsic = nusc.get_sample_data(token,visibility)</span><br></pre></td></tr></table></figure>
+
 <p>可视化某一个sample_data:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nusc.render_sample_data(cam_front_data[&#x27;token&#x27;])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片6.png" /></p>
-<h3 id="sample_annotation">6. Sample_annotation</h3>
-<p>sample_annotation refers to any bounding box defining the position of
-an object seen in a sample. All location data is given with respect to
-the global coordinate
-system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
-<p><img src="nuscenes/图片5.png" style="zoom:75%;" /></p>
+
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%876.png"></p>
+<h3 id="6-Sample-annotation"><a href="#6-Sample-annotation" class="headerlink" title="6. Sample_annotation"></a>6. Sample_annotation</h3><p>sample_annotation refers to any bounding box defining the position of an object seen in a sample. All location data is given with respect to the global coordinate system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
+<img src="nuscenes/图片5.png" style="zoom:75%;" />
+
 <p>可视化sample_annotation:</p>
-<p><img src="/2020/08/18/nuscenes/图片12.png" /></p>
-<h3 id="instance">7.instance</h3>
-<p>Object instance are instances that need to be detected or tracked by
-an AV.</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8712.png"></p>
+<h3 id="7-instance"><a href="#7-instance" class="headerlink" title="7.instance"></a>7.instance</h3><p>Object instance are instances that need to be detected or tracked by an AV.</p>
 <p><code>nusc.instance</code> 返回instance的列表，可以通过下标索引。</p>
-<h3 id="category">8. category</h3>
-<p><code>nusc.list_categories()</code></p>
-<p><img src="/2020/08/18/nuscenes/图片8.png" /></p>
-<h3 id="attribute">9. attribute</h3>
-<p>An attribute is a property of an instance that may change throughout
-different parts of a scene while the category remains the same.</p>
-<p><img src="/2020/08/18/nuscenes/图片9.png" /></p>
-<h3 id="visibility">10. visibility</h3>
-<p>visibility可视化及描述：</p>
+<h3 id="8-category"><a href="#8-category" class="headerlink" title="8. category"></a>8. category</h3><p><code>nusc.list_categories()</code></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%878.png"></p>
+<h3 id="9-attribute"><a href="#9-attribute" class="headerlink" title="9. attribute"></a>9. attribute</h3><p>An attribute is a property of an instance that may change throughout different parts of a scene while the category remains the same.</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%879.png"></p>
+<h3 id="10-visibility"><a href="#10-visibility" class="headerlink" title="10. visibility"></a>10. visibility</h3><p>visibility可视化及描述：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">anntoken=<span class="string">&#x27;a7d0722bce164f88adf03ada491ea0ba&#x27;</span></span><br><span class="line">visibility_token = nusc.get(<span class="string">&#x27;sample_annotation&#x27;</span>,anntoken)[<span class="string">&#x27;visibility_token&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Visibility:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(nusc.get(<span class="string">&#x27;visibility&#x27;</span>,visibility_token)))</span><br><span class="line">nusc.render_annotation(anntoken)</span><br></pre></td></tr></table></figure>
-<p>Visibility: {'description': 'visibility of whole object is between 80
-and 100%', 'token': '4', 'level': 'v80-100'}</p>
-<p><img src="/2020/08/18/nuscenes/图片10.png" /></p>
-<h3 id="sensor">11. sensor</h3>
-<p>1 lidar, 5 radar, 6 cameras</p>
-<h3 id="calibrated_sensor">12. Calibrated_sensor</h3>
-<p>calibrated_sensor consists of the definition of a particular sensor
-(lidar/radar/camera) as calibrated on a particular vehicle.
-注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
-<p><img src="/2020/08/18/nuscenes/图片14.png" /></p>
+
+<p>Visibility: {‘description’: ‘visibility of whole object is between 80 and 100%’, ‘token’: ‘4’, ‘level’: ‘v80-100’}</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8710.png"></p>
+<h3 id="11-sensor"><a href="#11-sensor" class="headerlink" title="11. sensor"></a>11. sensor</h3><p>1 lidar, 5 radar, 6 cameras</p>
+<h3 id="12-Calibrated-sensor"><a href="#12-Calibrated-sensor" class="headerlink" title="12. Calibrated_sensor"></a>12. Calibrated_sensor</h3><p>calibrated_sensor consists of the definition of a particular sensor (lidar&#x2F;radar&#x2F;camera) as calibrated on a particular vehicle. 注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8714.png"></p>
 <p>3D bounding box坐标：X points forward, Y to the left, Z up</p>
-<p>理解“with respect to ego vehicle body
-frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
-<p><span class="math display">\[(\left[ \begin{array}{l} x_{ego}\\\\
-y_{ego}\\\\ z_{ego} \end{array} \right] = R\left[ \begin{array}{l}
-x_{camera}\\\\ y_{camera}\\\\ z_{camera} \end{array} \right] +
-T)\]</span></p>
+<p>理解“with respect to ego vehicle body frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
+<p>$$(\left[ \begin{array}{l} x_{ego}\\ y_{ego}\\ z_{ego} \end{array} \right] &#x3D; R\left[ \begin{array}{l} x_{camera}\\ y_{camera}\\ z_{camera} \end{array} \right] + T)$$</p>
 <p>相应的把ego vehicle坐标系下的bbox转换到sensor coord system就是：</p>
-<p><img src="/2020/08/18/nuscenes/图片15.png" /></p>
-<h3 id="ego_pose">13. Ego_pose</h3>
-<p>go_pose contains information about the location (encoded in
-translation) and the orientation (encoded in rotation) of the ego
-vehicle, with respect to the <strong>global coordinate
-system</strong>.</p>
-<p>ego_pose的数量和sample_data是一样的，这两者是一一对应的关系。<u>其实我有点不懂为什么每一个sample_data对应有一个ego_pose，六路相机也就是一个sample不应该对应一个ego
-pose吗</u></p>
-<p>•描述的是车体自己（x forward,y left,z
-up）相对于全局坐标系的旋转R和平移T。这个R通过四元数给出。</p>
-<p>•理解ego pose的R和T都是相对于（with respect
-to）全局坐标系这句话;也就是ego坐标系中的一个坐标要变换到全局坐标系中就是</p>
-<p><span class="math inline">\(\left[ \begin{array}{l} x_{global}\\\\
-y_{global}\\\\ z_{global} \end{array} \right] = R\left[ \begin{array}{l}
-x_{ego}\\\\ y_{ego}\\\\ z_{ego} \end{array} \right] + T\)</span></p>
+<p><img src="/2020/08/18/nuscenes/%E5%9B%BE%E7%89%8715.png"></p>
+<h3 id="13-Ego-pose"><a href="#13-Ego-pose" class="headerlink" title="13. Ego_pose"></a>13. Ego_pose</h3><p>go_pose contains information about the location (encoded in translation) and the orientation (encoded in rotation) of the ego vehicle, with respect to the <strong>global coordinate system</strong>.</p>
+<p>ego_pose的数量和sample_data是一样的，这两者是一一对应的关系。<u>其实我有点不懂为什么每一个sample_data对应有一个ego_pose，六路相机也就是一个sample不应该对应一个ego pose吗</u></p>
+<p>•描述的是车体自己（x forward,y left,z up）相对于全局坐标系的旋转R和平移T。这个R通过四元数给出。</p>
+<p>•理解ego pose的R和T都是相对于（with respect to）全局坐标系这句话;也就是ego坐标系中的一个坐标要变换到全局坐标系中就是</p>
+<p>$\left[ \begin{array}{l} x_{global}\\ y_{global}\\ z_{global} \end{array} \right] &#x3D; R\left[ \begin{array}{l} x_{ego}\\ y_{ego}\\ z_{ego} \end{array} \right] + T$</p>
 <p>其中公式左边是全局坐标系中的坐标。</p>
-<h3
-id="nuscenes评测只涉及detection方面">14.nuscenes评测（只涉及detection方面）</h3>
-<p>•Nuscenes的评测程序可以在devkit中的eval找到。</p>
+<h3 id="14-nuscenes评测（只涉及detection方面）"><a href="#14-nuscenes评测（只涉及detection方面）" class="headerlink" title="14.nuscenes评测（只涉及detection方面）"></a>14.nuscenes评测（只涉及detection方面）</h3><p>•Nuscenes的评测程序可以在devkit中的eval找到。</p>
 <p>•README中规定了相应的sample_result的格式。prediction的结果要按照规定格式组织jason文件。sample_result的表和sample_annotation的表设计为一样的，所以完全可以用sample_annotation的工具和接口去操作sample_result.同时注意生成的结果即使没有识别出框，必须存在相应的token.</p>
-<p>•虽然nuscenes训练有23类，但是评测处理similar和rare的类别，考虑到每一类的frequency,最终只归纳了10类，并且每一类有个detection
-range(meters)。超过这个距离识别出来的框忽略。</p>
-<p><a
-target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#data-annotation">这个链接可以看到数据集各个类别的频率</a></p>
-<h5 id="预处理">1.预处理</h5>
-<p>GT和predition bboxes:</p>
-<p>•超过距离的移除；</p>
-<p>•Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
+<p>•虽然nuscenes训练有23类，但是评测处理similar和rare的类别，考虑到每一类的frequency,最终只归纳了10类，并且每一类有个detection range(meters)。超过这个距离识别出来的框忽略。</p>
+<p> <a target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#data-annotation">这个链接可以看到数据集各个类别的频率</a></p>
+<h5 id="1-预处理"><a href="#1-预处理" class="headerlink" title="1.预处理"></a>1.预处理</h5><p>GT和predition bboxes:</p>
+<p> •超过距离的移除；</p>
+<p> •Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
 <p>GT bboxes:</p>
-<p>•没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
-<h5 id="评测矩阵">2.评测矩阵</h5>
-<p>mAP:
-一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的IOU@0.3,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
-<p>TP metircs：其他因素的误差矩阵。Average of translation, velocity,
-scale, orientation and attribute errors.</p>
-<p>NDS(nuscenes detection score): the weighted sum of the
-above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP
-metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
-<h5 id="true-positive-metrics">3.True Positive metrics</h5>
-<p>•TP衡量translation/scale/orientation/velocity/attribute errors</p>
+<p> •没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
+<h5 id="2-评测矩阵"><a href="#2-评测矩阵" class="headerlink" title="2.评测矩阵"></a>2.评测矩阵</h5><p>mAP: 一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的<a href="mailto:&#x49;&#79;&#x55;&#64;&#x30;&#x2e;&#51;">&#x49;&#79;&#x55;&#64;&#x30;&#x2e;&#51;</a>,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
+<p>TP metircs：其他因素的误差矩阵。Average of translation, velocity, scale, orientation and attribute errors.</p>
+<p>NDS(nuscenes detection score): the weighted sum of the above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
+<h5 id="3-True-Positive-metrics"><a href="#3-True-Positive-metrics" class="headerlink" title="3.True Positive metrics"></a>3.True Positive metrics</h5><p>•TP衡量translation&#x2F;scale&#x2F;orientation&#x2F;velocity&#x2F;attribute errors</p>
 <p>•所以TP矩阵计算匹配时都要满足center distance在2m之类</p>
-<p>•最终计算平均在recall&gt;10%，达不到这个阈值某类的TP
-errors所有都会被设置为1.</p>
-<p>•Average Translation
-error(ATE):bbox的中心到ego原点的L2范数(meters)。即公式</p>
-<p><span class="math inline">\(\sqrt{ {(x1 - x2)^2} + {(y1 - y2)^2} +
-{(z1 - z2)^2} }\)</span></p>
-<p>. 区分于上面计算mAP作为阈值的distance:<span
-class="math inline">\(\sqrt{(z1-z2)^2}\)</span></p>
+<p>•最终计算平均在recall&gt;10%，达不到这个阈值某类的TP errors所有都会被设置为1.</p>
+<p>•Average Translation error(ATE):bbox的中心到ego原点的L2范数(meters)。即公式</p>
+<p>$\sqrt{ {(x1 - x2)^2} + {(y1 - y2)^2} + {(z1 - z2)^2} }$</p>
+<p>. 区分于上面计算mAP作为阈值的distance:$\sqrt{(z1-z2)^2}$</p>
 <p>•Average Scale Error(ASE): 对齐中心和朝向之后计算1-IOU</p>
-<p>•Average Orientation Error(AOE):最小的yaw
-angle差异（radians）.一般类都是360度衡量，barriers在180度衡量，cones忽略这个指标。</p>
-<p>•Average Velocity Error(AVE):absolute velocity error in
-m/s.barrier和cone忽略这个指标。</p>
-<p>•Average Attribute
-Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标</p>
+<p>•Average Orientation Error(AOE):最小的yaw angle差异（radians）.一般类都是360度衡量，barriers在180度衡量，cones忽略这个指标。</p>
+<p>•Average Velocity Error(AVE):absolute velocity error in m&#x2F;s.barrier和cone忽略这个指标。</p>
+<p>•Average Attribute Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标</p>
 <p>•TP矩阵每个类分别计算，对于所有类别取均值得到Map,mASE,mAOE,mAVE,mAAE.</p>
 
       
@@ -536,22 +649,18 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1
-id="matlab调用百度api获取两地运输距离">matlab调用百度API获取两地运输距离</h1>
-<p>1、
-首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。</p>
-<p>2、 获取距离的函数用python写的，<a
-target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/article/details/81098724">python版本获取距离</a>。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.</p>
+          <h1 id="matlab调用百度API获取两地运输距离"><a href="#matlab调用百度API获取两地运输距离" class="headerlink" title="matlab调用百度API获取两地运输距离"></a>matlab调用百度API获取两地运输距离</h1><p>1、 首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。</p>
+<p>2、 获取距离的函数用python写的，<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/article/details/81098724">python版本获取距离</a>。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiduDistanceClass():</span><br><span class="line">    def __init__ (self,s1,s2,t1,t2):</span><br><span class="line">        self.s1 = str(s1)</span><br><span class="line">        self.s2 = str(s2)</span><br><span class="line">        self.t1 = str(t1)</span><br><span class="line">        self.t2 = str(t2)</span><br><span class="line">        </span><br><span class="line">    def getDistance(self):</span><br><span class="line">        a1=r&quot;http://api.map.baidu.com/routematrix/v2/driving?output=json&quot;</span><br><span class="line">        a2=r&quot;&amp;origins=&quot;+self.s1+&quot;,&quot;+self.s2</span><br><span class="line">        a3=r&quot;&amp;destinations=&quot;+self.t1+&quot;,&quot;+self.t2</span><br><span class="line">        a4=r&quot;&amp;coord_type=wgs84&quot;</span><br><span class="line">        a5=r&quot;&amp;tactics=11&quot;</span><br><span class="line">        a6=r&quot;&amp;ak=your_key&quot;</span><br><span class="line">        url=a1+a2+a3+a4+a5+a6</span><br><span class="line">        </span><br><span class="line">        b = urlopen(url)</span><br><span class="line">        c=b.read()</span><br><span class="line">        result = json.loads(c)</span><br><span class="line">        return result[&quot;result&quot;][0][&quot;distance&quot;][&quot;value&quot;]/1000</span><br></pre></td></tr></table></figure>
-<p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a
-target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
-<p><img src="/2020/08/08/BaiduApi/pyversion.png" /></p>
-<p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个"助教"目录下。</p>
-<p><img src="/2020/08/08/BaiduApi/目录.png" /></p>
+
+<p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
+<p><img src="/2020/08/08/BaiduApi/pyversion.png"></p>
+<p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个”助教”目录下。</p>
+<p><img src="/2020/08/08/BaiduApi/%E7%9B%AE%E5%BD%95.png"></p>
 <p>接下来你就可以在matlab里面调用python函数了。创建一个python类：</p>
-<p><img src="/2020/08/08/BaiduApi/python.png" /></p>
+<p><img src="/2020/08/08/BaiduApi/python.png"></p>
 <p>调用函数得到距离。这里s1,s2是源地点的纬度，经度；t1,t2是目标地点的纬度，经度。我这里测试用的上海和北京并在高德地图上面验证符合。</p>
-<p><img src="/2020/08/08/BaiduApi/distance.png" /></p>
+<p><img src="/2020/08/08/BaiduApi/distance.png"></p>
 <p>注意这里得到的是公里，因为程序除了1000，API直接返回的是米，如果要以米为单位可以不除。</p>
 
       
@@ -617,29 +726,13 @@ target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1
-id="论文题目objection-detection-with-deep-learning-a-review">论文题目：Objection
-Detection with Deep Learning: A Review</h1>
-<h5 id="introduction">1.Introduction</h5>
-<p>目标检测子类包括脸部检测(face detection)，行人检测(pedestrian
-detection)，躯体骨骼检测(skeleton detection)等等。</p>
-<p>目标检测的困难：在视角(viewpoints),姿势(poses),遮挡(occlusions),和光照条件(lightling
-conditions)存在很大不同。</p>
-<p>目标检测的任务<strong>=目标定位(object location)+目标分类(object
-classification)</strong>。因此pipeline有三个阶段：<strong>目标区域选取(informative
-region selection),特征提取(feature
-extraction),分类(classification)</strong></p>
-<h6 id="a.informative-region-selection">a.Informative region
-selection</h6>
-<p>解决方法是multi-scale sliding
-window。因为你不知道目标会在图像的哪个位置出现，有多大。这个方法的缺点显而易见：expensive</p>
-<h6 id="b.feature-extraction">b.feature extraction</h6>
-<p>sift,hog算子等都可以用来提取物体特征，但是由于表面，光照，北京等影响很难设计一个具体的算子去特别识别一个目标。</p>
-<h6 id="c.classification">c.classification</h6>
-<p>比如SVM，AdaBoost, DPM</p>
-<p>以上描述的传统算法缺点1、sliding window低效性。2、semantic gap cannot
-be bridged by the low-level
-descriptors.我们需要更为强大的特征提取算子。</p>
+          <h1 id="论文题目：Objection-Detection-with-Deep-Learning-A-Review"><a href="#论文题目：Objection-Detection-with-Deep-Learning-A-Review" class="headerlink" title="论文题目：Objection Detection with Deep Learning: A Review"></a>论文题目：Objection Detection with Deep Learning: A Review</h1><h5 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1.Introduction"></a>1.Introduction</h5><p> 目标检测子类包括脸部检测(face detection)，行人检测(pedestrian detection)，躯体骨骼检测(skeleton detection)等等。</p>
+<p> 目标检测的困难：在视角(viewpoints),姿势(poses),遮挡(occlusions),和光照条件(lightling conditions)存在很大不同。</p>
+<p> 目标检测的任务**&#x3D;目标定位(object location)+目标分类(object classification)<strong>。因此pipeline有三个阶段：</strong>目标区域选取(informative region selection),特征提取(feature extraction),分类(classification)**</p>
+<h6 id="a-Informative-region-selection"><a href="#a-Informative-region-selection" class="headerlink" title="a.Informative region selection"></a>a.Informative region selection</h6><p> 解决方法是multi-scale sliding window。因为你不知道目标会在图像的哪个位置出现，有多大。这个方法的缺点显而易见：expensive</p>
+<h6 id="b-feature-extraction"><a href="#b-feature-extraction" class="headerlink" title="b.feature extraction"></a>b.feature extraction</h6><p> sift,hog算子等都可以用来提取物体特征，但是由于表面，光照，北京等影响很难设计一个具体的算子去特别识别一个目标。</p>
+<h6 id="c-classification"><a href="#c-classification" class="headerlink" title="c.classification"></a>c.classification</h6><p> 比如SVM，AdaBoost, DPM</p>
+<p>以上描述的传统算法缺点1、sliding window低效性。2、semantic gap cannot be bridged by the low-level descriptors.我们需要更为强大的特征提取算子。</p>
 
       
     </div>
@@ -704,75 +797,29 @@ descriptors.我们需要更为强大的特征提取算子。</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3
-id="digging-into-self-supervised-monocular-depth-estimation论文阅读">《Digging
-into Self-Supervised Monocular Depth Estimation》论文阅读</h3>
-<h5 id="目标-self-supervised-monoculr-depth-estimation">目标：
-self-supervised monoculr depth estimation</h5>
-<h5 id="摘要">摘要：</h5>
-<p>1、一个最小重投影损失，解决遮挡问题。</p>
-<p>2、一个全分辨率多尺度取样方法，减少视觉误差。</p>
-<p>3、一个自动遮挡损失，忽视违反相机运动假设的像素，不让其训练。</p>
-<h5 id="损失函数">损失函数</h5>
-<h5 id="重投影损失函数">1、重投影损失函数</h5>
-<p><span class="math inline">\({L_p} =
-\sum_{t^{&#39;}}pe(I_{t},I_{t^{&#39;}\rightarrow t})\)</span></p>
-<p>其中 ： $pe(I_{a},I_{b})=(1-SSIM(I_{a},I_{b}))+（1-)||I_{a}-I_{b}|| $
-目标就是相近的fram的appearance应该相同。pe是用来衡量两幅图的差距的。</p>
-<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
-x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
-<h5 id="edge-aware-smoothness">2、edge-aware smoothness</h5>
-<p>论文给出的解释是we can extract this interpretable depth from the
-model. This is an ill-posed problem as there is an extremely large
-number of possible incorrect depths per pixel which can correctly
-reconstruct the novel view given the relative pose between those two
-views.传统的双目和multi-view stereo方法通过enforcing smoothness in the
-depth maps来解决，反正我不是很懂。</p>
-<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
-x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
-<p>其中：<span
-class="math inline">\(d^{*}_{t}=d_{t}/\bar{d_{t}}\)</span> ,
-这样处理的目的是避免深度消失。</p>
-<h5 id="对损失函数的提高">3、对损失函数的提高</h5>
-<h6
-id="a在目标frame和source-frame选择误差小的像素匹配这是为了拒绝被遮挡像素带来的误差增大的训练">a、在目标frame和source
-frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6>
-<p><img src="/2019/12/06/paper-diggingInto/appearance-loss.png" /></p>
-<p>所以：$ L_{p}=min,pe(I_{t},I_{t^{'}t})$</p>
-<h6 id="bauto-masking-stationary-pixels">b、Auto-Masking Stationary
-Pixels</h6>
-<p>self-supervised monocular training基于的假设是moving camera和static
-scene。所以如果camera is static（比如车停下来画面不动）画面有object
-motion（有其他车辆经过）就会有'holes' of infinite depth in depth
-maps。针对这个问题作者提出一个mask。({0,1})</p>
-<p>即reprojection error of the wraped image (I_{t^{'} t}) is lower than
-that of the original, unwraped source image (I^{'}_{t}) .</p>
-<p><span class="math inline">\(\mu =[min_{t^{&#39;}}\,
-pe(I_{t},I_{t^{&#39;}\rightarrow {t}})&lt;min_{t}\,
-pe(I_{t},I_{t^{&#39;}})]\)</span></p>
+          <h3 id="《Digging-into-Self-Supervised-Monocular-Depth-Estimation》论文阅读"><a href="#《Digging-into-Self-Supervised-Monocular-Depth-Estimation》论文阅读" class="headerlink" title="《Digging into Self-Supervised Monocular Depth Estimation》论文阅读"></a>《Digging into Self-Supervised Monocular Depth Estimation》论文阅读</h3><h5 id="目标：-self-supervised-monoculr-depth-estimation"><a href="#目标：-self-supervised-monoculr-depth-estimation" class="headerlink" title="目标： self-supervised monoculr depth estimation"></a>目标： self-supervised monoculr depth estimation</h5><h5 id="摘要："><a href="#摘要：" class="headerlink" title="摘要："></a>摘要：</h5><p> 1、一个最小重投影损失，解决遮挡问题。</p>
+<p> 2、一个全分辨率多尺度取样方法，减少视觉误差。</p>
+<p> 3、一个自动遮挡损失，忽视违反相机运动假设的像素，不让其训练。</p>
+<h5 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h5><h5 id="1、重投影损失函数"><a href="#1、重投影损失函数" class="headerlink" title="1、重投影损失函数"></a>1、重投影损失函数</h5><p>${L_p} &#x3D; \sum_{t^{‘}}pe(I_{t},I_{t^{‘}\rightarrow t})$</p>
+<p>其中 ： $pe(I_{a},I_{b})&#x3D;\frac{\alpha}{2}(1-SSIM(I_{a},I_{b}))+（1-\alpha)||I_{a}-I_{b}|| $ 目标就是相近的fram的appearance应该相同。pe是用来衡量两幅图的差距的。</p>
+<p>$L_{s}&#x3D;|\partial x d^{<em>}_{t}|e^{-|\partial x I_t|} +|\partial y d^{</em>}_{t}|e^{-|\partial y I_t|}$</p>
+<h5 id="2、edge-aware-smoothness"><a href="#2、edge-aware-smoothness" class="headerlink" title="2、edge-aware smoothness"></a>2、edge-aware smoothness</h5><p>论文给出的解释是we can extract this interpretable depth from the model. This is an ill-posed problem as there is an extremely large number of possible incorrect depths per pixel which can correctly reconstruct the novel view given the relative pose between those two views.传统的双目和multi-view stereo方法通过enforcing smoothness in the depth maps来解决，反正我不是很懂。</p>
+<p>$L_{s}&#x3D;|\partial x d^{<em>}_{t}|e^{-|\partial x I_t|} +|\partial y d^{</em>}_{t}|e^{-|\partial y I_t|}$</p>
+<p>其中：$d^{*}<em>{t}&#x3D;d</em>{t}&#x2F;\bar{d_{t}}$ , 这样处理的目的是避免深度消失。</p>
+<h5 id="3、对损失函数的提高"><a href="#3、对损失函数的提高" class="headerlink" title="3、对损失函数的提高"></a>3、对损失函数的提高</h5><h6 id="a、在目标frame和source-frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。"><a href="#a、在目标frame和source-frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。" class="headerlink" title="a、在目标frame和source frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。"></a>a、在目标frame和source frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6><p><img src="/2019/12/06/paper-diggingInto/appearance-loss.png"></p>
+<p>所以：$ L_{p}&#x3D;min,pe(I_{t},I_{t^{‘}\rightarrow t})$</p>
+<h6 id="b、Auto-Masking-Stationary-Pixels"><a href="#b、Auto-Masking-Stationary-Pixels" class="headerlink" title="b、Auto-Masking Stationary Pixels"></a>b、Auto-Masking Stationary Pixels</h6><p> self-supervised monocular training基于的假设是moving camera和static scene。所以如果camera is static（比如车停下来画面不动）画面有object motion（有其他车辆经过）就会有’holes’ of infinite depth in depth maps。针对这个问题作者提出一个mask。(\mu \in {0,1})</p>
+<p>即reprojection error of the wraped image (I_{t^{‘} \rightarrow t}) is lower than that of the original, unwraped source image (I^{‘}_{t}) .</p>
+<p>$\mu &#x3D;[min_{t^{‘}}, pe(I_{t},I_{t^{‘}\rightarrow {t}})&lt;min_{t}, pe(I_{t},I_{t^{‘}})]$</p>
 <p>原因是基于作者提出的两个分析：</p>
-<p>（1）static camera 由same
-pixels表明。所以这个时候(pe(I_{t},I_{t^{'}}))
-几乎非常小，所以这种情况下可以把static camera去掉。</p>
-<p>（2）一个moving object at equivalent relative translation to the
-camera，or a low of pixels。</p>
-<h6 id="cmulti-scale-estimation">c、Multi-scale Estimation</h6>
-<p>为了解决bininear sampler带来的gradient locality，避免训练stuck in
-local minima，现有模型通常采用的方法是multi-scale depth
-prediction和image reconstruction。与其他人将input image 降到resolution
-of each decoder不同，作者upsample the lower resolution depth
-maps，然后reproject,resample这样去计算</p>
-<h5 id="最终loss">4、最终Loss</h5>
-<p><span class="math inline">\(L=\mu L_{p}+\lambda L_{s}\)</span></p>
-<h5 id="其他考虑">5、其他考虑</h5>
-<p>(1)depthnetwork总体是encoder-decoder结构。encoder是resnet18并且采用Pretrain
-weights.decoder输出的深度的sigmoid值$$ 处理为depth.(D=) .</p>
+<p>（1）static camera 由same pixels表明。所以这个时候(pe(I_{t},I_{t^{‘}})) 几乎非常小，所以这种情况下可以把static camera去掉。</p>
+<p>（2）一个moving object at equivalent relative translation to the camera，or a low of pixels。</p>
+<h6 id="c、Multi-scale-Estimation"><a href="#c、Multi-scale-Estimation" class="headerlink" title="c、Multi-scale Estimation"></a>c、Multi-scale Estimation</h6><p>为了解决bininear sampler带来的gradient locality，避免训练stuck in local minima，现有模型通常采用的方法是multi-scale depth prediction和image reconstruction。与其他人将input image 降到resolution of each decoder不同，作者upsample the lower resolution depth maps，然后reproject,resample这样去计算</p>
+<h5 id="4、最终Loss"><a href="#4、最终Loss" class="headerlink" title="4、最终Loss"></a>4、最终Loss</h5><p>$L&#x3D;\mu L_{p}+\lambda L_{s}$</p>
+<h5 id="5、其他考虑"><a href="#5、其他考虑" class="headerlink" title="5、其他考虑"></a>5、其他考虑</h5><p>(1)depthnetwork总体是encoder-decoder结构。encoder是resnet18并且采用Pretrain weights.decoder输出的深度的sigmoid值$$ 处理为depth.(D&#x3D;\frac{1}{a\sigma +b}) .</p>
 <p>寻找这样的a,b使得D的范围在0.1~100units.</p>
-<p>(2)pose network最后的输出会被scale by
-0.01。同时虽然深度网络输入是三个连续的RGB图，pose
-network的输入被处理为两幅RGB或者6个channel。相应的filter扩展一组，weights除以2.（维持filter的总和为1）.同时对输入图像进行了数据增强。horizontal
-flips和color argumentation.</p>
-<p>(3)输入图像大小为640*192. 损失函数中的() 取0.001。</p>
+<p>(2)pose network最后的输出会被scale by 0.01。同时虽然深度网络输入是三个连续的RGB图，pose network的输入被处理为两幅RGB或者6个channel。相应的filter扩展一组，weights除以2.（维持filter的总和为1）.同时对输入图像进行了数据增强。horizontal flips和color argumentation.</p>
+<p>(3)输入图像大小为640*192. 损失函数中的(\lambda) 取0.001。</p>
 
       
     </div>
@@ -837,37 +884,21 @@ flips和color argumentation.</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="dense-kitti-dataloader">dense kitti dataloader</h2>
-<p>这篇文章介绍kitti的稀疏深度图生成dense depth
-map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
-<h3 id="kitti-to-dense">kitti to dense</h3>
-<h3 id="准备">准备</h3>
-<p>KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a
-target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php">original
-depth map</a></p>
-<p>KITTI的RGB数据用的是image_02。可以从官网下载到。<a
-target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/raw_data.php">Raw
-data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
-<p>由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a
-target="_blank" rel="noopener" href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m">深度补全函数</a></p>
-<h3 id="过程">过程</h3>
-<p>新建一个文件夹，将深度解压的文件夹 data_depth_annotated
-，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹
-data_depth_to_dense放到一个目录下。说明：data_depth_to_dense
-我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
-<p>准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
-<p>运行主程序 main.m。</p>
-<h3 id="可视化">可视化</h3>
-<p>可视化的代码：</p>
+          <h2 id="dense-kitti-dataloader"><a href="#dense-kitti-dataloader" class="headerlink" title="dense kitti dataloader"></a>dense kitti dataloader</h2><p>这篇文章介绍kitti的稀疏深度图生成dense depth map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
+<h3 id="kitti-to-dense"><a href="#kitti-to-dense" class="headerlink" title="kitti to dense"></a>kitti to dense</h3><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p> KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php">original depth map</a></p>
+<p> KITTI的RGB数据用的是image_02。可以从官网下载到。<a target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/raw_data.php">Raw data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
+<p> 由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a target="_blank" rel="noopener" href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m">深度补全函数</a></p>
+<h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><p> 新建一个文件夹，将深度解压的文件夹 data_depth_annotated ，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹 data_depth_to_dense放到一个目录下。说明：data_depth_to_dense 我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
+<p> 准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
+<p> 运行主程序 main.m。</p>
+<h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p>可视化的代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">im =cv2.imread(&#x27;image/path&#x27;)</span><br><span class="line">im_color = cv2.applyColorMap(im,cv2.COLORMAP_JET)</span><br></pre></td></tr></table></figure>
-<p>来自这个链接：<a
-target="_blank" rel="noopener" href="https://github.com/QianshengGu/KITTI_Dense_Depth.git">可视化</a></p>
-<p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground
-truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
-<h3 id="kitti-dataloader">kitti dataloader</h3>
-<p>这个dataloader与我上面说的文件路径是一致的。</p>
+
+<p>来自这个链接：<a target="_blank" rel="noopener" href="https://github.com/QianshengGu/KITTI_Dense_Depth.git">可视化</a></p>
+<p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
+<h3 id="kitti-dataloader"><a href="#kitti-dataloader" class="headerlink" title="kitti dataloader"></a>kitti dataloader</h3><p> 这个dataloader与我上面说的文件路径是一致的。</p>
 <p>参考github我之后会放上去。</p>
-<p>https://github.com/77philosophia/kitti_data_depth_loader</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/77philosophia/kitti_data_depth_loader">https://github.com/77philosophia/kitti_data_depth_loader</a></p>
 
       
     </div>
@@ -949,7 +980,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
