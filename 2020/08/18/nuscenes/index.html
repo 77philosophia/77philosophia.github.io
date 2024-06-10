@@ -320,7 +320,7 @@
 <p> •Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
 <p>GT bboxes:</p>
 <p> •没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
-<h5 id="2-评测矩阵"><a href="#2-评测矩阵" class="headerlink" title="2.评测矩阵"></a>2.评测矩阵</h5><p>mAP: 一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的<a href="mailto:&#x49;&#79;&#x55;&#64;&#x30;&#x2e;&#51;">&#x49;&#79;&#x55;&#64;&#x30;&#x2e;&#51;</a>,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
+<h5 id="2-评测矩阵"><a href="#2-评测矩阵" class="headerlink" title="2.评测矩阵"></a>2.评测矩阵</h5><p>mAP: 一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的<a href="mailto:&#x49;&#x4f;&#85;&#64;&#48;&#46;&#x33;">&#x49;&#x4f;&#85;&#64;&#48;&#46;&#x33;</a>,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
 <p>TP metircs：其他因素的误差矩阵。Average of translation, velocity, scale, orientation and attribute errors.</p>
 <p>NDS(nuscenes detection score): the weighted sum of the above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
 <h5 id="3-True-Positive-metrics"><a href="#3-True-Positive-metrics" class="headerlink" title="3.True Positive metrics"></a>3.True Positive metrics</h5><p>•TP衡量translation&#x2F;scale&#x2F;orientation&#x2F;velocity&#x2F;attribute errors</p>
