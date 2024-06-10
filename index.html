@@ -145,6 +145,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/06/10/axios-use/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/10/axios-use/" class="post-title-link" itemprop="url">axios-use</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-06-10 22:45:39" itemprop="dateCreated datePublished" datetime="2024-06-10T22:45:39+08:00">2024-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-11 00:08:56" itemprop="dateModified" datetime="2024-06-11T00:08:56+08:00">2024-06-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>​	最近在做校友小程序的一些事情，会和学校校友卡的开发对接使用他们的一个借口。发现他们不是按照“<strong>幂等不修改服务器状态的用GET，幂等修改服务器状态的用PUT，不幂等修改服务器状态的用POST</strong>”，一个get的请求也是用的post的方式。</p>
+<p>然后去知乎获悉了一下缘由 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/336797348/answer/2189036490?utm_campaign=shareopn&utm_content=group3_Answer&utm_medium=social&utm_psn=1783633270560407552&utm_source=wechat_session">公司规定所有接口都用 post 请求，这是为什么？</a></p>
+<h3 id="axios的两种传参方式"><a href="#axios的两种传参方式" class="headerlink" title="axios的两种传参方式"></a>axios的两种传参方式</h3><p>在postman里尝试两种发送方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -d &quot;name=userName&amp;phone=phoneNumber&quot; urlxxxx/isSchoolmate //data,work</span><br><span class="line"></span><br><span class="line">curl -X POST -d &#x27;&#123;&quot;name&quot;:&quot;userName&quot;,&quot;phone&quot;:&quot;phoneNumber&quot;&#125;&#x27; urlxxxx/isSchoolmate  // params, not work</span><br></pre></td></tr></table></figure>
+
+<p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/yangyangkl123/article/details/109024222">https://blog.csdn.net/yangyangkl123/article/details/109024222</a></p>
+<p>axios的post有两种传参方式：data 和 params</p>
+<p>直接使用post方法是data方式</p>
+<p>一般情况下可以使用data的传参方式，有时候需要params的方式，比如java的借口。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>反映在代码里：</p>
+<p>开始用的第二种方式一直不work，用postman验证之后用第一种方式work.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// params</span><br><span class="line">let result = await axios.post(url, null, &#123;params:&#123;</span><br><span class="line">      &quot;name&quot;: name,</span><br><span class="line">      &quot;phone&quot;: phone</span><br><span class="line">  &#125;&#125;);</span><br><span class="line">参考https://stackoverflow.com/questions/53501185/how-to-post-query-parameters-with-axios</span><br><span class="line"></span><br><span class="line">// data</span><br><span class="line"> let result = await axios.post(url, &#123;</span><br><span class="line">       &#x27;name&#x27;: name,</span><br><span class="line">       &#x27;phone&#x27;: phone</span><br><span class="line">     &#125;);</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/06/10/backend-install/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -644,7 +721,7 @@
 <p> •Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
 <p>GT bboxes:</p>
 <p> •没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
-<h5 id="2-评测矩阵"><a href="#2-评测矩阵" class="headerlink" title="2.评测矩阵"></a>2.评测矩阵</h5><p>mAP: 一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的<a href="mailto:&#x49;&#x4f;&#85;&#64;&#48;&#46;&#x33;">&#x49;&#x4f;&#85;&#64;&#48;&#46;&#x33;</a>,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
+<h5 id="2-评测矩阵"><a href="#2-评测矩阵" class="headerlink" title="2.评测矩阵"></a>2.评测矩阵</h5><p>mAP: 一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的<a href="mailto:&#73;&#79;&#x55;&#64;&#x30;&#x2e;&#x33;">&#73;&#79;&#x55;&#64;&#x30;&#x2e;&#x33;</a>,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
 <p>TP metircs：其他因素的误差矩阵。Average of translation, velocity, scale, orientation and attribute errors.</p>
 <p>NDS(nuscenes detection score): the weighted sum of the above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
 <h5 id="3-True-Positive-metrics"><a href="#3-True-Positive-metrics" class="headerlink" title="3.True Positive metrics"></a>3.True Positive metrics</h5><p>•TP衡量translation&#x2F;scale&#x2F;orientation&#x2F;velocity&#x2F;attribute errors</p>
@@ -1053,7 +1130,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
