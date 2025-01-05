@@ -145,6 +145,1191 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/langchain-robot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/04/langchain-robot/" class="post-title-link" itemprop="url">用lanchain做ai robot</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-04 23:34:19 / Modified: 23:56:18" itemprop="dateCreated datePublished" datetime="2025-01-04T23:34:19+08:00">2025-01-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="什么是langchin">什么是langchin</h3>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104233619635.png"
+alt="image-20250104233619635" />
+<figcaption aria-hidden="true">image-20250104233619635</figcaption>
+</figure>
+<p>langchain是一个支持大语言模型相关应用开发的框架。</p>
+<p>使得建设与ai相关的应用会更容易。</p>
+<ul>
+<li><p>集成：将外部数据，比如文件、api、应用集成进来</p></li>
+<li><p>代理：和环境集成</p></li>
+</ul>
+<p>组件 - LangChain
+使得更换必要的抽象和组件以使用语言模型变得轻而易举。</p>
+<p>自定义链 - LangChain
+提供现成的支持来使用和自定义“链”——一系列串联在一起的操作。</p>
+<p>速度 🚢 - 这个团队的交付速度非常快。您将会跟上最新的 LLM 功能。</p>
+<p>社区 👥 - 极好的 Discord 和社区支持，见面会、黑客松等活动。</p>
+<h2 id="llms">LLMs</h2>
+<ul>
+<li>公司开发和控制的专有模型：成本高、许可证限制、闭源</li>
+<li>开源模型：开源、灵活性、可能缺乏大公司的支持和资源</li>
+</ul>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104233744531.png"
+alt="image-20250104233744531" />
+<figcaption aria-hidden="true">image-20250104233744531</figcaption>
+</figure>
+<p>用api</p>
+<p>AzureOpenAI:适用于一般的长文本生成任务，如小说写作、文章创作等。</p>
+<p>AzureChatOpenAI:适用于涉及大量对话的文本生成任务，尤其是需要管理对话上下文时。</p>
+<p>根据你的具体需求选择合适的模型。如果主要任务是长文本创作且对话不是主要部分，建议使用
+AzureOpenAI。如果有大量对话且需要更好地管理对话上下文，建议使用
+AzureChatOpenAI。</p>
+<p>AzureOpenAI 会报错</p>
+<p>Error code: 400 - {'error': {'code': 'OperationNotSupported',
+'message': 'The completion operation does not work with the specified
+model, gpt-4o. Please choose different model and try again. You can
+learn more about which models can be used with each operation here:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#This basic example demostrate the LLM response and ChatModel Response</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.llms <span class="keyword">import</span> AzureOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.chat_models <span class="keyword">import</span> AzureChatOpenAI</span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv, find_dotenv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the OpenAI library configuration using the retrieved environment variables</span></span><br><span class="line">OPENAI_API_TYPE = <span class="string">&quot;azure&quot;</span></span><br><span class="line">OPENAI_API_BASE = <span class="string">&quot;https://sparkopenai2024.openai.azure.com/&quot;</span></span><br><span class="line">OPENAI_API_VERSION = <span class="string">&quot;2024-02-15-preview&quot;</span></span><br><span class="line">OPENAI_API_KEY = <span class="string">&quot;xxx&quot;</span></span><br><span class="line">GPT4V_ENDPOINT = <span class="string">&quot;https://sparkopenai2024.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize an instance of AzureOpenAI using the specified settings</span></span><br><span class="line"><span class="comment"># llm = AzureOpenAI(</span></span><br><span class="line"><span class="comment">#     openai_api_version=OPENAI_API_VERSION,</span></span><br><span class="line"><span class="comment">#     openai_api_key=OPENAI_API_KEY,</span></span><br><span class="line"><span class="comment">#     openai_api_base=OPENAI_API_BASE,</span></span><br><span class="line"><span class="comment">#     openai_api_type=OPENAI_API_TYPE,</span></span><br><span class="line"><span class="comment">#     deployment_name=&quot;gpt-4o&quot;  # Name of the deployment for identification</span></span><br><span class="line"><span class="comment"># )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize an instance of AzureChatOpenAI using the specified settings</span></span><br><span class="line">chat_llm = AzureChatOpenAI(</span><br><span class="line">    openai_api_version=OPENAI_API_VERSION,</span><br><span class="line">    openai_api_key=OPENAI_API_KEY,</span><br><span class="line">    openai_api_base=OPENAI_API_BASE,</span><br><span class="line">    openai_api_type=OPENAI_API_TYPE,</span><br><span class="line">    deployment_name=<span class="string">&quot;gpt-4o&quot;</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the response from AzureOpenAI LLM for a specific question</span></span><br><span class="line"><span class="comment"># print(&quot;AzureOpenAI LLM Response: &quot;, llm(&quot; what is the weather in mumbai today?&quot;))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the response from AzureChatOpenAI for the same question</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AzureOpenAI ChatLLM Response: &quot;</span>, chat_llm.predict(<span class="string">&quot;what is the weather in mumbai today?&quot;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">如果直接与大模型交互-&gt;chatGPT。自从发现可以利</span><br><span class="line">用自有数据来增强大语言模型（LL</span><br><span class="line">M）的能力以来，如何将 LL</span><br><span class="line">M 的通用</span><br><span class="line">有效结合一直是热门话题。</span><br><span class="line">知识与个人数据</span><br><span class="line">1. 微调(finetue)</span><br><span class="line">2.</span><br><span class="line">RAG(检索增强)</span><br></pre></td></tr></table></figure>
+<h3
+id="先来考虑一个关于小说内容的chatrobot">先来考虑一个关于小说内容的chatRobot:</h3>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104234107482.png"
+alt="image-20250104234107482" />
+<figcaption aria-hidden="true">image-20250104234107482</figcaption>
+</figure>
+<p><strong>topic</strong>:</p>
+<ul>
+<li>文档分割</li>
+<li>文档 <strong>Load</strong>：数据加载， <strong>LangChain</strong>
+提供的 <strong>80</strong>
+多种独特的加载器，以访问包括音频和视频在内的各种数据源。</li>
+<li>向量存储和嵌入：深入了解嵌入的概念，探索 <strong>LangChain</strong>
+中的向量存储集成。</li>
+<li>检索：掌握在 <strong>Vector</strong>
+存储中访问和索引数据的高级技术，使您能够检索语义查询之外的最相关信息。</li>
+<li>问题解答：构建一次性问题解答解决方案<strong>/</strong>总结方案。</li>
+</ul>
+<h4 id="long-text-summarisation">Long text summarisation</h4>
+<h5 id="为什么context-window会是limit">为什么context
+window会是limit</h5>
+<p>当前大多数的语言模型是基于解码器的模型。这些模型使用了变换器架构中的解码器部分来预测下一个标记的概率。然后，将这个预测的标记附加到输入文本中，形成预测下一个标记的输入。</p>
+<p><strong>Context Window Size = Input Sequence Length + Prompt Length +
+O</strong></p>
+<p><strong>utput Sequence Length</strong></p>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104234423043.png"
+alt="image-20250104234423043" />
+<figcaption aria-hidden="true">image-20250104234423043</figcaption>
+</figure>
+<p>举个例子：如果context window的限制是4097，prompt的token
+size是50，期待输出的总结内容是200，那么最大的输入文本的token
+size就是4097-50-200=3847tokens，大概对应3000个词。</p>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>LLMs受限于固定的上下文窗口，比如chatgpt的limit
+tokens是4096，大概对应3000多个词。对于这个问题有两种解决方案：第一种用更大context
+window的LLMs;第二种方法是化整为零，将长文本分成很多个短文本，分别送进模型处理然后合并，或者选择最相关的部分然后送进去分析。</p>
+</blockquote>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104234750149.png"
+alt="image-20250104234750149" />
+<figcaption aria-hidden="true">image-20250104234750149</figcaption>
+</figure>
+<p>文档分割：</p>
+<p>CharacterTextSplitter:直接按字符数量分割文本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c_splitter = CharacterTextSplitter(</span><br><span class="line">    chunk_size=chunk_size,</span><br><span class="line">    chunk_overlap=chunk_overlap,</span><br><span class="line">    separator = &#x27; &#x27;    //主要在哪一块分割</span><br><span class="line">)</span><br><span class="line">c_splitter.split_text(text3)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>RecursiveCharacterTextSplitter: 按照递归规则分割文本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">r_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=150,</span><br><span class="line">    chunk_overlap=0,</span><br><span class="line">    separators=[&quot;\n\n&quot;, &quot;\n&quot;, &quot;(?&lt;=\. )&quot;, &quot; &quot;, &quot;&quot;]</span><br><span class="line">)</span><br><span class="line">r_splitter.split_text(some_text)</span><br></pre></td></tr></table></figure></li>
+<li><p>TokenTextSplitter：跟LLMs里的token的概念对齐</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text_splitter = TokenTextSplitter(chunk_size=10, chunk_overlap=0)</span><br></pre></td></tr></table></figure></li>
+<li><p>Context aware splitting</p></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from langchain.document_loaders import NotionDirectoryLoader</span><br><span class="line">from langchain.text_splitter import MarkdownHeaderTextSplitter</span><br><span class="line"></span><br><span class="line">markdown_document = &quot;&quot;&quot;# Title\n\n \</span><br><span class="line">## Chapter 1\n\n \</span><br><span class="line">Hi this is Jim\n\n Hi this is Joe\n\n \</span><br><span class="line">### Section \n\n \</span><br><span class="line">Hi this is Lance \n\n </span><br><span class="line">## Chapter 2\n\n \</span><br><span class="line">Hi this is Molly&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">headers_to_split_on = [</span><br><span class="line">    (&quot;#&quot;, &quot;Header 1&quot;),</span><br><span class="line">    (&quot;##&quot;, &quot;Header 2&quot;),</span><br><span class="line">    (&quot;###&quot;, &quot;Header 3&quot;),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">markdown_splitter = MarkdownHeaderTextSplitter(</span><br><span class="line">    headers_to_split_on=headers_to_split_on</span><br><span class="line">)</span><br><span class="line">md_header_splits = markdown_splitter.split_text(markdown_document)</span><br></pre></td></tr></table></figure>
+<h3 id="rag搜索增强">RAG搜索增强</h3>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104235342635.png"
+alt="image-20250104235342635" />
+<figcaption aria-hidden="true">image-20250104235342635</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p><strong>query</strong>和<strong>prompt</strong>的区别是什么？</p>
+<p>在使用 <strong>RetrievalQA chain</strong> 进行问答时， prompt 和
+query
+是两个不同的概念。理解它们的区别对于构建有效的问答系统非常重要。</p>
+<ol type="1">
+<li><strong>Query（查询）</strong> ：</li>
+</ol>
+<p>◦ query 是用户提出的问题或查询。例如，“<strong>What is the capital of
+France?</strong>”</p>
+<p>◦ 在 qa_chain_mr 中， query
+是必须的，因为它是整个问答流程的起点。系统根据 query
+去检索相关的文档，然后从中抽取答</p>
+<p>案。</p>
+<ol start="2" type="1">
+<li><strong>Prompt（提示词）</strong> ：</li>
+</ol>
+<p>◦ prompt
+是用于指导语言模型生成答案的额外文本或上下文。它可以包含特定的指示或格式化信息，以帮助模型生成更合适的响应。</p>
+<p>提供prompt可以帮助模型更好地理解上下文或期望的回答形式。例如，你可以提供一个
+prompt 来指示模型回答时的语气、详细程度或者其他特定要求。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/aigc-paper-share/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/04/aigc-paper-share/" class="post-title-link" itemprop="url">AIGC论文reading</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-04 22:26:20 / Modified: 22:43:16" itemprop="dateCreated datePublished" datetime="2025-01-04T22:26:20+08:00">2025-01-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="stable-diffusion-原理">Stable diffusion 原理</h2>
+<p>从data产生noise很容易，从noise产生data是生成</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104222656242.png"
+alt="image-20250104222656242" />
+<figcaption aria-hidden="true">image-20250104222656242</figcaption>
+</figure>
+<h2 id="一致性保持目标">一致性保持目标：</h2>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104222713620.png"
+alt="image-20250104222713620" />
+<figcaption aria-hidden="true">image-20250104222713620</figcaption>
+</figure>
+<h1 id="解法">解法：</h1>
+<h2 id="storydiffusion做保持">StoryDiffusion：做保持</h2>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104222809450.png"
+alt="image-20250104222809450" />
+<figcaption aria-hidden="true">image-20250104222809450</figcaption>
+</figure>
+<p>产出这些漫画的研究出自南开大学、字节跳动等机构。在《StoryDiffusion：Consistent
+Self-Attention for long-range image and video
+generation》这篇论文中，该研究团队提出了一种名为 StoryDiffusion
+的新方法，用于生成一致的图像和视频以讲述复杂故事。</p>
+<ul>
+<li><p>论文地址：https://arxiv.org/pdf/2405.01434v1</p></li>
+<li><p>项目主页：https://storydiffusion.github.io/</p></li>
+</ul>
+<p>如上图所示，使用Consistent
+Self-Attention生成的图像成功保持了身份和服装的一致性，这对于讲故事至关重要。</p>
+<h4 id="主要亮点一致性图像生成">主要亮点：一致性图像生成</h4>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104222859537.png"
+alt="image-20250104222859537" />
+<figcaption aria-hidden="true">image-20250104222859537</figcaption>
+</figure>
+<h4 id="总结">总结：</h4>
+<p>应用场景：小批次人物服装、身份的保持</p>
+<h2
+id="omg多人物图像生成的工具垫图-区域分离重绘">OMG：多人物图像生成的工具（垫图
++ 区域分离重绘）</h2>
+<p>主页: https://kongzhecn.github.io/omg-project/</p>
+<p>代码: https://github.com/kongzhecn/OMG/</p>
+<h4 id="背景">背景：</h4>
+<p>单概念的定制化生成，Textual Inversion，
+LORA，InstanceID等方法已经比较成熟了。而对于多概念的定制化生成，如果直接使用LORA融合等方法，主要挑战在于不同的概念信息之间的信息泄漏，造成属性混乱。比如想要生成一个特定的黑色长发男角色，一个特定的紫色短发女角色，在单图出单角色时正常，但是在单图出双角色时，很有可能发型发色信息就混乱了，比如可能出现紫色长发女角色。比较容易想到的做法就是垫图+掩码。</p>
+<p>难点：个性化保持、空间遮挡</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104222920431.png"
+alt="image-20250104222920431" />
+<figcaption aria-hidden="true">image-20250104222920431</figcaption>
+</figure>
+<p>多概念个性化（multi-concept
+personalization）指的是在同一个图像生成过程中，同时整合和表达多个不同的概念或主题。这种方法要求在生成图像时，能够准确保留和表现每个概念的独特特征，同时保证它们之间的协调和和谐。例如，在生成一个包含多个不同人物、背景和物体的图像时，必须确保每个元素都能清晰地展现其独特性，并且整体图像具有一致性和美感。</p>
+<h4 id="先看效果">先看效果：</h4>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104222948149.png"
+alt="image-20250104222948149" />
+<figcaption aria-hidden="true">image-20250104222948149</figcaption>
+</figure>
+<h4 id="即插即用">即插即用</h4>
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 55%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>OMG +</strong> <strong>LoRA</strong> <strong>(ID with
+multiple images)</strong></th>
+<th><img src="/2025/01/04/aigc-paper-share/image-20250104223125232.png"
+alt="image-20250104223125232" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OMG + InstantID (ID with single image)</strong></td>
+<td><img src="/2025/01/04/aigc-paper-share/image-20250104223145816.png"
+alt="image-20250104223145816" /></td>
+</tr>
+<tr>
+<td><strong>OMG + ControlNet (Layout Control )</strong></td>
+<td><img src="/2025/01/04/aigc-paper-share/image-20250104223207497.png"
+alt="image-20250104223207497" /></td>
+</tr>
+<tr>
+<td><strong>OMG + style LoRAs (Style Control)</strong></td>
+<td><img src="/2025/01/04/aigc-paper-share/image-20250104223217116.png"
+alt="image-20250104223217116" /></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="怎么做到">怎么做到：</h4>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223238466.png"
+alt="image-20250104223238466" />
+<figcaption aria-hidden="true">image-20250104223238466</figcaption>
+</figure>
+<p>OMG是一种两阶段的生成方法，一阶段先用无角色信息的文生图模型垫图生成布局，然后提取垫图全面的视觉信息（mask
+和 attention map），二阶段将各角色的特定概念信息作用于对应的 mask
+区域，避免信息泄露，属性错乱，并复用一阶段的 attention
+map，维持构图布局不变。这里的概念信息可以是 LoRA 也可以是
+InstantID。</p>
+<h5
+id="一阶段生成构图布局并提取视觉信息">1.一阶段：生成构图布局并提取视觉信息</h5>
+<p>首先用一个全局的prompt p在文生图模型T2I上生成一张垫图</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223305875.png"
+alt="image-20250104223305875" />
+<figcaption aria-hidden="true">image-20250104223305875</figcaption>
+</figure>
+<p>这里要注意的是，没有任何角色信息(lora/InstanceId)</p>
+<p>第一阶段，我们要提取垫图的视觉信息，这里的视觉信息有两项：生成过程中每一时间步每一层的注意力图
+attention map
+和每个角色的分割掩码。注意力图在生图过程中记得保存即可，而角色的掩码图，则是基于角色类别的基本词（man、woman），使用开集检测分割的模型（如
+GroundingDION+SAM、YoloWorld+EfficientSAM）来进行分割。</p>
+<h5 id="第二阶段多概念定制化去噪">第二阶段：多概念定制化去噪</h5>
+<p>为了避免概念信息泄露，造成角色属性错乱，OMG
+在进行第二阶段多概念定制化生成时不进行 LoRA
+融合，而是使用多个单概念的模型分别进行推理，并作用于一阶段得到的各自掩码区域中。即一个
+LoRA 只负责一个角色区域的生成。这称为概念噪声混合（Concept Noise
+Blending）。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223331480.png"
+alt="image-20250104223331480" />
+<figcaption aria-hidden="true">image-20250104223331480</figcaption>
+</figure>
+<h5 id="不同时间步开启混合">不同时间步开启混合：</h5>
+<p>下图对比了第二阶段中不同时间步开启概念噪声混合对最终生成结果的影响，最左侧是从一开始，第
+50 步（因为用了 DDIM 采样器）就开启概念噪声混合，最右侧表示第 0
+步才开启，相当于没开启，即完全等于第一阶段的结果，中间是 0-50
+步之间开启。可以看到，概念噪声混合开启得越早，概念特征保持得越好。并且，开启得越早对图像构图布局的影响也越大，开启的越晚，构图布局与第一阶段结果越相近。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223346380.png"
+alt="image-20250104223346380" />
+<figcaption aria-hidden="true">image-20250104223346380</figcaption>
+</figure>
+<h4 id="总结-1">总结：</h4>
+<p>想要在有交叠的情况下，精确地控制多个概念的属性特征，基本思路是 ”垫图
++ 区域分离重绘“
+的方案，但是这种方法会有个问题：如果多个概念的基本语义类是一样的，比如两个
+woman，这时候 zero-shot
+分割模型怎么工作，对于相同语义类的多概念很难进行可控的个性化生成</p>
+<h2
+id="threatergen多轮对话llmimage-generation">ThreaterGen：多轮对话（LLM+image
+generation）</h2>
+<p><strong>https://howe140.github.io/theatergen.io/</strong></p>
+<h4 id="背景-1">背景：</h4>
+<ol type="1">
+<li>语义一致性——现有方法在处理复杂描述（如空间关系、数量或指代表达“它们”等）时遇到困难，导致生成的图像在语义上与用户请求不一致；(2)
+上下文一致性——在多轮对话中的图像生成过程中，同一实体经常难以在不同轮次中保持一致特征，甚至可能被遗忘。例如，同一只狗在不同轮次中看起来不同而没有用户编辑。</li>
+</ol>
+<h4 id="先看效果-1">先看效果：</h4>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr>
+<th>讲故事</th>
+<th><img src="/2025/01/04/aigc-paper-share/image-20250104223537655.png"
+alt="image-20250104223537655" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>多轮编辑</td>
+<td><img src="/2025/01/04/aigc-paper-share/image-20250104223550213.png"
+alt="image-20250104223550213" /></td>
+</tr>
+<tr>
+<td>定量：在自己的数据集上测试</td>
+<td><img src="/2025/01/04/aigc-paper-share/image-20250104223626463.png"
+alt="image-20250104223626463" /></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="怎么做到-1">怎么做到：</h4>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223722467.png"
+alt="image-20250104223722467" />
+<figcaption aria-hidden="true">image-20250104223722467</figcaption>
+</figure>
+<p>本文提出的 ppl 如图，可以分为三个阶段</p>
+<p>1.第一阶段是 LLM 的角色设计：用 LLM 完成角色设计，包括角色的外观描述
++ layout 信息。</p>
+<p>2.第二阶段用 T2I 完成第一阶段角色的图片生成和 latent 提取，作为
+reference img</p>
+<p>3.第三阶段整合前两个阶段的信息，生成符合用户输入 prompt 的图片。</p>
+<hr />
+<h5 id="第一阶段llm-角色设计">1.第一阶段，LLM 角色设计</h5>
+<p>在这一阶段，利用 LLM，根据用户输入的要求，把对应 prompt
+的信息做格式化，格式化的输出包含了背景 prompt、neg
+prompt，另外最核心的部分是各个主体的 prompt。每一个主体 prompt 都是一个
+triplet 对，是一个包含了 id、prompt、layout（bbox 格式）的三元组。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223810670.png"
+alt="image-20250104223810670" />
+<figcaption aria-hidden="true">image-20250104223810670</figcaption>
+</figure>
+<h5 id="第二阶段reference-img-生成">2.第二阶段，reference img 生成</h5>
+<p>根据第一阶段给出的主体 prompt，用 T2I
+模型生成一张对应角色的参考图片，这张参考图后续会通过 ip-adapter
+来注入模型。有了 reference img，就可以针对各个 prompt
+生成对应的图片，步骤如下：</p>
+<p>a）根据 ref img + 待生成
+prompt，可以生成一张（只）包含该主体的图片</p>
+<p>b）对上述图片做分割，得到前景的物体。因为一条 prompt
+里面可能包含多个物体，所以需要对每一个出现的物体都执行第一、二步。</p>
+<p>c）根据 LLM 给出的 layout
+信息，将第二部去除背景的主体贴在对应位置上（需要做 scale 的适配）。</p>
+<p>d）然后对第三步得到的图片，计算 canny 图，另外经过一次 SD
+的前传得到每一步的 feature 作为生成的 guidance（称为 latent
+guidance）。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223829556.png"
+alt="image-20250104223829556" />
+<figcaption aria-hidden="true">image-20250104223829556</figcaption>
+</figure>
+<h5 id="第三阶段信息整合图片生成">第三阶段，信息整合+图片生成</h5>
+<p>在这一阶段，会把上述格式化的 prompt 合并，作为 SD 输入的 text
+prompt。canny 信息通过 controlnet 注入 SD。而 lantent guidance
+注入方式如下，会选择在一定的 step
+范围内注入而不是全过程都加。注入的时候，主体 mask 区域内用 latent
+guidance，mask外则用 SD 本身生成的内容。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223847906.png"
+alt="image-20250104223847906" />
+<figcaption aria-hidden="true">image-20250104223847906</figcaption>
+</figure>
+<h4 id="总结-2">总结：</h4>
+<p>1.利用 LLM + T2I 的能力来做连续故事的 ip 保持。通过 LLM
+保证生成故事上下文的连续性，以及人物的关联性；通过 LLM
+来生成主体的特征描述，将这个特征描述送给 T2I
+模型生成该主体的一张参考图。LLM 还被用来生成图片的
+layout，用来控制每一个主体的生成位置。</p>
+<p>2.多轮生成过程中，允许用户通过外部输入来改变生成结果，允许用户交互</p>
+<h2
+id="autostudio在多轮交互式图像生成中打造一致的主体">AutoStudio：在多轮交互式图像生成中打造一致的主体</h2>
+<h4 id="背景-2">背景：</h4>
+<p>文本到图像(TGI)生成模型在生成单张图像方面已经表现出色,更具挑战性的任务——多轮交互式图像生成开始吸引相关研究社区的注意.这个任务要求模型在多个回合中与用户互动，以生成连贯的图像序列。然而，由于用户可能频繁切换主体，目前的努力难以在生成多样化图像的同时保持主体一致性。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223924036.png"
+alt="image-20250104223924036" />
+<figcaption aria-hidden="true">image-20250104223924036</figcaption>
+</figure>
+<h4 id="效果">效果：</h4>
+<h5
+id="量化指标autostudio在所有指标上都明显优于之前的方法">1.量化指标：AutoStudio<strong>在所有指标上都明显优于之前的方法</strong>。</h5>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104223944051.png"
+alt="image-20250104223944051" />
+<figcaption aria-hidden="true">image-20250104223944051</figcaption>
+</figure>
+<h5 id="可视化">2.可视化：</h5>
+<p>Theatergen无法处理人物之间复杂的互动（如拥抱和接吻），而MiniGemini则难以保持主体的一致性。</p>
+<p>Intelligent
+Grimm和StoryDiffusion无法在多回合互动中保持多个角色之间的一致性，并表现出有限的编辑效果。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224024890.png"
+alt="image-20250104224024890" />
+<figcaption aria-hidden="true">image-20250104224024890</figcaption>
+</figure>
+<h4 id="怎么做到-2">怎么做到：</h4>
+<p>他们的目标是引入一个多功能、可扩展的框架，通过多智能体协作，可以将任何所需的LLM架构和扩散骨干结合到框架中，以满足用户多轮生成的多样化需求。</p>
+<p>具体而言，AutoStudio包括三个基于LLM的智能体：</p>
+<ul>
+<li><p><strong>主题管理器</strong>解释对话，识别不同的主题，并为其分配适当的上下文；-》ID，prompt</p></li>
+<li><p><strong>布局*<em>*</em>生成器</strong>为每个主题生成部分级别的边界框，以控制主题的位置；-》coarse
+layout</p></li>
+<li><p><strong>监督员</strong>为布局生成器提供布局改进和修正的建议。</p></li>
+</ul>
+<p>最后，<strong>绘制器</strong>基于扩散模型完成基于改进布局的图像生成。</p>
+<p>此外，研究人员在绘制器中引入了一个<strong>并行*<em>*</em>UNet</strong>（P-UNet），它具有一种新颖的架构，利用两个并行的交叉注意力模块分别增强文本和图像嵌入的潜在主题特征。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224046351.png"
+alt="image-20250104224046351" />
+<figcaption aria-hidden="true">image-20250104224046351</figcaption>
+</figure>
+<h5 id="主题管理器">主题管理器：</h5>
+<p>1.历史输入 2.预定义prompt</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224101887.png"
+alt="image-20250104224101887" />
+<figcaption aria-hidden="true">image-20250104224101887</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224109475.png"
+alt="image-20250104224109475" />
+<figcaption aria-hidden="true">image-20250104224109475</figcaption>
+</figure>
+<h5 id="layout管理器">layout管理器：</h5>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224123560.png"
+alt="image-20250104224123560" />
+<figcaption aria-hidden="true">image-20250104224123560</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224131380.png"
+alt="image-20250104224131380" />
+<figcaption aria-hidden="true">image-20250104224131380</figcaption>
+</figure>
+<h5 id="supervisor管理器">supervisor管理器</h5>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224146486.png"
+alt="image-20250104224146486" />
+<figcaption aria-hidden="true">image-20250104224146486</figcaption>
+</figure>
+<h5 id="图像生成">图像生成：</h5>
+<p>有了好的布局，就能生成好的具有一致多主体表现的吸引人图像吗？</p>
+<p>现在的：模型不微调，图像可控-》depth、open pose-》controlnet</p>
+<p>1.主体初始化生成：</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224202197.png"
+alt="image-20250104224202197" />
+<figcaption aria-hidden="true">image-20250104224202197</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224209991.png"
+alt="image-20250104224209991" />
+<figcaption aria-hidden="true">image-20250104224209991</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224217340.png"
+alt="image-20250104224217340" />
+<figcaption aria-hidden="true">image-20250104224217340</figcaption>
+</figure>
+<p>2.PUnet</p>
+<p>将去噪过程中任意UNet层的输入潜在特征表示为Z。我们将UNet层的原始交叉注意力模块拆分为两个并行的文本和图像交叉注意力模块（分别表示为PTCA和PICA）来优化ZZZ。这两个模块具有相同的架构，其关键思想是计算ZZZ与每个主体文本/图像嵌入之间的特征相似性。</p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224244780.png"
+alt="image-20250104224244780" />
+<figcaption aria-hidden="true">image-20250104224244780</figcaption>
+</figure>
+<h4 id="总结-3">总结：</h4>
+<p>1.工程化应用和控制很好，总-分的思路去控制生成。</p>
+<p>2.引入监督器形成反馈链路。</p>
+<p>关于generator《-》supervisor，考试-评分的耦合结构关系，</p>
+<p>阿里数学竞赛ai最高分：</p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.richardstu.com/solution-sharing-and-some-thoughts-about-alibaba-mathematical-competition-for-ai">Solution
+Sharing and Some Thoughts about Alibaba Global Mathematical Competition
+for AI</a></p>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224306153.png"
+alt="image-20250104224306153" />
+<figcaption aria-hidden="true">image-20250104224306153</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/04/aigc-paper-share/image-20250104224313553.png"
+alt="image-20250104224313553" />
+<figcaption aria-hidden="true">image-20250104224313553</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/laion-dataset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/04/laion-dataset/" class="post-title-link" itemprop="url">laion数据集</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-04 22:24:05 / Modified: 22:25:08" itemprop="dateCreated datePublished" datetime="2025-01-04T22:24:05+08:00">2025-01-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="laion-5b">LAION-5B</h2>
+<p>LAION-5B 是目前规模最大的开放多模态数据集之一，包含 58.5 亿个 <a
+target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=CLIP&amp;spm=1001.2101.3001.7020">CLIP</a>
+[5]过滤的图像-文本对的数据集，比 LAION-400M 大 14
+倍，是世界第一大规模、多模态的文本图像数据集，<strong>共80T数据</strong>，并提供了色情图片过滤、水印图片过滤、高分辨率图片、美学图片等子集和模型，供不同方向研究。</p>
+<p>LAION-5B中包括23.2亿的英语，22.6亿的100+语言及12.7亿的未知语言，我们将子集分别标记为：</p>
+<p><strong>●</strong> laion2B-en (应该是我们要的2B数据集)</p>
+<p><strong>●</strong> <strong>laion2B-multi</strong></p>
+<p><strong>●</strong> <strong>laion1B-nolang</strong></p>
+<p>LAION训练了一个基于CLIP嵌入的色情内容识别模型NSFW，可以过滤3%的不适图片，NSFW准确率约96%，过滤后有子集：</p>
+<p>laion2B-en-safety</p>
+<p>laion2B-multi-safety</p>
+<p>laion1B-nolang-safety</p>
+<p>LAION训练了一个水印识别模型，过滤后有子集：</p>
+<p>laion2B-en-watermark</p>
+<p>laion2B-multi-watermark</p>
+<p>laion1B-nolang-watermark</p>
+<p>一个170M的超分辨率子集：</p>
+<p>laion-high-resolution</p>
+<p>一个120M的美学图片子集，可以用来做图片生成：</p>
+<p>laion-aesthetic</p>
+<h3 id="子集">子集</h3>
+<p>LAION-5B 提供了多种子集，以满足不同的研究需求：</p>
+<ul>
+<li><p><strong>LAION-400M</strong>：规模较小，约 400
+万个图像-文本对，方便快速实验。</p></li>
+<li><p><strong>LAION-2B</strong>：包含 20
+亿对，适合中等规模实验。</p></li>
+<li><p><strong>LAION-5B</strong>：完整数据集。</p>
+<figure>
+<img src="/2025/01/04/laion-dataset/image-20250104222449781.png"
+alt="image-20250104222449781" />
+<figcaption aria-hidden="true">image-20250104222449781</figcaption>
+</figure></li>
+</ul>
+<h3 id="laion-2b-hd-子集">LAION-2B-HD 子集</h3>
+<ul>
+<li><p><strong>图像-文本对总数</strong>：约 <strong>1.2
+亿对</strong>。</p></li>
+<li><p><strong>图像分辨率</strong>：</p></li>
+<li><p>大多数图像的分辨率在 <strong>1024×1024
+像素</strong>或更高。</p></li>
+<li><p><strong>数据来源</strong>：</p></li>
+<li><p>从 LAION-2B
+数据集中过滤生成，确保图像清晰度高，文本描述相关性强。</p></li>
+</ul>
+<h4 id="特点">特点</h4>
+<ul>
+<li><p>高质量图像，适合图像生成、超级分辨率等任务。</p></li>
+<li><p>文本描述更贴近高质量图像语义。</p></li>
+</ul>
+<p><strong>LAION-2B-HD</strong> 是从 LAION
+数据集中筛选出的高质量、高分辨率图像子集，适合需要高分辨率图像和精确文本描述的任务。</p>
+<h2 id="下载方法">下载方法：</h2>
+<p>https://github.com/rom1504/img2dataset/blob/main/dataset_examples/laion-high-resolution.md</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/03/hugging-download/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/03/hugging-download/" class="post-title-link" itemprop="url">hugging-download</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-03 19:38:45" itemprop="dateCreated datePublished" datetime="2025-01-03T19:38:45+08:00">2025-01-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-04 22:16:12" itemprop="dateModified" datetime="2025-01-04T22:16:12+08:00">2025-01-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="hugging-face登录方式">1.Hugging face登录方式</h3>
+<p>huggingface废弃用户名和密码的登录方式，用token</p>
+<p>wget --header="Authorization: Bearer hf_xxx"<br />
+</p>
+<p>https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt</p>
+<h3
+id="可以下载sd1.5下载数据集却403-forbidden">2.可以下载sd1.5,下载数据集却403
+forbidden</h3>
+<ol type="1">
+<li>403 forbidden（将token权限增加write,我全打开了）</li>
+<li><figure>
+<img src="/2025/01/03/hugging-download/image-20250103194111502.png"
+alt="image-20250103194111502" />
+<figcaption aria-hidden="true">image-20250103194111502</figcaption>
+</figure></li>
+</ol>
+<p>https://discuss.huggingface.co/t/error-403-what-to-do-about-it/12983</p>
+<h3
+id="国内机器访问huggingface网络不好无法下载">3.国内机器访问huggingface网络不好，无法下载</h3>
+<p>用镜像网站hf-mirror.com</p>
+<figure>
+<img src="/2025/01/03/hugging-download/image-20250103194152062.png"
+alt="image-20250103194152062" />
+<figcaption aria-hidden="true">image-20250103194152062</figcaption>
+</figure>
+<p>wget --header="Authorization: Bearer hf_xxx"
+https://hf-mirror.com/datasets/laion/laion-high-resolution/resolve/main/.part-00000-45914064-d424-4c1c-8d96-dc8125c645fb-c000.snappy.parquet.crc</p>
+<h3 id="下载laion数据集用img2dataset工具">4.
+下载laion数据集用img2dataset工具</h3>
+<p>注意huggingface的laion
+high-resolution文件里有两种文件类型，crc是parquet的校验文件，下了没用，要下载parquet文件是数据集的metadata</p>
+<h3 id="wandb超时">wandb超时</h3>
+<p>export WANDB_MODE=offline</p>
+<h2 id="步骤">步骤：</h2>
+<ol type="1">
+<li><p>下载metadata</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;0..127&#125;; do </span><br><span class="line"></span><br><span class="line">  wget --header=&quot;Authorization: Bearer hf_xxx&quot; https://hf-mirror.com/datasets/laion/laion-high-resolution/resolve/main/part-$(printf &quot;%05d&quot; $i)-45914064-d424-4c1c-8d96-dc8125c645fb-c000.snappy.parquet</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>2.下载原数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export WANDB_MODE=offline</span><br><span class="line"></span><br><span class="line">img2dataset --url_list laion-high-resolution --input_format &quot;parquet&quot;\</span><br><span class="line"></span><br><span class="line">​     --url_col &quot;URL&quot; --caption_col &quot;TEXT&quot; --output_format webdataset\</span><br><span class="line"></span><br><span class="line">​      --output_folder laion-high-resolution-output --processes_count 16 --thread_count 64 --image_size 1024\</span><br><span class="line"></span><br><span class="line">​      --resize_only_if_bigger=True --resize_mode=&quot;keep_ratio&quot; --skip_reencode=True \</span><br><span class="line"></span><br><span class="line">​       --save_additional_columns &#x27;[&quot;similarity&quot;,&quot;hash&quot;,&quot;punsafe&quot;,&quot;pwatermark&quot;,&quot;LANGUAGE&quot;]&#x27; --enable_wandb True</span><br></pre></td></tr></table></figure>
+<p>应该已经开始下载了</p>
+<figure>
+<img src="/2025/01/03/hugging-download/image-20250104221538386.png"
+alt="image-20250104221538386" />
+<figcaption aria-hidden="true">image-20250104221538386</figcaption>
+</figure>
+<h2 id="下载数据集结果">下载数据集结果</h2>
+<figure>
+<img src="/2025/01/03/hugging-download/image-20250104221607364.png"
+alt="image-20250104221607364" />
+<figcaption aria-hidden="true">image-20250104221607364</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/02/stable-diffusion-history/" class="post-title-link" itemprop="url">stable-diffusion-history</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-02 18:59:15" itemprop="dateCreated datePublished" datetime="2025-01-02T18:59:15+08:00">2025-01-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-03 19:17:30" itemprop="dateModified" datetime="2025-01-03T19:17:30+08:00">2025-01-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191320002.png"
+alt="image-20250103191320002" />
+<figcaption aria-hidden="true">image-20250103191320002</figcaption>
+</figure>
+<h3 id="第一篇文章-2015">第一篇文章-2015</h3>
+<p>关于diffusion的第一篇文章来自于 <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/1503.03585">Deep Unsupervised Learning using
+Nonequilibrium Thermodynamics</a> paper published in 2015.
+受到非平衡统计物理的启发，引入了一个模型，将数据的结构破坏成t
+steps。这个过程叫做forward diffusion;在此之后恢复叫做reverse
+diffusion</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191354356.png"
+alt="image-20250103191354356" />
+<figcaption aria-hidden="true">image-20250103191354356</figcaption>
+</figure>
+<p>这个前向的diffusion过程来自于马尔可夫链，就是t时刻的结果只与t-1时刻的结果相关。</p>
+<p>然后是逆像的diffusion过程，通过gan预测每一步的分布。</p>
+<h3
+id="图像生成再次引入diffusion-2020">图像生成再次引入diffusion-2020</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion
+Probabilistic Models</a> from 2020这篇文章取得了让人印象深刻的效果</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191420017.png"
+alt="image-20250103191420017" />
+<figcaption aria-hidden="true">image-20250103191420017</figcaption>
+</figure>
+<p>他们证实了reparameterization的技巧可以用在reverse
+diffusion的过程中形成封闭的解决方案。</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191436862.png"
+alt="image-20250103191436862" />
+<figcaption aria-hidden="true">image-20250103191436862</figcaption>
+</figure>
+<p>并且发现预测每一步的噪音而不是噪音背后的图像得到更好的结果。在CIFAR10数据集上进行了测试，在IS和FID得分中都取得了sota.</p>
+<p>重新引入diffusion为后面的midjourney和stable
+diffusion都打下了基础。</p>
+<h3 id="clip">CLIP</h3>
+<p>OpenAi 发布了他们的论文 <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.00020">Learning Transferable Visual
+Models From Natural Language Supervision</a> and a <a
+target="_blank" rel="noopener" href="https://openai.com/research/clip">blog post</a>和
+开源的多模态的zero-shot CLIP模型。</p>
+<p>这个模型在语言的监督下学习了视觉的特征，这不是一个新概念，但是它将text
+prompt匹配图像做的很好。</p>
+<p>它们抓取了互联网的超过400百万张图片，他们发现将text
+prompt适配到每个任务更好，相比传统的分类模型来说。比如传统的分类模型打的标签就是类别dog，但是在text
+prompt里面就是a photo of dog。</p>
+<p>它们的预训练包括：</p>
+<ul>
+<li><p>基于transformer的text encoder</p></li>
+<li><p>基于vision transformer的image encoder</p></li>
+<li><p>基于resnet的image encoder</p></li>
+</ul>
+<p>输出的向量text encoder:Ti和Image encoder Ii
+然后用在它们下一步的对比预训练过程中。</p>
+<p>输入是</p>
+<ul>
+<li><p>一个prompt用于描述图像中的物体，如a photo of big
+{object}</p></li>
+<li><p>包含该物体的图像</p></li>
+<li><figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191507830.png"
+alt="image-20250103191507830" />
+<figcaption aria-hidden="true">image-20250103191507830</figcaption>
+</figure></li>
+</ul>
+<p>text和image encoder输出的向量构成text-image对，构成一个矩阵</p>
+<ul>
+<li><p>矩阵元素是一个image vector和text vector的乘积，<em>Ii *
+Ti</em>.</p></li>
+<li><p>矩阵对角元素是matching的text-image对</p></li>
+<li><p>每行非对角元素是text和image不匹配对应的</p></li>
+</ul>
+<p>模型目标是最大化对角线元素的值，最小化非对角线元素值。这个过程输出的是对比性表示，捕捉的是图片和文本shared的特征，因此叫_Contrastive
+Language-Image_ <em>Pre-training</em>.</p>
+<p>这个模型输出的是image和text的embedding表示，这些embeddings可以通过cosine相似度或者欧几里得距离来衡量相似度，这些相似度可以用在很多任务中，比如GAN
+模型中的判别器或图像分类器</p>
+<h1
+id="guided-language-to-image-diffusion-for-generation-and-editing-glide-2021年底">Guided
+Language to Image Diffusion for Generation and Editing
+(GLIDE)-2021年底</h1>
+<p>OPENAI发表论文_<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10741">GLIDE:
+Towards Photorealistic Image Generation and Editing with Text-Guided
+Diffusion Models</a>_. 运用了guided diffusion和comparing CLIP guidance
+vs *Classifier-free
+guidance,允许扩散模型从文本中学习。在diffusion层中使用__unet__结构。用到text-image的__数据集__，这个数据集在DALL-E中也被使用。*</p>
+<h5 id="guided-diffusion">Guided diffusion</h5>
+<p>使用transformer model去encode text
+prompt,将最后一层embedding的输出作为diffusion模型的class-conditioning，这个class-conditioning使用了attention去关注forward/backward/denising
+attention层。</p>
+<h5 id="clip-guidance">Clip guidance</h5>
+<p>在推理过程中的去噪扩散过程中，使用clip进行分类起指导。用clip的点积对比矩阵梯度扰乱去噪均值，将初始去噪图像移动到
+CLIP 预测高文本图像匹配的方向。类似于 Google 的 dreep deam 模型。</p>
+<h5 id="classifier-free-guidance">Classifier-free guidance</h5>
+<p>在训练过程中同时提供没有text
+guidance的example，在推理的去噪阶段，让模型预测两次噪声，一次有prompt一次没有。text
+guidance会影响预测的噪音值。有text的预测noise:(<em>εθ(xt|y)</em>),没有的(<em>εθ(xt|∅)</em>)。文本造成的不同在每个时间步t会乘以一个系数s,然后加到预测的噪音上。这样推着噪音预测向正确的方向进行。因为我们在每一步都考虑了更多文本特定的噪声，从而增强了文本添加的噪声效果。</p>
+<h1 id="εˆθxty-εθxt-s-εθxty-εθxt"><em>εˆθ(xt|y) = εθ(xt|∅) + s ·
+(εθ(xt|y) − εθ(xt|∅))</em></h1>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191611149.png"
+alt="image-20250103191611149" />
+<figcaption aria-hidden="true">image-20250103191611149</figcaption>
+</figure>
+<p>结果发现classfier-free guidance比clip guidance效果更好</p>
+<p>最后他们训练diffusion用的256x256，因为扩散过程是其运行的像素空间中非常密集的过程。因此他们也训练了一个encoder和decoder用于降采样和复原图片到1024x1024。</p>
+<h3 id="latent-diffusion-2021年底">Latent diffusion-2021年底</h3>
+<p>论文 the _<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10752">High-Resolution
+Image Synthesis with Latent Diffusion Models</a>__，
+主要将diffusion过程从像素空间移到了latent
+space，使得diffusion过程更加的高效_</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191635342.png"
+alt="image-20250103191635342" />
+<figcaption aria-hidden="true">image-20250103191635342</figcaption>
+</figure>
+<p>Latent Diffusion
+模型首先训练autoEncoder模型，encoder提取与原图最相似最重要的部分到latent
+space，
+decoder基于latent空间的表示生成原图。然后，将unet中的扩散过程用在pretrained
+auto encoder编码器的latent space
+representation.他们也发现classifier-free guidance提升质量。</p>
+<p>UNet
+还使用交叉注意力层，允许它们用作不同类型的条件输入生成器，例如文本到图像和超分辨率。</p>
+<p>autoencoder的decoder层把latent space上采样恢复到1024x1024.</p>
+<h3 id="dall-e2-2022年初">DALL-E2-2022年初</h3>
+<p>OpenAI发布论文 _<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.06125">Hierarchical Text-Conditional
+Image Generation with CLIP
+Latents</a>__，这是一个__继承__工作来自于clip,
+dall-e和glide.本文的作者确实将该模型称为 unclip，因为该模型将 CLIP
+模型中的文本嵌入转换回图像。_</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191656226.png"
+alt="image-20250103191656226" />
+<figcaption aria-hidden="true">image-20250103191656226</figcaption>
+</figure>
+<p>可以注意到虚线下方，prior model输出一个clip image
+embedding，然后用于diffusion decoder的去噪过程中的condition.</p>
+<ol type="1">
+<li><p>take一个预训练好的clip模型，冻结权重</p></li>
+<li><p>将prompt通过clip encode成一个embedding向量</p></li>
+<li><p>一个基于扩散的prior model将text embedding 匹配到相应的clip image
+embedding.所以prior model产生clip model会产生的图像。</p></li>
+<li><p>使用调整过的glide模型，他们通过去噪/反向扩散过程以随机方式映射图像嵌入。这使得模型能够生成许多与相似视觉概念相关的可能图像。</p></li>
+</ol>
+<p>为什么要用prior去产生image embedding</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191713661.png"
+alt="image-20250103191713661" />
+<figcaption aria-hidden="true">image-20250103191713661</figcaption>
+</figure>
+<p>比起单纯的caption或者text embedding，prior产生的image
+embedding能产生更好的结果，如上图。</p>
+<p>但是openai没有开源模型的权重。</p>
+<h3 id="开源的latent-diffusionstable-diffusion-2022">开源的latent
+diffusion(stable diffusion)-2022</h3>
+<p>开源模型stable diffusion由Stability AI发布</p>
+<p>https://medium.com/<span class="citation"
+data-cites="vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5">@vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/12/31/new_laptop_settings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/31/new_laptop_settings/" class="post-title-link" itemprop="url">新电脑配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-31 17:41:52" itemprop="dateCreated datePublished" datetime="2024-12-31T17:41:52+08:00">2024-12-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-02 18:54:28" itemprop="dateModified" datetime="2025-01-02T18:54:28+08:00">2025-01-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="对象">对象</h2>
+<p>Mac pro m4</p>
+<h3 id="终端配置iterm2oh-my-zsh">1.
+终端配置<strong>iterm2+oh-my-zsh</strong></h3>
+<p>要自己安装<strong>command line
+tools</strong>和home-brew(https://www.jianshu.com/p/e0471aa6672d)</p>
+<p>https://github.com/sirius1024/iterm2-with-oh-my-zsh</p>
+<h3 id="termius">2. Termius</h3>
+<p>https://termius.com/download/macos</p>
+<h3 id="typora">3.typora</h3>
+<p><strong>https://github.com/shuhongfan/TyporaCrack</strong></p>
+<h3 id="vpn">4. vpn</h3>
+<p>可乐云：https://my.coke1.link/</p>
+<p>另一个：https://apk.okzapp.app/index.php#/register?code=QIFC23KC
+（朋友说用了三年多了没有跑路）</p>
+<p>我之前用的是DuangCloud，2024下半年华丽嘎了</p>
+<h3 id="其他问题">5. 其他问题</h3>
+<h4 id="vpn开启全局代理之后终端无法安装包">5.1
+vpn开启全局代理之后终端无法安装包</h4>
+<p>设置：</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102095721650.png"
+alt="image-20250102095721650.png" />
+<figcaption aria-hidden="true">image-20250102095721650.png</figcaption>
+</figure>
+<p>现象：终端无法访问国外资源</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103106455.png"
+alt="image-20250102103106455.png" />
+<figcaption aria-hidden="true">image-20250102103106455.png</figcaption>
+</figure>
+<p>解决方法：查看vpn代理端口并配置终端的代理端口：</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103359294.png"
+alt="image-20250102103359294.png" />
+<figcaption aria-hidden="true">image-20250102103359294.png</figcaption>
+</figure>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103235915.png"
+alt="image-20250102103235915" />
+<figcaption aria-hidden="true">image-20250102103235915</figcaption>
+</figure>
+<p>以上参考链接：https://blog.csdn.net/silence_xz/article/details/136669658?spm=1001.2101.3001.6650.5&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;utm_relevant_index=10</p>
+<h4 id="npm安装不动">5.2 npm安装不动</h4>
+<p>现象：</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103717638.png"
+alt="image-20250102103717638" />
+<figcaption aria-hidden="true">image-20250102103717638</figcaption>
+</figure>
+<p>解决方法：换源</p>
+<p><code>npm config set registry http://registry.npmmirror.com</code></p>
+<p>参考链接：http://liuw.tech/2022/11/05/hexo-%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2hexo/</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/27/database/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -803,404 +1988,11 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/08/BaiduApi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/08/BaiduApi/" class="post-title-link" itemprop="url">matlab调用百度API获取两地运输距离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-08 22:21:10" itemprop="dateCreated datePublished" datetime="2020-08-08T22:21:10+08:00">2020-08-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:24:34" itemprop="dateModified" datetime="2024-05-20T23:24:34+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1
-id="matlab调用百度api获取两地运输距离">matlab调用百度API获取两地运输距离</h1>
-<p>1、
-首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。</p>
-<p>2、 获取距离的函数用python写的，<a
-target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/article/details/81098724">python版本获取距离</a>。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiduDistanceClass():</span><br><span class="line">    def __init__ (self,s1,s2,t1,t2):</span><br><span class="line">        self.s1 = str(s1)</span><br><span class="line">        self.s2 = str(s2)</span><br><span class="line">        self.t1 = str(t1)</span><br><span class="line">        self.t2 = str(t2)</span><br><span class="line">        </span><br><span class="line">    def getDistance(self):</span><br><span class="line">        a1=r&quot;http://api.map.baidu.com/routematrix/v2/driving?output=json&quot;</span><br><span class="line">        a2=r&quot;&amp;origins=&quot;+self.s1+&quot;,&quot;+self.s2</span><br><span class="line">        a3=r&quot;&amp;destinations=&quot;+self.t1+&quot;,&quot;+self.t2</span><br><span class="line">        a4=r&quot;&amp;coord_type=wgs84&quot;</span><br><span class="line">        a5=r&quot;&amp;tactics=11&quot;</span><br><span class="line">        a6=r&quot;&amp;ak=your_key&quot;</span><br><span class="line">        url=a1+a2+a3+a4+a5+a6</span><br><span class="line">        </span><br><span class="line">        b = urlopen(url)</span><br><span class="line">        c=b.read()</span><br><span class="line">        result = json.loads(c)</span><br><span class="line">        return result[&quot;result&quot;][0][&quot;distance&quot;][&quot;value&quot;]/1000</span><br></pre></td></tr></table></figure>
-<p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a
-target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
-<p><img src="/2020/08/08/BaiduApi/pyversion.png" /></p>
-<p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个"助教"目录下。</p>
-<p><img src="/2020/08/08/BaiduApi/目录.png" /></p>
-<p>接下来你就可以在matlab里面调用python函数了。创建一个python类：</p>
-<p><img src="/2020/08/08/BaiduApi/python.png" /></p>
-<p>调用函数得到距离。这里s1,s2是源地点的纬度，经度；t1,t2是目标地点的纬度，经度。我这里测试用的上海和北京并在高德地图上面验证符合。</p>
-<p><img src="/2020/08/08/BaiduApi/distance.png" /></p>
-<p>注意这里得到的是公里，因为程序除了1000，API直接返回的是米，如果要以米为单位可以不除。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/17/Object-Detection-Review/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/17/Object-Detection-Review/" class="post-title-link" itemprop="url">Object-Detection-Review</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-17 22:35:15" itemprop="dateCreated datePublished" datetime="2019-12-17T22:35:15+08:00">2019-12-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 22:36:11" itemprop="dateModified" datetime="2024-05-20T22:36:11+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1
-id="论文题目objection-detection-with-deep-learning-a-review">论文题目：Objection
-Detection with Deep Learning: A Review</h1>
-<h5 id="introduction">1.Introduction</h5>
-<p>目标检测子类包括脸部检测(face detection)，行人检测(pedestrian
-detection)，躯体骨骼检测(skeleton detection)等等。</p>
-<p>目标检测的困难：在视角(viewpoints),姿势(poses),遮挡(occlusions),和光照条件(lightling
-conditions)存在很大不同。</p>
-<p>目标检测的任务<strong>=目标定位(object location)+目标分类(object
-classification)</strong>。因此pipeline有三个阶段：<strong>目标区域选取(informative
-region selection),特征提取(feature
-extraction),分类(classification)</strong></p>
-<h6 id="a.informative-region-selection">a.Informative region
-selection</h6>
-<p>解决方法是multi-scale sliding
-window。因为你不知道目标会在图像的哪个位置出现，有多大。这个方法的缺点显而易见：expensive</p>
-<h6 id="b.feature-extraction">b.feature extraction</h6>
-<p>sift,hog算子等都可以用来提取物体特征，但是由于表面，光照，北京等影响很难设计一个具体的算子去特别识别一个目标。</p>
-<h6 id="c.classification">c.classification</h6>
-<p>比如SVM，AdaBoost, DPM</p>
-<p>以上描述的传统算法缺点1、sliding window低效性。2、semantic gap cannot
-be bridged by the low-level
-descriptors.我们需要更为强大的特征提取算子。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/06/paper-diggingInto/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/06/paper-diggingInto/" class="post-title-link" itemprop="url">paper-diggingInto</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-06 22:36:37" itemprop="dateCreated datePublished" datetime="2019-12-06T22:36:37+08:00">2019-12-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:13:03" itemprop="dateModified" datetime="2024-05-20T23:13:03+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3
-id="digging-into-self-supervised-monocular-depth-estimation论文阅读">《Digging
-into Self-Supervised Monocular Depth Estimation》论文阅读</h3>
-<h5 id="目标-self-supervised-monoculr-depth-estimation">目标：
-self-supervised monoculr depth estimation</h5>
-<h5 id="摘要">摘要：</h5>
-<p>1、一个最小重投影损失，解决遮挡问题。</p>
-<p>2、一个全分辨率多尺度取样方法，减少视觉误差。</p>
-<p>3、一个自动遮挡损失，忽视违反相机运动假设的像素，不让其训练。</p>
-<h5 id="损失函数">损失函数</h5>
-<h5 id="重投影损失函数">1、重投影损失函数</h5>
-<p><span class="math inline">\({L_p} =
-\sum_{t^{&#39;}}pe(I_{t},I_{t^{&#39;}\rightarrow t})\)</span></p>
-<p>其中 ： $pe(I_{a},I_{b})=(1-SSIM(I_{a},I_{b}))+（1-)||I_{a}-I_{b}|| $
-目标就是相近的fram的appearance应该相同。pe是用来衡量两幅图的差距的。</p>
-<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
-x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
-<h5 id="edge-aware-smoothness">2、edge-aware smoothness</h5>
-<p>论文给出的解释是we can extract this interpretable depth from the
-model. This is an ill-posed problem as there is an extremely large
-number of possible incorrect depths per pixel which can correctly
-reconstruct the novel view given the relative pose between those two
-views.传统的双目和multi-view stereo方法通过enforcing smoothness in the
-depth maps来解决，反正我不是很懂。</p>
-<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
-x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
-<p>其中：<span
-class="math inline">\(d^{*}_{t}=d_{t}/\bar{d_{t}}\)</span> ,
-这样处理的目的是避免深度消失。</p>
-<h5 id="对损失函数的提高">3、对损失函数的提高</h5>
-<h6
-id="a在目标frame和source-frame选择误差小的像素匹配这是为了拒绝被遮挡像素带来的误差增大的训练">a、在目标frame和source
-frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6>
-<p><img src="/2019/12/06/paper-diggingInto/appearance-loss.png" /></p>
-<p>所以：$ L_{p}=min,pe(I_{t},I_{t^{'}t})$</p>
-<h6 id="bauto-masking-stationary-pixels">b、Auto-Masking Stationary
-Pixels</h6>
-<p>self-supervised monocular training基于的假设是moving camera和static
-scene。所以如果camera is static（比如车停下来画面不动）画面有object
-motion（有其他车辆经过）就会有'holes' of infinite depth in depth
-maps。针对这个问题作者提出一个mask。({0,1})</p>
-<p>即reprojection error of the wraped image (I_{t^{'} t}) is lower than
-that of the original, unwraped source image (I^{'}_{t}) .</p>
-<p><span class="math inline">\(\mu =[min_{t^{&#39;}}\,
-pe(I_{t},I_{t^{&#39;}\rightarrow {t}})&lt;min_{t}\,
-pe(I_{t},I_{t^{&#39;}})]\)</span></p>
-<p>原因是基于作者提出的两个分析：</p>
-<p>（1）static camera 由same
-pixels表明。所以这个时候(pe(I_{t},I_{t^{'}}))
-几乎非常小，所以这种情况下可以把static camera去掉。</p>
-<p>（2）一个moving object at equivalent relative translation to the
-camera，or a low of pixels。</p>
-<h6 id="cmulti-scale-estimation">c、Multi-scale Estimation</h6>
-<p>为了解决bininear sampler带来的gradient locality，避免训练stuck in
-local minima，现有模型通常采用的方法是multi-scale depth
-prediction和image reconstruction。与其他人将input image 降到resolution
-of each decoder不同，作者upsample the lower resolution depth
-maps，然后reproject,resample这样去计算</p>
-<h5 id="最终loss">4、最终Loss</h5>
-<p><span class="math inline">\(L=\mu L_{p}+\lambda L_{s}\)</span></p>
-<h5 id="其他考虑">5、其他考虑</h5>
-<p>(1)depthnetwork总体是encoder-decoder结构。encoder是resnet18并且采用Pretrain
-weights.decoder输出的深度的sigmoid值$$ 处理为depth.(D=) .</p>
-<p>寻找这样的a,b使得D的范围在0.1~100units.</p>
-<p>(2)pose network最后的输出会被scale by
-0.01。同时虽然深度网络输入是三个连续的RGB图，pose
-network的输入被处理为两幅RGB或者6个channel。相应的filter扩展一组，weights除以2.（维持filter的总和为1）.同时对输入图像进行了数据增强。horizontal
-flips和color argumentation.</p>
-<p>(3)输入图像大小为640*192. 损失函数中的() 取0.001。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/08/06/dense-kitti-dataloader/" class="post-title-link" itemprop="url">dense-kitti-dataloader</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-08-06 23:17:10" itemprop="dateCreated datePublished" datetime="2019-08-06T23:17:10+08:00">2019-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:18:29" itemprop="dateModified" datetime="2024-05-20T23:18:29+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="dense-kitti-dataloader">dense kitti dataloader</h2>
-<p>这篇文章介绍kitti的稀疏深度图生成dense depth
-map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
-<h3 id="kitti-to-dense">kitti to dense</h3>
-<h3 id="准备">准备</h3>
-<p>KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a
-target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php">original
-depth map</a></p>
-<p>KITTI的RGB数据用的是image_02。可以从官网下载到。<a
-target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/raw_data.php">Raw
-data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
-<p>由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a
-target="_blank" rel="noopener" href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m">深度补全函数</a></p>
-<h3 id="过程">过程</h3>
-<p>新建一个文件夹，将深度解压的文件夹 data_depth_annotated
-，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹
-data_depth_to_dense放到一个目录下。说明：data_depth_to_dense
-我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
-<p>准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
-<p>运行主程序 main.m。</p>
-<h3 id="可视化">可视化</h3>
-<p>可视化的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">im =cv2.imread(&#x27;image/path&#x27;)</span><br><span class="line">im_color = cv2.applyColorMap(im,cv2.COLORMAP_JET)</span><br></pre></td></tr></table></figure>
-<p>来自这个链接：<a
-target="_blank" rel="noopener" href="https://github.com/QianshengGu/KITTI_Dense_Depth.git">可视化</a></p>
-<p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground
-truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
-<h3 id="kitti-dataloader">kitti dataloader</h3>
-<p>这个dataloader与我上面说的文件路径是一致的。</p>
-<p>参考github我之后会放上去。</p>
-<p>https://github.com/77philosophia/kitti_data_depth_loader</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -1265,7 +2057,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1293,7 +2085,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

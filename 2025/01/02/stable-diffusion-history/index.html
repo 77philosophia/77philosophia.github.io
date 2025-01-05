@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="image-20250103191320002  第一篇文章-2015 关于diffusion的第一篇文章来自于 Deep Unsupervised Learning using Nonequilibrium Thermodynamics paper published in 2015. 受到非平衡统计物理的启发，引入了一个模型，将数据的结构破坏成t steps。这个过程叫做forward d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="stable-diffusion-history">
+<meta property="og:url" content="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="image-20250103191320002  第一篇文章-2015 关于diffusion的第一篇文章来自于 Deep Unsupervised Learning using Nonequilibrium Thermodynamics paper published in 2015. 受到非平衡统计物理的启发，引入了一个模型，将数据的结构破坏成t steps。这个过程叫做forward d">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-01-02T10:59:15.000Z">
+<meta property="article:modified_time" content="2025-01-03T11:17:30.731Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>stable-diffusion-history | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          stable-diffusion-history
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-02 18:59:15" itemprop="dateCreated datePublished" datetime="2025-01-02T18:59:15+08:00">2025-01-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-03 19:17:30" itemprop="dateModified" datetime="2025-01-03T19:17:30+08:00">2025-01-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191320002.png"
+alt="image-20250103191320002" />
+<figcaption aria-hidden="true">image-20250103191320002</figcaption>
+</figure>
+<h3 id="第一篇文章-2015">第一篇文章-2015</h3>
+<p>关于diffusion的第一篇文章来自于 <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/1503.03585">Deep Unsupervised Learning using
+Nonequilibrium Thermodynamics</a> paper published in 2015.
+受到非平衡统计物理的启发，引入了一个模型，将数据的结构破坏成t
+steps。这个过程叫做forward diffusion;在此之后恢复叫做reverse
+diffusion</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191354356.png"
+alt="image-20250103191354356" />
+<figcaption aria-hidden="true">image-20250103191354356</figcaption>
+</figure>
+<p>这个前向的diffusion过程来自于马尔可夫链，就是t时刻的结果只与t-1时刻的结果相关。</p>
+<p>然后是逆像的diffusion过程，通过gan预测每一步的分布。</p>
+<h3
+id="图像生成再次引入diffusion-2020">图像生成再次引入diffusion-2020</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion
+Probabilistic Models</a> from 2020这篇文章取得了让人印象深刻的效果</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191420017.png"
+alt="image-20250103191420017" />
+<figcaption aria-hidden="true">image-20250103191420017</figcaption>
+</figure>
+<p>他们证实了reparameterization的技巧可以用在reverse
+diffusion的过程中形成封闭的解决方案。</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191436862.png"
+alt="image-20250103191436862" />
+<figcaption aria-hidden="true">image-20250103191436862</figcaption>
+</figure>
+<p>并且发现预测每一步的噪音而不是噪音背后的图像得到更好的结果。在CIFAR10数据集上进行了测试，在IS和FID得分中都取得了sota.</p>
+<p>重新引入diffusion为后面的midjourney和stable
+diffusion都打下了基础。</p>
+<h3 id="clip">CLIP</h3>
+<p>OpenAi 发布了他们的论文 <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.00020">Learning Transferable Visual
+Models From Natural Language Supervision</a> and a <a
+target="_blank" rel="noopener" href="https://openai.com/research/clip">blog post</a>和
+开源的多模态的zero-shot CLIP模型。</p>
+<p>这个模型在语言的监督下学习了视觉的特征，这不是一个新概念，但是它将text
+prompt匹配图像做的很好。</p>
+<p>它们抓取了互联网的超过400百万张图片，他们发现将text
+prompt适配到每个任务更好，相比传统的分类模型来说。比如传统的分类模型打的标签就是类别dog，但是在text
+prompt里面就是a photo of dog。</p>
+<p>它们的预训练包括：</p>
+<ul>
+<li><p>基于transformer的text encoder</p></li>
+<li><p>基于vision transformer的image encoder</p></li>
+<li><p>基于resnet的image encoder</p></li>
+</ul>
+<p>输出的向量text encoder:Ti和Image encoder Ii
+然后用在它们下一步的对比预训练过程中。</p>
+<p>输入是</p>
+<ul>
+<li><p>一个prompt用于描述图像中的物体，如a photo of big
+{object}</p></li>
+<li><p>包含该物体的图像</p></li>
+<li><figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191507830.png"
+alt="image-20250103191507830" />
+<figcaption aria-hidden="true">image-20250103191507830</figcaption>
+</figure></li>
+</ul>
+<p>text和image encoder输出的向量构成text-image对，构成一个矩阵</p>
+<ul>
+<li><p>矩阵元素是一个image vector和text vector的乘积，<em>Ii *
+Ti</em>.</p></li>
+<li><p>矩阵对角元素是matching的text-image对</p></li>
+<li><p>每行非对角元素是text和image不匹配对应的</p></li>
+</ul>
+<p>模型目标是最大化对角线元素的值，最小化非对角线元素值。这个过程输出的是对比性表示，捕捉的是图片和文本shared的特征，因此叫_Contrastive
+Language-Image_ <em>Pre-training</em>.</p>
+<p>这个模型输出的是image和text的embedding表示，这些embeddings可以通过cosine相似度或者欧几里得距离来衡量相似度，这些相似度可以用在很多任务中，比如GAN
+模型中的判别器或图像分类器</p>
+<h1
+id="guided-language-to-image-diffusion-for-generation-and-editing-glide-2021年底">Guided
+Language to Image Diffusion for Generation and Editing
+(GLIDE)-2021年底</h1>
+<p>OPENAI发表论文_<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10741">GLIDE:
+Towards Photorealistic Image Generation and Editing with Text-Guided
+Diffusion Models</a>_. 运用了guided diffusion和comparing CLIP guidance
+vs *Classifier-free
+guidance,允许扩散模型从文本中学习。在diffusion层中使用__unet__结构。用到text-image的__数据集__，这个数据集在DALL-E中也被使用。*</p>
+<h5 id="guided-diffusion">Guided diffusion</h5>
+<p>使用transformer model去encode text
+prompt,将最后一层embedding的输出作为diffusion模型的class-conditioning，这个class-conditioning使用了attention去关注forward/backward/denising
+attention层。</p>
+<h5 id="clip-guidance">Clip guidance</h5>
+<p>在推理过程中的去噪扩散过程中，使用clip进行分类起指导。用clip的点积对比矩阵梯度扰乱去噪均值，将初始去噪图像移动到
+CLIP 预测高文本图像匹配的方向。类似于 Google 的 dreep deam 模型。</p>
+<h5 id="classifier-free-guidance">Classifier-free guidance</h5>
+<p>在训练过程中同时提供没有text
+guidance的example，在推理的去噪阶段，让模型预测两次噪声，一次有prompt一次没有。text
+guidance会影响预测的噪音值。有text的预测noise:(<em>εθ(xt|y)</em>),没有的(<em>εθ(xt|∅)</em>)。文本造成的不同在每个时间步t会乘以一个系数s,然后加到预测的噪音上。这样推着噪音预测向正确的方向进行。因为我们在每一步都考虑了更多文本特定的噪声，从而增强了文本添加的噪声效果。</p>
+<h1 id="εˆθxty-εθxt-s-εθxty-εθxt"><em>εˆθ(xt|y) = εθ(xt|∅) + s ·
+(εθ(xt|y) − εθ(xt|∅))</em></h1>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191611149.png"
+alt="image-20250103191611149" />
+<figcaption aria-hidden="true">image-20250103191611149</figcaption>
+</figure>
+<p>结果发现classfier-free guidance比clip guidance效果更好</p>
+<p>最后他们训练diffusion用的256x256，因为扩散过程是其运行的像素空间中非常密集的过程。因此他们也训练了一个encoder和decoder用于降采样和复原图片到1024x1024。</p>
+<h3 id="latent-diffusion-2021年底">Latent diffusion-2021年底</h3>
+<p>论文 the _<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10752">High-Resolution
+Image Synthesis with Latent Diffusion Models</a>__，
+主要将diffusion过程从像素空间移到了latent
+space，使得diffusion过程更加的高效_</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191635342.png"
+alt="image-20250103191635342" />
+<figcaption aria-hidden="true">image-20250103191635342</figcaption>
+</figure>
+<p>Latent Diffusion
+模型首先训练autoEncoder模型，encoder提取与原图最相似最重要的部分到latent
+space，
+decoder基于latent空间的表示生成原图。然后，将unet中的扩散过程用在pretrained
+auto encoder编码器的latent space
+representation.他们也发现classifier-free guidance提升质量。</p>
+<p>UNet
+还使用交叉注意力层，允许它们用作不同类型的条件输入生成器，例如文本到图像和超分辨率。</p>
+<p>autoencoder的decoder层把latent space上采样恢复到1024x1024.</p>
+<h3 id="dall-e2-2022年初">DALL-E2-2022年初</h3>
+<p>OpenAI发布论文 _<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.06125">Hierarchical Text-Conditional
+Image Generation with CLIP
+Latents</a>__，这是一个__继承__工作来自于clip,
+dall-e和glide.本文的作者确实将该模型称为 unclip，因为该模型将 CLIP
+模型中的文本嵌入转换回图像。_</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191656226.png"
+alt="image-20250103191656226" />
+<figcaption aria-hidden="true">image-20250103191656226</figcaption>
+</figure>
+<p>可以注意到虚线下方，prior model输出一个clip image
+embedding，然后用于diffusion decoder的去噪过程中的condition.</p>
+<ol type="1">
+<li><p>take一个预训练好的clip模型，冻结权重</p></li>
+<li><p>将prompt通过clip encode成一个embedding向量</p></li>
+<li><p>一个基于扩散的prior model将text embedding 匹配到相应的clip image
+embedding.所以prior model产生clip model会产生的图像。</p></li>
+<li><p>使用调整过的glide模型，他们通过去噪/反向扩散过程以随机方式映射图像嵌入。这使得模型能够生成许多与相似视觉概念相关的可能图像。</p></li>
+</ol>
+<p>为什么要用prior去产生image embedding</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191713661.png"
+alt="image-20250103191713661" />
+<figcaption aria-hidden="true">image-20250103191713661</figcaption>
+</figure>
+<p>比起单纯的caption或者text embedding，prior产生的image
+embedding能产生更好的结果，如上图。</p>
+<p>但是openai没有开源模型的权重。</p>
+<h3 id="开源的latent-diffusionstable-diffusion-2022">开源的latent
+diffusion(stable diffusion)-2022</h3>
+<p>开源模型stable diffusion由Stability AI发布</p>
+<p>https://medium.com/<span class="citation"
+data-cites="vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5">@vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/31/new_laptop_settings/" rel="prev" title="新电脑配置">
+      <i class="fa fa-chevron-left"></i> 新电脑配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/03/hugging-download/" rel="next" title="hugging-download">
+      hugging-download <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0-2015"><span class="nav-number">1.</span> <span class="nav-text">第一篇文章-2015</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E5%86%8D%E6%AC%A1%E5%BC%95%E5%85%A5diffusion-2020"><span class="nav-number">2.</span> <span class="nav-text">图像生成再次引入diffusion-2020</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clip"><span class="nav-number">3.</span> <span class="nav-text">CLIP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#guided-language-to-image-diffusion-for-generation-and-editing-glide-2021%E5%B9%B4%E5%BA%95"><span class="nav-number"></span> <span class="nav-text">Guided
+Language to Image Diffusion for Generation and Editing
+(GLIDE)-2021年底</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#guided-diffusion"><span class="nav-number">0.0.1.</span> <span class="nav-text">Guided diffusion</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#clip-guidance"><span class="nav-number">0.0.2.</span> <span class="nav-text">Clip guidance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#classifier-free-guidance"><span class="nav-number">0.0.3.</span> <span class="nav-text">Classifier-free guidance</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%CE%B5%CB%86%CE%B8xty-%CE%B5%CE%B8xt-s-%CE%B5%CE%B8xty-%CE%B5%CE%B8xt"><span class="nav-number"></span> <span class="nav-text">εˆθ(xt|y) &#x3D; εθ(xt|∅) + s ·
+(εθ(xt|y) − εθ(xt|∅))</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#latent-diffusion-2021%E5%B9%B4%E5%BA%95"><span class="nav-number">1.</span> <span class="nav-text">Latent diffusion-2021年底</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dall-e2-2022%E5%B9%B4%E5%88%9D"><span class="nav-number">2.</span> <span class="nav-text">DALL-E2-2022年初</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%BA%90%E7%9A%84latent-diffusionstable-diffusion-2022"><span class="nav-number">3.</span> <span class="nav-text">开源的latent
+diffusion(stable diffusion)-2022</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
