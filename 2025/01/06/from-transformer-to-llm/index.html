@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="NLP basic concepts 1. 两个NLP的主要问题 表示和建模： a.Representation:将语言表示为机器语言：如BERT,Openai embedding  Modeling:用统计方法建模，GPT, chatGPT   怎么表示words   image-20250106225834152   将单词分散到向量空间：将token映射到向量空间，向量空间(vector s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Transformer到LLM:Architecture,Training and Usage">
+<meta property="og:url" content="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="NLP basic concepts 1. 两个NLP的主要问题 表示和建模： a.Representation:将语言表示为机器语言：如BERT,Openai embedding  Modeling:用统计方法建模，GPT, chatGPT   怎么表示words   image-20250106225834152   将单词分散到向量空间：将token映射到向量空间，向量空间(vector s">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-01-06T14:11:16.000Z">
+<meta property="article:modified_time" content="2025-01-06T15:09:12.491Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>从Transformer到LLM:Architecture,Training and Usage | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从Transformer到LLM:Architecture,Training and Usage
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-06 22:11:16 / Modified: 23:09:12" itemprop="dateCreated datePublished" datetime="2025-01-06T22:11:16+08:00">2025-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="nlp-basic-concepts">NLP basic concepts</h3>
+<h4 id="两个nlp的主要问题">1. 两个NLP的主要问题</h4>
+<p>表示和建模：</p>
+<p>a.Representation:将语言表示为机器语言：如BERT,Openai embedding</p>
+<ol start="2" type="a">
+<li>Modeling:用统计方法建模，GPT, chatGPT</li>
+</ol>
+<ol type="1">
+<li><p>怎么表示words</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106225834152.png"
+alt="image-20250106225834152" />
+<figcaption aria-hidden="true">image-20250106225834152</figcaption>
+</figure></li>
+</ol>
+<p>将单词分散到向量空间：将token映射到向量空间，向量空间(vector space)
+是用来表示文本数据的一种高纬空间。在这个空间中，每个token或文本单元都被表示为一个向量。这些向量捕捉了文本单元的语义信息，并使得数学计算（如距离计算、相似度计算）成为可能。</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230157598.png"
+alt="image-20250106230157598" />
+<figcaption aria-hidden="true">image-20250106230157598</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>建模</p>
+<p>语言模型LLM: 语言模型预测任何单词序列在给定语言语料库中的可能性</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230245416.png"
+alt="image-20250106230245416" />
+<figcaption aria-hidden="true">image-20250106230245416</figcaption>
+</figure></li>
+</ol>
+<ul>
+<li><p>怎么学习语言模型</p>
+<ul>
+<li><p>自回归模型Autogressive LM:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230342821.png"
+alt="image-20250106230342821" />
+<figcaption aria-hidden="true">image-20250106230342821</figcaption>
+</figure></li>
+<li><p>Bi-gram/N-gram model:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230354621.png"
+alt="image-20250106230354621" />
+<figcaption aria-hidden="true">image-20250106230354621</figcaption>
+</figure></li>
+<li><p>Marked LM:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230523067.png"
+alt="image-20250106230523067" />
+<figcaption aria-hidden="true">image-20250106230523067</figcaption>
+</figure></li>
+<li><p>几种语言模型的学习方式</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230534541.png"
+alt="image-20250106230534541" />
+<figcaption aria-hidden="true">image-20250106230534541</figcaption>
+</figure></li>
+<li><p>为什么语言模型有比较好的表示</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230544997.png"
+alt="image-20250106230544997" />
+<figcaption aria-hidden="true">image-20250106230544997</figcaption>
+</figure></li>
+<li><p>总结</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230557957.png"
+alt="image-20250106230557957" />
+<figcaption aria-hidden="true">image-20250106230557957</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h3 id="attention机制和transformer">attention机制和transformer</h3>
+<h4 id="attention来源翻译任务seq2seq">1.
+attention来源：翻译任务seq2seq</h4>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230706080.png"
+alt="image-20250106230706080" />
+<figcaption aria-hidden="true">image-20250106230706080</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230717889.png"
+alt="image-20250106230717889" />
+<figcaption aria-hidden="true">image-20250106230717889</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230732617.png"
+alt="image-20250106230732617" />
+<figcaption aria-hidden="true">image-20250106230732617</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230745379.png"
+alt="image-20250106230745379" />
+<figcaption aria-hidden="true">image-20250106230745379</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230757155.png"
+alt="image-20250106230757155" />
+<figcaption aria-hidden="true">image-20250106230757155</figcaption>
+</figure>
+<h4 id="结构">2. 结构</h4>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230817984.png"
+alt="image-20250106230817984" />
+<figcaption aria-hidden="true">image-20250106230817984</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230830430.png"
+alt="image-20250106230830430" />
+<figcaption aria-hidden="true">image-20250106230830430</figcaption>
+</figure>
+<h3 id="训练lm">训练LM</h3>
+<h3 id="pretrained-model用法微调和prompt">Pretrained
+model用法（微调和prompt）</h3>
+<h3 id="transformer除语言外其他应用">transformer除语言外其他应用</h3>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/06/style-transfer-paper/" rel="prev" title="style-transfer-paper">
+      <i class="fa fa-chevron-left"></i> style-transfer-paper
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/06/train-vpred/" rel="next" title="基于noobai-vpred0.65底膜的训练">
+      基于noobai-vpred0.65底膜的训练 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#nlp-basic-concepts"><span class="nav-number">1.</span> <span class="nav-text">NLP basic concepts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AAnlp%E7%9A%84%E4%B8%BB%E8%A6%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">1. 两个NLP的主要问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attention%E6%9C%BA%E5%88%B6%E5%92%8Ctransformer"><span class="nav-number">2.</span> <span class="nav-text">attention机制和transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#attention%E6%9D%A5%E6%BA%90%E7%BF%BB%E8%AF%91%E4%BB%BB%E5%8A%A1seq2seq"><span class="nav-number">2.1.</span> <span class="nav-text">1.
+attention来源：翻译任务seq2seq</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">2. 结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83lm"><span class="nav-number">3.</span> <span class="nav-text">训练LM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pretrained-model%E7%94%A8%E6%B3%95%E5%BE%AE%E8%B0%83%E5%92%8Cprompt"><span class="nav-number">4.</span> <span class="nav-text">Pretrained
+model用法（微调和prompt）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#transformer%E9%99%A4%E8%AF%AD%E8%A8%80%E5%A4%96%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">transformer除语言外其他应用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
