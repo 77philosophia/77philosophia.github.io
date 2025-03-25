@@ -20,36 +20,28 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. 用官方提供的推理   image-20250107191054805  2. 训练出现nan 需要调节学习率heckpoint&#x3D;1100, lr&#x3D;5e-6   image-20250107191222548  其他问题： 训练过程中每次都会有bug report Welcome to bitsandbytes. For bug reports, please submit your erro">
-<meta property="og:type" content="article">
-<meta property="og:title" content="复现B-Lora算法">
-<meta property="og:url" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Garfield&#39;s blog">
+<meta property="og:url" content="http://77philosophia.github.io/page/4/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="1. 用官方提供的推理   image-20250107191054805  2. 训练出现nan 需要调节学习率heckpoint&#x3D;1100, lr&#x3D;5e-6   image-20250107191222548  其他问题： 训练过程中每次都会有bug report Welcome to bitsandbytes. For bug reports, please submit your erro">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191054805.png">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191222548.png">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191329941.png">
-<meta property="article:published_time" content="2025-01-07T11:09:30.000Z">
-<meta property="article:modified_time" content="2025-01-07T11:14:01.946Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191054805.png">
 
-<link rel="canonical" href="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/">
+<link rel="canonical" href="http://77philosophia.github.io/page/4/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'en'
   };
 </script>
 
-  <title>复现B-Lora算法 | Garfield's blog</title>
+  <title>Garfield's blog</title>
   
 
 
@@ -147,14 +139,13 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -166,9 +157,10 @@
       <meta itemprop="name" content="Garfield's blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          复现B-Lora算法
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/06/dense-kitti-dataloader/" class="post-title-link" itemprop="url">dense-kitti-dataloader</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -176,10 +168,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-01-07 19:09:30 / Modified: 19:14:01" itemprop="dateCreated datePublished" datetime="2025-01-07T19:09:30+08:00">2025-01-07</time>
+              <time title="Created: 2019-08-06 23:17:10" itemprop="dateCreated datePublished" datetime="2019-08-06T23:17:10+08:00">2019-08-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 23:18:29" itemprop="dateModified" datetime="2024-05-20T23:18:29+08:00">2024-05-20</time>
+              </span>
 
           
 
@@ -192,63 +190,57 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="用官方提供的推理">1. 用官方提供的推理</h3>
-<figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191054805.png"
-alt="image-20250107191054805" />
-<figcaption aria-hidden="true">image-20250107191054805</figcaption>
-</figure>
-<h3 id="训练出现nan">2. 训练出现nan</h3>
-<p>需要调节学习率<strong>heckpoint=1100, lr=5e-6</strong></p>
-<figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191222548.png"
-alt="image-20250107191222548" />
-<figcaption aria-hidden="true">image-20250107191222548</figcaption>
-</figure>
-<h4 id="其他问题">其他问题：</h4>
-<p>训练过程中每次都会有<strong>bug report</strong></p>
-<p><strong>Welcome to bitsandbytes. For bug reports, please submit your
-error trace to:</strong>
-<strong>https://github.com/TimDettmers/bitsandbytes/issues</strong></p>
-<p><strong>For effortless bug reporting copy-paste your error into this
-form:</strong></p>
-<p>https://docs.google.com/forms/d/e/1FAIpQLScPB8emS3Thkp66nvqwmjTEgxp8Y9ufuWTzFyr9kJ5AoI47dQ/viewform?usp=sf_link</p>
-<p>找到一个<strong>issue</strong>
-<strong>https://github.com/bitsandbytes-foundation/bitsandbytes/issues/168</strong></p>
-<figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191329941.png"
-alt="image-20250107191329941" />
-<figcaption aria-hidden="true">image-20250107191329941</figcaption>
-</figure>
+          <h2 id="dense-kitti-dataloader">dense kitti dataloader</h2>
+<p>这篇文章介绍kitti的稀疏深度图生成dense depth
+map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
+<h3 id="kitti-to-dense">kitti to dense</h3>
+<h3 id="准备">准备</h3>
+<p>KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a
+target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php">original
+depth map</a></p>
+<p>KITTI的RGB数据用的是image_02。可以从官网下载到。<a
+target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/raw_data.php">Raw
+data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
+<p>由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a
+target="_blank" rel="noopener" href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m">深度补全函数</a></p>
+<h3 id="过程">过程</h3>
+<p>新建一个文件夹，将深度解压的文件夹 data_depth_annotated
+，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹
+data_depth_to_dense放到一个目录下。说明：data_depth_to_dense
+我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
+<p>准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
+<p>运行主程序 main.m。</p>
+<h3 id="可视化">可视化</h3>
+<p>可视化的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">im =cv2.imread(&#x27;image/path&#x27;)</span><br><span class="line">im_color = cv2.applyColorMap(im,cv2.COLORMAP_JET)</span><br></pre></td></tr></table></figure>
+<p>来自这个链接：<a
+target="_blank" rel="noopener" href="https://github.com/QianshengGu/KITTI_Dense_Depth.git">可视化</a></p>
+<p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground
+truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
+<h3 id="kitti-dataloader">kitti dataloader</h3>
+<p>这个dataloader与我上面说的文件路径是一致的。</p>
+<p>参考github我之后会放上去。</p>
+<p>https://github.com/77philosophia/kitti_data_depth_loader</p>
 
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2025/01/07/lora-scripts/" rel="prev" title="lora-scripts">
-      <i class="fa fa-chevron-left"></i> lora-scripts
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/01/07/comfyui-env/" rel="next" title="comfyui环境搭建+问题记录">
-      comfyui环境搭建+问题记录 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
 
 
 
@@ -300,7 +292,6 @@ alt="image-20250107191329941" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8E%A8%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">1. 用官方提供的推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%87%BA%E7%8E%B0nan"><span class="nav-number">2.</span> <span class="nav-text">2. 训练出现nan</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">其他问题：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

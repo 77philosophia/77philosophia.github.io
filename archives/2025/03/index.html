@@ -20,23 +20,15 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. 用官方提供的推理   image-20250107191054805  2. 训练出现nan 需要调节学习率heckpoint&#x3D;1100, lr&#x3D;5e-6   image-20250107191222548  其他问题： 训练过程中每次都会有bug report Welcome to bitsandbytes. For bug reports, please submit your erro">
-<meta property="og:type" content="article">
-<meta property="og:title" content="复现B-Lora算法">
-<meta property="og:url" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Garfield&#39;s blog">
+<meta property="og:url" content="http://77philosophia.github.io/archives/2025/03/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="1. 用官方提供的推理   image-20250107191054805  2. 训练出现nan 需要调节学习率heckpoint&#x3D;1100, lr&#x3D;5e-6   image-20250107191222548  其他问题： 训练过程中每次都会有bug report Welcome to bitsandbytes. For bug reports, please submit your erro">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191054805.png">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191222548.png">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191329941.png">
-<meta property="article:published_time" content="2025-01-07T11:09:30.000Z">
-<meta property="article:modified_time" content="2025-01-07T11:14:01.946Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/image-20250107191054805.png">
 
-<link rel="canonical" href="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/">
+<link rel="canonical" href="http://77philosophia.github.io/archives/2025/03/">
 
 
 <script id="page-configurations">
@@ -44,12 +36,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'en'
   };
 </script>
 
-  <title>复现B-Lora算法 | Garfield's blog</title>
+  <title>Archive | Garfield's blog</title>
   
 
 
@@ -147,107 +139,51 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content archive">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          复现B-Lora算法
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-07 19:09:30 / Modified: 19:14:01" itemprop="dateCreated datePublished" datetime="2025-01-07T19:09:30+08:00">2025-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        
+        <span class="collection-header">OK! 31 posts in total. Keep on posting.</span>
+      </div>
 
       
-        <h3 id="用官方提供的推理">1. 用官方提供的推理</h3>
-<figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191054805.png"
-alt="image-20250107191054805" />
-<figcaption aria-hidden="true">image-20250107191054805</figcaption>
-</figure>
-<h3 id="训练出现nan">2. 训练出现nan</h3>
-<p>需要调节学习率<strong>heckpoint=1100, lr=5e-6</strong></p>
-<figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191222548.png"
-alt="image-20250107191222548" />
-<figcaption aria-hidden="true">image-20250107191222548</figcaption>
-</figure>
-<h4 id="其他问题">其他问题：</h4>
-<p>训练过程中每次都会有<strong>bug report</strong></p>
-<p><strong>Welcome to bitsandbytes. For bug reports, please submit your
-error trace to:</strong>
-<strong>https://github.com/TimDettmers/bitsandbytes/issues</strong></p>
-<p><strong>For effortless bug reporting copy-paste your error into this
-form:</strong></p>
-<p>https://docs.google.com/forms/d/e/1FAIpQLScPB8emS3Thkp66nvqwmjTEgxp8Y9ufuWTzFyr9kJ5AoI47dQ/viewform?usp=sf_link</p>
-<p>找到一个<strong>issue</strong>
-<strong>https://github.com/bitsandbytes-foundation/bitsandbytes/issues/168</strong></p>
-<figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191329941.png"
-alt="image-20250107191329941" />
-<figcaption aria-hidden="true">image-20250107191329941</figcaption>
-</figure>
-
+    <div class="collection-year">
+      <span class="collection-header">2025</span>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2025-03-14T15:32:46+08:00"
+              content="2025-03-14">
+          03-14
+        </time>
+      </div>
 
-        
+      <div class="post-title">
+          <a class="post-title-link" href="/2025/03/14/stable-diffusion-history/problem%201/" itemprop="url">
+            <span itemprop="name">Untitled</span>
+          </a>
+      </div>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2025/01/07/lora-scripts/" rel="prev" title="lora-scripts">
-      <i class="fa fa-chevron-left"></i> lora-scripts
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/01/07/comfyui-env/" rel="next" title="comfyui环境搭建+问题记录">
-      comfyui环境搭建+问题记录 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+
+    </div>
+  </div>
   
   
+  
+
   
 
 
@@ -300,7 +236,6 @@ alt="image-20250107191329941" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8E%A8%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">1. 用官方提供的推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%87%BA%E7%8E%B0nan"><span class="nav-number">2.</span> <span class="nav-text">2. 训练出现nan</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">其他问题：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
