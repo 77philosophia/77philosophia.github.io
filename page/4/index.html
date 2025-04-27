@@ -145,6 +145,226 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/17/Object-Detection-Review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/17/Object-Detection-Review/" class="post-title-link" itemprop="url">Object-Detection-Review</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-17 22:35:15" itemprop="dateCreated datePublished" datetime="2019-12-17T22:35:15+08:00">2019-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 22:36:11" itemprop="dateModified" datetime="2024-05-20T22:36:11+08:00">2024-05-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="论文题目objection-detection-with-deep-learning-a-review">论文题目：Objection
+Detection with Deep Learning: A Review</h1>
+<h5 id="introduction">1.Introduction</h5>
+<p>目标检测子类包括脸部检测(face detection)，行人检测(pedestrian
+detection)，躯体骨骼检测(skeleton detection)等等。</p>
+<p>目标检测的困难：在视角(viewpoints),姿势(poses),遮挡(occlusions),和光照条件(lightling
+conditions)存在很大不同。</p>
+<p>目标检测的任务<strong>=目标定位(object location)+目标分类(object
+classification)</strong>。因此pipeline有三个阶段：<strong>目标区域选取(informative
+region selection),特征提取(feature
+extraction),分类(classification)</strong></p>
+<h6 id="a.informative-region-selection">a.Informative region
+selection</h6>
+<p>解决方法是multi-scale sliding
+window。因为你不知道目标会在图像的哪个位置出现，有多大。这个方法的缺点显而易见：expensive</p>
+<h6 id="b.feature-extraction">b.feature extraction</h6>
+<p>sift,hog算子等都可以用来提取物体特征，但是由于表面，光照，北京等影响很难设计一个具体的算子去特别识别一个目标。</p>
+<h6 id="c.classification">c.classification</h6>
+<p>比如SVM，AdaBoost, DPM</p>
+<p>以上描述的传统算法缺点1、sliding window低效性。2、semantic gap cannot
+be bridged by the low-level
+descriptors.我们需要更为强大的特征提取算子。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/06/paper-diggingInto/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/06/paper-diggingInto/" class="post-title-link" itemprop="url">paper-diggingInto</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-06 22:36:37" itemprop="dateCreated datePublished" datetime="2019-12-06T22:36:37+08:00">2019-12-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 23:13:03" itemprop="dateModified" datetime="2024-05-20T23:13:03+08:00">2024-05-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3
+id="digging-into-self-supervised-monocular-depth-estimation论文阅读">《Digging
+into Self-Supervised Monocular Depth Estimation》论文阅读</h3>
+<h5 id="目标-self-supervised-monoculr-depth-estimation">目标：
+self-supervised monoculr depth estimation</h5>
+<h5 id="摘要">摘要：</h5>
+<p>1、一个最小重投影损失，解决遮挡问题。</p>
+<p>2、一个全分辨率多尺度取样方法，减少视觉误差。</p>
+<p>3、一个自动遮挡损失，忽视违反相机运动假设的像素，不让其训练。</p>
+<h5 id="损失函数">损失函数</h5>
+<h5 id="重投影损失函数">1、重投影损失函数</h5>
+<p><span class="math inline">\({L_p} =
+\sum_{t^{&#39;}}pe(I_{t},I_{t^{&#39;}\rightarrow t})\)</span></p>
+<p>其中 ： $pe(I_{a},I_{b})=(1-SSIM(I_{a},I_{b}))+（1-)||I_{a}-I_{b}|| $
+目标就是相近的fram的appearance应该相同。pe是用来衡量两幅图的差距的。</p>
+<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
+x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
+<h5 id="edge-aware-smoothness">2、edge-aware smoothness</h5>
+<p>论文给出的解释是we can extract this interpretable depth from the
+model. This is an ill-posed problem as there is an extremely large
+number of possible incorrect depths per pixel which can correctly
+reconstruct the novel view given the relative pose between those two
+views.传统的双目和multi-view stereo方法通过enforcing smoothness in the
+depth maps来解决，反正我不是很懂。</p>
+<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
+x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
+<p>其中：<span
+class="math inline">\(d^{*}_{t}=d_{t}/\bar{d_{t}}\)</span> ,
+这样处理的目的是避免深度消失。</p>
+<h5 id="对损失函数的提高">3、对损失函数的提高</h5>
+<h6
+id="a在目标frame和source-frame选择误差小的像素匹配这是为了拒绝被遮挡像素带来的误差增大的训练">a、在目标frame和source
+frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6>
+<p><img src="/2019/12/06/paper-diggingInto/appearance-loss.png" /></p>
+<p>所以：$ L_{p}=min,pe(I_{t},I_{t^{'}t})$</p>
+<h6 id="bauto-masking-stationary-pixels">b、Auto-Masking Stationary
+Pixels</h6>
+<p>self-supervised monocular training基于的假设是moving camera和static
+scene。所以如果camera is static（比如车停下来画面不动）画面有object
+motion（有其他车辆经过）就会有'holes' of infinite depth in depth
+maps。针对这个问题作者提出一个mask。({0,1})</p>
+<p>即reprojection error of the wraped image (I_{t^{'} t}) is lower than
+that of the original, unwraped source image (I^{'}_{t}) .</p>
+<p><span class="math inline">\(\mu =[min_{t^{&#39;}}\,
+pe(I_{t},I_{t^{&#39;}\rightarrow {t}})&lt;min_{t}\,
+pe(I_{t},I_{t^{&#39;}})]\)</span></p>
+<p>原因是基于作者提出的两个分析：</p>
+<p>（1）static camera 由same
+pixels表明。所以这个时候(pe(I_{t},I_{t^{'}}))
+几乎非常小，所以这种情况下可以把static camera去掉。</p>
+<p>（2）一个moving object at equivalent relative translation to the
+camera，or a low of pixels。</p>
+<h6 id="cmulti-scale-estimation">c、Multi-scale Estimation</h6>
+<p>为了解决bininear sampler带来的gradient locality，避免训练stuck in
+local minima，现有模型通常采用的方法是multi-scale depth
+prediction和image reconstruction。与其他人将input image 降到resolution
+of each decoder不同，作者upsample the lower resolution depth
+maps，然后reproject,resample这样去计算</p>
+<h5 id="最终loss">4、最终Loss</h5>
+<p><span class="math inline">\(L=\mu L_{p}+\lambda L_{s}\)</span></p>
+<h5 id="其他考虑">5、其他考虑</h5>
+<p>(1)depthnetwork总体是encoder-decoder结构。encoder是resnet18并且采用Pretrain
+weights.decoder输出的深度的sigmoid值$$ 处理为depth.(D=) .</p>
+<p>寻找这样的a,b使得D的范围在0.1~100units.</p>
+<p>(2)pose network最后的输出会被scale by
+0.01。同时虽然深度网络输入是三个连续的RGB图，pose
+network的输入被处理为两幅RGB或者6个channel。相应的filter扩展一组，weights除以2.（维持filter的总和为1）.同时对输入图像进行了数据增强。horizontal
+flips和color argumentation.</p>
+<p>(3)输入图像大小为640*192. 损失函数中的() 取0.001。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -305,7 +525,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -392,6 +612,59 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
