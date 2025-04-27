@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="大致回顾了一下VLM的concept和结构，大概就是对image和text进行向量空间表示，通过contrastive learning让同一个事物的二者特征在embedding空间里相近。 just like 哲学就是哲学家的历史，从paper publication history看一下vla&#x2F;vlm的区别和发展。don&#39;t be fooled by 高大上的名词。 VLM VLM的定义 多模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VLM-VLA">
+<meta property="og:url" content="http://77philosophia.github.io/2025/04/27/VLM-VLA/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="大致回顾了一下VLM的concept和结构，大概就是对image和text进行向量空间表示，通过contrastive learning让同一个事物的二者特征在embedding空间里相近。 just like 哲学就是哲学家的历史，从paper publication history看一下vla&#x2F;vlm的区别和发展。don&#39;t be fooled by 高大上的名词。 VLM VLM的定义 多模">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-04-27T09:13:02.000Z">
+<meta property="article:modified_time" content="2025-04-27T09:14:04.284Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/04/27/VLM-VLA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>VLM-VLA | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/VLM-VLA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VLM-VLA
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-04-27 17:13:02 / Modified: 17:14:04" itemprop="dateCreated datePublished" datetime="2025-04-27T17:13:02+08:00">2025-04-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>大致回顾了一下VLM的concept和结构，大概就是对image和text进行向量空间表示，通过contrastive
+learning让同一个事物的二者特征在embedding空间里相近。</p>
+<p>just like 哲学就是哲学家的历史，从paper publication
+history看一下vla/vlm的区别和发展。don't be fooled by 高大上的名词。</p>
+<h1 id="vlm"><strong>VLM</strong></h1>
+<h1 id="vlm的定义"><strong>VLM的定义</strong></h1>
+<p>多模态模型处理一种类型以上的输入，比如vision+text
+models。下面说的大概是研究多模态的一种，比如vision language
+models.需要理解和处理image和text的信息。相关的任务比如image
+captioning(e.g.CLIP), visual question
+answering(GPT-4-vision)，text-to-image(e.g.DALL-E)，或者text-to-video
+generation(sora).</p>
+<h1 id="vlm的结构"><strong>VLM的结构</strong></h1>
+<p>VLM的结构在于如何融合视觉和文本模态，不同的架构会在早期阶段、中间阶段或者最后阶段进行信息的融合或者对齐。有很多种，可以看看几种最常见的：</p>
+<h2 id="llavalarge-language-and-vision-assistant"><strong>LLaVA(Large
+Language and Vision Assistant)</strong></h2>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a6d6e809e475597e6c83b7a5467cc1b9b1b1cf35b05de7367edf29a23485286baa512d4ecd6a23dc66c64adc2a3bc0c83.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>图像经过clip并投影到embedding
+vectors，文本通过文本模型产生相应的embedding
+vectors。处在相同的维度空间里，可以进一步无缝集成。</p>
+<p>在训练LLaVA模型中有两个阶段：</p>
+<p>1.pre-training for feature alignment.
+只有投影矩阵在数据集CC3M上进行更新。</p>
+<figure>
+<img
+src="https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e84d17910d9e7d63213bffcf9a87c1aab68c6fa978b73ce9d9bddef934264e90602517809c9a88bd1?tmpCode=b2bef226-f447-45ac-8fa7-2a6efc08cd77"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li>Fine-tuning End-to-End. 投影矩阵和LLM会在两个不同的场景进行更新：
+<ol type="1">
+<li>visual chat:LLaVA
+根据我们生成的多模式指令跟踪数据进行了微调，以适应日常面向用户的应用。</li>
+<li>Science QA:LLaVA 针对科学领域的多模态推理数据集进行了微调。</li>
+</ol></li>
+</ol>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c4ee39340545c1810032fdf6ec961d9b8280818ad1a39f1eb6c03bec04b3171c863a771ca118fcc80.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="llava-model的组成"><strong>LLaVA model的组成</strong></h3>
+<h4 id="vision-encoder"><strong>Vision Encoder</strong></h4>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a8169d9d9ddf3b83fb68af4e589ff4560e0af6934db815dd3d4873be65aacbe1f4f69c02138fa35209a0503d9106918e3.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>visual
+encoder将image划分为小的patches，比如16x16像素这样。每个patch被处理转换成数值形式，在送给image
+encoder;</p>
+<p>image
+enconder由多个blocks组成，主要目的是加强图像的视觉表示。包括feedforward
+layers,用来提取高层特征；attention layers关注图像的相关性.</p>
+<p>vision
+encoders的training目标是尽量减少images的向量表示和text描述的差异度。在训练期间，目标是开发一个模型，该模型能够将图像的嵌入转换为与文本紧密一致的表示。</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8968a78147832cebbe7366e02e12c7c3c233e5af64135f1de429bae9669baa2e10300bf43c4f2a3e7a4.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="embedding-models"><strong>Embedding Models</strong></h4>
+<p>Embeddings认为是tokens的密集数学表示(compact numerical
+representations).根源来自分布假设，相似位置的词语有相近的meanings.</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dfce406188c32a716b26e334a1b4675672c7cd1c938ecf5ad9e0005879e3da24024ad4d15891f4e49e.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="llava的推理"><strong>LLaVA的推理</strong></h3>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4af7ef46e557ff1e118f0fc5dee6617dc42b5443ede480f28923d2b3d49d7a1732db1f0c05db8c5a083.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>image和text都转换为embeddings之后，由attention决定关注哪一部分。</p>
+<h1 id="vla"><strong>VLA</strong></h1>
+<p>以RT-2为例</p>
+<h2 id="vla-model和vlm-model"><strong>VLA model和VLM model</strong></h2>
+<p>VLM模型是一种能处理visual和自然语言的机器学习模型，VLM
+是在互联网规模的图像和文本数据上进行训练的。比如RT-2中用到的base VLA
+model:PaLI-X PaLM-E</p>
+<p>RT-2提出了一种方法将预训练的VLA
+model用在机器人轨迹数据上，其中机器人轨迹数据用文本形式进行编码。</p>
+<h2 id="rt-2-model"><strong>RT-2 model</strong></h2>
+<p>将机器人的轨迹数据编码为text tokens，对vla模型进行fine tune.</p>
+<h2 id="效果"><strong>效果</strong></h2>
+<h3 id="泛化性"><strong>泛化性</strong></h3>
+<p>这项研究的一项重要发现是 RT-2
+模型令人印象深刻的泛化能力。该模型在处理新物体、背景和环境时展现出显著提升的性能。它可以解读机器人训练数据中未曾出现的命令，并根据用户指令进行基本的推理。这种推理能力源于底层语言模型运用思维链推理的能力。该模型的推理能力示例包括：判断哪个物体（石头）可以用来做临时锤子，或者哪种饮料最适合疲惫的人（能量饮料）。这种程度的泛化能力是机器人控制领域的一大进步。</p>
+<h3 id="新兴能力"><strong>新兴能力</strong></h3>
+<p>RT-2
+模型的另一个令人兴奋的方面是它展现出的涌现能力。通过利用从互联网规模预训练中获得的知识，该模型可以执行训练期间未明确传授的任务。例如，它可以重新利用已学技能，将物体放置在语义指示的位置附近，或解释物体之间的关系，以确定拾取哪个物体以及将其放置在何处。例如，诸如“捡起即将从桌子上掉下来的袋子”或“将香蕉移动到二加一的和”（均如图
+1
+所示）之类的命令——要求机器人对机器人数据中从未见过的物体或场景执行操作任务——需要从基于网络的数据中转化而来的知识才能运行。这些涌现能力展示了
+VLA
+模型在将知识从网络规模数据迁移到现实世界机器人控制方面的强大能力。</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e3a45c6badaef44ca130f2aa95930983137950b62161dc0f419c48d2d743c40903620870ff0d76157.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="消融实验"><strong>消融实验</strong></h3>
+<p>该研究论文还将 RT-2
+模型的性能与多个基线模型进行了比较。结果表明，RT-2
+在泛化能力和涌现能力方面均优于基线模型。此外，论文还探讨了模型规模和训练策略对泛化性能的影响。结果发现，更大的模型以及与网络数据协同微调可以带来更好的泛化性能。</p>
+<h3 id="缺点"><strong>缺点</strong></h3>
+<p>虽然 RT-2 模型展现出巨大的潜力，但仍存在一些局限性。实时运行大型 VLA
+模型的计算成本很高，需要开展更多研究来优化其推理速度。此外，目前可用于微调的开源
+VLM 模型数量有限。未来的研究应侧重于开发实现更高频率控制的技术，并使更多
+VLM 模型可用于训练 VLA 模型。</p>
+<h1 id="参考文献"><strong>参考文献：</strong></h1>
+<p>https://medium.com/<span class="citation"
+data-cites="aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07">@aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07</span></p>
+<p>https://alinlab.kaist.ac.kr/ai602_2024_fall.html</p>
+<p>https://alinlab.kaist.ac.kr/ai602_2025_spring.html</p>
+<p>https://medium.com/black-coffee-robotics/vision-language-action-vla-models-llms-for-robots-f60ba0b79579</p>
+<p>https://medium.com/<span class="citation"
+data-cites="LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249">@LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/27/RL-Basic/" rel="prev" title="RL-Basic">
+      <i class="fa fa-chevron-left"></i> RL-Basic
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vlm"><span class="nav-number">1.</span> <span class="nav-text">VLM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vlm%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">VLM的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vlm%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">VLM的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#llavalarge-language-and-vision-assistant"><span class="nav-number">3.1.</span> <span class="nav-text">LLaVA(Large
+Language and Vision Assistant)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#llava-model%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">3.1.1.</span> <span class="nav-text">LLaVA model的组成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vision-encoder"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">Vision Encoder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#embedding-models"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">Embedding Models</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#llava%E7%9A%84%E6%8E%A8%E7%90%86"><span class="nav-number">3.1.2.</span> <span class="nav-text">LLaVA的推理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vla"><span class="nav-number">4.</span> <span class="nav-text">VLA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vla-model%E5%92%8Cvlm-model"><span class="nav-number">4.1.</span> <span class="nav-text">VLA model和VLM model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rt-2-model"><span class="nav-number">4.2.</span> <span class="nav-text">RT-2 model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">4.3.</span> <span class="nav-text">效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%9B%E5%8C%96%E6%80%A7"><span class="nav-number">4.3.1.</span> <span class="nav-text">泛化性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%85%B4%E8%83%BD%E5%8A%9B"><span class="nav-number">4.3.2.</span> <span class="nav-text">新兴能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E8%9E%8D%E5%AE%9E%E9%AA%8C"><span class="nav-number">4.3.3.</span> <span class="nav-text">消融实验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">4.3.4.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

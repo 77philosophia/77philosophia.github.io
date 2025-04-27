@@ -145,6 +145,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/08/BaiduApi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/08/BaiduApi/" class="post-title-link" itemprop="url">matlab调用百度API获取两地运输距离</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-08 22:21:10" itemprop="dateCreated datePublished" datetime="2020-08-08T22:21:10+08:00">2020-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 23:24:34" itemprop="dateModified" datetime="2024-05-20T23:24:34+08:00">2024-05-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="matlab调用百度api获取两地运输距离">matlab调用百度API获取两地运输距离</h1>
+<p>1、
+首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。</p>
+<p>2、 获取距离的函数用python写的，<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/article/details/81098724">python版本获取距离</a>。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiduDistanceClass():</span><br><span class="line">    def __init__ (self,s1,s2,t1,t2):</span><br><span class="line">        self.s1 = str(s1)</span><br><span class="line">        self.s2 = str(s2)</span><br><span class="line">        self.t1 = str(t1)</span><br><span class="line">        self.t2 = str(t2)</span><br><span class="line">        </span><br><span class="line">    def getDistance(self):</span><br><span class="line">        a1=r&quot;http://api.map.baidu.com/routematrix/v2/driving?output=json&quot;</span><br><span class="line">        a2=r&quot;&amp;origins=&quot;+self.s1+&quot;,&quot;+self.s2</span><br><span class="line">        a3=r&quot;&amp;destinations=&quot;+self.t1+&quot;,&quot;+self.t2</span><br><span class="line">        a4=r&quot;&amp;coord_type=wgs84&quot;</span><br><span class="line">        a5=r&quot;&amp;tactics=11&quot;</span><br><span class="line">        a6=r&quot;&amp;ak=your_key&quot;</span><br><span class="line">        url=a1+a2+a3+a4+a5+a6</span><br><span class="line">        </span><br><span class="line">        b = urlopen(url)</span><br><span class="line">        c=b.read()</span><br><span class="line">        result = json.loads(c)</span><br><span class="line">        return result[&quot;result&quot;][0][&quot;distance&quot;][&quot;value&quot;]/1000</span><br></pre></td></tr></table></figure>
+<p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a
+target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
+<p><img src="/2020/08/08/BaiduApi/pyversion.png" /></p>
+<p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个"助教"目录下。</p>
+<p><img src="/2020/08/08/BaiduApi/目录.png" /></p>
+<p>接下来你就可以在matlab里面调用python函数了。创建一个python类：</p>
+<p><img src="/2020/08/08/BaiduApi/python.png" /></p>
+<p>调用函数得到距离。这里s1,s2是源地点的纬度，经度；t1,t2是目标地点的纬度，经度。我这里测试用的上海和北京并在高德地图上面验证符合。</p>
+<p><img src="/2020/08/08/BaiduApi/distance.png" /></p>
+<p>注意这里得到的是公里，因为程序除了1000，API直接返回的是米，如果要以米为单位可以不除。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/17/Object-Detection-Review/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -525,7 +606,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
