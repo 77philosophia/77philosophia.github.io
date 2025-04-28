@@ -20,15 +20,19 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Garfield&#39;s blog">
-<meta property="og:url" content="http://77philosophia.github.io/archives/2019/12/index.html">
+  <meta name="description" content="ubuntu安装Nvidia显卡驱动之后没有network https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_44286126&#x2F;article&#x2F;details&#x2F;131455726 排查思路： 1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg 查看新旧镜像是否有安装包的差异。  原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu-nvidia-driver-noNetwork">
+<meta property="og:url" content="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="ubuntu安装Nvidia显卡驱动之后没有network https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_44286126&#x2F;article&#x2F;details&#x2F;131455726 排查思路： 1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg 查看新旧镜像是否有安装包的差异。  原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-04-28T09:56:37.000Z">
+<meta property="article:modified_time" content="2025-04-28T10:08:15.854Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://77philosophia.github.io/archives/2019/12/">
+<link rel="canonical" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
 
 
 <script id="page-configurations">
@@ -36,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Garfield's blog</title>
+  <title>ubuntu-nvidia-driver-noNetwork | Garfield's blog</title>
   
 
 
@@ -139,71 +143,88 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">OK! 36 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ubuntu-nvidia-driver-noNetwork
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-04-28 17:56:37 / Modified: 18:08:15" itemprop="dateCreated datePublished" datetime="2025-04-28T17:56:37+08:00">2025-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2019</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-12-17T22:35:15+08:00"
-              content="2019-12-17">
-          12-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/12/17/Object-Detection-Review/" itemprop="url">
-            <span itemprop="name">Object-Detection-Review</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-12-06T22:36:37+08:00"
-              content="2019-12-06">
-          12-06
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/12/06/paper-diggingInto/" itemprop="url">
-            <span itemprop="name">paper-diggingInto</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h1
+id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡驱动之后没有network</h1>
+<p>https://blog.csdn.net/weixin_44286126/article/details/131455726</p>
+<p>排查思路：</p>
+<p>1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg
+查看新旧镜像是否有安装包的差异。</p>
+<ol start="2" type="1">
+<li>原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。</li>
+</ol>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/27/VLM-VLA/" rel="prev" title="VLM-VLA">
+      <i class="fa fa-chevron-left"></i> VLM-VLA
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/28/macos-install-zerotier-cannot-launch/" rel="next" title="macos-install-zerotier-cannot-launch">
+      macos-install-zerotier-cannot-launch <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -256,6 +277,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ubuntu%E5%AE%89%E8%A3%85nvidia%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E4%B9%8B%E5%90%8E%E6%B2%A1%E6%9C%89network"><span class="nav-number">1.</span> <span class="nav-text">ubuntu安装Nvidia显卡驱动之后没有network</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
