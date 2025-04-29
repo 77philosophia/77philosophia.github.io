@@ -20,21 +20,21 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="背景： Vision-language pre-training,将视觉和语言的只是结合起来。但是模型通常高cost，因为需要端到端训练vison和language模型(通常用transformers)。因此需要一种更不复杂的vision-language模型，不需要端到端的训练，于是BLIP-2就产生了。 BLIP-2: Bootstrapping Language-Image Pre-trai">
+  <meta name="description" content="linux开发环境配置 1.安装ubuntu 2.安装Nvidia driver 3.zerotier用于远程连接(同时安装向日葵以防万一) 4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chencarl&#x2F;p&#x2F;16824387.html 为了展示 Agnoster 主">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Blip-2">
-<meta property="og:url" content="http://77philosophia.github.io/2025/01/05/Blip-2/index.html">
+<meta property="og:title" content="linux-settings">
+<meta property="og:url" content="http://77philosophia.github.io/2025/04/29/linux-settings/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="背景： Vision-language pre-training,将视觉和语言的只是结合起来。但是模型通常高cost，因为需要端到端训练vison和language模型(通常用transformers)。因此需要一种更不复杂的vision-language模型，不需要端到端的训练，于是BLIP-2就产生了。 BLIP-2: Bootstrapping Language-Image Pre-trai">
+<meta property="og:description" content="linux开发环境配置 1.安装ubuntu 2.安装Nvidia driver 3.zerotier用于远程连接(同时安装向日葵以防万一) 4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chencarl&#x2F;p&#x2F;16824387.html 为了展示 Agnoster 主">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://77philosophia.github.io/2025/01/05/Blip-2/image-20250105163736925.png">
-<meta property="article:published_time" content="2025-01-05T08:31:01.000Z">
-<meta property="article:modified_time" content="2025-01-05T08:38:22.761Z">
+<meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429143912288.png">
+<meta property="article:published_time" content="2025-04-29T02:16:52.000Z">
+<meta property="article:modified_time" content="2025-04-29T06:39:39.506Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://77philosophia.github.io/2025/01/05/Blip-2/image-20250105163736925.png">
+<meta name="twitter:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429143912288.png">
 
-<link rel="canonical" href="http://77philosophia.github.io/2025/01/05/Blip-2/">
+<link rel="canonical" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
 
 
 <script id="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>Blip-2 | Garfield's blog</title>
+  <title>linux-settings | Garfield's blog</title>
   
 
 
@@ -152,7 +152,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/Blip-2/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -165,7 +165,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Blip-2
+          linux-settings
         </h1>
 
         <div class="post-meta">
@@ -176,7 +176,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2025-01-05 16:31:01 / Modified: 16:38:22" itemprop="dateCreated datePublished" datetime="2025-01-05T16:31:01+08:00">2025-01-05</time>
+              <time title="Created: 2025-04-29 10:16:52 / Modified: 14:39:39" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
             </span>
 
           
@@ -190,32 +190,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="背景">背景：</h3>
-<p><strong>Vision-language
-pre-training,</strong>将视觉和语言的只是结合起来。但是模型通常高<strong>cost</strong>，因为需要端到端训练<strong>vison</strong>和<strong>language</strong>模型<strong>(</strong>通常用<strong>transformers)</strong>。因此需要一种更不复杂的<strong>vision-language</strong>模型，不需要端到端的训练，于是<strong>BLIP-2</strong>就产生了。</p>
-<h3
-id="blip-2-bootstrapping-language-image-pre-training-with-frozen-image-encoders-and-large-language-models"><strong>BLIP-2:
-Bootstrapping Language-Image Pre-training with Frozen Image Encoders and
-Large Language Models</strong></h3>
-<p>作者采用了一个轻量级的<strong>querying
-transfomer</strong>结构作为<strong>frozen image</strong>和<strong>text
-encoders</strong>的<strong>bottleneck.</strong>首先用<strong>image
-encoder</strong>提取图像特征，然后送给语言模型去理解。但是语言模型没有在<strong>image</strong>上面训练过，因此它无法直接理解这些视觉表示。为了解决这个问题，<strong>Q-Former</strong>采用一些可学习的<strong>querying
-vectors</strong>，在两个阶段进行预训练；</p>
-<p>（1）vision-language representation learning with a frozen image
-encoder</p>
-<ol start="2" type="1">
-<li>vision-to-language generative learning stage with a frozen text
-encoder</li>
-</ol>
+        <h1 id="linux开发环境配置">linux开发环境配置</h1>
+<p>1.安装ubuntu</p>
+<p>2.安装Nvidia driver</p>
+<p>3.zerotier用于远程连接(同时安装向日葵以防万一)</p>
+<p>4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster;</p>
+<p>https://www.cnblogs.com/chencarl/p/16824387.html</p>
+<p>为了展示 <strong>Agnoster</strong> 主题提示符里的三角形，需要
+<strong>Powerline</strong> 字体库的支持。</p>
+<p>https://zhuanlan.zhihu.com/p/62419420</p>
+<p>5.tmux进行管理</p>
+<p>6.安装miniconda并把路径加入到zshrc的配置文件里。</p>
 <figure>
-<img src="/2025/01/05/Blip-2/image-20250105163736925.png"
-alt="image-20250105163736925" />
-<figcaption aria-hidden="true">image-20250105163736925</figcaption>
+<img src="/2025/04/29/linux-settings/image-20250429143912288.png"
+alt="image-20250429143912288" />
+<figcaption aria-hidden="true">image-20250429143912288</figcaption>
 </figure>
-<p>Q-Former包括两个子模块：</p>
-<p>a.一个image transformer和frozen image encoder交互。</p>
-<p>b.一个</p>
+<p>https://www.cnblogs.com/xingnie/p/16269190.html</p>
 
     </div>
 
@@ -231,13 +222,10 @@ alt="image-20250105163736925" />
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/01/05/webui-api/" rel="prev" title="webui用api跑图">
-      <i class="fa fa-chevron-left"></i> webui用api跑图
+    <a href="/2025/04/28/macos-install-zerotier-cannot-launch/" rel="prev" title="macos-install-zerotier-cannot-launch">
+      <i class="fa fa-chevron-left"></i> macos-install-zerotier-cannot-launch
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/01/05/prompt-engineering/" rel="next" title="Prompt Design and Engineering">
-      Prompt Design and Engineering <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -296,9 +284,7 @@ alt="image-20250105163736925" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#blip-2-bootstrapping-language-image-pre-training-with-frozen-image-encoders-and-large-language-models"><span class="nav-number">2.</span> <span class="nav-text">BLIP-2:
-Bootstrapping Language-Image Pre-training with Frozen Image Encoders and
-Large Language Models</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">linux开发环境配置</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

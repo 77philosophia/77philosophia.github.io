@@ -145,6 +145,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/29/linux-settings/" class="post-title-link" itemprop="url">linux-settings</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-04-29 10:16:52 / Modified: 14:39:39" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="linux开发环境配置">linux开发环境配置</h1>
+<p>1.安装ubuntu</p>
+<p>2.安装Nvidia driver</p>
+<p>3.zerotier用于远程连接(同时安装向日葵以防万一)</p>
+<p>4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster;</p>
+<p>https://www.cnblogs.com/chencarl/p/16824387.html</p>
+<p>为了展示 <strong>Agnoster</strong> 主题提示符里的三角形，需要
+<strong>Powerline</strong> 字体库的支持。</p>
+<p>https://zhuanlan.zhihu.com/p/62419420</p>
+<p>5.tmux进行管理</p>
+<p>6.安装miniconda并把路径加入到zshrc的配置文件里。</p>
+<figure>
+<img src="/2025/04/29/linux-settings/image-20250429143912288.png"
+alt="image-20250429143912288" />
+<figcaption aria-hidden="true">image-20250429143912288</figcaption>
+</figure>
+<p>https://www.cnblogs.com/xingnie/p/16269190.html</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/macos-install-zerotier-cannot-launch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1855,132 +1930,6 @@ alt="image-20250107192257067" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/comfyui-env/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/07/comfyui-env/" class="post-title-link" itemprop="url">comfyui环境搭建+问题记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-07 19:15:27 / Modified: 19:19:41" itemprop="dateCreated datePublished" datetime="2025-01-07T19:15:27+08:00">2025-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="环境安装">环境安装</h3>
-<ol type="1">
-<li><p>import torchaudio的时候报错“undefined symbol”</p>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191646057.png"
-alt="image-20250107191646057" />
-<figcaption aria-hidden="true">image-20250107191646057</figcaption>
-</figure></li>
-</ol>
-<p>推测还是版本不兼容，按照下面这个博客的版本进行安装</p>
-<p><strong>pip install torch==2.1.0</strong></p>
-<p><strong>pip install torchvision==0.16.0</strong></p>
-<p><strong>pip install torchaudio==2.1.0</strong></p>
-<p><strong>https://blog.csdn.net/qq_45599476/article/details/140207176</strong></p>
-<p>再次启动就好了</p>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191710761.png"
-alt="image-20250107191710761" />
-<figcaption aria-hidden="true">image-20250107191710761</figcaption>
-</figure>
-<ol start="2" type="1">
-<li><p>在点击Queue Prompt出图的时候报错</p>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191754873.png"
-alt="image-20250107191754873" />
-<figcaption aria-hidden="true">image-20250107191754873</figcaption>
-</figure></li>
-</ol>
-<p>现这个工程中<strong>xformers</strong>也没有成功运行。</p>
-<p><strong>https://github.com/comfyanonymous/ComfyUI/issues/4870</strong></p>
-<p><strong>The torch repo has a release wheel of xformers that works
-with torch 2.4.1</strong></p>
-<p><strong>pip3 install -U xformers --index-url</strong>
-<strong>https://download.pytorch.org/whl/cu124</strong> <strong>should
-pull</strong></p>
-<p>*<strong>0.0.28.post1*</strong></p>
-<p><strong>https://pytorch.org/get-started/previous-versions/</strong></p>
-<p>解决还是变包：</p>
-<p><strong>pip install torch==2.4.1</strong></p>
-<p><strong>Pip install torchvision==0.19.1</strong></p>
-<p><strong>Pip install torchaudio==2.4.1</strong></p>
-<p><strong>pip3 install -U xformers --index-url</strong>
-<strong>https://download.pytorch.org/whl/cu124</strong> <strong>should
-pull</strong></p>
-<p>*<strong>0.0.28.post1*</strong></p>
-<p>成功出图</p>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191854078.png"
-alt="image-20250107191854078" />
-<figcaption aria-hidden="true">image-20250107191854078</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191903222.png"
-alt="image-20250107191903222" />
-<figcaption aria-hidden="true">image-20250107191903222</figcaption>
-</figure>
-<h3 id="测试">测试：</h3>
-<p>安装和sd跑同一个prompt</p>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191927650.png"
-alt="image-20250107191927650" />
-<figcaption aria-hidden="true">image-20250107191927650</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191936508.png"
-alt="image-20250107191936508" />
-<figcaption aria-hidden="true">image-20250107191936508</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2050,7 +1999,7 @@ alt="image-20250107191936508" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
