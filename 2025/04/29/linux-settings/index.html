@@ -28,8 +28,10 @@
 <meta property="og:description" content="linux开发环境配置 1.安装ubuntu 2.安装Nvidia driver 3.zerotier用于远程连接(同时安装向日葵以防万一) 4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chencarl&#x2F;p&#x2F;16824387.html 为了展示 Agnoster 主">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429143912288.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429145219288.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429145236438.png">
 <meta property="article:published_time" content="2025-04-29T02:16:52.000Z">
-<meta property="article:modified_time" content="2025-04-29T06:39:39.506Z">
+<meta property="article:modified_time" content="2025-05-06T02:24:41.602Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429143912288.png">
@@ -174,10 +176,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-04-29 10:16:52 / Modified: 14:39:39" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
+              <time title="Created: 2025-04-29 10:16:52" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-05-06 10:24:41" itemprop="dateModified" datetime="2025-05-06T10:24:41+08:00">2025-05-06</time>
+              </span>
 
           
 
@@ -207,6 +215,29 @@ alt="image-20250429143912288" />
 <figcaption aria-hidden="true">image-20250429143912288</figcaption>
 </figure>
 <p>https://www.cnblogs.com/xingnie/p/16269190.html</p>
+<p>完了要执行conda init，简单的让conda配置在zshrc的方法（有时候conda
+init默认更新了bashrc，不用拷贝设置到zshrc）</p>
+<figure>
+<img src="/2025/04/29/linux-settings/image-20250429145219288.png"
+alt="image-20250429145219288" />
+<figcaption aria-hidden="true">image-20250429145219288</figcaption>
+</figure>
+<p>Conda init zsh即可(因为我已经执行过了，所以是no change)</p>
+<figure>
+<img src="/2025/04/29/linux-settings/image-20250429145236438.png"
+alt="image-20250429145236438" />
+<figcaption aria-hidden="true">image-20250429145236438</figcaption>
+</figure>
+<p>7.远程服务器免密码连接：</p>
+<p>7.1 复制本地公钥文件到远程服务器</p>
+<p>先看.ssh文件夹下面是否有生成好的密钥文件</p>
+<p>ssh-copy-id -i ~/.ssh/id_ed25519.pub username@ip</p>
+<p>此时可以通过ssh username@ip直接登陆不需要输入密码。</p>
+<p>7.2 通过<strong><code>~/.ssh/config</code></strong> 简化连接</p>
+<p>nano ~/.ssh/config</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host server1</span><br><span class="line">    HostName 192.168.1.100</span><br><span class="line">    User root</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line"></span><br><span class="line">Host server2</span><br><span class="line">    HostName example.com</span><br><span class="line">    User admin</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line">    Port 2222  # 如果SSH端口不是默认的22</span><br></pre></td></tr></table></figure>
+<p>之后就可以直接用别名登录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh server1  # 代替 ssh root@192.168.1.100</span><br><span class="line">ssh server2  # 代替 ssh -p 2222 admin@example.com</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -225,7 +256,10 @@ alt="image-20250429143912288" />
     <a href="/2025/04/28/macos-install-zerotier-cannot-launch/" rel="prev" title="macos-install-zerotier-cannot-launch">
       <i class="fa fa-chevron-left"></i> macos-install-zerotier-cannot-launch
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2025/05/06/http-proxy/" rel="next" title="http_proxy">
+      http_proxy <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -298,7 +332,7 @@ alt="image-20250429143912288" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
