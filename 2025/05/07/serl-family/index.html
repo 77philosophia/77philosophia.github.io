@@ -40,8 +40,14 @@
 <meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250507171917083.png">
 <meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250507173132208.png">
 <meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250507173637912.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250508113632106.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250508114359129.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250508114359129.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250508140805366.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250508142437272.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250508142453433.png">
 <meta property="article:published_time" content="2025-05-07T02:23:26.000Z">
-<meta property="article:modified_time" content="2025-05-07T09:40:47.453Z">
+<meta property="article:modified_time" content="2025-05-08T06:24:55.977Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://77philosophia.github.io/2025/05/07/serl-family/image-20250507171443384.png">
@@ -186,10 +192,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-05-07 10:23:26 / Modified: 17:40:47" itemprop="dateCreated datePublished" datetime="2025-05-07T10:23:26+08:00">2025-05-07</time>
+              <time title="Created: 2025-05-07 10:23:26" itemprop="dateCreated datePublished" datetime="2025-05-07T10:23:26+08:00">2025-05-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-05-08 14:24:55" itemprop="dateModified" datetime="2025-05-08T14:24:55+08:00">2025-05-08</time>
+              </span>
 
           
 
@@ -309,6 +321,147 @@ alt="image-20250507173637912" />
 <p>可以放到后面的分享当中。</p>
 </blockquote>
 <h1 id="hil-serl">hil-serl</h1>
+<h2 id="url-1">URL</h2>
+<p>项目主页：https://hil-serl.github.io/</p>
+<p>Paper:https://hil-serl.github.io/static/hil-serl-paper.pdf</p>
+<p>Code: https://github.com/rail-berkeley/hil-serl</p>
+<h2 id="tldr-1">TL；DR</h2>
+<p>验证了经过精细的系统设计，RL算法可以解决一系列灵巧复杂的基于视觉的manipulation任务；</p>
+<p>第一个实现双臂的、image inputs、RL在真实世界处理类似组装timing
+belt的任务。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>和serl不同的：</p>
+<p>1.加入了人类的修正（learn form mistakes）</p>
+<p>2.serl关注简单的任务，也没有涉及双臂的操作。hil-serl聚焦基于视觉的更复杂的manipulation.</p>
+</blockquote>
+<h2 id="methods">Methods</h2>
+<h3 id="问题拆解和定义">1.问题拆解和定义</h3>
+<figure>
+<img src="/2025/05/07/serl-family/image-20250508113632106.png"
+alt="image-20250508113632106" />
+<figcaption aria-hidden="true">image-20250508113632106</figcaption>
+</figure>
+<p>涉及到的关键点是observation space S和action
+space的选择，比如cameras的组合，本体的状态，相应的robot底层控制器的选择。</p>
+<p>针对paper里面的任务：</p>
+<p>1.作者的reward
+function选择了一种稀疏的function：二分类，决定任务是否成功；</p>
+<p>2.RLPD算法（sample
+effenciency和整合先验数据进行训练的能力）：每次训练从prior
+data和on-policy data各采一半数据。</p>
+<h3 id="系统结构">2.系统结构</h3>
+<ul>
+<li><p>Actor process：在robot上执行policy,把数据发送给replay
+buffer</p></li>
+<li><p>learner process:</p></li>
+<li><p>Replay buffers（2）: demo buffer存储离线的人类演示；RL
+buffer存储on-policy data</p></li>
+<li><p>environment:处理各种环境输入：cameras,鼠标操作、各种控制器。</p>
+<p>Learner
+process从两个buffers里面采样，通过RLPD算法更新策略，阶段性将策略发送给actor
+process去执行。</p></li>
+</ul>
+<figure>
+<img src="/2025/05/07/serl-family/image-20250508114359129.png"
+alt="image-20250508114359129" />
+<figcaption aria-hidden="true">image-20250508114359129</figcaption>
+</figure>
+<h3 id="系统设计">3. 系统设计</h3>
+<ul>
+<li>pretrained vision backbones: 对输入的图像进行encode</li>
+<li>reward function:
+训练了一个二分类的分类器,任务完成给奖励1，其它step奖励为0。</li>
+<li>下游的robotic system:
+一个是用ego-centric的坐标系描述；另外安全性方面控制器阻抗控制 +
+限幅，开环控制已经足够。</li>
+<li>Gripper control: 增加了一个critic
+network对夹爪的动作进行离散化（open, close, stay）.简而言之，训练两个MDP
+task，一个action空间用连续的action space, 一个用离散化的action
+space。根据训练方法（DQN），推理的时候从M1中取出连续的actions描述，然后从critic
+network里面查询离散化的M2的action.</li>
+</ul>
+<h3 id="人在回路的强化学习">4. 人在回路的强化学习</h3>
+<h4
+id="rl的样本复杂度sample-complexity">1.<strong>RL的样本复杂度（Sample
+Complexity）</strong></h4>
+<ul>
+<li><strong>定义</strong>：学习最优策略所需的环境交互样本量，受以下因素影响：
+<ol type="1">
+<li><strong>状态/动作空间的维度</strong>（Cardinality of state/action
+spaces）：
+<ul>
+<li>高维空间（如机械臂的连续状态+多传感器输入）需要更多样本覆盖。</li>
+</ul></li>
+<li><strong>任务时间跨度</strong>（Task horizon）：
+<ul>
+<li>长周期任务（如多步骤装配）需更长的轨迹探索。</li>
+</ul></li>
+<li><strong>探索策略</strong>（Exploration policy）：
+<ul>
+<li>不充分的探索会导致策略陷入局部最优。</li>
+</ul></li>
+</ol></li>
+</ul>
+<h4 id="解决方案human-in-the-loop-hitl">2.解决方案：Human-in-the-Loop
+(HITL)**</h4>
+<p>核心思想</p>
+<ul>
+<li><strong>人类干预加速学习</strong>：
+通过人类提供实时反馈（如动作修正、奖励调整、示范数据），<strong>直接引导探索方向</strong>，减少无效样本。</li>
+<li><strong>理论依据</strong>：
+人类先验知识可缩小策略搜索空间，降低样本复杂度。</li>
+</ul>
+<ol start="3" type="1">
+<li><p>在看一次这张图，人可以在t0到tN的中间时刻干预，用人类干预的action替换robot
+policy的action.把数据同时存储在两个buffers中，但是策略转换只存储在RL
+buffers中。</p>
+<p>简而言之：robot表现差的时候人工就干预；</p>
+<p>实验发现，开始阶段人工频繁干预，后面可以干预的越来越少。</p></li>
+</ol>
+<figure>
+<img src="/2025/05/07/serl-family/image-20250508114359129.png"
+alt="image-20250508114359129" />
+<figcaption aria-hidden="true">image-20250508114359129</figcaption>
+</figure>
+<h4 id="训练过程">5. 训练过程</h4>
+<figure>
+<img src="/2025/05/07/serl-family/image-20250508140805366.png"
+alt="image-20250508140805366" />
+<figcaption aria-hidden="true">image-20250508140805366</figcaption>
+</figure>
+<ul>
+<li>相机的选择：wrist cameras(基于ego-centric views的选择)+side
+cameras(拍摄到整个ROI)</li>
+<li>训练reward classifier: 10 trajectories x 10s/条</li>
+<li>准备offline demo replay buffer： 20～30trajectories</li>
+<li>训练中注意人工干预不要过度，避免过拟合</li>
+</ul>
+<h2 id="results">Results</h2>
+<figure>
+<img src="/2025/05/07/serl-family/image-20250508142437272.png"
+alt="image-20250508142437272" />
+<figcaption aria-hidden="true">image-20250508142437272</figcaption>
+</figure>
+<h5 id="任务">1. 任务</h5>
+<figure>
+<img src="/2025/05/07/serl-family/image-20250508142453433.png"
+alt="image-20250508142453433" />
+<figcaption aria-hidden="true">image-20250508142453433</figcaption>
+</figure>
+<ul>
+<li>主板组装任务：内存插入、SSD组装、USB插入、电缆夹紧</li>
+<li>宜家组装任务：侧面板组装、上面板组装</li>
+<li>汽车仪表器组装、物体传递、履带组装、叠叠乐抽取、物体翻转</li>
+</ul>
+<h5 id="findings">2. findings</h5>
+<ul>
+<li><p>HIL-SERL在几乎所有任务中，在1到2.5小时的真实世界训练中实现了100%的成功率，完成任务时间也更短。</p></li>
+<li><p>从零开始的RL，没有任何演示或纠正，在所有任务上成功率为0%</p></li>
+<li><p>为了验证在线人类纠正的重要性，作者将SERL的离线缓冲区中的演示数量增加了十倍，从通常的20增加到200
+(HIL-SERL no
+itv)。然而，没有任何在线纠正，这种方法的成功率显著低于HIL-SERL，包括在复杂任务如汽车仪表板组装中的完全失败（0%成功率）。这证实了在线纠正在促进策略学习中的关键作用。这些结果证实了离线演示和策略学习指导中在策略学习中的关键作用，尤其是对于需要持续反应行为的复杂操作任务。</p></li>
+</ul>
 
     </div>
 
@@ -392,7 +545,9 @@ alt="image-20250507173637912" />
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#serl-a-software-suite-for-sample-efficient-robotic-reinforcement-learning"><span class="nav-number">1.</span> <span class="nav-text">SERL:
 A Software Suite for Sample-Efficient Robotic Reinforcement
 Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#url"><span class="nav-number">1.1.</span> <span class="nav-text">URL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-number">1.2.</span> <span class="nav-text">TL;DR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#show-case"><span class="nav-number">1.3.</span> <span class="nav-text">Show case</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pcb"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">pcb:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%B5%E7%BC%86%E5%B8%83%E7%BA%BF"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">电缆布线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%A9%E4%BD%93%E6%8A%93%E5%8F%96"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">物体抓取：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#modelmethod"><span class="nav-number">1.4.</span> <span class="nav-text">Model&amp;Method</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%AE%9A%E4%B9%89%E5%92%8C%E6%8B%86%E8%A7%A3"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">1. 问题定义和拆解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">2.核心的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rlpd%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.0.2.1.</span> <span class="nav-text">2.1 RLPD算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reward-function"><span class="nav-number">1.4.0.2.2.</span> <span class="nav-text">2.2 reward function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reset-free"><span class="nav-number">1.4.0.2.3.</span> <span class="nav-text">2.3 reset free</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">3. 软件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.4.0.4.</span> <span class="nav-text">4. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.4.0.4.1.</span> <span class="nav-text">4.1 控制器的设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BD%9Cobservation%E5%92%8Caction"><span class="nav-number">1.4.0.4.2.</span> <span class="nav-text">4.2
-相对坐标系作observation和action</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hil-serl"><span class="nav-number">2.</span> <span class="nav-text">hil-serl</span></a></li></ol></div>
+相对坐标系作observation和action</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hil-serl"><span class="nav-number">2.</span> <span class="nav-text">hil-serl</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#url-1"><span class="nav-number">2.1.</span> <span class="nav-text">URL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr-1"><span class="nav-number">2.2.</span> <span class="nav-text">TL；DR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#methods"><span class="nav-number">2.3.</span> <span class="nav-text">Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8B%86%E8%A7%A3%E5%92%8C%E5%AE%9A%E4%B9%89"><span class="nav-number">2.3.1.</span> <span class="nav-text">1.问题拆解和定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.系统结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.3.3.</span> <span class="nav-text">3. 系统设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%BA%E5%9C%A8%E5%9B%9E%E8%B7%AF%E7%9A%84%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.3.4.</span> <span class="nav-text">4. 人在回路的强化学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rl%E7%9A%84%E6%A0%B7%E6%9C%AC%E5%A4%8D%E6%9D%82%E5%BA%A6sample-complexity"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">1.RL的样本复杂度（Sample
+Complexity）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88human-in-the-loop-hitl"><span class="nav-number">2.3.4.2.</span> <span class="nav-text">2.解决方案：Human-in-the-Loop
+(HITL)**</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.4.3.</span> <span class="nav-text">5. 训练过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#results"><span class="nav-number">2.4.</span> <span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.4.0.0.1.</span> <span class="nav-text">1. 任务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#findings"><span class="nav-number">2.4.0.0.2.</span> <span class="nav-text">2. findings</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
