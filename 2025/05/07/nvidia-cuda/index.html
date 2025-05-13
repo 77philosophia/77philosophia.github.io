@@ -28,7 +28,7 @@
 <meta property="og:description" content="nvcc和Nvidia-smi 1. nvidia-smi（NVIDIA System Management Interface）  作用：监控和管理 NVIDIA GPU 设备。 功能：  查看 GPU 的实时状态（利用率、温度、功耗等）。 显示已安装的 GPU 驱动版本。 管理 GPU 进程（如杀死占用 GPU 的进程）。  使用场景：  检查 GPU 是否被识别。 监控深度学习训练时的 GP">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-07T03:25:48.000Z">
-<meta property="article:modified_time" content="2025-05-07T06:00:32.730Z">
+<meta property="article:modified_time" content="2025-05-08T08:45:17.326Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 
@@ -172,10 +172,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-05-07 11:25:48 / Modified: 14:00:32" itemprop="dateCreated datePublished" datetime="2025-05-07T11:25:48+08:00">2025-05-07</time>
+              <time title="Created: 2025-05-07 11:25:48" itemprop="dateCreated datePublished" datetime="2025-05-07T11:25:48+08:00">2025-05-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-05-08 16:45:17" itemprop="dateModified" datetime="2025-05-08T16:45:17+08:00">2025-05-08</time>
+              </span>
 
           
 
@@ -236,6 +242,21 @@ CUDA Compiler）</strong></h3>
 工具包版本</strong>。</li>
 </ul></li>
 </ul>
+<h2 id="实际经验">实际经验</h2>
+<ol type="1">
+<li>拿到一台服务器，先根据显卡型号安装最高版本的cuda driver，cuda
+driver里面会有一个cuda
+version,nvidia-smi显示的时候在右上角，是支持的最高版本的cuda
+toolkit.实际运行的时候决定的。此时还不代表什么runtime的实际含义。</li>
+<li>安装cuda toolkit https://docs.ksyun.com/documents/2591
+<ol type="1">
+<li>进入英伟达官网，选择对应的cuda版本（比如12.4,
+11.8之类的），下载runfile(local)，进行安装（注意不要重复选择安装已经安装的cuda
+driver）,只安装cuda toolkit即可。</li>
+<li>在zshrc中修改路径(注意新安装放在$PATH的前面还是后面)</li>
+<li>nvcc --version验证此时的cuda toolkit</li>
+</ol></li>
+</ol>
 
     </div>
 
@@ -319,7 +340,7 @@ CUDA Compiler）</strong></h3>
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nvcc%E5%92%8Cnvidia-smi"><span class="nav-number">1.</span> <span class="nav-text">nvcc和Nvidia-smi</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nvidia-sminvidia-system-management-interface"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.
 nvidia-smi（NVIDIA System Management
 Interface）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvccnvidia-cuda-compiler"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. nvcc（NVIDIA
-CUDA Compiler）</span></a></li></ol></li></ol></li></ol></div>
+CUDA Compiler）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E7%BB%8F%E9%AA%8C"><span class="nav-number">1.1.</span> <span class="nav-text">实际经验</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -333,7 +354,7 @@ CUDA Compiler）</span></a></li></ol></li></ol></li></ol></div>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

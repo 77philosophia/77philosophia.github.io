@@ -145,6 +145,313 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/lora-training-background/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/06/lora-training-background/" class="post-title-link" itemprop="url">一些lora训练的背景知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-06 23:23:29" itemprop="dateCreated datePublished" datetime="2025-01-06T23:23:29+08:00">2025-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-07 19:25:27" itemprop="dateModified" datetime="2025-01-07T19:25:27+08:00">2025-01-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="understanding-stable-diffusion-models">1. Understanding stable
+diffusion models</h3>
+<ul>
+<li><p>Stable diffusion 怎样理解concepts</p>
+<ul>
+<li>Stable
+diffusion已经有了大量的知识，如果我们训练lora,非常重要的就是理解和区分"New
+concepts"和"modified concepts"</li>
+<li>New concepts:这些是模型之前没遇到的或者是未充分体现</li>
+<li>Modified concepts:调整或者完善模型的现有理解</li>
+</ul></li>
+<li><p>lora种类：只用关注标准的就行。</p></li>
+<li><p>理解sd模型</p>
+<ul>
+<li><p>Latent
+space:一张512x512像素的图片大小是4x512x512，计算很耗费。因此一个解决方法是latent
+space.将数学上复杂的对象比如image转换为简单压缩的形式。</p></li>
+<li><p>一个做这种压缩过程的就是VAE,将图像压缩到它的latent
+space然后将其重建为原来的形式。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>In the case of Stable Diffusion,for an image of size 512x512, the VAE
+compresses it to 64x64x4 =16,384 values, making the process extremely
+more efficient.</p>
+</blockquote></li>
+<li><p>Text encoder, tokenizer and Embeddings</p>
+<ul>
+<li><p>kenizer将输入分词</p></li>
+<li><p>Text encoder将token编码成数字向量</p></li>
+<li><p>编码后的向量叫做embedding</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>Example:"Poiuytrezay",is encoded by the Text Encoder into "po
+#628","iu#14292","y #88","Tre #975"，“z #89”, "ay</w> #551",where the
+numbers represent the embedding ids within stable diffusion.</p>
+</blockquote></li>
+</ul></li>
+<li><p>Unet</p>
+<ul>
+<li><p>unet是一个关键部分，它mix embedding和latent-encoded图像into a
+mathematical soup 输出一个"noise" prediction.然后这个noise
+prediction会被removed
+from图像从而"denoise"it.训练lora的时候这也是train的主要部分，因为it is
+the one making prediction.</p>
+<figure>
+<img
+src="/2025/01/06/lora-training-background/image-20250106235503406.png"
+alt="image-20250106235503406" />
+<figcaption aria-hidden="true">image-20250106235503406</figcaption>
+</figure></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="训练的准备">2. 训练的准备</h3>
+<ul>
+<li><p>数据集</p>
+<ul>
+<li>“A bad apple spoils the bunch”</li>
+<li>Activation tags:特殊的触发词，
+prompt模型产生或者强调相应的视觉元素。</li>
+<li>The activation tag should be a unique tag that represents your
+concept/character/style and should be present as the FIRST element in
+the caption files of your dataset.</li>
+</ul></li>
+<li><p>Training script/UI</p>
+<ul>
+<li><p>各种训练脚本/ui都有相同的参数设置，只是会在部分features上有区别。</p></li>
+<li><p>理解Lora,Dreambooth和TI(text inversion)</p>
+<ul>
+<li>sd的模型用传统的fine-tune的技术可能会耗费大量资源，下面是一些替代的技术。
+<ul>
+<li>DreamBooth:与常规微调没有太大区别，但通常针对单个概念。与常规微调的主要区别在于事先保存。</li>
+<li>Textual inversion:创新新的嵌入帮助模型学习新关联</li>
+<li>LoRA:这是一种只修改模型权重的一小部分的技术。</li>
+<li>Pivotal Tuning:</li>
+<li>hypernetwork</li>
+</ul></li>
+</ul></li>
+<li><p>Base model for training</p>
+<ul>
+<li>总是用bf16/fp16 pruned模型用于训练</li>
+<li>用四种base model：NAI, SD1.5, SD2.1 SDXL
+<ul>
+<li>真实性：SD1.5，SD2.1, or SDXL(your choice)</li>
+<li>Anime/cartoon:NSI,SDXL</li>
+</ul></li>
+</ul></li>
+<li><p>Dreambooth</p>
+<ul>
+<li><p>简单解释：Dreambooth是一种微调AI模型部分内容（特别是unet和文本编码器）的方法，使用稀有标记和正则化图像来维护模型的现有知识。生成的Dreambooth模型是一个检查点。</p></li>
+<li><p>详细解释：文本到图像模型（如稳定扩散）最初在大量数据集上进行训练，以学习广泛的概念。这种初始训练形成了模型的“先验”<strong>——</strong>关于各种物体和想法（如不同的动物、车辆等）的基本知识。在这种情况下，引入新概念可能会很棘手。传统的微调（涉及根据新数据调整模型参数）可能会使模型忘记一些原始训练（称为“语言漂移”或“灾难性遗忘”).<strong>Dreambooth</strong>
+提供了一种解决方案，可以在添加新概念的同时，使用特定于类的先验保存和稀有标记来减轻模型先验知识的丢失。</p></li>
+<li><p>Regularization images/Class-specific prior preservation</p>
+<p>Dreambooth使用一种特殊方法来保持模型的原始知识不变。它涉及使用与新概念属于同一“类别”但已经是模型知识一部分的图像来训练模型。在这里，“类别”是指实体（如对象、概念或数据点）所属的广泛类别或组。</p>
+<p>例如，如果您正在教它关于特定类型的狗（例如金毛猎犬）的知识，您还包括使用初始模型生成的狗的一般图像。这有助于模型在学习新的特定类型时记住其关于狗的原始训练。</p></li>
+</ul></li>
+<li><p>Rare tokens</p>
+<ul>
+<li>在引入新概念时，<strong>Dreambooth</strong>
+建议使用不常见或罕见的标记 <strong>-</strong>
+模型不会与已知内容紧密关联的唯一标识符。由于它们先前的关联较弱，它将使语言漂移的影响较小（因为它将失去可能毫无意义的关联）
+。这可以防止新训练干扰模型的现有功能。此类标记的示例可能是：“<strong>olis</strong>”、“<strong>bnha</strong>”或“<strong>hta</strong>”。要用罕见标记表示新概念，您可以将罕见标记与类一起使用（例如“一个
+<strong>olis</strong> 女孩”，其中 <strong>olis</strong>
+可以是您想要训练的任何新角色） 。</li>
+</ul></li>
+<li><p>How Dreambooth apply to lora</p>
+<ul>
+<li><strong>LoRA</strong> 需要与现有的微调方法协同工作。最常用的方法是
+<strong>Dreambooth</strong> 和文本反转。但是，由于 <strong>LoRA</strong>
+与文本反转不兼容，因此它主要与 <strong>Dreambooth</strong> 结合使用。将
+<strong>LoRA</strong> 与<strong>Dreambooth</strong>
+结合使用的主要区别在于它如何改进模型：<strong>LoRA</strong>
+减少了需要调整的参数总数，并专注于微调模型的注意力层。这意味着它不会改变模型的整个单元和文本编码器。实际上，指导
+<strong>Dreambooth</strong> 的原则也适用于 <strong>LoRA</strong>。在
+<strong>LoRA</strong>
+训练中省略罕见的标记或正则化图像可能会导致“语言漂移”<strong>——</strong>模型开始失去其原始的训练准确性。虽然包含这些元素不是强制性的，但在训练期间注意这个潜在问题很重要。</li>
+</ul></li>
+</ul>
+<p>使用<strong>LoRA</strong> 时的一个关键挑战是有效地整合多个概念。一些
+<strong>LoRA</strong>
+模型最终会生成类似于其训练数据集中不同元素的拼贴图像（又称“拼贴画”）
+。最好的 <strong>LoRA</strong>
+不仅会生成高质量的图像，还会保留原始模型的广泛功能。例如，如果您要针对特定名人调整模型，则目标是实现该名人的变化（例如头发颜色变化）
+，而不会失去模型准确识别或描绘其他名人的能力。</p></li>
+</ul>
+<h3 id="lora">Lora</h3>
+<p>单纯引入模型，很多时候并不会触发LoRA的效果，因为LoRA在训练时基本都会加入若干个特殊的触发词，所以使用时也需要在提示词中输入触发词才能激活LoRA的效果。</p>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>存在一些特殊的Lora不需要触发词，只要引入模型就能生效。</p>
+</blockquote>
+<p>理论上引入的LoRA不限个数（只是插件限制了），但同时引入多个LoRA模型时，同类的LoRA尽量不要重复。例如一个影响服饰、一个影响画风，它们之间是不会冲突的，还能起到很好的互补作用。但是如果两个
+<strong>LoRA</strong>
+都是影响容貌的，就有可能冲突，这时可以适当调节它们之间的权重，以其中一个为主、另一个则稍微起到调味作用就可以了。</p>
+<h4 id="lora的应用场景">lora的应用场景：</h4>
+<ol type="1">
+<li><p>描绘特定人物形象</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>大部分LoRA为了确保泛用性，训练使用的底膜都是SD大模型，所以一般情况下LoRA不挑模型，尤其是参考图上没有标注模型信息的LoRA,放心切换大模型就好。</p>
+</blockquote>
+<p>其实除了这些针对“某一个人”的LoRA之外，还有针对“某一类人”的LoRA模型——不局限于某一个人、而是实现了一个大方向的整体美化，例如：</p>
+<ul>
+<li>Fashion Girl: 使用时尚女性照片训练的模型</li>
+<li>Cute Girl: 使用可爱女性照片训练的模型</li>
+<li>AsianMale: 使用亚洲型男面孔训练的模型</li>
+</ul>
+<p>现在追加一个AsianMale的LoRA,权重不需要设置太高（免得喧宾夺主）：&lt;lora:Lora-Custom-ModelLiXian:0.3&gt;,1man</p></li>
+<li><p>描绘特定画风</p></li>
+<li><p>描绘特定概念</p></li>
+<li><p>穿着特定服饰</p></li>
+<li><p>添加特定元素</p>
+<p>特定元素其实算是服饰类的延伸，只不过它更小、更专。搭配局部重绘使用。</p></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/train-vpred/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/06/train-vpred/" class="post-title-link" itemprop="url">基于noobai-vpred0.65底膜的训练</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-06 23:14:28 / Modified: 23:20:42" itemprop="dateCreated datePublished" datetime="2025-01-06T23:14:28+08:00">2025-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="comfyui工作流加载">1. comfyui工作流加载</h2>
+<p>需要增加节点，直接使用官方提供的工作流即可。</p>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231614399.png"
+alt="image-20250106231614399" />
+<figcaption aria-hidden="true">image-20250106231614399</figcaption>
+</figure>
+<h2 id="webui运行">2.webui运行</h2>
+<p>根据https://huggingface.co/Laxhar/noob_sdxl_v_pred_test（一个月以前的说明文档），无法在webui里运行。</p>
+<p>根据https://huggingface.co/Laxhar/noobai-XL-Vpred-0.65s?not-for-all-audiences=true</p>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231748876.png"
+alt="image-20250106231748876" />
+<figcaption aria-hidden="true">image-20250106231748876</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231801221.png"
+alt="image-20250106231801221" />
+<figcaption aria-hidden="true">image-20250106231801221</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231816557.png"
+alt="image-20250106231816557" />
+<figcaption aria-hidden="true">image-20250106231816557</figcaption>
+</figure>
+<h2 id="lora脚本训练">3.lora脚本训练</h2>
+<p>将parameterization=1 --v_parameterization --zero_terminal_snr
+--scale_v_pred_loss_like_noise_pred --debiased_estimation_loss<br />
+</p>
+<p>在https://civitai.com/models/833294/noobai-xl-nai-xl
+下面找到分享提示要将noise相关的都让之不生效 包括offset_noise之类的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1134,610 +1441,6 @@ alt="image-20250105162728273" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/langchain-robot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/04/langchain-robot/" class="post-title-link" itemprop="url">用lanchain做ai robot</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-04 23:34:19 / Modified: 23:56:18" itemprop="dateCreated datePublished" datetime="2025-01-04T23:34:19+08:00">2025-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="什么是langchin">什么是langchin</h3>
-<figure>
-<img src="/2025/01/04/langchain-robot/image-20250104233619635.png"
-alt="image-20250104233619635" />
-<figcaption aria-hidden="true">image-20250104233619635</figcaption>
-</figure>
-<p>langchain是一个支持大语言模型相关应用开发的框架。</p>
-<p>使得建设与ai相关的应用会更容易。</p>
-<ul>
-<li><p>集成：将外部数据，比如文件、api、应用集成进来</p></li>
-<li><p>代理：和环境集成</p></li>
-</ul>
-<p>组件 - LangChain
-使得更换必要的抽象和组件以使用语言模型变得轻而易举。</p>
-<p>自定义链 - LangChain
-提供现成的支持来使用和自定义“链”——一系列串联在一起的操作。</p>
-<p>速度 🚢 - 这个团队的交付速度非常快。您将会跟上最新的 LLM 功能。</p>
-<p>社区 👥 - 极好的 Discord 和社区支持，见面会、黑客松等活动。</p>
-<h2 id="llms">LLMs</h2>
-<ul>
-<li>公司开发和控制的专有模型：成本高、许可证限制、闭源</li>
-<li>开源模型：开源、灵活性、可能缺乏大公司的支持和资源</li>
-</ul>
-<figure>
-<img src="/2025/01/04/langchain-robot/image-20250104233744531.png"
-alt="image-20250104233744531" />
-<figcaption aria-hidden="true">image-20250104233744531</figcaption>
-</figure>
-<p>用api</p>
-<p>AzureOpenAI:适用于一般的长文本生成任务，如小说写作、文章创作等。</p>
-<p>AzureChatOpenAI:适用于涉及大量对话的文本生成任务，尤其是需要管理对话上下文时。</p>
-<p>根据你的具体需求选择合适的模型。如果主要任务是长文本创作且对话不是主要部分，建议使用
-AzureOpenAI。如果有大量对话且需要更好地管理对话上下文，建议使用
-AzureChatOpenAI。</p>
-<p>AzureOpenAI 会报错</p>
-<p>Error code: 400 - {'error': {'code': 'OperationNotSupported',
-'message': 'The completion operation does not work with the specified
-model, gpt-4o. Please choose different model and try again. You can
-learn more about which models can be used with each operation here:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#This basic example demostrate the LLM response and ChatModel Response</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.llms <span class="keyword">import</span> AzureOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.chat_models <span class="keyword">import</span> AzureChatOpenAI</span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv, find_dotenv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the OpenAI library configuration using the retrieved environment variables</span></span><br><span class="line">OPENAI_API_TYPE = <span class="string">&quot;azure&quot;</span></span><br><span class="line">OPENAI_API_BASE = <span class="string">&quot;https://sparkopenai2024.openai.azure.com/&quot;</span></span><br><span class="line">OPENAI_API_VERSION = <span class="string">&quot;2024-02-15-preview&quot;</span></span><br><span class="line">OPENAI_API_KEY = <span class="string">&quot;xxx&quot;</span></span><br><span class="line">GPT4V_ENDPOINT = <span class="string">&quot;https://sparkopenai2024.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize an instance of AzureOpenAI using the specified settings</span></span><br><span class="line"><span class="comment"># llm = AzureOpenAI(</span></span><br><span class="line"><span class="comment">#     openai_api_version=OPENAI_API_VERSION,</span></span><br><span class="line"><span class="comment">#     openai_api_key=OPENAI_API_KEY,</span></span><br><span class="line"><span class="comment">#     openai_api_base=OPENAI_API_BASE,</span></span><br><span class="line"><span class="comment">#     openai_api_type=OPENAI_API_TYPE,</span></span><br><span class="line"><span class="comment">#     deployment_name=&quot;gpt-4o&quot;  # Name of the deployment for identification</span></span><br><span class="line"><span class="comment"># )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize an instance of AzureChatOpenAI using the specified settings</span></span><br><span class="line">chat_llm = AzureChatOpenAI(</span><br><span class="line">    openai_api_version=OPENAI_API_VERSION,</span><br><span class="line">    openai_api_key=OPENAI_API_KEY,</span><br><span class="line">    openai_api_base=OPENAI_API_BASE,</span><br><span class="line">    openai_api_type=OPENAI_API_TYPE,</span><br><span class="line">    deployment_name=<span class="string">&quot;gpt-4o&quot;</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the response from AzureOpenAI LLM for a specific question</span></span><br><span class="line"><span class="comment"># print(&quot;AzureOpenAI LLM Response: &quot;, llm(&quot; what is the weather in mumbai today?&quot;))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the response from AzureChatOpenAI for the same question</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AzureOpenAI ChatLLM Response: &quot;</span>, chat_llm.predict(<span class="string">&quot;what is the weather in mumbai today?&quot;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">如果直接与大模型交互-&gt;chatGPT。自从发现可以利</span><br><span class="line">用自有数据来增强大语言模型（LL</span><br><span class="line">M）的能力以来，如何将 LL</span><br><span class="line">M 的通用</span><br><span class="line">有效结合一直是热门话题。</span><br><span class="line">知识与个人数据</span><br><span class="line">1. 微调(finetue)</span><br><span class="line">2.</span><br><span class="line">RAG(检索增强)</span><br></pre></td></tr></table></figure>
-<h3
-id="先来考虑一个关于小说内容的chatrobot">先来考虑一个关于小说内容的chatRobot:</h3>
-<figure>
-<img src="/2025/01/04/langchain-robot/image-20250104234107482.png"
-alt="image-20250104234107482" />
-<figcaption aria-hidden="true">image-20250104234107482</figcaption>
-</figure>
-<p><strong>topic</strong>:</p>
-<ul>
-<li>文档分割</li>
-<li>文档 <strong>Load</strong>：数据加载， <strong>LangChain</strong>
-提供的 <strong>80</strong>
-多种独特的加载器，以访问包括音频和视频在内的各种数据源。</li>
-<li>向量存储和嵌入：深入了解嵌入的概念，探索 <strong>LangChain</strong>
-中的向量存储集成。</li>
-<li>检索：掌握在 <strong>Vector</strong>
-存储中访问和索引数据的高级技术，使您能够检索语义查询之外的最相关信息。</li>
-<li>问题解答：构建一次性问题解答解决方案<strong>/</strong>总结方案。</li>
-</ul>
-<h4 id="long-text-summarisation">Long text summarisation</h4>
-<h5 id="为什么context-window会是limit">为什么context
-window会是limit</h5>
-<p>当前大多数的语言模型是基于解码器的模型。这些模型使用了变换器架构中的解码器部分来预测下一个标记的概率。然后，将这个预测的标记附加到输入文本中，形成预测下一个标记的输入。</p>
-<p><strong>Context Window Size = Input Sequence Length + Prompt Length +
-O</strong></p>
-<p><strong>utput Sequence Length</strong></p>
-<figure>
-<img src="/2025/01/04/langchain-robot/image-20250104234423043.png"
-alt="image-20250104234423043" />
-<figcaption aria-hidden="true">image-20250104234423043</figcaption>
-</figure>
-<p>举个例子：如果context window的限制是4097，prompt的token
-size是50，期待输出的总结内容是200，那么最大的输入文本的token
-size就是4097-50-200=3847tokens，大概对应3000个词。</p>
-<blockquote>
-<p>[!IMPORTANT]</p>
-<p>LLMs受限于固定的上下文窗口，比如chatgpt的limit
-tokens是4096，大概对应3000多个词。对于这个问题有两种解决方案：第一种用更大context
-window的LLMs;第二种方法是化整为零，将长文本分成很多个短文本，分别送进模型处理然后合并，或者选择最相关的部分然后送进去分析。</p>
-</blockquote>
-<figure>
-<img src="/2025/01/04/langchain-robot/image-20250104234750149.png"
-alt="image-20250104234750149" />
-<figcaption aria-hidden="true">image-20250104234750149</figcaption>
-</figure>
-<p>文档分割：</p>
-<p>CharacterTextSplitter:直接按字符数量分割文本。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c_splitter = CharacterTextSplitter(</span><br><span class="line">    chunk_size=chunk_size,</span><br><span class="line">    chunk_overlap=chunk_overlap,</span><br><span class="line">    separator = &#x27; &#x27;    //主要在哪一块分割</span><br><span class="line">)</span><br><span class="line">c_splitter.split_text(text3)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>RecursiveCharacterTextSplitter: 按照递归规则分割文本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">r_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=150,</span><br><span class="line">    chunk_overlap=0,</span><br><span class="line">    separators=[&quot;\n\n&quot;, &quot;\n&quot;, &quot;(?&lt;=\. )&quot;, &quot; &quot;, &quot;&quot;]</span><br><span class="line">)</span><br><span class="line">r_splitter.split_text(some_text)</span><br></pre></td></tr></table></figure></li>
-<li><p>TokenTextSplitter：跟LLMs里的token的概念对齐</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text_splitter = TokenTextSplitter(chunk_size=10, chunk_overlap=0)</span><br></pre></td></tr></table></figure></li>
-<li><p>Context aware splitting</p></li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from langchain.document_loaders import NotionDirectoryLoader</span><br><span class="line">from langchain.text_splitter import MarkdownHeaderTextSplitter</span><br><span class="line"></span><br><span class="line">markdown_document = &quot;&quot;&quot;# Title\n\n \</span><br><span class="line">## Chapter 1\n\n \</span><br><span class="line">Hi this is Jim\n\n Hi this is Joe\n\n \</span><br><span class="line">### Section \n\n \</span><br><span class="line">Hi this is Lance \n\n </span><br><span class="line">## Chapter 2\n\n \</span><br><span class="line">Hi this is Molly&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">headers_to_split_on = [</span><br><span class="line">    (&quot;#&quot;, &quot;Header 1&quot;),</span><br><span class="line">    (&quot;##&quot;, &quot;Header 2&quot;),</span><br><span class="line">    (&quot;###&quot;, &quot;Header 3&quot;),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">markdown_splitter = MarkdownHeaderTextSplitter(</span><br><span class="line">    headers_to_split_on=headers_to_split_on</span><br><span class="line">)</span><br><span class="line">md_header_splits = markdown_splitter.split_text(markdown_document)</span><br></pre></td></tr></table></figure>
-<h3 id="rag搜索增强">RAG搜索增强</h3>
-<figure>
-<img src="/2025/01/04/langchain-robot/image-20250104235342635.png"
-alt="image-20250104235342635" />
-<figcaption aria-hidden="true">image-20250104235342635</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p><strong>query</strong>和<strong>prompt</strong>的区别是什么？</p>
-<p>在使用 <strong>RetrievalQA chain</strong> 进行问答时， prompt 和
-query
-是两个不同的概念。理解它们的区别对于构建有效的问答系统非常重要。</p>
-<ol type="1">
-<li><strong>Query（查询）</strong> ：</li>
-</ol>
-<p>◦ query 是用户提出的问题或查询。例如，“<strong>What is the capital of
-France?</strong>”</p>
-<p>◦ 在 qa_chain_mr 中， query
-是必须的，因为它是整个问答流程的起点。系统根据 query
-去检索相关的文档，然后从中抽取答</p>
-<p>案。</p>
-<ol start="2" type="1">
-<li><strong>Prompt（提示词）</strong> ：</li>
-</ol>
-<p>◦ prompt
-是用于指导语言模型生成答案的额外文本或上下文。它可以包含特定的指示或格式化信息，以帮助模型生成更合适的响应。</p>
-<p>提供prompt可以帮助模型更好地理解上下文或期望的回答形式。例如，你可以提供一个
-prompt 来指示模型回答时的语气、详细程度或者其他特定要求。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/aigc-paper-share/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/04/aigc-paper-share/" class="post-title-link" itemprop="url">AIGC论文reading</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-04 22:26:20 / Modified: 22:43:16" itemprop="dateCreated datePublished" datetime="2025-01-04T22:26:20+08:00">2025-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="stable-diffusion-原理">Stable diffusion 原理</h2>
-<p>从data产生noise很容易，从noise产生data是生成</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222656242.png"
-alt="image-20250104222656242" />
-<figcaption aria-hidden="true">image-20250104222656242</figcaption>
-</figure>
-<h2 id="一致性保持目标">一致性保持目标：</h2>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222713620.png"
-alt="image-20250104222713620" />
-<figcaption aria-hidden="true">image-20250104222713620</figcaption>
-</figure>
-<h1 id="解法">解法：</h1>
-<h2 id="storydiffusion做保持">StoryDiffusion：做保持</h2>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222809450.png"
-alt="image-20250104222809450" />
-<figcaption aria-hidden="true">image-20250104222809450</figcaption>
-</figure>
-<p>产出这些漫画的研究出自南开大学、字节跳动等机构。在《StoryDiffusion：Consistent
-Self-Attention for long-range image and video
-generation》这篇论文中，该研究团队提出了一种名为 StoryDiffusion
-的新方法，用于生成一致的图像和视频以讲述复杂故事。</p>
-<ul>
-<li><p>论文地址：https://arxiv.org/pdf/2405.01434v1</p></li>
-<li><p>项目主页：https://storydiffusion.github.io/</p></li>
-</ul>
-<p>如上图所示，使用Consistent
-Self-Attention生成的图像成功保持了身份和服装的一致性，这对于讲故事至关重要。</p>
-<h4 id="主要亮点一致性图像生成">主要亮点：一致性图像生成</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222859537.png"
-alt="image-20250104222859537" />
-<figcaption aria-hidden="true">image-20250104222859537</figcaption>
-</figure>
-<h4 id="总结">总结：</h4>
-<p>应用场景：小批次人物服装、身份的保持</p>
-<h2
-id="omg多人物图像生成的工具垫图-区域分离重绘">OMG：多人物图像生成的工具（垫图
-+ 区域分离重绘）</h2>
-<p>主页: https://kongzhecn.github.io/omg-project/</p>
-<p>代码: https://github.com/kongzhecn/OMG/</p>
-<h4 id="背景">背景：</h4>
-<p>单概念的定制化生成，Textual Inversion，
-LORA，InstanceID等方法已经比较成熟了。而对于多概念的定制化生成，如果直接使用LORA融合等方法，主要挑战在于不同的概念信息之间的信息泄漏，造成属性混乱。比如想要生成一个特定的黑色长发男角色，一个特定的紫色短发女角色，在单图出单角色时正常，但是在单图出双角色时，很有可能发型发色信息就混乱了，比如可能出现紫色长发女角色。比较容易想到的做法就是垫图+掩码。</p>
-<p>难点：个性化保持、空间遮挡</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222920431.png"
-alt="image-20250104222920431" />
-<figcaption aria-hidden="true">image-20250104222920431</figcaption>
-</figure>
-<p>多概念个性化（multi-concept
-personalization）指的是在同一个图像生成过程中，同时整合和表达多个不同的概念或主题。这种方法要求在生成图像时，能够准确保留和表现每个概念的独特特征，同时保证它们之间的协调和和谐。例如，在生成一个包含多个不同人物、背景和物体的图像时，必须确保每个元素都能清晰地展现其独特性，并且整体图像具有一致性和美感。</p>
-<h4 id="先看效果">先看效果：</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222948149.png"
-alt="image-20250104222948149" />
-<figcaption aria-hidden="true">image-20250104222948149</figcaption>
-</figure>
-<h4 id="即插即用">即插即用</h4>
-<table>
-<colgroup>
-<col style="width: 44%" />
-<col style="width: 55%" />
-</colgroup>
-<thead>
-<tr>
-<th><strong>OMG +</strong> <strong>LoRA</strong> <strong>(ID with
-multiple images)</strong></th>
-<th><img src="/2025/01/04/aigc-paper-share/image-20250104223125232.png"
-alt="image-20250104223125232" /></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>OMG + InstantID (ID with single image)</strong></td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223145816.png"
-alt="image-20250104223145816" /></td>
-</tr>
-<tr>
-<td><strong>OMG + ControlNet (Layout Control )</strong></td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223207497.png"
-alt="image-20250104223207497" /></td>
-</tr>
-<tr>
-<td><strong>OMG + style LoRAs (Style Control)</strong></td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223217116.png"
-alt="image-20250104223217116" /></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="怎么做到">怎么做到：</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223238466.png"
-alt="image-20250104223238466" />
-<figcaption aria-hidden="true">image-20250104223238466</figcaption>
-</figure>
-<p>OMG是一种两阶段的生成方法，一阶段先用无角色信息的文生图模型垫图生成布局，然后提取垫图全面的视觉信息（mask
-和 attention map），二阶段将各角色的特定概念信息作用于对应的 mask
-区域，避免信息泄露，属性错乱，并复用一阶段的 attention
-map，维持构图布局不变。这里的概念信息可以是 LoRA 也可以是
-InstantID。</p>
-<h5
-id="一阶段生成构图布局并提取视觉信息">1.一阶段：生成构图布局并提取视觉信息</h5>
-<p>首先用一个全局的prompt p在文生图模型T2I上生成一张垫图</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223305875.png"
-alt="image-20250104223305875" />
-<figcaption aria-hidden="true">image-20250104223305875</figcaption>
-</figure>
-<p>这里要注意的是，没有任何角色信息(lora/InstanceId)</p>
-<p>第一阶段，我们要提取垫图的视觉信息，这里的视觉信息有两项：生成过程中每一时间步每一层的注意力图
-attention map
-和每个角色的分割掩码。注意力图在生图过程中记得保存即可，而角色的掩码图，则是基于角色类别的基本词（man、woman），使用开集检测分割的模型（如
-GroundingDION+SAM、YoloWorld+EfficientSAM）来进行分割。</p>
-<h5 id="第二阶段多概念定制化去噪">第二阶段：多概念定制化去噪</h5>
-<p>为了避免概念信息泄露，造成角色属性错乱，OMG
-在进行第二阶段多概念定制化生成时不进行 LoRA
-融合，而是使用多个单概念的模型分别进行推理，并作用于一阶段得到的各自掩码区域中。即一个
-LoRA 只负责一个角色区域的生成。这称为概念噪声混合（Concept Noise
-Blending）。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223331480.png"
-alt="image-20250104223331480" />
-<figcaption aria-hidden="true">image-20250104223331480</figcaption>
-</figure>
-<h5 id="不同时间步开启混合">不同时间步开启混合：</h5>
-<p>下图对比了第二阶段中不同时间步开启概念噪声混合对最终生成结果的影响，最左侧是从一开始，第
-50 步（因为用了 DDIM 采样器）就开启概念噪声混合，最右侧表示第 0
-步才开启，相当于没开启，即完全等于第一阶段的结果，中间是 0-50
-步之间开启。可以看到，概念噪声混合开启得越早，概念特征保持得越好。并且，开启得越早对图像构图布局的影响也越大，开启的越晚，构图布局与第一阶段结果越相近。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223346380.png"
-alt="image-20250104223346380" />
-<figcaption aria-hidden="true">image-20250104223346380</figcaption>
-</figure>
-<h4 id="总结-1">总结：</h4>
-<p>想要在有交叠的情况下，精确地控制多个概念的属性特征，基本思路是 ”垫图
-+ 区域分离重绘“
-的方案，但是这种方法会有个问题：如果多个概念的基本语义类是一样的，比如两个
-woman，这时候 zero-shot
-分割模型怎么工作，对于相同语义类的多概念很难进行可控的个性化生成</p>
-<h2
-id="threatergen多轮对话llmimage-generation">ThreaterGen：多轮对话（LLM+image
-generation）</h2>
-<p><strong>https://howe140.github.io/theatergen.io/</strong></p>
-<h4 id="背景-1">背景：</h4>
-<ol type="1">
-<li>语义一致性——现有方法在处理复杂描述（如空间关系、数量或指代表达“它们”等）时遇到困难，导致生成的图像在语义上与用户请求不一致；(2)
-上下文一致性——在多轮对话中的图像生成过程中，同一实体经常难以在不同轮次中保持一致特征，甚至可能被遗忘。例如，同一只狗在不同轮次中看起来不同而没有用户编辑。</li>
-</ol>
-<h4 id="先看效果-1">先看效果：</h4>
-<table>
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 69%" />
-</colgroup>
-<thead>
-<tr>
-<th>讲故事</th>
-<th><img src="/2025/01/04/aigc-paper-share/image-20250104223537655.png"
-alt="image-20250104223537655" /></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>多轮编辑</td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223550213.png"
-alt="image-20250104223550213" /></td>
-</tr>
-<tr>
-<td>定量：在自己的数据集上测试</td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223626463.png"
-alt="image-20250104223626463" /></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="怎么做到-1">怎么做到：</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223722467.png"
-alt="image-20250104223722467" />
-<figcaption aria-hidden="true">image-20250104223722467</figcaption>
-</figure>
-<p>本文提出的 ppl 如图，可以分为三个阶段</p>
-<p>1.第一阶段是 LLM 的角色设计：用 LLM 完成角色设计，包括角色的外观描述
-+ layout 信息。</p>
-<p>2.第二阶段用 T2I 完成第一阶段角色的图片生成和 latent 提取，作为
-reference img</p>
-<p>3.第三阶段整合前两个阶段的信息，生成符合用户输入 prompt 的图片。</p>
-<hr />
-<h5 id="第一阶段llm-角色设计">1.第一阶段，LLM 角色设计</h5>
-<p>在这一阶段，利用 LLM，根据用户输入的要求，把对应 prompt
-的信息做格式化，格式化的输出包含了背景 prompt、neg
-prompt，另外最核心的部分是各个主体的 prompt。每一个主体 prompt 都是一个
-triplet 对，是一个包含了 id、prompt、layout（bbox 格式）的三元组。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223810670.png"
-alt="image-20250104223810670" />
-<figcaption aria-hidden="true">image-20250104223810670</figcaption>
-</figure>
-<h5 id="第二阶段reference-img-生成">2.第二阶段，reference img 生成</h5>
-<p>根据第一阶段给出的主体 prompt，用 T2I
-模型生成一张对应角色的参考图片，这张参考图后续会通过 ip-adapter
-来注入模型。有了 reference img，就可以针对各个 prompt
-生成对应的图片，步骤如下：</p>
-<p>a）根据 ref img + 待生成
-prompt，可以生成一张（只）包含该主体的图片</p>
-<p>b）对上述图片做分割，得到前景的物体。因为一条 prompt
-里面可能包含多个物体，所以需要对每一个出现的物体都执行第一、二步。</p>
-<p>c）根据 LLM 给出的 layout
-信息，将第二部去除背景的主体贴在对应位置上（需要做 scale 的适配）。</p>
-<p>d）然后对第三步得到的图片，计算 canny 图，另外经过一次 SD
-的前传得到每一步的 feature 作为生成的 guidance（称为 latent
-guidance）。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223829556.png"
-alt="image-20250104223829556" />
-<figcaption aria-hidden="true">image-20250104223829556</figcaption>
-</figure>
-<h5 id="第三阶段信息整合图片生成">第三阶段，信息整合+图片生成</h5>
-<p>在这一阶段，会把上述格式化的 prompt 合并，作为 SD 输入的 text
-prompt。canny 信息通过 controlnet 注入 SD。而 lantent guidance
-注入方式如下，会选择在一定的 step
-范围内注入而不是全过程都加。注入的时候，主体 mask 区域内用 latent
-guidance，mask外则用 SD 本身生成的内容。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223847906.png"
-alt="image-20250104223847906" />
-<figcaption aria-hidden="true">image-20250104223847906</figcaption>
-</figure>
-<h4 id="总结-2">总结：</h4>
-<p>1.利用 LLM + T2I 的能力来做连续故事的 ip 保持。通过 LLM
-保证生成故事上下文的连续性，以及人物的关联性；通过 LLM
-来生成主体的特征描述，将这个特征描述送给 T2I
-模型生成该主体的一张参考图。LLM 还被用来生成图片的
-layout，用来控制每一个主体的生成位置。</p>
-<p>2.多轮生成过程中，允许用户通过外部输入来改变生成结果，允许用户交互</p>
-<h2
-id="autostudio在多轮交互式图像生成中打造一致的主体">AutoStudio：在多轮交互式图像生成中打造一致的主体</h2>
-<h4 id="背景-2">背景：</h4>
-<p>文本到图像(TGI)生成模型在生成单张图像方面已经表现出色,更具挑战性的任务——多轮交互式图像生成开始吸引相关研究社区的注意.这个任务要求模型在多个回合中与用户互动，以生成连贯的图像序列。然而，由于用户可能频繁切换主体，目前的努力难以在生成多样化图像的同时保持主体一致性。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223924036.png"
-alt="image-20250104223924036" />
-<figcaption aria-hidden="true">image-20250104223924036</figcaption>
-</figure>
-<h4 id="效果">效果：</h4>
-<h5
-id="量化指标autostudio在所有指标上都明显优于之前的方法">1.量化指标：AutoStudio<strong>在所有指标上都明显优于之前的方法</strong>。</h5>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223944051.png"
-alt="image-20250104223944051" />
-<figcaption aria-hidden="true">image-20250104223944051</figcaption>
-</figure>
-<h5 id="可视化">2.可视化：</h5>
-<p>Theatergen无法处理人物之间复杂的互动（如拥抱和接吻），而MiniGemini则难以保持主体的一致性。</p>
-<p>Intelligent
-Grimm和StoryDiffusion无法在多回合互动中保持多个角色之间的一致性，并表现出有限的编辑效果。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224024890.png"
-alt="image-20250104224024890" />
-<figcaption aria-hidden="true">image-20250104224024890</figcaption>
-</figure>
-<h4 id="怎么做到-2">怎么做到：</h4>
-<p>他们的目标是引入一个多功能、可扩展的框架，通过多智能体协作，可以将任何所需的LLM架构和扩散骨干结合到框架中，以满足用户多轮生成的多样化需求。</p>
-<p>具体而言，AutoStudio包括三个基于LLM的智能体：</p>
-<ul>
-<li><p><strong>主题管理器</strong>解释对话，识别不同的主题，并为其分配适当的上下文；-》ID，prompt</p></li>
-<li><p><strong>布局*<em>*</em>生成器</strong>为每个主题生成部分级别的边界框，以控制主题的位置；-》coarse
-layout</p></li>
-<li><p><strong>监督员</strong>为布局生成器提供布局改进和修正的建议。</p></li>
-</ul>
-<p>最后，<strong>绘制器</strong>基于扩散模型完成基于改进布局的图像生成。</p>
-<p>此外，研究人员在绘制器中引入了一个<strong>并行*<em>*</em>UNet</strong>（P-UNet），它具有一种新颖的架构，利用两个并行的交叉注意力模块分别增强文本和图像嵌入的潜在主题特征。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224046351.png"
-alt="image-20250104224046351" />
-<figcaption aria-hidden="true">image-20250104224046351</figcaption>
-</figure>
-<h5 id="主题管理器">主题管理器：</h5>
-<p>1.历史输入 2.预定义prompt</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224101887.png"
-alt="image-20250104224101887" />
-<figcaption aria-hidden="true">image-20250104224101887</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224109475.png"
-alt="image-20250104224109475" />
-<figcaption aria-hidden="true">image-20250104224109475</figcaption>
-</figure>
-<h5 id="layout管理器">layout管理器：</h5>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224123560.png"
-alt="image-20250104224123560" />
-<figcaption aria-hidden="true">image-20250104224123560</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224131380.png"
-alt="image-20250104224131380" />
-<figcaption aria-hidden="true">image-20250104224131380</figcaption>
-</figure>
-<h5 id="supervisor管理器">supervisor管理器</h5>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224146486.png"
-alt="image-20250104224146486" />
-<figcaption aria-hidden="true">image-20250104224146486</figcaption>
-</figure>
-<h5 id="图像生成">图像生成：</h5>
-<p>有了好的布局，就能生成好的具有一致多主体表现的吸引人图像吗？</p>
-<p>现在的：模型不微调，图像可控-》depth、open pose-》controlnet</p>
-<p>1.主体初始化生成：</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224202197.png"
-alt="image-20250104224202197" />
-<figcaption aria-hidden="true">image-20250104224202197</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224209991.png"
-alt="image-20250104224209991" />
-<figcaption aria-hidden="true">image-20250104224209991</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224217340.png"
-alt="image-20250104224217340" />
-<figcaption aria-hidden="true">image-20250104224217340</figcaption>
-</figure>
-<p>2.PUnet</p>
-<p>将去噪过程中任意UNet层的输入潜在特征表示为Z。我们将UNet层的原始交叉注意力模块拆分为两个并行的文本和图像交叉注意力模块（分别表示为PTCA和PICA）来优化ZZZ。这两个模块具有相同的架构，其关键思想是计算ZZZ与每个主体文本/图像嵌入之间的特征相似性。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224244780.png"
-alt="image-20250104224244780" />
-<figcaption aria-hidden="true">image-20250104224244780</figcaption>
-</figure>
-<h4 id="总结-3">总结：</h4>
-<p>1.工程化应用和控制很好，总-分的思路去控制生成。</p>
-<p>2.引入监督器形成反馈链路。</p>
-<p>关于generator《-》supervisor，考试-评分的耦合结构关系，</p>
-<p>阿里数学竞赛ai最高分：</p>
-<p><a
-target="_blank" rel="noopener" href="https://blog.richardstu.com/solution-sharing-and-some-thoughts-about-alibaba-mathematical-competition-for-ai">Solution
-Sharing and Some Thoughts about Alibaba Global Mathematical Competition
-for AI</a></p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224306153.png"
-alt="image-20250104224306153" />
-<figcaption aria-hidden="true">image-20250104224306153</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224313553.png"
-alt="image-20250104224313553" />
-<figcaption aria-hidden="true">image-20250104224313553</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1807,7 +1510,7 @@ alt="image-20250104224313553" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
