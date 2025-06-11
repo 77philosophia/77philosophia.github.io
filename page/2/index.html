@@ -145,6 +145,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/28/ubuntu-nvidia-driver-noNetwork/" class="post-title-link" itemprop="url">ubuntu-nvidia-driver-noNetwork</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-04-28 17:56:37 / Modified: 18:08:15" itemprop="dateCreated datePublished" datetime="2025-04-28T17:56:37+08:00">2025-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡驱动之后没有network</h1>
+<p>https://blog.csdn.net/weixin_44286126/article/details/131455726</p>
+<p>排查思路：</p>
+<p>1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg
+查看新旧镜像是否有安装包的差异。</p>
+<ol start="2" type="1">
+<li>原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/VLM-VLA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1927,154 +1994,6 @@ alt="image-20250107191329941" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/lora-scripts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/07/lora-scripts/" class="post-title-link" itemprop="url">lora-scripts</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-07 00:47:35 / Modified: 10:58:07" itemprop="dateCreated datePublished" datetime="2025-01-07T00:47:35+08:00">2025-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107004758199.png"
-alt="image-20250107004758199" />
-<figcaption aria-hidden="true">image-20250107004758199</figcaption>
-</figure>
-<h3 id="准备lora-scripts环境">1. 准备lora-scripts环境</h3>
-<p>https://github.com/Akegarasu/lora-scripts</p>
-<blockquote>
-<p>[!CAUTION]</p>
-<p>需要用python3.9，按照仓库代码指示进行安装，安装成功可以启动ui页面。</p>
-</blockquote>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107104846559.png"
-alt="image-20250107104846559" />
-<figcaption aria-hidden="true">image-20250107104846559</figcaption>
-</figure>
-<h3 id="准备数据集">2. 准备数据集</h3>
-<ol type="1">
-<li>lora训练脚本图片默认大小是1024x1024,如果训练图片大小不够，可以对图片进行高清放大：</li>
-</ol>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105006386.png"
-alt="image-20250107105006386" />
-<figcaption aria-hidden="true">image-20250107105006386</figcaption>
-</figure>
-<h3 id="打标筛选">3. 打标+筛选</h3>
-<p>打标的基本步骤：用<strong>webui</strong>的<strong>tagger</strong>打标工具自动打标，生成<strong>txt</strong>文件，人工修正标签。</p>
-<p>在这个过程里面我用到的一些人工打标的原则：</p>
-<blockquote>
-<p>[!NOTE]</p>
-<ol type="1">
-<li>过滤多人交互的复杂图片，不确定的可以只留单人图。凑足<strong>100</strong>张图片</li>
-<li>打标风格标签用简单的无意义的单个词，如sznanpinds。（我一般用小说前两个拼音首字母+nanpinds/nvpinds）</li>
-<li>筛选标签
-<ol type="1">
-<li>合并删除重复、矛盾的标签，比如shirt,white shirt-&gt;white shirt;
-gray hair, brown hair -&gt; brown hair</li>
-<li>删除识别错误的标签</li>
-</ol></li>
-</ol>
-</blockquote>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105300989.png"
-alt="image-20250107105300989" />
-<figcaption aria-hidden="true">image-20250107105300989</figcaption>
-</figure>
-<h4 id="修改训练脚本train.sh">4. 修改训练脚本train.sh</h4>
-<ol type="1">
-<li><p>底膜设置、数据集文件夹、输出文件设置</p>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105409825.png"
-alt="image-20250107105409825" />
-<figcaption aria-hidden="true">image-20250107105409825</figcaption>
-</figure></li>
-<li><p>训练数据集地址，
-，数据集文件夹的命名是<strong>repeat</strong>次数**_<strong>含义，比如我在训练风格</strong>lora**的时候我希望</p>
-<p>每张图片训练的时候<strong>repeat
-20</strong>次<strong>,</strong>我的数据集文件夹命名就是<strong>20_xxxStyle</strong></p></li>
-</ol>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105459729.png"
-alt="image-20250107105459729" />
-<figcaption aria-hidden="true">image-20250107105459729</figcaption>
-</figure>
-<p>但是在脚本里填数据集位置的时候不能直接写这里</p>
-<p>的<strong>/xxx/datasets/large_filterMultiPeople_addOld_datasets/12-</strong></p>
-<p><strong>SheZhengWang/output_x2/training/20_shezhengwang</strong>，要写到上一级父目录，因此数据集地址</p>
-<p>是<strong>/xxx/datasets/large_filterMultiPeople_addOld_datasets/12-</strong></p>
-<p><strong>SheZhengWang/output_x2/training</strong>，这个目录下只有<strong>20_xxx</strong>一个文件夹。</p>
-<ol start="3" type="1">
-<li>模型输出文件夹<strong>output_dir_name</strong>，log目录，避免新run覆盖旧的模型文件。</li>
-</ol>
-<h4 id="测试">5. 测试</h4>
-<p>在输出文件夹会有一些模型文件，可以选择一轮的模型复制到<strong>webui</strong>的<strong>models/LoRA</strong>目录下（或者comfyui相应的目录下面），刷新加载选中之后用提示词<strong>+lora</strong>模型就可以出图了。注意<strong>lora</strong>训练一般都会过拟合，一般<strong>10</strong>～<strong>20</strong>个<strong>epoch</strong>就可以，之后的<strong>epoch</strong>虽然还会损失下降，但是已经过拟合了。</p>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105655243.png"
-alt="image-20250107105655243" />
-<figcaption aria-hidden="true">image-20250107105655243</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105706660.png"
-alt="image-20250107105706660" />
-<figcaption aria-hidden="true">image-20250107105706660</figcaption>
-</figure>
-<p>测试图可以勾选Hires.fix高清放大和ADetailer面部修复得到更好的出图效果。如我在训练动漫数据用到的参数如下：</p>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105804953.png"
-alt="image-20250107105804953" />
-<figcaption aria-hidden="true">image-20250107105804953</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2144,7 +2063,7 @@ alt="image-20250107105804953" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

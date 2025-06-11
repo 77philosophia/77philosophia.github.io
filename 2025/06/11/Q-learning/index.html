@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Q-learning是强化学习最基础的算法。  [!NOTE] reward和expected reward的区别  为了弄清楚它是如何工作的，让我们先考虑一个exptected reward如下： R &#x3D; _{t&#x3D;0}^{} {^t r_t} r_t是t时刻的reward而^t是折损因子。 举个例子，如：  action #1: 伸开arm(t&#x3D;0)-&gt; 得到reward&#x3D;0 action">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Q-learning">
+<meta property="og:url" content="http://77philosophia.github.io/2025/06/11/Q-learning/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="Q-learning是强化学习最基础的算法。  [!NOTE] reward和expected reward的区别  为了弄清楚它是如何工作的，让我们先考虑一个exptected reward如下： R &#x3D; _{t&#x3D;0}^{} {^t r_t} r_t是t时刻的reward而^t是折损因子。 举个例子，如：  action #1: 伸开arm(t&#x3D;0)-&gt; 得到reward&#x3D;0 action">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-06-11T01:49:30.000Z">
+<meta property="article:modified_time" content="2025-06-11T01:58:34.268Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/06/11/Q-learning/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Q-learning | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/06/11/Q-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Q-learning
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-06-11 09:49:30 / Modified: 09:58:34" itemprop="dateCreated datePublished" datetime="2025-06-11T09:49:30+08:00">2025-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Q-learning是强化学习最基础的算法。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>reward和expected reward的区别</p>
+</blockquote>
+<p>为了弄清楚它是如何工作的，让我们先考虑一个exptected reward如下：</p>
+<p>R = _{t=0}^{} {^t r_t}</p>
+<p>r_t是t时刻的reward而^t是折损因子。</p>
+<p>举个例子，如：</p>
+<ul>
+<li>action #1: 伸开arm(t=0)-&gt; 得到reward=0</li>
+<li>action #2: 打开hand(t=1)-&gt; 得到reward=0</li>
+<li>action #3: 抓取物体(t=2)-&gt;得到reward=10</li>
+</ul>
+<p>我们只在动作3的时候得到了reward值，但是显然action
+1的动作对最终的rewards是有贡献的。因此我们考虑下面的累积reward.假如</p>
+<p><span class="math display">\[ \gamma=0.99 \]</span> <span
+class="math display">\[
+R_{t=0}=0+0.99\times0+0.99^2\times10=9.801
+\]</span> 同上，R_{t=1}=9.9,R_{t=2}=10</p>
+<p>Q-value就是基于这种expected cumulative reward.</p>
+<p>在上面的例子中，如果你能看到一个object在你面前(state of "you see an
+object"), the action "伸开arm"就会有一个高的expected
+reward.反之，如果你哪儿都看不到object,“伸开arm”就会有低的expected
+reward.</p>
+<p>Q-value就描述的是对应的state和action的值Q(s,a)，假如s和a都是一维的离散值，Q(s,a)就是一个table。如图所示：</p>
+<figure>
+<img
+src="/2025/06/11/Q-learning/5eecdaf48460cde52547efa5bb6ba7e71098e7b78a78034375b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e0a42984b012b58c12bf18d6e8fb8a65ffd14710d290d3b9b3f298fe17245bfff45143ea1c4f77cd4.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>在状态s2的时候最优的action是选择a2,s3是a4.</p>
+<p>实际中，action space和observation
+space可能都有超过1维。举例子，在CarPole中，state(observation)是4维的浮点数。Q-table就是1维的action
+space和4维的observation
+space的组合。在Q-learning中，我们通过下面的更新迭代优化这个table.（t=0,1,2,...）</p>
+<p>Q_{t}(s_{t},a_{t})是当前的Q值，Q_{t+1}(s_{t},a_{t})是更新后的Q值。
+<span class="math display">\[
+Q_{t+1}(s_t,a_t) = Q_t(s_t,a_t) + \alpha \left( r_t + \gamma
+\max_a{Q_t(s_{t+1},a)} - Q_t(s_t,a_t) \right)
+\]</span> rate</p>
+<p>上面的公式可以这样理解：</p>
+<ul>
+<li><p>你期望在s_{t}采取动作a_{t},得到了reward是r_{t},状态转移到s_{t+1
+}</p></li>
+<li><p>下一个最优的动作会满足a_{t+1}=max_{a}Q(s_{t+1},a).采取了最优动作后，会得到期望的reward是：_
+<span class="math display">\[
+r_{t}+\gamma max_{a}Q(s_{t+1},a)
+\]</span></p></li>
+<li><p>将这个最优的q-value与当前的q-value值Q(s_{t},a_{t})对比，然后用学习率。</p></li>
+</ul>
+<h3 id="实现细节"><strong>实现细节：</strong></h3>
+<p>q_table开始是zero初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">q_table = np.zeros(new_observation_shape + (env.action_space.n,))</span><br><span class="line">q_table.shape</span><br></pre></td></tr></table></figure>
+<p>开始训练的时候总会选择wrong
+actions（agent还没学到什么东西），之后随着学习逐渐选择q-table里面最优的action.用一个参数epsilon去控制这个行为。（这种exploration算法叫做Epsilon-Greedy）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line">alpha = 0.1</span><br><span class="line">epsilon = 1</span><br><span class="line">epsilon_decay = epsilon / 4000</span><br><span class="line"></span><br><span class="line"># pick up action from q-table with greedy exploration</span><br><span class="line">def pick_sample(s, epsilon):</span><br><span class="line">    # get optimal action,</span><br><span class="line">    # but with greedy exploration (to prevent picking up same values in the first stage)</span><br><span class="line">    if np.random.random() &gt; epsilon:</span><br><span class="line">        a = np.argmax(q_table[tuple(s)])</span><br><span class="line">    else:</span><br><span class="line">        a = np.random.randint(0, env.action_space.n)</span><br><span class="line">    return a</span><br><span class="line"></span><br><span class="line">env = gym.make(&quot;CartPole-v1&quot;)</span><br><span class="line">reward_records = []</span><br><span class="line">for i in range(6000):</span><br><span class="line">    # Run episode till done</span><br><span class="line">    done = False</span><br><span class="line">    total_reward = 0</span><br><span class="line">    s, _ = env.reset()</span><br><span class="line">    s_dis = get_discrete_state(s)</span><br><span class="line">    while not done:</span><br><span class="line">        a = pick_sample(s_dis, epsilon)</span><br><span class="line">        s, r, term, trunc, _ = env.step(a)</span><br><span class="line">        done = term or trunc</span><br><span class="line">        s_dis_next = get_discrete_state(s)</span><br><span class="line"></span><br><span class="line">        # Update Q-Table</span><br><span class="line">        maxQ = np.max(q_table[tuple(s_dis_next)])</span><br><span class="line">        q_table[tuple(s_dis)][a] += alpha * (r + gamma * maxQ - q_table[tuple(s_dis)][a])</span><br><span class="line"></span><br><span class="line">        s_dis = s_dis_next</span><br><span class="line">        total_reward += r</span><br><span class="line"></span><br><span class="line">    # Update epsilon for each episode</span><br><span class="line">    if epsilon - epsilon_decay &gt;= 0:</span><br><span class="line">        epsilon -= epsilon_decay</span><br><span class="line"></span><br><span class="line">    # Record total rewards in episode (max 500)</span><br><span class="line">    print(&quot;Run episode&#123;&#125; with rewards &#123;&#125;&quot;.format(i, total_reward), end=&quot;\r&quot;)</span><br><span class="line">    reward_records.append(total_reward)</span><br><span class="line"></span><br><span class="line">print(&quot;\nDone&quot;)</span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/13/python-warmup/" rel="prev" title="python-warmup">
+      <i class="fa fa-chevron-left"></i> python-warmup
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">1.</span> <span class="nav-text">实现细节：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
