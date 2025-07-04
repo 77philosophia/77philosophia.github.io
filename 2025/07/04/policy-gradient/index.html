@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="q-learning的网络是估计q-value，然后下个action选择当前state下q-value最大的那个action. policy-gradient是建立一个网络，帮助选择当前state下面采样action. Q-learning算法的缺点：无法处理连续空间、经验贪婪搜索等。 为了克服这些问题，一部分的算法引入了随机分布。 连续action空间的任务在RL中依然很具有挑战性，可以参考ht">
+<meta property="og:type" content="article">
+<meta property="og:title" content="policy-gradient(1999)">
+<meta property="og:url" content="http://77philosophia.github.io/2025/07/04/policy-gradient/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="q-learning的网络是估计q-value，然后下个action选择当前state下q-value最大的那个action. policy-gradient是建立一个网络，帮助选择当前state下面采样action. Q-learning算法的缺点：无法处理连续空间、经验贪婪搜索等。 为了克服这些问题，一部分的算法引入了随机分布。 连续action空间的任务在RL中依然很具有挑战性，可以参考ht">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-04T08:14:26.000Z">
+<meta property="article:modified_time" content="2025-07-04T08:14:56.604Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/07/04/policy-gradient/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>policy-gradient(1999) | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/policy-gradient/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          policy-gradient(1999)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:14:26 / Modified: 16:14:56" itemprop="dateCreated datePublished" datetime="2025-07-04T16:14:26+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>q-learning的网络是估计q-value，然后下个action选择当前state下q-value最大的那个action.</p>
+<p>policy-gradient是建立一个网络，帮助选择当前state下面采样action.</p>
+<p>Q-learning算法的缺点：无法处理连续空间、经验贪婪搜索等。</p>
+<p>为了克服这些问题，一部分的算法引入了随机分布。</p>
+<p>连续action空间的任务在RL中依然很具有挑战性，可以参考https://tsmatz.wordpress.com/2021/11/11/reinforcement-learning-visual-attention-in-minecraft/</p>
+<p>之前的算法下个action的选择基于Q-table或者Q-function,算法的policy是确定性的。</p>
+<p>本算法下一个动作是基于随机空间(就是)，策略将被训练为<strong>输出随机分布的参数</strong>（由随机空间决定），而非直接选择动作本身。</p>
+<p>比如：</p>
+<ul>
+<li>对于离散动作空间，可以使用<strong>分类分布（Categorical
+Distribution）</strong>；</li>
+<li>对于连续动作空间（如Box类型），可以使用<strong>高斯分布（Gaussian
+Distribution）</strong>；</li>
+<li>对于有界连续动作空间，则可以使用<strong>Beta分布</strong>。</li>
+</ul>
+<p>通过引入随机空间，您不再需要应用经验贪婪探索。</p>
+<p>在policy gradient中，action a是从依靠policy 。</p>
+<p>即动作分布可以表示为P(a|<em>(s)),</em>(s)是policy，。如果当前action
+a已知，action取决于policy . (比如分类分布、高斯分布)。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)</span><br><span class="line"></span><br><span class="line">class PolicyPi(nn.Module):</span><br><span class="line">    def __init__(self, hidden_dim=64):</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(4, hidden_dim)</span><br><span class="line">        self.classify = nn.Linear(hidden_dim, 2)</span><br><span class="line"></span><br><span class="line">    def forward(self, s):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        logits = self.classify(outs)</span><br><span class="line">        return logits</span><br><span class="line"></span><br><span class="line">policy_pi = PolicyPi().to(device)</span><br></pre></td></tr></table></figure>
+<p>在CarPole的例子中，我们假设P是一个分类分布(因为action
+space是离散的)，_(s)是一个全连接网络，有2维输出。输出是logits
+value。</p>
+<p>当logits l_0,l_1给出时，概率是，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line"></span><br><span class="line"># Pick up action with above distribution policy_pi</span><br><span class="line">def pick_sample(s):</span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        #   --&gt; size : (1, 4)</span><br><span class="line">        s_batch = np.expand_dims(s, axis=0)</span><br><span class="line">        s_batch = torch.tensor(s_batch, dtype=torch.float).to(device)</span><br><span class="line">        # Get logits from state</span><br><span class="line">        #   --&gt; size : (1, 2)</span><br><span class="line">        logits = policy_pi(s_batch)</span><br><span class="line">        #   --&gt; size : (2)</span><br><span class="line">        logits = logits.squeeze(dim=0)</span><br><span class="line">        # From logits to probabilities</span><br><span class="line">        probs = F.softmax(logits, dim=-1)</span><br><span class="line">        # Pick up action&#x27;s sample</span><br><span class="line">        a = torch.multinomial(probs, num_samples=1)</span><br><span class="line">        # Return</span><br><span class="line">        return a.tolist()[0]</span><br></pre></td></tr></table></figure>
+<p>考虑下面的expectationE{_}[R]:</p>
+<p>E_{_}[R]=<em>a{R(a) P(a|</em>(s))}</p>
+<p>R是cumulative exptected rewards: R=r</p>
+<p>为了最大化E的到最优的,我们应用梯度下降：_{t+1} _t + </p>
+<p>其中：</p>
+<p>= R _{} ;;;;; (1)</p>
+<p>rate.</p>
+<p>上面的公式来自于下面的公式，直接知道E很难，但是下面这个可以在每一步的梯度算法里计算：_{}
+= </p>
+<p>补充：</p>
+<p>原始公式：</p>
+<p>_{} = </p>
+<p>更新公式：</p>
+<p>= R _{} ;;;;; (1)</p>
+<p>实际上是用<strong>单次采样</strong>的蒙特卡洛估计代替了期望。</p>
+<p>在公式1中，如果excepted reward
+R是正向大，调整a的概率会增加。响应的，如果expected reward
+R是负数，。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"># Get cumulative rewards</span><br><span class="line">#</span><br><span class="line">cum_rewards = np.zeros_like(rewards)</span><br><span class="line">reward_len = len(rewards)</span><br><span class="line">for j in reversed(range(reward_len)):</span><br><span class="line">    cum_rewards[j] = rewards[j] + (cum_rewards[j+1]*gamma if j+1 &lt; reward_len else 0)</span><br><span class="line"></span><br><span class="line">#</span><br><span class="line"># Train (optimize parameters)</span><br><span class="line">#</span><br><span class="line">states = torch.tensor(states, dtype=torch.float).to(device)</span><br><span class="line">actions = torch.tensor(actions, dtype=torch.int64).to(device)</span><br><span class="line">cum_rewards = torch.tensor(cum_rewards, dtype=torch.float).to(device)</span><br><span class="line">opt.zero_grad()</span><br><span class="line">logits = policy_pi(states)</span><br><span class="line"># Calculate negative log probability (-log P) as loss.</span><br><span class="line"># Cross-entropy loss is -log P in categorical distribution. (see above)</span><br><span class="line">log_probs = -F.cross_entropy(logits, actions, reduction=&quot;none&quot;)</span><br><span class="line">loss = -log_probs * cum_rewards</span><br><span class="line">loss.sum().backward()</span><br><span class="line">opt.step()</span><br></pre></td></tr></table></figure>
+<p>你可以发现，该算法通过采样action's policy P( |
+_(s))来提高随机策略的效果，不仅依赖于Q-learning和DQN算法中的empirical
+greedy action sampling。这种方式也叫on-policy learning.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/07/04/DQN-algorithm/" rel="prev" title="Deep Q-Network(DQN)（2015年google mind）">
+      <i class="fa fa-chevron-left"></i> Deep Q-Network(DQN)（2015年google mind）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/07/04/actor-critic/" rel="next" title="actor-critic">
+      actor-critic <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -145,6 +145,767 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/02/stable-diffusion-history/" class="post-title-link" itemprop="url">stable-diffusion-history</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-02 18:59:15" itemprop="dateCreated datePublished" datetime="2025-01-02T18:59:15+08:00">2025-01-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-03 19:17:30" itemprop="dateModified" datetime="2025-01-03T19:17:30+08:00">2025-01-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191320002.png"
+alt="image-20250103191320002" />
+<figcaption aria-hidden="true">image-20250103191320002</figcaption>
+</figure>
+<h3 id="第一篇文章-2015">第一篇文章-2015</h3>
+<p>关于diffusion的第一篇文章来自于 <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/1503.03585">Deep Unsupervised Learning using
+Nonequilibrium Thermodynamics</a> paper published in 2015.
+受到非平衡统计物理的启发，引入了一个模型，将数据的结构破坏成t
+steps。这个过程叫做forward diffusion;在此之后恢复叫做reverse
+diffusion</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191354356.png"
+alt="image-20250103191354356" />
+<figcaption aria-hidden="true">image-20250103191354356</figcaption>
+</figure>
+<p>这个前向的diffusion过程来自于马尔可夫链，就是t时刻的结果只与t-1时刻的结果相关。</p>
+<p>然后是逆像的diffusion过程，通过gan预测每一步的分布。</p>
+<h3
+id="图像生成再次引入diffusion-2020">图像生成再次引入diffusion-2020</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion
+Probabilistic Models</a> from 2020这篇文章取得了让人印象深刻的效果</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191420017.png"
+alt="image-20250103191420017" />
+<figcaption aria-hidden="true">image-20250103191420017</figcaption>
+</figure>
+<p>他们证实了reparameterization的技巧可以用在reverse
+diffusion的过程中形成封闭的解决方案。</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191436862.png"
+alt="image-20250103191436862" />
+<figcaption aria-hidden="true">image-20250103191436862</figcaption>
+</figure>
+<p>并且发现预测每一步的噪音而不是噪音背后的图像得到更好的结果。在CIFAR10数据集上进行了测试，在IS和FID得分中都取得了sota.</p>
+<p>重新引入diffusion为后面的midjourney和stable
+diffusion都打下了基础。</p>
+<h3 id="clip">CLIP</h3>
+<p>OpenAi 发布了他们的论文 <a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.00020">Learning Transferable Visual
+Models From Natural Language Supervision</a> and a <a
+target="_blank" rel="noopener" href="https://openai.com/research/clip">blog post</a>和
+开源的多模态的zero-shot CLIP模型。</p>
+<p>这个模型在语言的监督下学习了视觉的特征，这不是一个新概念，但是它将text
+prompt匹配图像做的很好。</p>
+<p>它们抓取了互联网的超过400百万张图片，他们发现将text
+prompt适配到每个任务更好，相比传统的分类模型来说。比如传统的分类模型打的标签就是类别dog，但是在text
+prompt里面就是a photo of dog。</p>
+<p>它们的预训练包括：</p>
+<ul>
+<li><p>基于transformer的text encoder</p></li>
+<li><p>基于vision transformer的image encoder</p></li>
+<li><p>基于resnet的image encoder</p></li>
+</ul>
+<p>输出的向量text encoder:Ti和Image encoder Ii
+然后用在它们下一步的对比预训练过程中。</p>
+<p>输入是</p>
+<ul>
+<li><p>一个prompt用于描述图像中的物体，如a photo of big
+{object}</p></li>
+<li><p>包含该物体的图像</p></li>
+<li><figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191507830.png"
+alt="image-20250103191507830" />
+<figcaption aria-hidden="true">image-20250103191507830</figcaption>
+</figure></li>
+</ul>
+<p>text和image encoder输出的向量构成text-image对，构成一个矩阵</p>
+<ul>
+<li><p>矩阵元素是一个image vector和text vector的乘积，<em>Ii *
+Ti</em>.</p></li>
+<li><p>矩阵对角元素是matching的text-image对</p></li>
+<li><p>每行非对角元素是text和image不匹配对应的</p></li>
+</ul>
+<p>模型目标是最大化对角线元素的值，最小化非对角线元素值。这个过程输出的是对比性表示，捕捉的是图片和文本shared的特征，因此叫_Contrastive
+Language-Image_ <em>Pre-training</em>.</p>
+<p>这个模型输出的是image和text的embedding表示，这些embeddings可以通过cosine相似度或者欧几里得距离来衡量相似度，这些相似度可以用在很多任务中，比如GAN
+模型中的判别器或图像分类器</p>
+<h1
+id="guided-language-to-image-diffusion-for-generation-and-editing-glide-2021年底">Guided
+Language to Image Diffusion for Generation and Editing
+(GLIDE)-2021年底</h1>
+<p>OPENAI发表论文_<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10741">GLIDE:
+Towards Photorealistic Image Generation and Editing with Text-Guided
+Diffusion Models</a>_. 运用了guided diffusion和comparing CLIP guidance
+vs *Classifier-free
+guidance,允许扩散模型从文本中学习。在diffusion层中使用__unet__结构。用到text-image的__数据集__，这个数据集在DALL-E中也被使用。*</p>
+<h5 id="guided-diffusion">Guided diffusion</h5>
+<p>使用transformer model去encode text
+prompt,将最后一层embedding的输出作为diffusion模型的class-conditioning，这个class-conditioning使用了attention去关注forward/backward/denising
+attention层。</p>
+<h5 id="clip-guidance">Clip guidance</h5>
+<p>在推理过程中的去噪扩散过程中，使用clip进行分类起指导。用clip的点积对比矩阵梯度扰乱去噪均值，将初始去噪图像移动到
+CLIP 预测高文本图像匹配的方向。类似于 Google 的 dreep deam 模型。</p>
+<h5 id="classifier-free-guidance">Classifier-free guidance</h5>
+<p>在训练过程中同时提供没有text
+guidance的example，在推理的去噪阶段，让模型预测两次噪声，一次有prompt一次没有。text
+guidance会影响预测的噪音值。有text的预测noise:(<em>εθ(xt|y)</em>),没有的(<em>εθ(xt|∅)</em>)。文本造成的不同在每个时间步t会乘以一个系数s,然后加到预测的噪音上。这样推着噪音预测向正确的方向进行。因为我们在每一步都考虑了更多文本特定的噪声，从而增强了文本添加的噪声效果。</p>
+<h1 id="εˆθxty-εθxt-s-εθxty-εθxt"><em>εˆθ(xt|y) = εθ(xt|∅) + s ·
+(εθ(xt|y) − εθ(xt|∅))</em></h1>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191611149.png"
+alt="image-20250103191611149" />
+<figcaption aria-hidden="true">image-20250103191611149</figcaption>
+</figure>
+<p>结果发现classfier-free guidance比clip guidance效果更好</p>
+<p>最后他们训练diffusion用的256x256，因为扩散过程是其运行的像素空间中非常密集的过程。因此他们也训练了一个encoder和decoder用于降采样和复原图片到1024x1024。</p>
+<h3 id="latent-diffusion-2021年底">Latent diffusion-2021年底</h3>
+<p>论文 the _<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10752">High-Resolution
+Image Synthesis with Latent Diffusion Models</a>__，
+主要将diffusion过程从像素空间移到了latent
+space，使得diffusion过程更加的高效_</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191635342.png"
+alt="image-20250103191635342" />
+<figcaption aria-hidden="true">image-20250103191635342</figcaption>
+</figure>
+<p>Latent Diffusion
+模型首先训练autoEncoder模型，encoder提取与原图最相似最重要的部分到latent
+space，
+decoder基于latent空间的表示生成原图。然后，将unet中的扩散过程用在pretrained
+auto encoder编码器的latent space
+representation.他们也发现classifier-free guidance提升质量。</p>
+<p>UNet
+还使用交叉注意力层，允许它们用作不同类型的条件输入生成器，例如文本到图像和超分辨率。</p>
+<p>autoencoder的decoder层把latent space上采样恢复到1024x1024.</p>
+<h3 id="dall-e2-2022年初">DALL-E2-2022年初</h3>
+<p>OpenAI发布论文 _<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.06125">Hierarchical Text-Conditional
+Image Generation with CLIP
+Latents</a>__，这是一个__继承__工作来自于clip,
+dall-e和glide.本文的作者确实将该模型称为 unclip，因为该模型将 CLIP
+模型中的文本嵌入转换回图像。_</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191656226.png"
+alt="image-20250103191656226" />
+<figcaption aria-hidden="true">image-20250103191656226</figcaption>
+</figure>
+<p>可以注意到虚线下方，prior model输出一个clip image
+embedding，然后用于diffusion decoder的去噪过程中的condition.</p>
+<ol type="1">
+<li><p>take一个预训练好的clip模型，冻结权重</p></li>
+<li><p>将prompt通过clip encode成一个embedding向量</p></li>
+<li><p>一个基于扩散的prior model将text embedding 匹配到相应的clip image
+embedding.所以prior model产生clip model会产生的图像。</p></li>
+<li><p>使用调整过的glide模型，他们通过去噪/反向扩散过程以随机方式映射图像嵌入。这使得模型能够生成许多与相似视觉概念相关的可能图像。</p></li>
+</ol>
+<p>为什么要用prior去产生image embedding</p>
+<figure>
+<img
+src="/2025/01/02/stable-diffusion-history/image-20250103191713661.png"
+alt="image-20250103191713661" />
+<figcaption aria-hidden="true">image-20250103191713661</figcaption>
+</figure>
+<p>比起单纯的caption或者text embedding，prior产生的image
+embedding能产生更好的结果，如上图。</p>
+<p>但是openai没有开源模型的权重。</p>
+<h3 id="开源的latent-diffusionstable-diffusion-2022">开源的latent
+diffusion(stable diffusion)-2022</h3>
+<p>开源模型stable diffusion由Stability AI发布</p>
+<p>https://medium.com/<span class="citation"
+data-cites="vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5">@vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/12/31/new_laptop_settings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/31/new_laptop_settings/" class="post-title-link" itemprop="url">新电脑配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-31 17:41:52" itemprop="dateCreated datePublished" datetime="2024-12-31T17:41:52+08:00">2024-12-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-02 18:54:28" itemprop="dateModified" datetime="2025-01-02T18:54:28+08:00">2025-01-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="对象">对象</h2>
+<p>Mac pro m4</p>
+<h3 id="终端配置iterm2oh-my-zsh">1.
+终端配置<strong>iterm2+oh-my-zsh</strong></h3>
+<p>要自己安装<strong>command line
+tools</strong>和home-brew(https://www.jianshu.com/p/e0471aa6672d)</p>
+<p>https://github.com/sirius1024/iterm2-with-oh-my-zsh</p>
+<h3 id="termius">2. Termius</h3>
+<p>https://termius.com/download/macos</p>
+<h3 id="typora">3.typora</h3>
+<p><strong>https://github.com/shuhongfan/TyporaCrack</strong></p>
+<h3 id="vpn">4. vpn</h3>
+<p>可乐云：https://my.coke1.link/</p>
+<p>另一个：https://apk.okzapp.app/index.php#/register?code=QIFC23KC
+（朋友说用了三年多了没有跑路）</p>
+<p>我之前用的是DuangCloud，2024下半年华丽嘎了</p>
+<h3 id="其他问题">5. 其他问题</h3>
+<h4 id="vpn开启全局代理之后终端无法安装包">5.1
+vpn开启全局代理之后终端无法安装包</h4>
+<p>设置：</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102095721650.png"
+alt="image-20250102095721650.png" />
+<figcaption aria-hidden="true">image-20250102095721650.png</figcaption>
+</figure>
+<p>现象：终端无法访问国外资源</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103106455.png"
+alt="image-20250102103106455.png" />
+<figcaption aria-hidden="true">image-20250102103106455.png</figcaption>
+</figure>
+<p>解决方法：查看vpn代理端口并配置终端的代理端口：</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103359294.png"
+alt="image-20250102103359294.png" />
+<figcaption aria-hidden="true">image-20250102103359294.png</figcaption>
+</figure>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103235915.png"
+alt="image-20250102103235915" />
+<figcaption aria-hidden="true">image-20250102103235915</figcaption>
+</figure>
+<p>以上参考链接：https://blog.csdn.net/silence_xz/article/details/136669658?spm=1001.2101.3001.6650.5&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;utm_relevant_index=10</p>
+<h4 id="npm安装不动">5.2 npm安装不动</h4>
+<p>现象：</p>
+<figure>
+<img src="/2024/12/31/new_laptop_settings/image-20250102103717638.png"
+alt="image-20250102103717638" />
+<figcaption aria-hidden="true">image-20250102103717638</figcaption>
+</figure>
+<p>解决方法：换源</p>
+<p><code>npm config set registry http://registry.npmmirror.com</code></p>
+<p>参考链接：http://liuw.tech/2022/11/05/hexo-%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2hexo/</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/27/database/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/27/database/" class="post-title-link" itemprop="url">database</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-05-27 12:30:55" itemprop="dateCreated datePublished" datetime="2024-05-27T12:30:55+08:00">2024-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-30 01:20:58" itemprop="dateModified" datetime="2024-05-30T01:20:58+08:00">2024-05-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5
+id="course-httpswww.coursera.orglearnintroduction-to-relational-databasesungradedwidgetp0c8phands-on-lab-relational-model-concepts">course
+https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/p0C8P/hands-on-lab-relational-model-concepts</h5>
+<h3 id="关系模型的基本概念">关系模型的基本概念</h3>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvTGFiJTIwLSUyMFJlbGF0aW9uYWwlMjBNb2RlbCUyMENvbmNlcHRzL2luc3RydWN0aW9uYWwtbGFicy5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE2Mzg2ODN9.WVq3A1Cs9GKG5RgO8AaYx3S3ZI3iAmLe899AkdPantM">Hands-on
+Lab: Relational Model Concepts</a></p>
+<figure>
+<img src="/2024/05/27/database/image-20240527123715098.png"
+alt="image-20240527123715098" />
+<figcaption aria-hidden="true">image-20240527123715098</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://labs.cognitiveclass.ai/v2/tools/datasette?ulid=ulid-5cc4e56aa12f13251ff5e1bdda1219009104b784">load
+data</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/Yuntk/course-glossary">整体复习</a></p>
+<p>https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvZ2xvc3NhcnkvbTRfY291cnNlX2dsb3NzYXJ5Lm1kIiwidG9vbF90eXBlIjoiaW5zdHJ1Y3Rpb25hbC1sYWIiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNTQ3NX0.o7HjxQ6FDaJx6wmdINArHesmkZFTbPxDdIgSbawnP5c</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/23/backend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/23/backend/" class="post-title-link" itemprop="url">backend</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-05-23 14:00:15" itemprop="dateCreated datePublished" datetime="2024-05-23T14:00:15+08:00">2024-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-24 19:14:29" itemprop="dateModified" datetime="2024-05-24T19:14:29+08:00">2024-05-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="week-1">Week 1</h1>
+<h4 id="node-js">1. Node js</h4>
+<p>Node js是javascript在服务器端的编程框架， express是其开发框架。</p>
+<p>server大概有三种：database server / web server(http) / application
+server</p>
+<p>js的特点：Event-driven, 异步asynchronous, 非阻塞，<a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9TZXJ2ZXJTaWRlSmF2YXNjcmlwdC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MTZ9.6yLbDHSnA7Ffyp8kq9u1jq8zNAs1QiwSi8fIG0quUxg">js了解</a></p>
+<h5 id="js-module">js module</h5>
+<figure>
+<img src="/2024/05/23/backend/image-20240523143047893.png"
+alt="image-20240523143047893" />
+<figcaption aria-hidden="true">image-20240523143047893</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523143135653.png"
+alt="image-20240523143135653" />
+<figcaption aria-hidden="true">image-20240523143135653</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523143215979.png"
+alt="image-20240523143215979" />
+<figcaption aria-hidden="true">image-20240523143215979</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523143324541.png"
+alt="image-20240523143324541" />
+<figcaption aria-hidden="true">image-20240523143324541</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523143354049.png"
+alt="image-20240523143354049" />
+<figcaption aria-hidden="true">image-20240523143354049</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523144020865.png"
+alt="image-20240523144020865" />
+<figcaption aria-hidden="true">image-20240523144020865</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523144848936.png"
+alt="image-20240523144848936" />
+<figcaption aria-hidden="true">image-20240523144848936</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523145015691.png"
+alt="image-20240523145015691" />
+<figcaption aria-hidden="true">image-20240523145015691</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523145042861.png"
+alt="image-20240523145042861" />
+<figcaption aria-hidden="true">image-20240523145042861</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9BZHZhbmNlZF9Ob2RlLmpzX21vZHVsZXMubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTUzfQ.oUQg6uIJbbEgp0GByD36iHMr_gMmReyJYVykaSrHGbA">高级js模块</a></p>
+<figure>
+<img src="/2024/05/23/backend/image-20240523145912229.png"
+alt="image-20240523145912229" />
+<figcaption aria-hidden="true">image-20240523145912229</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMV9JbnRyb2R1Y3Rpb25Ub1NlcnZlclNpZGVKYXZhU2NyaXB0JTJGSGFuZHNPbl9MYWJfRmlyc3RTZXJ2ZXJTaWRlU2NyaXB0Lm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyNH0.4cNsJQ7n8QzVT8x1BO0QhMW5jb7Kp_aXW3VILCc2h9Y">lab:使用nodejs创建服务端程序</a></p>
+<figure>
+<img src="/2024/05/23/backend/image-20240523152832502.png"
+alt="image-20240523152832502" />
+<figcaption aria-hidden="true">image-20240523152832502</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9HbG9zc2FyeS8yMDAzODkuMTFfTTFfR2xvc3NhcnkubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTQ0fQ.TuD3KX8yEEewo2CIDv2AyjGmWI1EMdClt8Tdw1m5MKY">一些概念</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTFfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MzV9.4M92HAb93JO5_DdTXT_jL2vJa-pfHrJ3Cxw2C_HASVE">服务器端js简介</a></p>
+<h1 id="week-2">Week 2</h1>
+<p>nodejs通过非阻塞的方式调用所有io</p>
+<figure>
+<img src="/2024/05/23/backend/image-20240523154546786.png"
+alt="image-20240523154546786" />
+<figcaption aria-hidden="true">image-20240523154546786</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523154705545.png"
+alt="image-20240523154705545" />
+<figcaption aria-hidden="true">image-20240523154705545</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240523185448246.png"
+alt="image-20240523185448246" />
+<figcaption aria-hidden="true">image-20240523185448246</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb25Ub0FzeW5jQXdhaXQubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU3fQ.QLu1ThZK6P3pv6Q24iyROVj8RZZnSPyZzOIx3e7Kuz0">async/await</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMl9Bc3luY19DYWxsYmFjayUyRkhhbmRzT25fTGFiX0FzeW5jX0NhbGxiYWNrLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUzMX0.qV1jLSpoScLWvGOZKXv95pbhkyzEOctJ9yOy5CscDQ4">异步回调编程</a></p>
+<figure>
+<img src="/2024/05/23/backend/image-20240524112320066.png"
+alt="image-20240524112320066" />
+<figcaption aria-hidden="true">image-20240524112320066</figcaption>
+</figure>
+<p><a href="">术语表 - 使用回调编程的异步 I/O</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTJfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1Mzh9.JPvmEnhXrPQHLGLyZDW-7kzx2espu7krfqxdFJp9Ao0">Asynchronous
+I/O with Callback Program</a></p>
+<h1 id="express网络框架">Express网络框架</h1>
+<p>node js不是一个运行框架，是一个runtime
+environment用于在server上面运行js code</p>
+<figure>
+<img src="/2024/05/23/backend/image-20240524115011622.png"
+alt="image-20240524115011622" />
+<figcaption aria-hidden="true">image-20240524115011622</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240524115044107.png"
+alt="image-20240524115044107" />
+<figcaption aria-hidden="true">image-20240524115044107</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240524115606544.png"
+alt="image-20240524115606544" />
+<figcaption aria-hidden="true">image-20240524115606544</figcaption>
+</figure>
+<h4 id="中间件和路由器">中间件和路由器</h4>
+<p>本文将讨论<em>中间件</em> 和<em>路由</em>这两个术语。</p>
+<p>中间件是位于应用程序、数据库或服务之间的软件，允许这些不同的技术进行通信。它在分布式系统中为终端用户创建无缝交互。</p>
+<p>Express
+是一个消息传递框架，用于处理路由和编写中间件。应用程序的前端使用 Express
+来促进后端组件之间的通信，而前端和后端服务无需使用相同的语言。前端与中间件通信，而不是直接与后端通信。</p>
+<p>像 Express 这样的消息框架通常包含 JSON、REST API
+和网络服务。旧的消息框架可能包含可扩展标记语言（XML）和简单对象访问协议（SOAP），而不是
+JSON 和 REST
+API。消息传递框架提供了一种处理不同应用间数据传输的标准化方法。</p>
+<p>网络服务器是连接网站和数据库的中间件的一个例子。网络服务器处理业务逻辑，并根据请求从数据库路由数据。<em>路由</em>
+是将 GET、POST 或 DELETE 等 HTTP 请求与 URL 以及处理该 URL
+的函数相关联的代码部分。路由在网络开发中用于根据浏览器 URL
+确定的规则分割应用程序的用户界面。</p>
+<p>路由器功能统称为 "中间件"。中间件负责响应 HTTP
+请求或调用中间件链中的其他函数。Express 通过 Router 类处理路由器函数，如
+Router.get()。顾名思义，Router.get() 负责处理 HTTP GET
+请求。其他路由器函数包括 Router.post()、Router.put() 和
+Router.delete()，使用方法基本相同。这些方法需要两个参数，一个 URL
+路径和一个回调函数。</p>
+<p>除了路由之外，中间件还负责通过加密和解密数据来提供服务间的安全连接，通过将流量分配到不同的服务器来管理应用程序负载，以及在数据返回客户端之前对数据进行排序或过滤。</p>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb24tdG8tQXV0aGVudGljYXRpb24ubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU1fQ.iKf3HQ4FD9ESfd0H1cH8R1eONRumBzDQAQYVyD3SO34">身份验证和授权</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://d3c33hcgiwev3.cloudfront.net/L1T_uyeHSHGyROFLyqZRxQ_2ee09d6aa6ba4736920c2f6a31faa6f1_Writing-RESTful-APIs-Reading.docx.pdf?Expires=1716681600&amp;Signature=IJLmbTFs~gRZ3Ij9yrXrNVeNbu5kADjvREy0SkQt7eovyMZNnOX6YaZFa7Cs2fOVg4Fg4JOsSBxmsgho3a~kMxWsDVQGpDO79Ai2NjvK1Jv5~pe0z7FlTvajvO62pgLJFpBaegWY12EM5mjzVwzMHDILZrSNF7luz~2R3gb8-3s_&amp;Key-Pair-Id=APKAJLTNE6QMUY6HBC5A">http
+method/rest api</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlM19FeHByZXNzSlMlMkZIYW5kcy1vbl9MYWJfQ1JVRC5tZCIsInRvb2xfdHlwZSI6InRoZWlhIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MjZ9.30Vfc7qrnD9jo_XAW4oiq9zJ1ax_0swsPwmRIL34JLk">lab:crud
+with nodejs</a></p>
+<figure>
+<img src="/2024/05/23/backend/image-20240524174736995.png"
+alt="image-20240524174736995" />
+<figcaption aria-hidden="true">image-20240524174736995</figcaption>
+</figure>
+<figure>
+<img src="/2024/05/23/backend/image-20240524174805639.png"
+alt="image-20240524174805639" />
+<figcaption aria-hidden="true">image-20240524174805639</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://www.coursera.org/learn/developing-backend-apps-with-nodejs-and-express/ungradedWidget/IO1Oa/glossary-express-web-application-framework">express
+web术语</a></p>
+<p>test-project/ node_modules/ config/ db.js //Database connection and
+configuration credentials.js //Passwords/API keys for external services
+used by your app models/ //For mongoose schemas items.js prices.js
+routes/ //All routes for different entities in different files items.js
+prices.js app.js routes.js //Require all routes in this and then require
+this file in package.json</p>
+<p><a
+target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGUHJhY3RpY2VQcm9qZWN0X0ZyaWVuZHNMaXN0X1dpdGhBdXRoJTJGaW5zdHJ1Y3Rpb25zLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyM30.0Rshfz3KAokqUCOpGERC0zmSL26a7aKKCtJLaZIUsKc">practice
+lab</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/20/frisbee-pickup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/20/frisbee-pickup/" class="post-title-link" itemprop="url">frisbee-pickup</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-05-20 23:43:40" itemprop="dateCreated datePublished" datetime="2024-05-20T23:43:40+08:00">2024-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-21 00:17:26" itemprop="dateModified" datetime="2024-05-21T00:17:26+08:00">2024-05-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="当参加飞盘的比赛">当参加飞盘的比赛</h2>
+<p>​
+距离接触飞盘已经两年了，中间受伤的一年没有如何运动，我几乎踩中了很多不利的因素：</p>
+<ul>
+<li>错过最好的学校的大段时间训练和有场地、伙伴练习的机会，我玩飞盘已经是研究生快毕业的时候</li>
+<li>北漂互联网，在北京参加飞盘活动路上时间花费很多</li>
+<li>几乎没什么体育底子</li>
+</ul>
+<p>​ 为什么还要玩</p>
+<ul>
+<li>上手容易，以及飞盘的规则是no touch，真的很不喜欢人碰我</li>
+<li>锻炼身体的动力</li>
+</ul>
+<p>​
+我不是很厉害的选手，所以没有长期训练的队伍，很多时候都在打皮卡。花了很多时间，当了很多次炮灰得到的感悟：</p>
+<ul>
+<li>在皮卡的小比赛要珍惜每一次拿盘的机会，要去捡盘，一定要克服被打击而畏缩的惯性。我真的看到太多太多次，在皮卡，男生让女生不要捡盘，“让我捡”、“你不要碰”，而很多女生甚至视之为理所当然，“因为自己没有能力”，“会让队伍失分”，所以我们只能寄希望于好的队伍好的团体氛围。
+<ul>
+<li>1.皮卡的目的是自己的进步，如果用一个优化函数定义自己的目标，那就是在短短的场上几十分钟的时间内，将自己暴露在尽可能多的尝试和失败当中。这个游戏规则其实很简单，练习越多，进步越快。在皮卡中队伍的输赢本不应该成为一个阻碍，考虑也只是均衡双方力量让比赛尽可能有竞争力的进行下去。</li>
+<li>2.能力不应该成为不控盘的理由。我多么希望自己能在早期就明白这个道理，在男生让我只是传dump给他的时候，在我即使捡盘也有近处一个男生让我直接给他的时候，在初次进入一个领域知道并坚持自己享有和其他人同等竞争的机会和权利，不要轻易放弃。</li>
+</ul></li>
+<li>参加一个比赛，跟着一个队伍“容易成为炮灰”，这种情况很多时候表示为：
+<ul>
+<li>喊你的时候对方理由一般是缺人，但是后面喊的人越来越多，越多的人数分摊有限的上场机会。尤其是认识的人，往往不好“问的太多”显得很难对付。</li>
+<li>如果去参加一个皮卡的队伍，应该约定好你们准备招募多少个人，可以保证多少分的上场机会。（我在这方面当炮灰太多次了，因为没有队伍，因为处于弱势，所以我一度觉得这是我不得不接受的规则。直到后来我开始怀疑这个想法，如果我不接受这件事情就不会发生。我宁愿不参加比赛也不接受不平等的忽视和上场机会。不比赛依旧有很多方法可以去训练，依然可以进步。</li>
+</ul></li>
+<li>国内的很多比赛都是34
+43ABBA的赛制轮回，但是实际比赛我却发现真正执行到底的比赛不多。很多时候都是：“我们女生不够”让对方队伍不好拒绝，<strong>其实这种情况的解决方案本应该是女生不够的队伍可以认输</strong>，事实上每一次妥协都是在牺牲女性盘友的上场机会。因为对“人数不够”的场景的默认，虽然有这样的规则，女盘手的缺失不成为一个问题。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/18/nuscenes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -859,7 +1620,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

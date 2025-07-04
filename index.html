@@ -145,6 +145,1090 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/ppo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/04/ppo/" class="post-title-link" itemprop="url">ppo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:15:53 / Modified: 16:36:39" itemprop="dateCreated datePublished" datetime="2025-07-04T16:15:53+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>PPO 是强化学习中一种基于策略梯度（Policy
+Gradient）的算法，旨在解决传统策略梯度方法的两个核心问题：</p>
+<ol type="1">
+<li><strong>训练不稳定性</strong>
+<ul>
+<li>策略梯度方法（如REINFORCE、Actor-Critic）直接更新策略时，若步长（学习率）过大，可能导致策略突然崩溃（性能骤降），难以恢复。</li>
+<li>例如，在更新后，策略可能过度偏向某些动作，导致探索不足或陷入局部最优。</li>
+</ul></li>
+<li><strong>样本效率低</strong>
+<ul>
+<li>传统方法需要大量与环境交互的样本才能收敛，而PPO通过限制策略更新的幅度，使得同一批数据可以多次复用（即“经验回放”的策略版本），提升数据利用率。</li>
+</ul></li>
+</ol>
+<p>Proximal Policy
+Optimization(PPO)是如今强化学习中最成功的算法之一。</p>
+<p>PPO是一种优化随机策略的on-policy的方法。为了避免效果损失，PPO阻止更新stepping过大。</p>
+<p>为了避免过大的更新，PPO有两种变体，PPO-Penalty和PPO-Clip.</p>
+<p>下面主要介绍PPO-Penalty.</p>
+<p>PPO-Clip比PPO-Penalty更简单。PPO-Clip通过clip </p>
+<p>在Actor-Critic方法中，算法会学习策略参数A。</p>
+<p>当我们选择action a有很大的优势A的时候，
+P(a|<em>{}(s))的增长会比P(a|</em>{_{old}}(s))大很多。所以对于参数：</p>
+<p><span class="math display">\[
+\max_{\theta} E \left[ \frac{P(a | \pi_\theta (s))}{P(a |
+\pi_{\theta_{old}} (s))} A \right]
+\]</span> 为了避免很大的policy updates的更新，PPO penaltizes
+会类似下面：</p>
+<p><span class="math display">\[
+\max_{\theta} E \left[ \frac{P(a | \pi_\theta (s))}{P(a |
+\pi_{\theta_{old}} (s))} A - \beta \cdot \verb|penalty| \right]
+\]</span></p>
+<p>在PPO-penalty中，KL散度用来估计这个惩罚项。</p>
+<p><span class="math display">\[
+\verb|penalty| := \verb|KL| \left( P(\cdot | \pi_{\theta_{old}} (s)) \|
+P(\cdot | \pi_\theta (s)) \right)
+\]</span></p>
+<p>附：KL散度</p>
+<p>我们假设P(x)和Q(x)都是随机分布，KL散度被定义为：</p>
+<p><span class="math display">\[
+\verb|KL|( P \| Q ) := -\int{P(x) \ln{\frac{Q(x)}{P(X)}}}dx
+\]</span> （需要最大化KL散度的时候就在前面加负号）</p>
+<p>这个定义下：( P | Q
+)总是正值或者0，是0的时候有且只有两个分布是一样的时候。</p>
+<p>KL散度衡量两个分布的差异，如果Q距离P很远，那么KL散度会相当大。</p>
+<p>KL散度具体可以参考<a
+target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/wp-content/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf">chapter1.6</a></p>
+<p>注意，KL散度不是对称的，也就是说 <span class="math display">\[
+\verb|KL|( P \| Q ) \neq \verb|KL|( Q \| P )
+\]</span> ，并且 <span class="math display">\[
+arg\,min_Q \verb|KL|( P \| Q ) \neq arg\,min_Q \verb|KL|( Q \| P )
+\]</span> 回到我们的场景，为了惩罚P(| <em>{</em>{old}} (s))和P(|
+_(s))更新差异过大，我们可以</p>
+<p><span class="math display">\[
+\max_{\theta} E \left[ \frac{P(a | \pi_\theta (s))}{P(a |
+\pi_{\theta_{old}} (s))} A - \beta \cdot \verb|KL| \left( P(\cdot |
+\pi_{\theta_{old}} (s)) \| P(\cdot | \pi_\theta (s)) \right) \right]
+\;\;\;\;\
+\]</span> ; (1)</p>
+<p>这样即使第一项 <span class="math display">\[
+\frac{P(a | \pi_\theta (s))}{P(a | \pi_{\theta_{old}} (s))}
+\]</span> 很大，。</p>
+<p>最后我们最大化等式（1），通过最小化value loss来优化value值估计。</p>
+<p>依旧还是Actor-Critic网络：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ActorNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_dim=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(<span class="number">4</span>, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s</span>):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        logits = self.output(outs)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ValueNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_dim=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(<span class="number">4</span>, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s</span>):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        value = self.output(outs)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">actor_func = ActorNet().to(device)</span><br><span class="line">value_func = ValueNet().to(device)</span><br></pre></td></tr></table></figure>
+<p>不分别最大化 <span class="math display">\[
+\frac{P(a | \theta_{new})}{P(a | \theta_{old})} A - \beta \cdot
+\verb|KL| \left( P(\theta_{old}) \| P(\theta_{new}) \right)
+\]</span> 和最小化value loss L，我们简化为下面的式子：</p>
+<p><span class="math display">\[
+(-1) \frac{P(a | \theta_{new})}{P(a | \theta_{old})} A + \beta \cdot
+\verb|KL| \left( P(\theta_{old}) \| P(\theta_{new}) \right) + L
+\]</span> 这里，P和Q的分布都是离散的，因此KL散度为：</p>
+<p><span class="math display">\[
+\verb|KL| \left( P(\theta_{old}) \| P(\theta_{new}) \right) = -\sum_a
+\left( P(a | \theta_{old}) \ln{\frac{P(a | \theta_{new})}{P(a |
+\theta_{old})}} \right)
+\]</span> 不像之前policy和value分开训练，这次我们用一个loss
+radio来控制二者的比例。</p>
+<p>在分类分布中,log
+probability和cross-entropy损失的负值相等。所以可以用-torch.nn.functional.cross_entropy()得到log
+probability值。</p>
+<p>为了训练平稳，advatange可以进行归一化： <span class="math display">\[
+(A-\mu) / \sigma
+\]</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/actor-critic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/04/actor-critic/" class="post-title-link" itemprop="url">actor-critic</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:15:10 / Modified: 16:37:49" itemprop="dateCreated datePublished" datetime="2025-07-04T16:15:10+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>如今强化学习中很多成功的算法（PPO,SAC等）包含了将回报分解为value和advantage的思想。</p>
+<p>这种分解为value和advantage的想法可以应用在on-policy和off-policy策略上。比如DDPG,就是分解为value和advantage的算法用在off-policy算法上。</p>
+<p>Actor-Critic是一中混合方法，基于value-based Q-learning和policy-based
+method。</p>
+<p>在Q-learning中， <span class="math display">\[
+Q(s_t,a_t) = r_t + \gamma \max_a{Q_t(s_{t+1},a)}
+\]</span></p>
+<p><span class="math display">\[
+\max_a{Q_t(s_{t+1},a)}
+\]</span></p>
+<p>不依赖于action a,因此我们可以 <span class="math display">\[
+Q(s_t,a_t) = r_t + \gamma V(s_{t+1})
+\]</span> ，V(s)只依赖于状态s.</p>
+<p>其中这个V(s)叫做value-function.</p>
+<p>现在我们可以将Q(s_{t},a_{t})分解为两部分：</p>
+<ul>
+<li>一个是potential value V(s_{t})不依赖于a_{t}</li>
+<li>另一部分是A(a_{t},s_{t})(也叫advantage)
+取决于状态s_{t}的动作a_{t}</li>
+</ul>
+<p>因此A(a_{t},s_{t})可以表示为：</p>
+<p><span class="math display">\[
+A(a_t, s_t) = r_t + \gamma V(s_{t+1}) - V(s_t)
+\]</span></p>
+<p>在这种方法下，我们产生value-function(可以通过神经网络估计出来)V(s)并且应用policy
+gradient对于advantage-function A(a,s)。我们应该产生2个function, value
+function和policy function,并且优化这2个fu nctions的参数。</p>
+<p>通俗的解释，value function衡量不同state下的value,policy
+function被优化产生某状态下最合适的action.</p>
+<p>在vanilla on-policy learning中，我们应用梯度下降(ascent) on <span
+class="math display">\[
+E\left[\sum{\gamma r}\right]
+\]</span> .当我们把梯度下降用在reduced A(a,s)而不是 <span
+class="math display">\[
+E\left[\sum{\gamma r}\right]
+\]</span> ，我们可以在复杂问题中得到更稳定的收敛。</p>
+<p>在reward很大的时候，value loss比policy
+loss大很多。如果policy和value分开，各自训练中参数就会得到恰当的更新。(如果不分开，policy
+loss会因为很小被忽视，从而得不到充分的优化更新。)</p>
+<p>你可以run Actor-Critic-based training通过batch或者non-batch</p>
+<p>如果是每episodes作为一个batch进行优化，估计A_{t}可以是r-V(s_{t})</p>
+<p>如果是在episode中间，估计就是 <span class="math display">\[
+r_{t} + \gamma r_{t+1} + \cdots + \gamma^{T-1-t} r_{T-1} + \gamma^{T-t}
+V(s_T) - V(s_t)
+\]</span> 后者方法也叫temporal difference(TD) learning</p>
+<p>Actor-Critic的想法和policy gradient相似。</p>
+<p>但是在Actor-Critic,我们实用value
+function(ValueNet)来估计value(Q-value).</p>
+<p>在此时的例子中，我们隔开policy network(action)和value
+network的权重参数。</p>
+<p>但是，你也可以让policy和value共享network.在后者场景中，需要明确ratio.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ActorNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_dim=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(<span class="number">4</span>, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s</span>):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        logits = self.output(outs)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ValueNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_dim=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(<span class="number">4</span>, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s</span>):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        value = self.output(outs)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">actor_func = ActorNet().to(device)</span><br><span class="line">value_func = ValueNet().to(device)</span><br><span class="line">gamma = <span class="number">0.99</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pick up action with above distribution policy_pi</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pick_sample</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="comment">#   --&gt; size : (1, 4)</span></span><br><span class="line">        s_batch = np.expand_dims(s, axis=<span class="number">0</span>)</span><br><span class="line">        s_batch = torch.tensor(s_batch, dtype=torch.<span class="built_in">float</span>).to(device)</span><br><span class="line">        <span class="comment"># Get logits from state</span></span><br><span class="line">        <span class="comment">#   --&gt; size : (1, 2)</span></span><br><span class="line">        logits = actor_func(s_batch)</span><br><span class="line">        <span class="comment">#   --&gt; size : (2)</span></span><br><span class="line">        logits = logits.squeeze(dim=<span class="number">0</span>)</span><br><span class="line">        <span class="comment"># From logits to probabilities</span></span><br><span class="line">        probs = F.softmax(logits, dim=-<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># Pick up action&#x27;s sample</span></span><br><span class="line">        a = torch.multinomial(probs, num_samples=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># Return</span></span><br><span class="line">        <span class="keyword">return</span> a.tolist()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&quot;CartPole-v1&quot;</span>)</span><br><span class="line">reward_records = []</span><br><span class="line">opt1 = torch.optim.AdamW(value_func.parameters(), lr=<span class="number">0.001</span>)</span><br><span class="line">opt2 = torch.optim.AdamW(actor_func.parameters(), lr=<span class="number">0.001</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1500</span>):</span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># Run episode till done</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    done = <span class="literal">False</span></span><br><span class="line">    states = []</span><br><span class="line">    actions = []</span><br><span class="line">    rewards = []</span><br><span class="line">    s, _ = env.reset()</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> done:</span><br><span class="line">        states.append(s.tolist())</span><br><span class="line">        a = pick_sample(s)</span><br><span class="line">        s, r, term, trunc, _ = env.step(a)</span><br><span class="line">        done = term <span class="keyword">or</span> trunc</span><br><span class="line">        actions.append(a)</span><br><span class="line">        rewards.append(r)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># Get cumulative rewards</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    cum_rewards = np.zeros_like(rewards)</span><br><span class="line">    reward_len = <span class="built_in">len</span>(rewards)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(reward_len)):</span><br><span class="line">        cum_rewards[j] = rewards[j] + (cum_rewards[j+<span class="number">1</span>]*gamma <span class="keyword">if</span> j+<span class="number">1</span> &lt; reward_len <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># Train (optimize parameters)</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Optimize value loss (Critic)</span></span><br><span class="line">    opt1.zero_grad()</span><br><span class="line">    states = torch.tensor(states, dtype=torch.<span class="built_in">float</span>).to(device)</span><br><span class="line">    cum_rewards = torch.tensor(cum_rewards, dtype=torch.<span class="built_in">float</span>).to(device)</span><br><span class="line">    values = value_func(states)</span><br><span class="line">    values = values.squeeze(dim=<span class="number">1</span>)</span><br><span class="line">    vf_loss = F.mse_loss(</span><br><span class="line">        values,</span><br><span class="line">        cum_rewards,</span><br><span class="line">        reduction=<span class="string">&quot;none&quot;</span>)</span><br><span class="line">    vf_loss.<span class="built_in">sum</span>().backward()</span><br><span class="line">    opt1.step()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Optimize policy loss (Actor)</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        values = value_func(states)</span><br><span class="line">    opt2.zero_grad()</span><br><span class="line">    actions = torch.tensor(actions, dtype=torch.int64).to(device)</span><br><span class="line">    advantages = cum_rewards - values</span><br><span class="line">    logits = actor_func(states)</span><br><span class="line">    log_probs = -F.cross_entropy(logits, actions, reduction=<span class="string">&quot;none&quot;</span>)</span><br><span class="line">    pi_loss = -log_probs * advantages</span><br><span class="line">    pi_loss.<span class="built_in">sum</span>().backward()</span><br><span class="line">    opt2.step()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Output total rewards in episode (max 500)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Run episode&#123;&#125; with rewards &#123;&#125;&quot;</span>.<span class="built_in">format</span>(i, <span class="built_in">sum</span>(rewards)), end=<span class="string">&quot;\r&quot;</span>)</span><br><span class="line">    reward_records.append(<span class="built_in">sum</span>(rewards))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># stop if reward mean &gt; 475.0</span></span><br><span class="line">    <span class="keyword">if</span> np.average(reward_records[-<span class="number">50</span>:]) &gt; <span class="number">475.0</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nDone&quot;</span>)</span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/policy-gradient/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/04/policy-gradient/" class="post-title-link" itemprop="url">policy-gradient(1999)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:14:26 / Modified: 16:14:56" itemprop="dateCreated datePublished" datetime="2025-07-04T16:14:26+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>q-learning的网络是估计q-value，然后下个action选择当前state下q-value最大的那个action.</p>
+<p>policy-gradient是建立一个网络，帮助选择当前state下面采样action.</p>
+<p>Q-learning算法的缺点：无法处理连续空间、经验贪婪搜索等。</p>
+<p>为了克服这些问题，一部分的算法引入了随机分布。</p>
+<p>连续action空间的任务在RL中依然很具有挑战性，可以参考https://tsmatz.wordpress.com/2021/11/11/reinforcement-learning-visual-attention-in-minecraft/</p>
+<p>之前的算法下个action的选择基于Q-table或者Q-function,算法的policy是确定性的。</p>
+<p>本算法下一个动作是基于随机空间(就是)，策略将被训练为<strong>输出随机分布的参数</strong>（由随机空间决定），而非直接选择动作本身。</p>
+<p>比如：</p>
+<ul>
+<li>对于离散动作空间，可以使用<strong>分类分布（Categorical
+Distribution）</strong>；</li>
+<li>对于连续动作空间（如Box类型），可以使用<strong>高斯分布（Gaussian
+Distribution）</strong>；</li>
+<li>对于有界连续动作空间，则可以使用<strong>Beta分布</strong>。</li>
+</ul>
+<p>通过引入随机空间，您不再需要应用经验贪婪探索。</p>
+<p>在policy gradient中，action a是从依靠policy 。</p>
+<p>即动作分布可以表示为P(a|<em>(s)),</em>(s)是policy，。如果当前action
+a已知，action取决于policy . (比如分类分布、高斯分布)。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)</span><br><span class="line"></span><br><span class="line">class PolicyPi(nn.Module):</span><br><span class="line">    def __init__(self, hidden_dim=64):</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(4, hidden_dim)</span><br><span class="line">        self.classify = nn.Linear(hidden_dim, 2)</span><br><span class="line"></span><br><span class="line">    def forward(self, s):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        logits = self.classify(outs)</span><br><span class="line">        return logits</span><br><span class="line"></span><br><span class="line">policy_pi = PolicyPi().to(device)</span><br></pre></td></tr></table></figure>
+<p>在CarPole的例子中，我们假设P是一个分类分布(因为action
+space是离散的)，_(s)是一个全连接网络，有2维输出。输出是logits
+value。</p>
+<p>当logits l_0,l_1给出时，概率是，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line"></span><br><span class="line"># Pick up action with above distribution policy_pi</span><br><span class="line">def pick_sample(s):</span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        #   --&gt; size : (1, 4)</span><br><span class="line">        s_batch = np.expand_dims(s, axis=0)</span><br><span class="line">        s_batch = torch.tensor(s_batch, dtype=torch.float).to(device)</span><br><span class="line">        # Get logits from state</span><br><span class="line">        #   --&gt; size : (1, 2)</span><br><span class="line">        logits = policy_pi(s_batch)</span><br><span class="line">        #   --&gt; size : (2)</span><br><span class="line">        logits = logits.squeeze(dim=0)</span><br><span class="line">        # From logits to probabilities</span><br><span class="line">        probs = F.softmax(logits, dim=-1)</span><br><span class="line">        # Pick up action&#x27;s sample</span><br><span class="line">        a = torch.multinomial(probs, num_samples=1)</span><br><span class="line">        # Return</span><br><span class="line">        return a.tolist()[0]</span><br></pre></td></tr></table></figure>
+<p>考虑下面的expectationE{_}[R]:</p>
+<p>E_{_}[R]=<em>a{R(a) P(a|</em>(s))}</p>
+<p>R是cumulative exptected rewards: R=r</p>
+<p>为了最大化E的到最优的,我们应用梯度下降：_{t+1} _t + </p>
+<p>其中：</p>
+<p>= R _{} ;;;;; (1)</p>
+<p>rate.</p>
+<p>上面的公式来自于下面的公式，直接知道E很难，但是下面这个可以在每一步的梯度算法里计算：_{}
+= </p>
+<p>补充：</p>
+<p>原始公式：</p>
+<p>_{} = </p>
+<p>更新公式：</p>
+<p>= R _{} ;;;;; (1)</p>
+<p>实际上是用<strong>单次采样</strong>的蒙特卡洛估计代替了期望。</p>
+<p>在公式1中，如果excepted reward
+R是正向大，调整a的概率会增加。响应的，如果expected reward
+R是负数，。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"># Get cumulative rewards</span><br><span class="line">#</span><br><span class="line">cum_rewards = np.zeros_like(rewards)</span><br><span class="line">reward_len = len(rewards)</span><br><span class="line">for j in reversed(range(reward_len)):</span><br><span class="line">    cum_rewards[j] = rewards[j] + (cum_rewards[j+1]*gamma if j+1 &lt; reward_len else 0)</span><br><span class="line"></span><br><span class="line">#</span><br><span class="line"># Train (optimize parameters)</span><br><span class="line">#</span><br><span class="line">states = torch.tensor(states, dtype=torch.float).to(device)</span><br><span class="line">actions = torch.tensor(actions, dtype=torch.int64).to(device)</span><br><span class="line">cum_rewards = torch.tensor(cum_rewards, dtype=torch.float).to(device)</span><br><span class="line">opt.zero_grad()</span><br><span class="line">logits = policy_pi(states)</span><br><span class="line"># Calculate negative log probability (-log P) as loss.</span><br><span class="line"># Cross-entropy loss is -log P in categorical distribution. (see above)</span><br><span class="line">log_probs = -F.cross_entropy(logits, actions, reduction=&quot;none&quot;)</span><br><span class="line">loss = -log_probs * cum_rewards</span><br><span class="line">loss.sum().backward()</span><br><span class="line">opt.step()</span><br></pre></td></tr></table></figure>
+<p>你可以发现，该算法通过采样action's policy P( |
+_(s))来提高随机策略的效果，不仅依赖于Q-learning和DQN算法中的empirical
+greedy action sampling。这种方式也叫on-policy learning.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/DQN-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/04/DQN-algorithm/" class="post-title-link" itemprop="url">Deep Q-Network(DQN)（2015年google mind）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:12:57 / Modified: 16:14:06" itemprop="dateCreated datePublished" datetime="2025-07-04T16:12:57+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Q-learning算法中，Q-table的state是离散化的，计算上并不有优势。为了解决这个问题，在deep
+Q-learning算法中，我们用Q-function而不是Q-table去得到当前状态的最优action.并且通过神经网络去实现这个function,叫做Q-Network.</p>
+<figure>
+<img
+src="/2025/07/04/DQN-algorithm/5eecdaf48460cde54ce74650ecebabaf8b9e6f149ce2646675b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4afb89c91f441846759dc75a9e61d2f71afce2785efbe89fbb8a51ab0ebea36187825490f22a87800ab.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>我们优化这个Q-network而不是Q-table.</p>
+<p>首先，我们以在Q-learning中讨论的Bellman equation开始：</p>
+<p>Q^*(s_{t},a_{t}) = r_{t} + <em>aQ(s</em>{t+1},a)</p>
+<p>Q^*表示最优的Q值。</p>
+<p>和之前的例子一样，我们优化这个Q-function通过最小化r_{t}+<em>aQ(s</em>{t+1},a)和Q(s_{t},a_{t})的差值，通过epsilon-greedy
+sampling.</p>
+<figure>
+<img
+src="/2025/07/04/DQN-algorithm/5eecdaf48460cde54ce74650ecebabaf8b9e6f149ce2646675b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e7ff3b24a4875cbcc5185c73e24cf61e4a6c4526101e6fed7cb51fe19b4c8fe077e1f3b79cf61406b.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>然而，在DQN,我们隔开一个网络用来产生targetmax_{a}Q(s_{t+1},a)从原来的Q-network当中Q(s_{t},a_{t})。记住我们之前更新了在状态s_{t}的value而不是下一个状态s_{t+1}的值。如果target网络和Q-Network是一样的，在优化过程中，target的权重也发生了改变，因此会失去训练的稳定性。这个算法隔开了一个target网络在优化过程中去保持更新过程中没有更新（/训练）的权重。</p>
+<p>笔记：一般，尤其是有一个明确的目标，首先是goal
+state附近的states被优化，其他状态会从goal到start的顺序逐步被优化。最后通过优化可以找到达到目标的trajectory.</p>
+<p>当是个明显失败的state的时候，也是一样的。（没失败的trajectory会被优化过程找到）</p>
+<p>在这个场景中，s_{t+1}的value值会在s_{t}优化之前被优化。（因为s_{t}强依赖于s_{t+1}）.</p>
+<p>每C轮更新，就克隆Q-network去得到一个新的target newrork,如图所示：</p>
+<p>因此我们构建2个网络，Q-Network和target-network.</p>
+<p>上面的这个network输出2个值，每个value对应每个action的预估Q-value.</p>
+<p>在CarPole的例子中，我们有2个actions（left or
+right），然后会输出对应的2个值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class QNet(nn.Module):</span><br><span class="line">    def __init__(self, hidden_dim=64):</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(4, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, 2)</span><br><span class="line"></span><br><span class="line">    def forward(self, s):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        outs = self.output(outs)</span><br><span class="line">        return outs</span><br><span class="line"></span><br><span class="line">q_model = QNet().to(device)</span><br><span class="line">q_target_model = QNet().to(device)</span><br><span class="line">q_target_model.load_state_dict(q_model.state_dict())</span><br><span class="line">_ = q_target_model.requires_grad_(False)</span><br></pre></td></tr></table></figure>
+<p>在之前原始的Q-learning学习算法中，我们将sequential
+samples(trajectory)每次训练更新q-table.</p>
+<p>在DQN当中，为了避免只从最近的经验中学习和提高训练稳定性，我们用replay
+memory(也叫experience replay)。算法存储最近N次的experience
+tuples,进行更新的时候随机在N次中采样。</p>
+<p>在DQN算法中，通过最小化MSE loss来进行优化。</p>
+<p>L = E[((r_t+<em>aQ(s</em>{t+1},a_t))-Q(s_t,a_t))^2]</p>
+<p>note: 用E表示expected
+value因为神经网络为batch中所有可能的samples优化minimize
+loss，不是为一个单一的loss</p>
+<p>然而，如果在一次episode达到terminal
+state，下一个状态就不存在因此损失也就变成</p>
+<p>(r_t-Q(s_t,a_t))^2,因此最终的损失就会成为：</p>
+<p>L = E[((r_t+(1-d_t)<em>aQ(s</em>{t+1},a_t))-Q(s_t,a_t))^2]</p>
+<p>如果episode is done那么d_t = 1否则就是0.</p>
+<p>在CarPole中，returns
+'done'有两种情况，一种termination终止，一种truncation。当任务失败或者结束，在termination
+flag中返回true.当达到最大的500次actions次数的限制，truncation
+flag返回true.因此，我们设置dt=1只有termination是true.（如果我们在truncation中设置dt=1,这个状态下的q-value会underestimated,尽管任务成功了）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line"></span><br><span class="line">opt = torch.optim.Adam(q_model.parameters(), lr=0.0005)</span><br><span class="line"></span><br><span class="line">def optimize(states, actions, rewards, next_states, dones):</span><br><span class="line">    #</span><br><span class="line">    # Compute target</span><br><span class="line">    #</span><br><span class="line"></span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        # compute Q(s_&#123;t+1&#125;)                               : size=[batch_size, 2]</span><br><span class="line">        target_vals_for_all_actions = q_target_model(next_states)</span><br><span class="line">        # compute argmax_a Q(s_&#123;t+1&#125;)                      : size=[batch_size]</span><br><span class="line">        target_actions = torch.argmax(target_vals_for_all_actions, 1)</span><br><span class="line">        # compute max Q(s_&#123;t+1&#125;)                           : size=[batch_size]</span><br><span class="line">        target_actions_one_hot = F.one_hot(target_actions, env.action_space.n).float()</span><br><span class="line">        target_vals = torch.sum(target_vals_for_all_actions * target_actions_one_hot, 1)</span><br><span class="line">        # compute r_t + gamma * (1 - d_t) * max Q(s_&#123;t+1&#125;) : size=[batch_size]</span><br><span class="line">        target_vals_masked = (1.0 - dones) * target_vals</span><br><span class="line">        q_vals1 = rewards + gamma * target_vals_masked</span><br><span class="line"></span><br><span class="line">    opt.zero_grad()</span><br><span class="line"></span><br><span class="line">    #</span><br><span class="line">    # Compute q-value</span><br><span class="line">    #</span><br><span class="line">    actions_one_hot = F.one_hot(actions, env.action_space.n).float()</span><br><span class="line">    q_vals2 = torch.sum(q_model(states) * actions_one_hot, 1)</span><br><span class="line"></span><br><span class="line">    #</span><br><span class="line">    # Get MSE loss and optimize</span><br><span class="line">    #</span><br><span class="line">    loss = F.mse_loss(</span><br><span class="line">        q_vals1.detach(),</span><br><span class="line">        q_vals2,</span><br><span class="line">        reduction=&quot;mean&quot;)</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br></pre></td></tr></table></figure>
+<h4 id="epsilon-greedy-strategy"><strong>epsilon-greedy
+strategy:</strong></h4>
+<p>如果只是random picks up actions，agent不会收敛到optimal
+behavious；如果总是选择最优的action,就不会探索新的actions,也不会收敛到最优。</p>
+<p>epsilon-greedy
+strategy,在早期阶段探索新动作，逐渐选择最优的动作去训练。（实现exploration和exploitation的一个平衡）</p>
+<p>区分rl learning里的sampling size和batch size</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/cs45-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/04/cs45-summary/" class="post-title-link" itemprop="url">cs45-summary-各种cs工具</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:06:38 / Modified: 16:12:16" itemprop="dateCreated datePublished" datetime="2025-07-04T16:06:38+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="urlhttpsweb.stanford.educlasscs45lectures"><strong>URL:</strong>https://web.stanford.edu/class/cs45/lectures/</h1>
+<h2 id="lec2-shell-tools"><strong>Lec2: shell tools</strong></h2>
+<p>shell是os的外置曾，让用户可以跑userspace programs.</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e85706b4478ee99e3fe1ed39ea82b17d8f200cc11aa0fad04d06be7d1c610c9c8f578d10647eda128.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a358e919a3f95be9aab67868ca3b868cb58352993f446118c22df5afe7654d3d5a753efcbfc05acc3923bc5895f53873d.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>everything都是file,包括我们command的输出。</p>
+<p>默认叫做standard output, 并且输出到我们的终端。</p>
+<p>shell允许我们重定位standard output到文件中。</p>
+<p>standard input同理。</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f89659aba877e4dacbf232adf01e3cf096476f9619317bf829e890378faf0665725c8caf0a73f8cb86c2.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>环境变量：</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e7bd88804b470608ba87b6d79a524f22ae1886bdac6bfea78e40f730625ec225df5bda3426db5e299.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f896b24f6dd3415a65de1c4f362aa44fad8965aaddc8f8c25da2e7d68382af3512e20c0032d51d756c23.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>wc 统计words个数 -l 统计行</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf573abfb259216a84073c4da26a11aa0d91d9c407f4a3623818187a375c17392056268bcd45382f1d0.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>pipes:</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c591a055e03c9fb5158ff347b2d2a1f9b8dac17176894d8a280862528cbd213d1c8e66dcc3bbb3518.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="pipe"><strong>pipe:</strong></h3>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50df0ce64c1bf6710cac0503d399a998a8fbf0da85bee954f42fb201ff3ece3cc5008f5f6684fdc4e786.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5e0965ecd5672c1aab79861d608ddc6fc75b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e64ec7a87a8828cb885bb65b7fe4f966df775d3e84285ec56bba45f8e090fcc2843c0f9ad74368980.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>手册查询</p>
+<p>man wc</p>
+<p>https://cheat.sh/</p>
+<p>https://devhints.io/bash</p>
+<h5 id="notes"><strong>notes:</strong></h5>
+<p>unix系统设计里，everything is a file.
+比如一个设备就是/dev/tty*;我们的输出是standard output, 输入是standard
+input.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;xxx&quot; &gt; hello.txt    standard output重定向</span><br><span class="line">cat &lt; hello.txt  重定向standard input使得来自于一个file</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5261a82cee90f4dc46aedfa911b7b944375b8339e1c4c24831f739168b2e59d878d68742cd653602a6d6e809e475597e67a81a3620aa2b56a8ea254a50ec16590f83315030efa65a6699375c76d7c930b16546fdf9db871db.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>pipes:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">env &gt; /tmp/env.txt    env命令可以看到环境变量</span><br><span class="line">wc -l &lt; /tmp/env.txt</span><br></pre></td></tr></table></figure>
+<p>pipes的特点：</p>
+<ul>
+<li>parallel</li>
+<li>lazy. 比如 env | head --lines=3</li>
+</ul>
+<h1 id="lec3-data-wrangling"><strong>lec3-data wrangling</strong></h1>
+<p>这一chapter主要关注数据的操纵。先说了一些数据类型，比如csv, html,
+xml等等，然后介绍了主要的操作数据的命令。</p>
+<p>grep和sed,
+grep用于筛选数据，sed用于修改数据，可以用正则表达式对应相应的数据。</p>
+<p>unique 筛选重复的行 unique -c将重复的合为一行并在最前面标出数字</p>
+<p>sort 排序，默认是字母序。 sort -n 按照数值排序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ssh adrazen@192 .9.152.85 journalctl</span><br><span class="line">2 | grep sshd</span><br><span class="line">3 | grep &quot; Disconnected from &quot;</span><br><span class="line">4 | sed -E ’s /.* Disconnected from ( invalid | authenticating ) ? user</span><br><span class="line">(.*) \[0 -9.\]+ port [0 -9]+( \[ preauth \]) ?$ /\2/ ’</span><br><span class="line">5 | sort</span><br><span class="line">6 | uniq -c</span><br><span class="line">7 | sort -n</span><br></pre></td></tr></table></figure>
+<p>head和tail -n10</p>
+<p>xargs把一个输出给另一个输入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat filename.txt | xargs touch</span><br></pre></td></tr></table></figure>
+<p>其他工具：awk，R, perl(文本manupulation)</p>
+<h3 id="grep"><strong>grep</strong></h3>
+<p>电脑里有很多系统日志：</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde57d4a64b2959697ef46f859c936fa003675b8339e1c4c24831f739168b2e59d878d68742cd653602a6d6e809e475597e6d0651ec78f352f76ad749ec46afd4b70be437ed25c4112bb5bbd0fe073df8965a2e35badea71b309.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>查询远程服务器的ssh连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh adrazen@192.9.152.85 journalctl | grep sshd</span><br></pre></td></tr></table></figure>
+<p>查询掉线的时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh adrazen@192.9.152.85 journalctl | grep sshd ｜ grep &quot;Disconnected from&quot;</span><br></pre></td></tr></table></figure>
+<p>加单引号单引号的作用是确保<strong>远程机器</strong>执行完整的管道命令。如果不加引号，管道符<code>|</code>可能会被本地Shell优先解析，导致命令在本地执行而非远程机器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh adrazen@192.9.152.85 &#x27;journalctl | grep sshd | grep</span><br><span class="line">&quot;Disconnected from&quot;&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="sed"><strong>sed</strong></h3>
+<p>sed是unix内置的stream editor.可以用来搜索/增加/删除file中的内容。</p>
+<p>文本替换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s/REGEX/SUBSTITUTION</span><br><span class="line">// eg: sed &#x27;s/AY21-22/AY22-23&#x27; file.txt</span><br></pre></td></tr></table></figure>
+<p>sed每行只匹配一次，如果想重复匹配加上-g：</p>
+<p>sed 's/xxx/xxx/g' file.txt</p>
+<p>如果想在sed中使用regex, 加上-E flag</p>
+<h3 id="sort"><strong>sort</strong></h3>
+<h3 id="uniq"><strong>uniq</strong></h3>
+<p>过滤文件中重复的lines</p>
+<h3 id="tail"><strong>tail</strong></h3>
+<p>打印files的最后几行</p>
+<h3 id="xargs"><strong>xargs</strong></h3>
+<p>让一个命令的输出作为另一个命令的输入</p>
+<p>数据处理的其他工具和软件</p>
+<ul>
+<li>awk:操作数据产生reports</li>
+<li>R：数据分析和画图</li>
+<li>perl:text操作的编程语言</li>
+</ul>
+<p>进行正则表达式检查的好工具：https://regex101.com/</p>
+<hr />
+<h1 id="lec4shell-scripting"><strong>lec4:</strong>shell scripting</h1>
+<ol type="1">
+<li>shebang的写法：#!/usr/bin/env bash和#!/bin/bash的异同</li>
+</ol>
+<h4 id="bash-script的写法"><strong>bash script的写法：</strong></h4>
+<ul>
+<li>定义变量：x=foo</li>
+<li>原样输出字符串<span class="math inline">\(x 用echo &#39;\)</span>x',
+要输出实际内容得用双引号echo "$x"</li>
+<li>控制流</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#！/usr/bin/env bash</span><br><span class="line"></span><br><span class="line">if [ CONDITION ]</span><br><span class="line">then</span><br><span class="line">  xxx</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">数字的比较大小用-gt， 字符串比较ascii码用 &gt;</span><br><span class="line">[] 相当于test command</span><br><span class="line">num =101</span><br><span class="line"> if [ $num - gt 100 ] &amp;&amp; [ $num - lt 1000 ]</span><br><span class="line"> then</span><br><span class="line"> echo &quot; That ’s a big ( but not a too big) number !&quot;</span><br><span class="line"> fi</span><br><span class="line"></span><br><span class="line">if [ CONDITION ]</span><br><span class="line">then </span><br><span class="line">   xxx</span><br><span class="line">elif [ CONDITION ]</span><br><span class="line">then</span><br><span class="line">   xxx</span><br><span class="line">else</span><br><span class="line">   xxx</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#！/usr/bin/env bash</span><br><span class="line">while [ CONDITION ]</span><br><span class="line">do</span><br><span class="line">   xxx</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">做数学运算一定要用(())的写法</span><br><span class="line"> num =0</span><br><span class="line"> while [ $num - lt 100 ]</span><br><span class="line"> do</span><br><span class="line"> echo $num</span><br><span class="line"> num =$(( num +1) )</span><br><span class="line"> done</span><br><span class="line"></span><br><span class="line">#！/usr/bin/env bash</span><br><span class="line">for VARIABLE in 1 2 3 .. N</span><br><span class="line">do </span><br><span class="line">  xxx</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">for i in &#123;0..99&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数
+<ul>
+<li>bash脚本传入的参数$0是脚本的名字，$1是第一个参数，以此类推</li>
+<li>bash是根据位置去判断传入的参数，因此定义func时make_and_enter(directory_name)是无效的，不会将directory_name看作一个变量。</li>
+</ul></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#无效的</span><br><span class="line"> make_and_enter ( directory_name ) &#123;</span><br><span class="line">   mkdir -p directory_name</span><br><span class="line">   cd directory_name</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">#有效的传入参数</span><br><span class="line"> make_and_enter (  ) &#123;</span><br><span class="line">   mkdir -p &quot;$1&quot;</span><br><span class="line">   cd &quot;$1&quot;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">make_and_enter &quot;$1&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li></li>
+<li>exit code</li>
+<li>exit code也就是return
+value，如果一切ok返回0，不是0的其他值表示有error</li>
+<li>可以用$?取上一条命令的返回值</li>
+<li>如果需要一个placeholder的命令表示成功或者fail可以用true（返回0）或者false（返回1）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">result =$(( $RANDOM % 2) )</span><br><span class="line">if [ $result -eq 0 ]</span><br><span class="line">then</span><br><span class="line">true</span><br><span class="line">echo &quot;$?&quot;</span><br><span class="line">else</span><br><span class="line">false</span><br><span class="line">echo &quot;$?&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<ul>
+<li></li>
+</ul>
+<p>看当前用的哪个shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -p $$</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde53aaa9c72481193ccf0afd9684bbffa3575b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c35979ef46a957fa49be139f9cd92e2b7f9f9aba06f38639f06d36fe34480fd22b3aff05dcf931a03.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>shebang:</p>
+<p>有很多种不同的方式去写shebang，比如#!/usr/bin/env
+bash或者#!/bin/bash，一般推荐前者</p>
+<p><code>env</code> 会从系统的 <code>PATH</code> 环境变量中查找
+<code>bash</code> 命令。</p>
+<p>某些系统（如 macOS、BSD）的 Bash 可能不在
+<code>/bin/bash</code>，而是
+<code>/usr/local/bin/bash</code>。<code>env</code>
+能自动找到正确的路径，避免脚本因路径问题无法运行。</p>
+<p>运行方式：</p>
+<ol type="1">
+<li>shell解释器运行，如sh hello.sh, bash hello.sh, zsh hello.sh</li>
+<li>转换成可执行程序再运行 chmod +x hello.sh 然后./hello.sh</li>
+</ol>
+<p>bash的输入参数</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde53aaa9c72481193ccf0afd9684bbffa3575b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f89605e728c77a12a8a144a150db7d3a0e0764facbfb27998bb55612288d7aa8225747b41271265c1744.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="lec6-command-line-environment"><strong>lec6: Command line
+environment</strong></h1>
+<p>https://web.stanford.edu/class/cs45/lectures/6-command-line-environment.notes.pdf</p>
+<ul>
+<li>多任务job control
+<ul>
+<li>三种状态：前台，后台，suspend</li>
+<li>当我们从shell启动一个program之后，我们就是在开启一个新的foreground
+job。job被绑定到这个controlling
+terminal，如果terminal关闭程序也会退出。</li>
+<li>control-z可以挂起一个job</li>
+<li>bg %1 从suspend job里面后台运行%1,不写number默认运行最近的</li>
+<li>运行一个job在后台：sleep 5 &amp;</li>
+<li>可以把一个suspend/background任务放到前台 fg %1</li>
+<li>退出： kill %1
+这个是给进程发送一个SIGTERM信号告诉他退出，但是一些程序不会对这个信号相应。此时可以用kill
+-s KILL %1或者kill -9 %1强行退出。（SIGKILL）</li>
+</ul></li>
+<li>tmux
+<ul>
+<li>https://tmuxcheatsheet.com/</li>
+<li>https://quickref.me/tmux</li>
+</ul></li>
+<li><figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5261a82cee90f4dc46aedfa911b7b944375b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50df5407c4bd445781ca99b6cc886d97ef348a2d0285d1a49d0b9f02a80afc3211bee47ea2d5dc9bb8d2.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure></li>
+</ul>
+<hr />
+<h4 id="环境变量"><strong>环境变量：</strong></h4>
+<p>command not found 在$PATH没有找到对应的路径</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5b47413fbdf55368e1245c0a2c383aa0775b8339e1c4c24831f739168b2e59d878d68742cd653602a60709c486a81f6b4b0d22b1b0d026b7463c6884cf974481a7254eff0059b56731f0c5f678444633be38a91fa94132159.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="权限"><strong>权限</strong></h4>
+<p>每个文件都有"owner""group"</p>
+<p>每个文件有三套权限，ower, group,和everyone else</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5b47413fbdf55368e1245c0a2c383aa0775b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b99adfc7040b0ffaef76e10811d63b6dbf6824e029f6566ec54f41707dd372b77bf39da148bd514f93.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>更改文件的owner和group分别可以用chown和chgrp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown akshay hello.txt</span><br><span class="line">chgrp staff hello.txt</span><br></pre></td></tr></table></figure>
+<p>更改文件的permissions</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 默认更改所有人的权限</span><br><span class="line">chmod -w my_safe_file.txt</span><br><span class="line">chmod -r my_secret.txt</span><br><span class="line"></span><br><span class="line">// 指定用户修改权限</span><br><span class="line">chmod u+x my_script.sh</span><br><span class="line">chmod g+rw group_plan.txt</span><br><span class="line">chmod o-r my_secret.txt</span><br><span class="line">chmod 777 open_permissions.txt</span><br></pre></td></tr></table></figure>
+<p>通过ls-l 显示的第一个字母会显示文件的类型</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5b47413fbdf55368e1245c0a2c383aa0775b8339e1c4c24831f739168b2e59d878d68742cd653602afa4cc552274ccc0376163c3be2f9dd9bf2a3161cc704cf52c740ff53169cf4c7c9c241ca912bb06164cb91aa09d7f7f9.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>alias</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias hi=&quot;echo &#x27;hello&#x27;&quot;</span><br><span class="line">//然后可以运行hi</span><br></pre></td></tr></table></figure>
+<p>find</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;hello&quot;</span><br><span class="line">find . -executable</span><br><span class="line">find . -type f,d,l</span><br><span class="line">find . -type f -name &quot;hello&quot; -executable</span><br></pre></td></tr></table></figure>
+<h2 id="多任务"><strong>多任务</strong></h2>
+<p>job: 在终端运行的程序。分为前台的job,后台的jog,还有很多suspended
+jobs，frozen比如当前没有运行。</p>
+<p>control-z可以suspend a job</p>
+<p>可以把一个suspended
+job通过运行bg放到后台。如果是将vim这样的程序bg,它会立即suspend
+itself，因为它需要连接终端。但是如果是long-running
+command比如下载任务，可以没有任何问题的放到后台。如果有多个jobs
+suspended, bg会运行最近的那一个。你可以通过指定job号指定不同的。</p>
+<p>bg %1</p>
+<p>将新的运行在后台：sleep 5 &amp;</p>
+<p>可以把后台（唤醒并接管终端）或者suspended的程序通过fg放到前台。</p>
+<p>可以通过ctrol-c杀死前台的job,可以杀死后台的通过kill. kill
+%1(需要一些时间退出，同时对vim类似的程序可能没效)</p>
+<p>kill会通过发送SIGTERM命令来让程序退出，但是一些程序会忽略；可以用SIGKILL强行退出</p>
+<p>kill -s KILL %1</p>
+<p>或者等价的 kill -9 %1</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5b47413fbdf55368e1245c0a2c383aa0775b8339e1c4c24831f739168b2e59d878d68742cd653602afa4cc552274ccc035d76a7649a648b5dc3bf16c6b6974248b3f4426d2a06fe88ae75659b20c4df4fee1ac379079c0749.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="lec7compilers"><strong>lec7:compilers</strong></h1>
+<p>C语言的编译：</p>
+<ul>
+<li>编译成汇编： cc -S hello.c -o hello.s
+<ul>
+<li>在macos上面，cc指向LLVM C编译器，clang; Linux指向GNU C编译器
+gcc，这是各自os默认的C编译器。可以在linux上面用clang,但是在macos上面用gcc有点困难。</li>
+</ul></li>
+<li>二进制：as -c hello.s -o hello.o
+<ul>
+<li>Assembler读入汇编代码，输出机器码，叫做object files</li>
+<li>但是此时object
+files可能是不完整的，比如源程序没有printf对应的实现。</li>
+</ul></li>
+<li>链接：cc hello.o -o hello
+<ul>
+<li>读入不完整的object files</li>
+<li>我们可以用ld让其关联printf的可运行文件，但是非常复杂，替代的，我们可以让cc去做这件事情
+cc he llo.o hello</li>
+</ul></li>
+</ul>
+<h3 id="shared-object-files"><strong>shared object files</strong></h3>
+<ul>
+<li>我们可以将C编译成shared object,是任何程序都可以使用的库。</li>
+<li>linux以.so结尾，macos以.dylib结尾，windows则是.dll</li>
+<li>cc -shared test.c -o test.so 构造一个shared object
+file包含了test.c中的所有函数。</li>
+<li>这些“shared objects” 会在runtime的时候被dynamic linker
+链接，这个是os的一部分。
+<ul>
+<li>这些so files一般在/usr/lib/里</li>
+</ul></li>
+<li>通常在/usr/lib/</li>
+<li>环境变量$LD_LIBRARY_PATH可以添加更多的locations</li>
+<li>ldd可以告诉你一个程序需要哪个shared
+libraries.如果没有安装，程序会error并退出。</li>
+</ul>
+<h3 id="package-managers"><strong>package managers</strong></h3>
+<ul>
+<li>有一些基础的printf或者file
+IO的function功能跟随os带来，但是一些复杂的功能需要更复杂的实现。</li>
+<li>C和os紧密相关，我们通过package manager安装C libraries</li>
+<li>在linux里package managers在os里，比如apt, dnf, rpm,pacman;
+<ul>
+<li>事实上，LINux的各种发行比如ubuntu, debian,
+fedora通常指的是用的哪种package manager</li>
+</ul></li>
+<li>macos里是brew</li>
+<li>dependency management
+<ul>
+<li>一个程序/libraries可能依赖于其他的程序或者库，比如firefox依赖ffmpeg</li>
+<li>两种解决方法
+<ul>
+<li>program涉及到的所有dependency都被编译进该program的二进制文件里，比如ios,
+android app stores里用这种方法</li>
+<li>另外一种是packaging
+programs，列举出所有的依赖项，自动下载。这种更广泛，unix默认使用这个，还有一些编程工具比如pip</li>
+</ul></li>
+</ul></li>
+<li>package
+manager是一种安装programs或者libraries的工具，并且会自动注意解决依赖。</li>
+<li>package
+manager可以是全局的，比如apt或者brew，其他程序也可以用。</li>
+<li>global package
+managers的缺点是可能有版本冲突，不同的程序可能需要不同版本的shared
+libraries</li>
+<li>package
+managers可以是local的比如npm,它们将依赖安装在一个project下面</li>
+<li>local package
+managers的缺点是可能有冗余，不同的project有关于同一个库的重复拷贝。</li>
+</ul>
+<p>比如apt, brew</p>
+<p>python类似于bash是解释性的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#！/usr/bin/env python3</span><br><span class="line">print(&quot;Hello, World!&quot;)</span><br></pre></td></tr></table></figure>
+<p>python一般是python2, pathon3 一般是python3</p>
+<p>虚拟环境：</p>
+<p>python -m venv myenv</p>
+<p>./myenv/bin/activate</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde51b7eb2becf85675fd20d91ab8bc1e65475b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b91d3a8f941d63bd0cd1a83afac767d1ac9f5c844a64a052ec8776f0ea28be11187a2c58f99eebd3a0.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="lec8"><strong>lec8:</strong></h1>
+<p>在家里用的LAN</p>
+<p>互联网叫WAN</p>
+<p>在LAN和Internet之间叫Network Address Translation(NAT)</p>
+<p>CIDR notation:</p>
+<p>定义子网：比如192.168.1.0/16</p>
+<p>家中路由器经常用到的IPv4 address: 192.168.1.0/24</p>
+<p>每个网络有两个特别的address:</p>
+<ul>
+<li>192.168.1.0 是未使用的，用来定义网络</li>
+<li>192.168.1.255
+是广播地址，发送到广播地址的messages会被该网络的所有computers接收到。</li>
+</ul>
+<p>子网10.0.0.0/8中所有的ip地址在lans中都被保留</p>
+<p>一个/32位的ip address是一个单ip
+address.除非你在运行一个isp或者相当大的business，你会从DHCP
+server中被分配一个ip address.</p>
+<p>公共ip地址被政府/公司拥有，私人的ip地址是重复并且动态分配的，我们需要一种方式去辨别具体的电脑以发送信息。--mac地址</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde51831b8a2a20c6c47553282bb78663fda75b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50df3e4b6f00a5700bc7833b4fe4fd487e7330da296f6a0c6b1850f4831ff693f596ee8a1bfeec6299b3.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>ip地址动态转换：</p>
+<h1 id="lec11"><strong>lec11:</strong></h1>
+<h2 id="makefile"><strong>makefile</strong></h2>
+<p>看一遍ppt快速恢复记忆就行</p>
+<h2 id="debugging-and-profiling"><strong>debugging and
+profiling</strong></h2>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde51b7eb2becf85675f9454cc985b8337f475b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8961938bdd6d65775e06070528b40b5a612ce8dd630322d812133e6ca53f2e822e8ceac74000be2a30c.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h2 id="code-profiling"><strong>code profiling</strong></h2>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde51b7eb2becf85675f9454cc985b8337f475b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4afc518446875ebab04682ba64c53143a45de0cb07cb1c7dc68f203df9f4dddd98677583c893cb494b9.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>linux 用time命令衡量程序的运行时间。</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde51b7eb2becf85675f9454cc985b8337f475b8339e1c4c24831f739168b2e59d878d68742cd653602a473a1bc8310192c0e5c0a5697bc553d518ff98601dccf798085094ce2c15b3d22602ea67bf21a5ef1cae24616136f26c.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h2 id="memory-access-tools"><strong>memory access tools</strong></h2>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde51b7eb2becf85675f9454cc985b8337f475b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf5cc0d9ccca962a7992b60b559b91034d49419d899cad8a4c995e951e3a1032025bf78a286ee8bac95.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="lec15vms"><strong>lec15:vms</strong></h1>
+<h1 id="vms的使用场景"><strong>vms的使用场景：</strong></h1>
+<ul>
+<li>隔离&amp;沙盒</li>
+<li>资源分配（比如租用部分算力）</li>
+<li>系统管理（备份恢复）</li>
+<li>跨平台测试（在其他操作系统测试应用）</li>
+<li>原型设计（用多个虚拟机和模拟路由器虚拟化网络，构建网络原型）</li>
+<li>模拟（模拟不同的cpu架构，比如在老旧的游戏机上运行视频游戏）</li>
+</ul>
+<h2 id="containers"><strong>containers</strong></h2>
+<ul>
+<li>轻量级的
+<ul>
+<li>易于分发</li>
+<li>无需虚拟整个os而是继续使用主机的内核/os为基础提供服务</li>
+</ul></li>
+<li>一般比VMs快
+<ul>
+<li>也可以在VMs里面跑</li>
+</ul></li>
+<li>临时性设计
+<ul>
+<li>长期数据应该存储在“卷”里。</li>
+</ul></li>
+</ul>
+<h2 id="容器化技术"><strong>容器化技术</strong></h2>
+<p>您可以将应用程序封装在容器中，从而确保<strong>一致的运行环境</strong>。</p>
+<ul>
+<li>os</li>
+<li>cpu架构（如果和主机不同可以用虚拟机）</li>
+<li>其他的依赖和软件</li>
+<li>存储结构定制</li>
+<li>还能和其他应用隔离</li>
+</ul>
+<h2 id="docker"><strong>docker</strong></h2>
+<p>创建和管理containers的工具。</p>
+<ul>
+<li>container：基于镜像创建的临时性对象，代表程序的一个运行实例</li>
+<li>Image: 通过Dockerfile构建的静态包，包含应用程序和依赖</li>
+<li>dockerfile：构建镜像的脚本文件</li>
+<li>volume:数据卷用于存储持久化数据，其生命周期独立于容器，即使容器被销毁数据依然保留。</li>
+</ul>
+<h2 id="demo创建一个镜像"><strong>demo:创建一个镜像</strong></h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu:latest bash</span><br></pre></td></tr></table></figure>
+<h2 id="dockerfile"><strong>dockerfile</strong></h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:latest    // 声明要build的基础镜像</span><br><span class="line"></span><br><span class="line">// 这些命令会生成中间容器，每个命令都基于前一个命令的容器继续构建。</span><br><span class="line">RUN apt-get -y update</span><br><span class="line">RUN apt-get -y upgrade</span><br><span class="line">RUN apt-get install -y build-essential  // install一些工具比如make</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">WORKDIR /calculator_app</span><br><span class="line">ADD ./calculator/ ./</span><br><span class="line">RUN make clean; make</span><br><span class="line">ENTRYPOINT [&quot;./calculator&quot;]  //声明会发生什么当我们运行镜像的时候</span><br></pre></td></tr></table></figure>
+<h2 id="orchestration编排"><strong>orchestration（编排）</strong></h2>
+<p>当系统中运行大量容器时，你可能需要引入一个更高层级的<strong>元系统</strong>来统一管理和调度这些容器，这种机制就被称为<strong>容器编排</strong>。</p>
+<h3 id="kubernetesk8s"><strong>Kubernetes(k8s)</strong></h3>
+<h1 id="附录"><strong>附录：</strong></h1>
+<h2 id="linux安装docker"><strong>linux安装docker：</strong></h2>
+<p>https://medium.com/devops-technical-notes-and-manuals/how-to-install-docker-on-ubuntu-22-04-b771fe57f3d2</p>
+<p>按照命令行安装就行</p>
+<p>注意的是：</p>
+<p>run docker必须sudo，否则会permissions denied。</p>
+<p>这是因为 Docker 守护进程（docker daemon）绑定的是一个 Unix
+套接字（Unix socket），而不是 TCP 端口。默认情况下，该 Unix 套接字由
+<code>root</code> 用户拥有，其他用户只能通过 <code>sudo</code>
+来访问它。Docker 守护进程始终以 <code>root</code> 用户身份运行。</p>
+<h3 id="docker配置国内镜像"><strong>docker配置国内镜像：</strong></h3>
+<p>设置了一些网上的方法，编辑/etc/docker/daemon.json没生效。按照https://github.com/dongyubin/DockerHub
+操作pass.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">    &quot;https://docker.1panel.live&quot;,</span><br><span class="line">    &quot;https://docker.1ms.run&quot;,</span><br><span class="line">    &quot;https://dytt.online&quot;,</span><br><span class="line">    &quot;https://docker-0.unsee.tech&quot;,</span><br><span class="line">    &quot;https://lispy.org&quot;,</span><br><span class="line">    &quot;https://docker.xiaogenban1993.com&quot;,</span><br><span class="line">    &quot;https://666860.xyz&quot;,</span><br><span class="line">    &quot;https://hub.rat.dev&quot;,</span><br><span class="line">    &quot;https://docker.m.daocloud.io&quot;,</span><br><span class="line">    &quot;https://demo.52013120.xyz&quot;,</span><br><span class="line">    &quot;https://proxy.vvvv.ee&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h1 id="lec16-cloud-and-serveless">Lec16: Cloud and serveless</h1>
+<h2 id="server-vs.-serverless"><strong>server vs.
+Serverless</strong></h2>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5f2299b68c1a5bf0ff61f29787e06ccd875b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b92737dd5ea4e487dddaa38843c6db1894b59a079c96675474b3241610e7134e9f33d270c5ef313fa5.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>这种方式容易过载或者出现单点故障</p>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5f2299b68c1a5bf0ff61f29787e06ccd875b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dffbdeb2a36290f81383f364b793abbce364664a63acc24f7b9d5844d9bab184536e71c147cd9ed9ec.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h2 id="serverless的场景"><strong>serverless的场景：</strong></h2>
+<ul>
+<li>提供静态网页服务
+<ul>
+<li>网页已经嵌入代码，不需要持久化存储。</li>
+</ul></li>
+<li>基于用户cookie生成网页
+<ul>
+<li>请求中已包含cookie信息，不需要额外存储</li>
+</ul></li>
+<li>从外部数据库检索并返回信息
+<ul>
+<li>数据库位于外部系统，不需要本地持久化</li>
+</ul></li>
+</ul>
+<h3
+id="不适合serverless的场景可能需要一个server"><strong>不适合serverless的场景（可能需要一个server）</strong></h3>
+<ul>
+<li>阶段性地do something
+<ul>
+<li>serverless只runs on request</li>
+</ul></li>
+<li>运行数据库
+<ul>
+<li>serverless functions不会持久化数据；需要server来持久化存储。</li>
+</ul></li>
+</ul>
+<h3 id="取决于"><strong>取决于：</strong></h3>
+<ul>
+<li>接受用户上传
+<ul>
+<li>无服务器（Serverless）可以接收上传，但随后需将文件<strong>重新上传至外部存储服务</strong>（如AWS
+S3）</li>
+</ul></li>
+</ul>
+<h2 id="servers-serverless的组合"><strong>servers +
+serverless的组合</strong></h2>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5f2299b68c1a5bf0ff61f29787e06ccd875b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4af067d01657498b75e5077165e6bd3ad39621d7dec8055a2e3e21be8d00acd256a84028c22a9c92e46.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/07/04/cs45-summary/5eecdaf48460cde5f2299b68c1a5bf0ff61f29787e06ccd875b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf5da165f2f174b184fcf9d423bf251ccbc8ea7ae9c9cc1dafb11c4c9a503d7cabf0a4e8fb2e650828f.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/06/11/Q-learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -275,7 +1359,7 @@ actions（agent还没学到什么东西），之后随着学习逐渐选择q-tab
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/05/13/python-warmup/" class="post-title-link" itemprop="url">python-warmup</a>
+            <a href="/2025/05/13/python-warmup/" class="post-title-link" itemprop="url">python代码快速复习</a>
         </h2>
 
         <div class="post-meta">
@@ -284,10 +1368,16 @@ actions（agent还没学到什么东西），之后随着学习逐渐选择q-tab
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-05-13 10:20:10 / Modified: 10:20:52" itemprop="dateCreated datePublished" datetime="2025-05-13T10:20:10+08:00">2025-05-13</time>
+              <time title="Created: 2025-05-13 10:20:10" itemprop="dateCreated datePublished" datetime="2025-05-13T10:20:10+08:00">2025-05-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-06-11 10:05:24" itemprop="dateModified" datetime="2025-06-11T10:05:24+08:00">2025-06-11</time>
+              </span>
 
           
 
@@ -300,7 +1390,8 @@ actions（agent还没学到什么东西），之后随着学习逐渐选择q-tab
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>source 1:
+          <p>经常有段时间不用python就会忘记一点，所以记录一下基本的下次用之前快速过一下。</p>
+<p>source 1:
 https://martinxpn.medium.com/100-days-of-python-9dd04d0995f1
 里面的初级https://profound.academy/python-introduction/advanced-arithmetic-sHlEzpi1Optpv3mdSgKX和中级https://profound.academy/python-mid</p>
 <p>source
@@ -452,6 +1543,8 @@ src="/2025/05/13/python-warmup/5eecdaf48460cde541b943ed5586533823bc6c56c68146b77
 alt="img" />
 <figcaption aria-hidden="true">img</figcaption>
 </figure>
+<h1 id="其他">其他</h1>
+<p>python代码命名规范</p>
 
       
     </div>
@@ -720,640 +1813,6 @@ driver）,只安装cuda toolkit即可。</li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/07/serl-family/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/07/serl-family/" class="post-title-link" itemprop="url">serl-family</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-05-07 10:23:26" itemprop="dateCreated datePublished" datetime="2025-05-07T10:23:26+08:00">2025-05-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-05-12 14:21:05" itemprop="dateModified" datetime="2025-05-12T14:21:05+08:00">2025-05-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1
-id="serl-a-software-suite-for-sample-efficient-robotic-reinforcement-learning">SERL:
-A Software Suite for Sample-Efficient Robotic Reinforcement
-Learning</h1>
-<blockquote>
-<p>[!NOTE]</p>
-<p>总结风格：从整体结构有个outline的感觉，每一块涉及到的具体的算法细节和推导看相关论文和代码深入。</p>
-</blockquote>
-<h2 id="url">URL</h2>
-<p>https://arxiv.org/pdf/2401.16013</p>
-<p>https://serl-robot.github.io/</p>
-<p>https://github.com/rail-berkeley/serl</p>
-<h2 id="tldr">TL;DR</h2>
-<p>2024年1月份的文章，介绍了一个名为SERL的开源软件框架，旨在降低机器人强化学习(Robotic
-Reinforcement Learning, Robotic
-RL)在现实世界中的应用门槛。作者指出，尽管Robotic
-RL在近年来取得了显著进展，但在实际应用中仍然存在许多挑战，特别是算法的实现细节对性能的影响往往非常大，甚至超过算法本身的选择。SERL的目标是提供一个高质量、易于使用的工具，包含样本高效的离线强化学习方法、奖励函数计算方法、环境重置自动化方法、高质量的机器人控制器以及一系列具有挑战性的示例任务。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>1.提供了一个可以用在真实环境的开源的强化学习框架，综合了一套学习策略，算法细节。-》实践落地的work</p>
-<p>2.可扩展性也很好，不跟一个具体的robot硬件平台深绑定，鼓励在此基础上做自己的开发。</p>
-</blockquote>
-<h2 id="show-case">Show case</h2>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250507171443384.png"
-alt="image-20250507171443384" />
-<figcaption aria-hidden="true">image-20250507171443384</figcaption>
-</figure>
-<h4 id="pcb">pcb:</h4>
-<p>在 PCB
-板上装配穿孔元件是一项常见却又充满挑战的机器人任务。电子元件的引脚极易弯曲，而孔位与引脚之间的公差非常小，要求机器人在装配时既要精准又要轻柔。通过仅仅
-21 分钟的自主学习，SERL 使机器人达到了 100%
-的任务完成率。即便面临如电路板位置移动或视线部分被遮挡等未知的干扰，机器人也能稳定完成装配工作。(在执行电路板元件安装任务时，机器人能够应对在训练阶段未曾遇到的各种干扰，顺利完成任务。)</p>
-<figure>
-<img src="/2025/05/07/serl-family/serl-pcb.gif" alt="pcb" />
-<figcaption aria-hidden="true">pcb</figcaption>
-</figure>
-<p><img src="/2025/05/07/serl-family/pcb2.gif" /></p>
-<p><img src="/2025/05/07/serl-family/pcb3.gif" /></p>
-<h4 id="电缆布线">电缆布线</h4>
-<p>在许多机械和电子设备的组装过程中，我们需要将电缆沿着特定的路径精确地安装到位，这一任务对精度和适应性提出了很高的要求。由于柔性电缆在布线过程中容易产生形变，而且布线过程可能会受到各种干扰，比如电缆被意外移动或者夹持器位置的变化，这导致使用传统的非学习型方法难以应对。SERL
-能够在短短 30 分钟内实现 100%
-的成功率。即便是在夹持器位置与训练期间不同时，机器人也能够泛化其学习到的技能，适应新的布线挑战，确保布线工作的正确执行。(机器人无需更多的专项训练也能直接把线缆穿过与训练时位置不一样的夹子里。)</p>
-<p><img src="/2025/05/07/serl-family/cab1.gif" /></p>
-<p><img src="/2025/05/07/serl-family/cab2.gif" /></p>
-<p><img src="/2025/05/07/serl-family/cab3.gif" /></p>
-<h4 id="物体抓取">物体抓取：</h4>
-<p>在仓库管理或零售业中，机器人经常需要将物品从一个地方移动到另一个地方，这要求机器人能够识别并搬运特定的物品。强化学习的训练过程中，很难对欠驱动的物体进行自动的归位重置。利用
-SERL 的无重置强化学习功能，机器人在 1 小时 45 分钟内同时学习两个 100/100
-成功率的策略。用前向策略把物体从 A 箱放到 B 箱，再用后向策略把物体从 B
-箱归为回 A 箱。(SERL
-训练了两套策略，一个把物体从右边搬运到左边，一个从左边放回右边。机器人不仅在训练物体上达到
-100% 成功率，就连没见过的物体也能智能搬运。)</p>
-<p><img src="/2025/05/07/serl-family/grab1.gif" /></p>
-<p><img src="/2025/05/07/serl-family/grab2.gif" /></p>
-<p><img src="/2025/05/07/serl-family/grab3.gif" /></p>
-<h2 id="modelmethod">Model&amp;Method</h2>
-<h4 id="问题定义和拆解">1. 问题定义和拆解</h4>
-<p>机器人的强化学习任务可以定义为一个马尔可夫决策过程：</p>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250507171917083.png"
-alt="image-20250507171917083" />
-<figcaption aria-hidden="true">image-20250507171917083</figcaption>
-</figure>
-<blockquote>
-<p>[!TIP]</p>
-<p>几个字母的代表含义</p>
-</blockquote>
-<p>难点要考虑：</p>
-<ol type="1">
-<li><p>sample efficiency</p></li>
-<li><p>实际场景中为了进行策略学习可能有一些难以定义的场景，比如reward
-function可能依赖于视觉的观察。每次episodic task需要自动化重置。</p></li>
-<li><p>Controller：一个是要精准了（从仿真-&gt;实际环境），一个是要安全</p></li>
-</ol>
-<h4 id="核心的算法">2.核心的算法</h4>
-<h5 id="rlpd算法">2.1 RLPD算法</h5>
-<p>定义了强化学习策略的损失函数、采样过程、用了layer normalization</p>
-<h5 id="reward-function">2.2 reward function</h5>
-<p>用了分类器判断任务是否成功（论文提到有很多种训练方法，训练一个分类器，训练gan等等，可以自由地做一些探索）</p>
-<h5 id="reset-free">2.3 reset free</h5>
-<p>简而言之，省去人工重置，设计了一个forward
-agent执行任务，还有一个backward agent重置任务。</p>
-<h4 id="软件结构">3. 软件结构</h4>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250507173132208.png"
-alt="image-20250507173132208" />
-<figcaption aria-hidden="true">image-20250507173132208</figcaption>
-</figure>
-<h4 id="其他">4. 其他</h4>
-<h5 id="控制器的设计">4.1 控制器的设计</h5>
-<p>简而言之：末端控制器对任务成功率的影响很大，paper里面用了分层结构，两层控制器。不用的频率。</p>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250507173637912.png"
-alt="image-20250507173637912" />
-<figcaption aria-hidden="true">image-20250507173637912</figcaption>
-</figure>
-<h5 id="相对坐标系作observation和action">4.2
-相对坐标系作observation和action</h5>
-<p>免去定义世界坐标系，以末端夹具作为起点，描述下一帧相对上一帧的相对坐标。</p>
-<blockquote>
-<p>[!TODO]</p>
-<p>整体性的框架的一个自上而下的俯视。但是要了解具体的：</p>
-<p>Todo: 1. 各个环节算法 2.代码</p>
-<p>可以放到后面的分享当中。</p>
-</blockquote>
-<h1 id="hil-serl">hil-serl</h1>
-<h2 id="url-1">URL</h2>
-<p>项目主页：https://hil-serl.github.io/</p>
-<p>Paper:https://hil-serl.github.io/static/hil-serl-paper.pdf</p>
-<p>Code: https://github.com/rail-berkeley/hil-serl</p>
-<h2 id="tldr-1">TL；DR</h2>
-<p>验证了经过精细的系统设计，RL算法可以解决一系列灵巧复杂的基于视觉的manipulation任务；</p>
-<p>第一个实现双臂的、image inputs、RL在真实世界处理类似组装timing
-belt的任务。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>和serl不同的：</p>
-<p>1.加入了人类的修正（learn form mistakes）</p>
-<p>2.serl关注简单的任务，也没有涉及双臂的操作。hil-serl聚焦基于视觉的更复杂的manipulation.</p>
-</blockquote>
-<h2 id="methods">Methods</h2>
-<h3 id="问题拆解和定义">1.问题拆解和定义</h3>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250508113632106.png"
-alt="image-20250508113632106" />
-<figcaption aria-hidden="true">image-20250508113632106</figcaption>
-</figure>
-<p>涉及到的关键点是observation space S和action
-space的选择，比如cameras的组合，本体的状态，相应的robot底层控制器的选择。</p>
-<p>针对paper里面的任务：</p>
-<p>1.作者的reward
-function选择了一种稀疏的function：二分类，决定任务是否成功；</p>
-<p>2.RLPD算法（sample
-effenciency和整合先验数据进行训练的能力）：每次训练从prior
-data和on-policy data各采一半数据。</p>
-<h3 id="系统结构">2.系统结构</h3>
-<ul>
-<li><p>Actor process：在robot上执行policy,把数据发送给replay
-buffer</p></li>
-<li><p>learner process:</p></li>
-<li><p>Replay buffers（2）: demo buffer存储离线的人类演示；RL
-buffer存储on-policy data</p></li>
-<li><p>environment:处理各种环境输入：cameras,鼠标操作、各种控制器。</p>
-<p>Learner
-process从两个buffers里面采样，通过RLPD算法更新策略，阶段性将策略发送给actor
-process去执行。</p></li>
-</ul>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250508114359129.png"
-alt="image-20250508114359129" />
-<figcaption aria-hidden="true">image-20250508114359129</figcaption>
-</figure>
-<h3 id="系统设计">3. 系统设计</h3>
-<ul>
-<li>pretrained vision backbones: 对输入的图像进行encode</li>
-<li>reward function:
-训练了一个二分类的分类器,任务完成给奖励1，其它step奖励为0。</li>
-<li>下游的robotic system:
-一个是用ego-centric的坐标系描述；另外安全性方面控制器阻抗控制 +
-限幅，开环控制已经足够。</li>
-<li>Gripper control: 增加了一个critic
-network对夹爪的动作进行离散化（open, close, stay）.简而言之，训练两个MDP
-task，一个action空间用连续的action space, 一个用离散化的action
-space。根据训练方法（DQN），推理的时候从M1中取出连续的actions描述，然后从critic
-network里面查询离散化的M2的action.</li>
-</ul>
-<h3 id="人在回路的强化学习">4. 人在回路的强化学习</h3>
-<h4
-id="rl的样本复杂度sample-complexity">1.<strong>RL的样本复杂度（Sample
-Complexity）</strong></h4>
-<ul>
-<li><strong>定义</strong>：学习最优策略所需的环境交互样本量，受以下因素影响：
-<ol type="1">
-<li><strong>状态/动作空间的维度</strong>（Cardinality of state/action
-spaces）：
-<ul>
-<li>高维空间（如机械臂的连续状态+多传感器输入）需要更多样本覆盖。</li>
-</ul></li>
-<li><strong>任务时间跨度</strong>（Task horizon）：
-<ul>
-<li>长周期任务（如多步骤装配）需更长的轨迹探索。</li>
-</ul></li>
-<li><strong>探索策略</strong>（Exploration policy）：
-<ul>
-<li>不充分的探索会导致策略陷入局部最优。</li>
-</ul></li>
-</ol></li>
-</ul>
-<h4 id="解决方案human-in-the-loop-hitl">2.解决方案：Human-in-the-Loop
-(HITL)**</h4>
-<p>核心思想</p>
-<ul>
-<li><strong>人类干预加速学习</strong>：
-通过人类提供实时反馈（如动作修正、奖励调整、示范数据），<strong>直接引导探索方向</strong>，减少无效样本。</li>
-<li><strong>理论依据</strong>：
-人类先验知识可缩小策略搜索空间，降低样本复杂度。</li>
-</ul>
-<ol start="3" type="1">
-<li><p>在看一次这张图，人可以在t0到tN的中间时刻干预，用人类干预的action替换robot
-policy的action.把数据同时存储在两个buffers中，但是策略转换只存储在RL
-buffers中。</p>
-<p>简而言之：robot表现差的时候人工就干预；</p>
-<p>实验发现，开始阶段人工频繁干预，后面可以干预的越来越少。</p></li>
-</ol>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250508114359129.png"
-alt="image-20250508114359129" />
-<figcaption aria-hidden="true">image-20250508114359129</figcaption>
-</figure>
-<h4 id="训练过程">5. 训练过程</h4>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250508140805366.png"
-alt="image-20250508140805366" />
-<figcaption aria-hidden="true">image-20250508140805366</figcaption>
-</figure>
-<ul>
-<li>相机的选择：wrist cameras(基于ego-centric views的选择)+side
-cameras(拍摄到整个ROI)</li>
-<li>训练reward classifier: 10 trajectories x 10s/条</li>
-<li>准备offline demo replay buffer： 20～30trajectories</li>
-<li>训练中注意人工干预不要过度，避免过拟合</li>
-</ul>
-<h2 id="results">Results</h2>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250508142437272.png"
-alt="image-20250508142437272" />
-<figcaption aria-hidden="true">image-20250508142437272</figcaption>
-</figure>
-<h5 id="任务">1. 任务</h5>
-<figure>
-<img src="/2025/05/07/serl-family/image-20250508142453433.png"
-alt="image-20250508142453433" />
-<figcaption aria-hidden="true">image-20250508142453433</figcaption>
-</figure>
-<ul>
-<li>主板组装任务：内存插入、SSD组装、USB插入、电缆夹紧</li>
-<li>宜家组装任务：侧面板组装、上面板组装</li>
-<li>汽车仪表器组装、物体传递、履带组装、叠叠乐抽取、物体翻转</li>
-</ul>
-<h5 id="findings">2. findings</h5>
-<ul>
-<li><p>HIL-SERL在几乎所有任务中，在1到2.5小时的真实世界训练中实现了100%的成功率，完成任务时间也更短。</p></li>
-<li><p>从零开始的RL，没有任何演示或纠正，在所有任务上成功率为0%</p></li>
-<li><p>为了验证在线人类纠正的重要性，作者将SERL的离线缓冲区中的演示数量增加了十倍，从通常的20增加到200
-(HIL-SERL no
-itv)。然而，没有任何在线纠正，这种方法的成功率显著低于HIL-SERL，包括在复杂任务如汽车仪表板组装中的完全失败（0%成功率）。这证实了在线纠正在促进策略学习中的关键作用。这些结果证实了离线演示和策略学习指导中在策略学习中的关键作用，尤其是对于需要持续反应行为的复杂操作任务。</p></li>
-</ul>
-<p>Todo:</p>
-<ol type="1">
-<li>从hil-serl迁移到配天机器人上的总结工作</li>
-<li>中间具体的算法细节</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/06/math-diffusion/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/06/math-diffusion/" class="post-title-link" itemprop="url">math_diffusion</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-05-06 18:53:18" itemprop="dateCreated datePublished" datetime="2025-05-06T18:53:18+08:00">2025-05-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-05-07 09:49:19" itemprop="dateModified" datetime="2025-05-07T09:49:19+08:00">2025-05-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>学习链接：</p>
-<p>《Mathematical Foundation of Diffusion Generative Models》</p>
-<p>https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/foundation-diffusion-generative-models</p>
-<h2 id="background">background</h2>
-<p>Diffusion generative
-models是一种从distributions当中采样的方法，与其他的,比如GANS,
-VAEs有很大的不同。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/06/http-proxy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/06/http-proxy/" class="post-title-link" itemprop="url">http_proxy</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-05-06 18:09:56 / Modified: 18:31:14" itemprop="dateCreated datePublished" datetime="2025-05-06T18:09:56+08:00">2025-05-06</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1
-id="代理软件测试链路畅通但是终端浏览器始终无法访问外网">代理软件测试链路畅通但是终端/浏览器始终无法访问外网</h1>
-<p>测试：在终端临时设置http_proxy,https_proxy,all_proxy之后可以访问google</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">env | grep -i proxy //发现输出为空，设置的proxy没有在终端生效</span><br><span class="line">curl https://www.google.com //卡顿，不出意外也是无法访问的</span><br><span class="line"></span><br><span class="line">export http_proxy=http://127.0.0.1:7890 </span><br><span class="line">export https_proxy=http://127.0.0.1:7890</span><br><span class="line">export all_proxy=socks5://127.0.0.1:7891</span><br><span class="line">// 终端生效</span><br><span class="line"></span><br><span class="line">curl https://www.google.com //success，返回html页面</span><br><span class="line"></span><br><span class="line">unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY //取消proxy设置重新访问google无法访问</span><br></pre></td></tr></table></figure>
-<p>验证猜想之后修改配置文件让一直生效</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">unset... //防止是终端设置一次生效</span><br><span class="line">env xxx // 确认没有了</span><br><span class="line">echo xxx ~/.zshrc //修改配置文件</span><br><span class="line">source xxx</span><br><span class="line"></span><br><span class="line">env xxx // 确认proxy生效</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="/2025/05/06/http-proxy/image-20250506181813284.png"
-alt="image-20250506181813284" />
-<figcaption aria-hidden="true">image-20250506181813284</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/29/linux-settings/" class="post-title-link" itemprop="url">linux-settings</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-04-29 10:16:52" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-05-06 10:24:41" itemprop="dateModified" datetime="2025-05-06T10:24:41+08:00">2025-05-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="linux开发环境配置">linux开发环境配置</h1>
-<p>1.安装ubuntu</p>
-<p>2.安装Nvidia driver</p>
-<p>3.zerotier用于远程连接(同时安装向日葵以防万一)</p>
-<p>4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster;</p>
-<p>https://www.cnblogs.com/chencarl/p/16824387.html</p>
-<p>为了展示 <strong>Agnoster</strong> 主题提示符里的三角形，需要
-<strong>Powerline</strong> 字体库的支持。</p>
-<p>https://zhuanlan.zhihu.com/p/62419420</p>
-<p>5.tmux进行管理</p>
-<p>6.安装miniconda并把路径加入到zshrc的配置文件里。</p>
-<figure>
-<img src="/2025/04/29/linux-settings/image-20250429143912288.png"
-alt="image-20250429143912288" />
-<figcaption aria-hidden="true">image-20250429143912288</figcaption>
-</figure>
-<p>https://www.cnblogs.com/xingnie/p/16269190.html</p>
-<p>完了要执行conda init，简单的让conda配置在zshrc的方法（有时候conda
-init默认更新了bashrc，不用拷贝设置到zshrc）</p>
-<figure>
-<img src="/2025/04/29/linux-settings/image-20250429145219288.png"
-alt="image-20250429145219288" />
-<figcaption aria-hidden="true">image-20250429145219288</figcaption>
-</figure>
-<p>Conda init zsh即可(因为我已经执行过了，所以是no change)</p>
-<figure>
-<img src="/2025/04/29/linux-settings/image-20250429145236438.png"
-alt="image-20250429145236438" />
-<figcaption aria-hidden="true">image-20250429145236438</figcaption>
-</figure>
-<p>7.远程服务器免密码连接：</p>
-<p>7.1 复制本地公钥文件到远程服务器</p>
-<p>先看.ssh文件夹下面是否有生成好的密钥文件</p>
-<p>ssh-copy-id -i ~/.ssh/id_ed25519.pub username@ip</p>
-<p>此时可以通过ssh username@ip直接登陆不需要输入密码。</p>
-<p>7.2 通过<strong><code>~/.ssh/config</code></strong> 简化连接</p>
-<p>nano ~/.ssh/config</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host server1</span><br><span class="line">    HostName 192.168.1.100</span><br><span class="line">    User root</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line"></span><br><span class="line">Host server2</span><br><span class="line">    HostName example.com</span><br><span class="line">    User admin</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line">    Port 2222  # 如果SSH端口不是默认的22</span><br></pre></td></tr></table></figure>
-<p>之后就可以直接用别名登录：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh server1  # 代替 ssh root@192.168.1.100</span><br><span class="line">ssh server2  # 代替 ssh -p 2222 admin@example.com</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/macos-install-zerotier-cannot-launch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/28/macos-install-zerotier-cannot-launch/" class="post-title-link" itemprop="url">macos-install-zerotier-cannot-launch</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-04-28 18:08:46 / Modified: 18:14:13" itemprop="dateCreated datePublished" datetime="2025-04-28T18:08:46+08:00">2025-04-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="macos-pro安装zero-tier却无法打开">macOS
-pro安装zero-tier却无法打开</h1>
-<p>https://gist.github.com/Paraphraser/3c01b5f2c9e1f298751d7c255773a1cd</p>
-<figure>
-<img
-src="/2025/04/28/macos-install-zerotier-cannot-launch/image-20250428181123099.png"
-alt="image-20250428181123099" />
-<figcaption aria-hidden="true">image-20250428181123099</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/04/28/macos-install-zerotier-cannot-launch/image-20250428181152069.png"
-alt="image-20250428181152069" />
-<figcaption aria-hidden="true">image-20250428181152069</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1423,7 +1882,7 @@ alt="image-20250428181152069" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

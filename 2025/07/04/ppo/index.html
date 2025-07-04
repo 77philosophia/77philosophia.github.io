@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="PPO 是强化学习中一种基于策略梯度（Policy Gradient）的算法，旨在解决传统策略梯度方法的两个核心问题：  训练不稳定性  策略梯度方法（如REINFORCE、Actor-Critic）直接更新策略时，若步长（学习率）过大，可能导致策略突然崩溃（性能骤降），难以恢复。 例如，在更新后，策略可能过度偏向某些动作，导致探索不足或陷入局部最优。  样本效率低  传统方法需要大量与环境交互的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ppo">
+<meta property="og:url" content="http://77philosophia.github.io/2025/07/04/ppo/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="PPO 是强化学习中一种基于策略梯度（Policy Gradient）的算法，旨在解决传统策略梯度方法的两个核心问题：  训练不稳定性  策略梯度方法（如REINFORCE、Actor-Critic）直接更新策略时，若步长（学习率）过大，可能导致策略突然崩溃（性能骤降），难以恢复。 例如，在更新后，策略可能过度偏向某些动作，导致探索不足或陷入局部最优。  样本效率低  传统方法需要大量与环境交互的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-04T08:15:53.000Z">
+<meta property="article:modified_time" content="2025-07-04T08:36:39.366Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/07/04/ppo/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ppo | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/ppo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ppo
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:15:53 / Modified: 16:36:39" itemprop="dateCreated datePublished" datetime="2025-07-04T16:15:53+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>PPO 是强化学习中一种基于策略梯度（Policy
+Gradient）的算法，旨在解决传统策略梯度方法的两个核心问题：</p>
+<ol type="1">
+<li><strong>训练不稳定性</strong>
+<ul>
+<li>策略梯度方法（如REINFORCE、Actor-Critic）直接更新策略时，若步长（学习率）过大，可能导致策略突然崩溃（性能骤降），难以恢复。</li>
+<li>例如，在更新后，策略可能过度偏向某些动作，导致探索不足或陷入局部最优。</li>
+</ul></li>
+<li><strong>样本效率低</strong>
+<ul>
+<li>传统方法需要大量与环境交互的样本才能收敛，而PPO通过限制策略更新的幅度，使得同一批数据可以多次复用（即“经验回放”的策略版本），提升数据利用率。</li>
+</ul></li>
+</ol>
+<p>Proximal Policy
+Optimization(PPO)是如今强化学习中最成功的算法之一。</p>
+<p>PPO是一种优化随机策略的on-policy的方法。为了避免效果损失，PPO阻止更新stepping过大。</p>
+<p>为了避免过大的更新，PPO有两种变体，PPO-Penalty和PPO-Clip.</p>
+<p>下面主要介绍PPO-Penalty.</p>
+<p>PPO-Clip比PPO-Penalty更简单。PPO-Clip通过clip </p>
+<p>在Actor-Critic方法中，算法会学习策略参数A。</p>
+<p>当我们选择action a有很大的优势A的时候，
+P(a|<em>{}(s))的增长会比P(a|</em>{_{old}}(s))大很多。所以对于参数：</p>
+<p><span class="math display">\[
+\max_{\theta} E \left[ \frac{P(a | \pi_\theta (s))}{P(a |
+\pi_{\theta_{old}} (s))} A \right]
+\]</span> 为了避免很大的policy updates的更新，PPO penaltizes
+会类似下面：</p>
+<p><span class="math display">\[
+\max_{\theta} E \left[ \frac{P(a | \pi_\theta (s))}{P(a |
+\pi_{\theta_{old}} (s))} A - \beta \cdot \verb|penalty| \right]
+\]</span></p>
+<p>在PPO-penalty中，KL散度用来估计这个惩罚项。</p>
+<p><span class="math display">\[
+\verb|penalty| := \verb|KL| \left( P(\cdot | \pi_{\theta_{old}} (s)) \|
+P(\cdot | \pi_\theta (s)) \right)
+\]</span></p>
+<p>附：KL散度</p>
+<p>我们假设P(x)和Q(x)都是随机分布，KL散度被定义为：</p>
+<p><span class="math display">\[
+\verb|KL|( P \| Q ) := -\int{P(x) \ln{\frac{Q(x)}{P(X)}}}dx
+\]</span> （需要最大化KL散度的时候就在前面加负号）</p>
+<p>这个定义下：( P | Q
+)总是正值或者0，是0的时候有且只有两个分布是一样的时候。</p>
+<p>KL散度衡量两个分布的差异，如果Q距离P很远，那么KL散度会相当大。</p>
+<p>KL散度具体可以参考<a
+target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/wp-content/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf">chapter1.6</a></p>
+<p>注意，KL散度不是对称的，也就是说 <span class="math display">\[
+\verb|KL|( P \| Q ) \neq \verb|KL|( Q \| P )
+\]</span> ，并且 <span class="math display">\[
+arg\,min_Q \verb|KL|( P \| Q ) \neq arg\,min_Q \verb|KL|( Q \| P )
+\]</span> 回到我们的场景，为了惩罚P(| <em>{</em>{old}} (s))和P(|
+_(s))更新差异过大，我们可以</p>
+<p><span class="math display">\[
+\max_{\theta} E \left[ \frac{P(a | \pi_\theta (s))}{P(a |
+\pi_{\theta_{old}} (s))} A - \beta \cdot \verb|KL| \left( P(\cdot |
+\pi_{\theta_{old}} (s)) \| P(\cdot | \pi_\theta (s)) \right) \right]
+\;\;\;\;\
+\]</span> ; (1)</p>
+<p>这样即使第一项 <span class="math display">\[
+\frac{P(a | \pi_\theta (s))}{P(a | \pi_{\theta_{old}} (s))}
+\]</span> 很大，。</p>
+<p>最后我们最大化等式（1），通过最小化value loss来优化value值估计。</p>
+<p>依旧还是Actor-Critic网络：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ActorNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_dim=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(<span class="number">4</span>, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s</span>):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        logits = self.output(outs)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ValueNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_dim=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(<span class="number">4</span>, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s</span>):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        value = self.output(outs)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">actor_func = ActorNet().to(device)</span><br><span class="line">value_func = ValueNet().to(device)</span><br></pre></td></tr></table></figure>
+<p>不分别最大化 <span class="math display">\[
+\frac{P(a | \theta_{new})}{P(a | \theta_{old})} A - \beta \cdot
+\verb|KL| \left( P(\theta_{old}) \| P(\theta_{new}) \right)
+\]</span> 和最小化value loss L，我们简化为下面的式子：</p>
+<p><span class="math display">\[
+(-1) \frac{P(a | \theta_{new})}{P(a | \theta_{old})} A + \beta \cdot
+\verb|KL| \left( P(\theta_{old}) \| P(\theta_{new}) \right) + L
+\]</span> 这里，P和Q的分布都是离散的，因此KL散度为：</p>
+<p><span class="math display">\[
+\verb|KL| \left( P(\theta_{old}) \| P(\theta_{new}) \right) = -\sum_a
+\left( P(a | \theta_{old}) \ln{\frac{P(a | \theta_{new})}{P(a |
+\theta_{old})}} \right)
+\]</span> 不像之前policy和value分开训练，这次我们用一个loss
+radio来控制二者的比例。</p>
+<p>在分类分布中,log
+probability和cross-entropy损失的负值相等。所以可以用-torch.nn.functional.cross_entropy()得到log
+probability值。</p>
+<p>为了训练平稳，advatange可以进行归一化： <span class="math display">\[
+(A-\mu) / \sigma
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/07/04/actor-critic/" rel="prev" title="actor-critic">
+      <i class="fa fa-chevron-left"></i> actor-critic
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

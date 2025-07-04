@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Q-learning算法中，Q-table的state是离散化的，计算上并不有优势。为了解决这个问题，在deep Q-learning算法中，我们用Q-function而不是Q-table去得到当前状态的最优action.并且通过神经网络去实现这个function,叫做Q-Network.   img  我们优化这个Q-network而不是Q-table. 首先，我们以在Q-learning中讨论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep Q-Network(DQN)（2015年google mind）">
+<meta property="og:url" content="http://77philosophia.github.io/2025/07/04/DQN-algorithm/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="Q-learning算法中，Q-table的state是离散化的，计算上并不有优势。为了解决这个问题，在deep Q-learning算法中，我们用Q-function而不是Q-table去得到当前状态的最优action.并且通过神经网络去实现这个function,叫做Q-Network.   img  我们优化这个Q-network而不是Q-table. 首先，我们以在Q-learning中讨论">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-04T08:12:57.000Z">
+<meta property="article:modified_time" content="2025-07-04T08:14:06.810Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/07/04/DQN-algorithm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Deep Q-Network(DQN)（2015年google mind） | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/DQN-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Deep Q-Network(DQN)（2015年google mind）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-04 16:12:57 / Modified: 16:14:06" itemprop="dateCreated datePublished" datetime="2025-07-04T16:12:57+08:00">2025-07-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Q-learning算法中，Q-table的state是离散化的，计算上并不有优势。为了解决这个问题，在deep
+Q-learning算法中，我们用Q-function而不是Q-table去得到当前状态的最优action.并且通过神经网络去实现这个function,叫做Q-Network.</p>
+<figure>
+<img
+src="/2025/07/04/DQN-algorithm/5eecdaf48460cde54ce74650ecebabaf8b9e6f149ce2646675b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4afb89c91f441846759dc75a9e61d2f71afce2785efbe89fbb8a51ab0ebea36187825490f22a87800ab.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>我们优化这个Q-network而不是Q-table.</p>
+<p>首先，我们以在Q-learning中讨论的Bellman equation开始：</p>
+<p>Q^*(s_{t},a_{t}) = r_{t} + <em>aQ(s</em>{t+1},a)</p>
+<p>Q^*表示最优的Q值。</p>
+<p>和之前的例子一样，我们优化这个Q-function通过最小化r_{t}+<em>aQ(s</em>{t+1},a)和Q(s_{t},a_{t})的差值，通过epsilon-greedy
+sampling.</p>
+<figure>
+<img
+src="/2025/07/04/DQN-algorithm/5eecdaf48460cde54ce74650ecebabaf8b9e6f149ce2646675b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e7ff3b24a4875cbcc5185c73e24cf61e4a6c4526101e6fed7cb51fe19b4c8fe077e1f3b79cf61406b.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>然而，在DQN,我们隔开一个网络用来产生targetmax_{a}Q(s_{t+1},a)从原来的Q-network当中Q(s_{t},a_{t})。记住我们之前更新了在状态s_{t}的value而不是下一个状态s_{t+1}的值。如果target网络和Q-Network是一样的，在优化过程中，target的权重也发生了改变，因此会失去训练的稳定性。这个算法隔开了一个target网络在优化过程中去保持更新过程中没有更新（/训练）的权重。</p>
+<p>笔记：一般，尤其是有一个明确的目标，首先是goal
+state附近的states被优化，其他状态会从goal到start的顺序逐步被优化。最后通过优化可以找到达到目标的trajectory.</p>
+<p>当是个明显失败的state的时候，也是一样的。（没失败的trajectory会被优化过程找到）</p>
+<p>在这个场景中，s_{t+1}的value值会在s_{t}优化之前被优化。（因为s_{t}强依赖于s_{t+1}）.</p>
+<p>每C轮更新，就克隆Q-network去得到一个新的target newrork,如图所示：</p>
+<p>因此我们构建2个网络，Q-Network和target-network.</p>
+<p>上面的这个network输出2个值，每个value对应每个action的预估Q-value.</p>
+<p>在CarPole的例子中，我们有2个actions（left or
+right），然后会输出对应的2个值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class QNet(nn.Module):</span><br><span class="line">    def __init__(self, hidden_dim=64):</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(4, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, 2)</span><br><span class="line"></span><br><span class="line">    def forward(self, s):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        outs = self.output(outs)</span><br><span class="line">        return outs</span><br><span class="line"></span><br><span class="line">q_model = QNet().to(device)</span><br><span class="line">q_target_model = QNet().to(device)</span><br><span class="line">q_target_model.load_state_dict(q_model.state_dict())</span><br><span class="line">_ = q_target_model.requires_grad_(False)</span><br></pre></td></tr></table></figure>
+<p>在之前原始的Q-learning学习算法中，我们将sequential
+samples(trajectory)每次训练更新q-table.</p>
+<p>在DQN当中，为了避免只从最近的经验中学习和提高训练稳定性，我们用replay
+memory(也叫experience replay)。算法存储最近N次的experience
+tuples,进行更新的时候随机在N次中采样。</p>
+<p>在DQN算法中，通过最小化MSE loss来进行优化。</p>
+<p>L = E[((r_t+<em>aQ(s</em>{t+1},a_t))-Q(s_t,a_t))^2]</p>
+<p>note: 用E表示expected
+value因为神经网络为batch中所有可能的samples优化minimize
+loss，不是为一个单一的loss</p>
+<p>然而，如果在一次episode达到terminal
+state，下一个状态就不存在因此损失也就变成</p>
+<p>(r_t-Q(s_t,a_t))^2,因此最终的损失就会成为：</p>
+<p>L = E[((r_t+(1-d_t)<em>aQ(s</em>{t+1},a_t))-Q(s_t,a_t))^2]</p>
+<p>如果episode is done那么d_t = 1否则就是0.</p>
+<p>在CarPole中，returns
+'done'有两种情况，一种termination终止，一种truncation。当任务失败或者结束，在termination
+flag中返回true.当达到最大的500次actions次数的限制，truncation
+flag返回true.因此，我们设置dt=1只有termination是true.（如果我们在truncation中设置dt=1,这个状态下的q-value会underestimated,尽管任务成功了）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line"></span><br><span class="line">opt = torch.optim.Adam(q_model.parameters(), lr=0.0005)</span><br><span class="line"></span><br><span class="line">def optimize(states, actions, rewards, next_states, dones):</span><br><span class="line">    #</span><br><span class="line">    # Compute target</span><br><span class="line">    #</span><br><span class="line"></span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        # compute Q(s_&#123;t+1&#125;)                               : size=[batch_size, 2]</span><br><span class="line">        target_vals_for_all_actions = q_target_model(next_states)</span><br><span class="line">        # compute argmax_a Q(s_&#123;t+1&#125;)                      : size=[batch_size]</span><br><span class="line">        target_actions = torch.argmax(target_vals_for_all_actions, 1)</span><br><span class="line">        # compute max Q(s_&#123;t+1&#125;)                           : size=[batch_size]</span><br><span class="line">        target_actions_one_hot = F.one_hot(target_actions, env.action_space.n).float()</span><br><span class="line">        target_vals = torch.sum(target_vals_for_all_actions * target_actions_one_hot, 1)</span><br><span class="line">        # compute r_t + gamma * (1 - d_t) * max Q(s_&#123;t+1&#125;) : size=[batch_size]</span><br><span class="line">        target_vals_masked = (1.0 - dones) * target_vals</span><br><span class="line">        q_vals1 = rewards + gamma * target_vals_masked</span><br><span class="line"></span><br><span class="line">    opt.zero_grad()</span><br><span class="line"></span><br><span class="line">    #</span><br><span class="line">    # Compute q-value</span><br><span class="line">    #</span><br><span class="line">    actions_one_hot = F.one_hot(actions, env.action_space.n).float()</span><br><span class="line">    q_vals2 = torch.sum(q_model(states) * actions_one_hot, 1)</span><br><span class="line"></span><br><span class="line">    #</span><br><span class="line">    # Get MSE loss and optimize</span><br><span class="line">    #</span><br><span class="line">    loss = F.mse_loss(</span><br><span class="line">        q_vals1.detach(),</span><br><span class="line">        q_vals2,</span><br><span class="line">        reduction=&quot;mean&quot;)</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br></pre></td></tr></table></figure>
+<h4 id="epsilon-greedy-strategy"><strong>epsilon-greedy
+strategy:</strong></h4>
+<p>如果只是random picks up actions，agent不会收敛到optimal
+behavious；如果总是选择最优的action,就不会探索新的actions,也不会收敛到最优。</p>
+<p>epsilon-greedy
+strategy,在早期阶段探索新动作，逐渐选择最优的动作去训练。（实现exploration和exploitation的一个平衡）</p>
+<p>区分rl learning里的sampling size和batch size</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/07/04/cs45-summary/" rel="prev" title="cs45-summary-各种cs工具">
+      <i class="fa fa-chevron-left"></i> cs45-summary-各种cs工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/07/04/policy-gradient/" rel="next" title="policy-gradient(1999)">
+      policy-gradient(1999) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#epsilon-greedy-strategy"><span class="nav-number">1.</span> <span class="nav-text">epsilon-greedy
+strategy:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
