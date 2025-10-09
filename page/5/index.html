@@ -145,6 +145,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/03/hugging-download/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/03/hugging-download/" class="post-title-link" itemprop="url">hugging-download</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-03 19:38:45" itemprop="dateCreated datePublished" datetime="2025-01-03T19:38:45+08:00">2025-01-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-04 22:16:12" itemprop="dateModified" datetime="2025-01-04T22:16:12+08:00">2025-01-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="hugging-face登录方式">1.Hugging face登录方式</h3>
+<p>huggingface废弃用户名和密码的登录方式，用token</p>
+<p>wget --header="Authorization: Bearer hf_xxx"<br />
+</p>
+<p>https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt</p>
+<h3
+id="可以下载sd1.5下载数据集却403-forbidden">2.可以下载sd1.5,下载数据集却403
+forbidden</h3>
+<ol type="1">
+<li>403 forbidden（将token权限增加write,我全打开了）</li>
+<li><figure>
+<img src="/2025/01/03/hugging-download/image-20250103194111502.png"
+alt="image-20250103194111502" />
+<figcaption aria-hidden="true">image-20250103194111502</figcaption>
+</figure></li>
+</ol>
+<p>https://discuss.huggingface.co/t/error-403-what-to-do-about-it/12983</p>
+<h3
+id="国内机器访问huggingface网络不好无法下载">3.国内机器访问huggingface网络不好，无法下载</h3>
+<p>用镜像网站hf-mirror.com</p>
+<figure>
+<img src="/2025/01/03/hugging-download/image-20250103194152062.png"
+alt="image-20250103194152062" />
+<figcaption aria-hidden="true">image-20250103194152062</figcaption>
+</figure>
+<p>wget --header="Authorization: Bearer hf_xxx"
+https://hf-mirror.com/datasets/laion/laion-high-resolution/resolve/main/.part-00000-45914064-d424-4c1c-8d96-dc8125c645fb-c000.snappy.parquet.crc</p>
+<h3 id="下载laion数据集用img2dataset工具">4.
+下载laion数据集用img2dataset工具</h3>
+<p>注意huggingface的laion
+high-resolution文件里有两种文件类型，crc是parquet的校验文件，下了没用，要下载parquet文件是数据集的metadata</p>
+<h3 id="wandb超时">wandb超时</h3>
+<p>export WANDB_MODE=offline</p>
+<h2 id="步骤">步骤：</h2>
+<ol type="1">
+<li><p>下载metadata</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;0..127&#125;; do </span><br><span class="line"></span><br><span class="line">  wget --header=&quot;Authorization: Bearer hf_xxx&quot; https://hf-mirror.com/datasets/laion/laion-high-resolution/resolve/main/part-$(printf &quot;%05d&quot; $i)-45914064-d424-4c1c-8d96-dc8125c645fb-c000.snappy.parquet</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>2.下载原数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export WANDB_MODE=offline</span><br><span class="line"></span><br><span class="line">img2dataset --url_list laion-high-resolution --input_format &quot;parquet&quot;\</span><br><span class="line"></span><br><span class="line">​     --url_col &quot;URL&quot; --caption_col &quot;TEXT&quot; --output_format webdataset\</span><br><span class="line"></span><br><span class="line">​      --output_folder laion-high-resolution-output --processes_count 16 --thread_count 64 --image_size 1024\</span><br><span class="line"></span><br><span class="line">​      --resize_only_if_bigger=True --resize_mode=&quot;keep_ratio&quot; --skip_reencode=True \</span><br><span class="line"></span><br><span class="line">​       --save_additional_columns &#x27;[&quot;similarity&quot;,&quot;hash&quot;,&quot;punsafe&quot;,&quot;pwatermark&quot;,&quot;LANGUAGE&quot;]&#x27; --enable_wandb True</span><br></pre></td></tr></table></figure>
+<p>应该已经开始下载了</p>
+<figure>
+<img src="/2025/01/03/hugging-download/image-20250104221538386.png"
+alt="image-20250104221538386" />
+<figcaption aria-hidden="true">image-20250104221538386</figcaption>
+</figure>
+<h2 id="下载数据集结果">下载数据集结果</h2>
+<figure>
+<img src="/2025/01/03/hugging-download/image-20250104221607364.png"
+alt="image-20250104221607364" />
+<figcaption aria-hidden="true">image-20250104221607364</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1456,105 +1572,10 @@ flips和color argumentation.</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/08/06/dense-kitti-dataloader/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/08/06/dense-kitti-dataloader/" class="post-title-link" itemprop="url">dense-kitti-dataloader</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-08-06 23:17:10" itemprop="dateCreated datePublished" datetime="2019-08-06T23:17:10+08:00">2019-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:18:29" itemprop="dateModified" datetime="2024-05-20T23:18:29+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="dense-kitti-dataloader">dense kitti dataloader</h2>
-<p>这篇文章介绍kitti的稀疏深度图生成dense depth
-map以及读出相应的dataloader，深度图的colormap可视化。主要用于深度估计。</p>
-<h3 id="kitti-to-dense">kitti to dense</h3>
-<h3 id="准备">准备</h3>
-<p>KITTI的深度数据是sparse depth map，可以从官网下载到深度数据。<a
-target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/eval_depth_all.php">original
-depth map</a></p>
-<p>KITTI的RGB数据用的是image_02。可以从官网下载到。<a
-target="_blank" rel="noopener" href="http://www.cvlibs.net/datasets/kitti/raw_data.php">Raw
-data</a>.这个可能要找代理服务器下载，我在网上看到也有人把数据迁移到国内服务器的。</p>
-<p>由sparse depth map生成dense depth map的算法采用的是NYU的toolkit。<a
-target="_blank" rel="noopener" href="https://github.com/jjhartmann/Toolbox-NYU-Depth-V2/blob/master/fill_depth_colorization.m">深度补全函数</a></p>
-<h3 id="过程">过程</h3>
-<p>新建一个文件夹，将深度解压的文件夹 data_depth_annotated
-，原RGB数据RGB Raw的文件夹 raw_data_downloader，还有存放深度数据的文件夹
-data_depth_to_dense放到一个目录下。说明：data_depth_to_dense
-我就是把data_depth_annotated拷贝过来了，然后把文件名由data_depth_annotated改为data_depth_to_dense.因为反正图片数据要重写的，我拷贝的目的是不用重新建存放图片的目录。</p>
-<p>准备三个文件夹下每张图片的路径存为三个csv文件。（写一个python脚本）</p>
-<p>运行主程序 main.m。</p>
-<h3 id="可视化">可视化</h3>
-<p>可视化的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">im =cv2.imread(&#x27;image/path&#x27;)</span><br><span class="line">im_color = cv2.applyColorMap(im,cv2.COLORMAP_JET)</span><br></pre></td></tr></table></figure>
-<p>来自这个链接：<a
-target="_blank" rel="noopener" href="https://github.com/QianshengGu/KITTI_Dense_Depth.git">可视化</a></p>
-<p>但是这个链接的kitti处理存放数据的时候采用最大最小值归一化，而不是存储的真实数据。一方面可能导致结果不太精确，另一方面导致ground
-truth的深度值有零值存在，在输入深度网络训练的时候采用RMSE_log的损失的时候会导致损失函数无穷大。</p>
-<h3 id="kitti-dataloader">kitti dataloader</h3>
-<p>这个dataloader与我上面说的文件路径是一致的。</p>
-<p>参考github我之后会放上去。</p>
-<p>https://github.com/77philosophia/kitti_data_depth_loader</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1620,7 +1641,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

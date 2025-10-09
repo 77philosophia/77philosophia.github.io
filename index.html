@@ -145,6 +145,131 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/10/09/c-notes-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/09/c-notes-0/" class="post-title-link" itemprop="url">c++知识复习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-09 15:19:24 / Modified: 20:51:33" itemprop="dateCreated datePublished" datetime="2025-10-09T15:19:24+08:00">2025-10-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>参考：https://courses.grainger.illinois.edu/cs225/fa2025/pages/lectures.html</p>
+<h2 id="week-1-c-review">week 1 c++ review</h2>
+<p>内存管理：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Stack: 局部变量存储</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Heap:动态存储</span></span><br><span class="line"><span class="type">int</span>* x = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>传参数有三种情况：value传递、pointer to value传递、reference传递</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Pass by Value: 原来对象的临时拷贝</span></span><br><span class="line"><span class="built_in">addBook</span>(Book book)</span><br><span class="line"> <span class="comment">// pass by Pointer to Value: 堆地址</span></span><br><span class="line"><span class="built_in">addBook</span>(Book* book)</span><br><span class="line"><span class="comment">// Pass by reference: 当前存在变量的一个别名</span></span><br><span class="line"><span class="built_in">addBook</span>(Book&amp; book)</span><br></pre></td></tr></table></figure>
+<p>管理：</p>
+<p>栈上的局部存储是计算机管理的</p>
+<p>堆上通过new和free管理。</p>
+<p>内存管理中的owership: 通过资源的创建和销毁来判断谁是对象的ower</p>
+<figure>
+<img src="/2025/10/09/c-notes-0/image-20251009162725641.png"
+alt="image-20251009162725641" />
+<figcaption aria-hidden="true">image-20251009162725641</figcaption>
+</figure>
+<p>由owner负责资源的创建和销毁。</p>
+<p>其中，std::vector是一个智能容器，当std::vector被销毁的时候，会为其中所有的对象执行析构程序。</p>
+<p>The Rule of Three</p>
+<p>如果在一个类中定义了下面三个函数的其中一个，那么有必要这三个都定义。</p>
+<ul>
+<li>Destructor</li>
+<li>拷贝构造函数</li>
+<li>拷贝赋值运算符</li>
+</ul>
+<p>The Rule of Zero：Rule of Three的推论</p>
+<p>声明了自定义析构函数、拷贝/移动构造函数或拷贝/移动赋值运算符的类应当专门处理所有权问题。其他类则不应声明自定义析构函数、拷贝/移动构造函数或拷贝/移动赋值运算符。</p>
+<p>总结：https://courses.grainger.illinois.edu/cs225/fa2025/assets/lectures/notes/Lecture_2.pdf</p>
+<figure>
+<img src="/2025/10/09/c-notes-0/image-20251009164748928.png"
+alt="image-20251009164748928" />
+<figcaption aria-hidden="true">image-20251009164748928</figcaption>
+</figure>
+<h3 id="templates">Templates</h3>
+<p>写generic code， 类型在实例化的时候确定</p>
+<h3 id="c的数据结构类型">c++的数据结构类型</h3>
+<p>Lists, Trees, Graphs, Hash Tables</p>
+<h4 id="抽象数据类型adt定义">抽象数据类型ADT定义:</h4>
+<p>一种描述数据类型的方式，包括描述存储的Data和可以执行的Operations.</p>
+<p>(实际的执行细节并不相关)</p>
+<h4 id="list-adt">List ADT:</h4>
+<ul>
+<li><p>有序的item集合。</p></li>
+<li><p>每个元素可以是异质/同质的；size可以是固定的或者resizable的。</p></li>
+<li><p>最小的操作定义集合：（Insert, Delete, isEmpty, getDdata, Create
+empty list)</p></li>
+<li><p>实现</p>
+<ul>
+<li><p>ArrayList或者Linked List</p>
+<p><img src="c-notes-0/image-20251009172938063.png" alt="image-20251009172938063" style="zoom:50%;" /></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// List.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">List</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">/*...*/</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">insertAtFront</span><span class="params">(<span class="type">const</span> T&amp; t)</span></span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	<span class="keyword">class</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">      T &amp; data;</span><br><span class="line">      ListNode* next;</span><br><span class="line">      <span class="built_in">ListNode</span>(T &amp; data):</span><br><span class="line">      	<span class="built_in">data</span>(data), <span class="built_in">next</span>(<span class="literal">NULL</span>) &#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  </span><br><span class="line">  	ListNode *head_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// List.hpp</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;List.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> List&lt;T&gt;::<span class="built_in">insertAtFront</span>(T &amp; t) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> List&lt;T&gt;::ListNode *&amp; List&lt;T&gt;::_index(<span class="type">unsigned</span> index) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>涉及的考虑：</p>
+<ul>
+<li><p>通过ListNode来实现List</p></li>
+<li><p>Data by
+reference：引用一旦初始化就不能改变指向的对象+引用必须绑定到有效对象，不能为null+引用不需要额外的指针解引用操作，访问效率更高。</p></li>
+<li><p>Next by pointer:
+可以修改指向的对象+可以为空nullptr(default)</p></li>
+<li><div class="sourceCode" id="cb1"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">class</span> ListNode <span class="op">&#123;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    T <span class="op">&amp;</span> data<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    ListNode <span class="op">*</span> next<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    ListNode<span class="op">(</span>T<span class="op">&amp;</span> data<span class="op">):</span> data<span class="op">(</span>data<span class="op">),</span> next<span class="op">(</span>NULL<span class="op">)</span> <span class="op">&#123;&#125;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">&#125;;</span></span></code></pre></div></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/ppo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1686,137 +1811,10 @@ observation example</h3>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/07/nvidia-cuda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/07/nvidia-cuda/" class="post-title-link" itemprop="url">nvidia-cuda</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-05-07 11:25:48" itemprop="dateCreated datePublished" datetime="2025-05-07T11:25:48+08:00">2025-05-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-05-08 16:45:17" itemprop="dateModified" datetime="2025-05-08T16:45:17+08:00">2025-05-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="nvcc和nvidia-smi">nvcc和Nvidia-smi</h1>
-<h3 id="nvidia-sminvidia-system-management-interface"><strong>1.
-<code>nvidia-smi</code>（NVIDIA System Management
-Interface）</strong></h3>
-<ul>
-<li><p><strong>作用</strong>：监控和管理 NVIDIA GPU 设备。</p></li>
-<li><p><strong>功能</strong>：</p>
-<ul>
-<li>查看 GPU 的实时状态（利用率、温度、功耗等）。</li>
-<li>显示已安装的 <strong>GPU 驱动版本</strong>。</li>
-<li>管理 GPU 进程（如杀死占用 GPU 的进程）。</li>
-</ul></li>
-<li><p><strong>使用场景</strong>：</p>
-<ul>
-<li>检查 GPU 是否被识别。</li>
-<li>监控深度学习训练时的 GPU 负载。</li>
-</ul></li>
-<li><p><strong>示例输出</strong>：</p>
-<p>bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ nvidia-smi</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 535.161.07   Driver Version: 535.161.07   CUDA Version: 12.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  NVIDIA RTX 4090     On   | 00000000:01:00.0 Off |                  Off |</span><br><span class="line">|  0%   45C    P8    15W / 450W |      0MiB / 24576MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这里显示的 <code>CUDA Version: 12.2</code> 是 <strong>驱动支持的最高
-CUDA 版本</strong>，但实际安装的 CUDA 工具包版本可能不同。</li>
-</ul></li>
-</ul>
-<h3 id="nvccnvidia-cuda-compiler"><strong>2. <code>nvcc</code>（NVIDIA
-CUDA Compiler）</strong></h3>
-<ul>
-<li><p><strong>作用</strong>：CUDA 工具包中的编译器，用于编译 CUDA C/C++
-代码。</p></li>
-<li><p><strong>功能</strong>：</p>
-<ul>
-<li>编译和优化 GPU 加速的代码。</li>
-<li>显示当前安装的 <strong>CUDA 工具包版本</strong>。</li>
-</ul></li>
-<li><p><strong>使用场景</strong>：</p>
-<ul>
-<li>开发 CUDA 程序时编译代码。</li>
-<li>验证 CUDA 环境是否配置正确。</li>
-</ul></li>
-<li><p><strong>示例输出</strong>：</p>
-<p>bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ nvcc --version</span><br><span class="line">nvcc: NVIDIA (R) Cuda compiler</span><br><span class="line">release 12.3, V12.3.107</span><br><span class="line">Build cuda_12.3.r12.3/compiler.33957004_0</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这里显示的 <code>release 12.3</code> 是 <strong>实际安装的 CUDA
-工具包版本</strong>。</li>
-</ul></li>
-</ul>
-<h2 id="实际经验">实际经验</h2>
-<ol type="1">
-<li>拿到一台服务器，先根据显卡型号安装最高版本的cuda driver，cuda
-driver里面会有一个cuda
-version,nvidia-smi显示的时候在右上角，是支持的最高版本的cuda
-toolkit.实际运行的时候决定的。此时还不代表什么runtime的实际含义。</li>
-<li>安装cuda toolkit https://docs.ksyun.com/documents/2591
-<ol type="1">
-<li>进入英伟达官网，选择对应的cuda版本（比如12.4,
-11.8之类的），下载runfile(local)，进行安装（注意不要重复选择安装已经安装的cuda
-driver）,只安装cuda toolkit即可。</li>
-<li>在zshrc中修改路径(注意新安装放在$PATH的前面还是后面)</li>
-<li>nvcc --version验证此时的cuda toolkit</li>
-</ol></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1882,7 +1880,7 @@ driver）,只安装cuda toolkit即可。</li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
