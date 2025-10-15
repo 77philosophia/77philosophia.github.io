@@ -145,6 +145,119 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/laion-dataset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/04/laion-dataset/" class="post-title-link" itemprop="url">laion数据集</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-04 22:24:05 / Modified: 22:25:08" itemprop="dateCreated datePublished" datetime="2025-01-04T22:24:05+08:00">2025-01-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="laion-5b">LAION-5B</h2>
+<p>LAION-5B 是目前规模最大的开放多模态数据集之一，包含 58.5 亿个 <a
+target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=CLIP&amp;spm=1001.2101.3001.7020">CLIP</a>
+[5]过滤的图像-文本对的数据集，比 LAION-400M 大 14
+倍，是世界第一大规模、多模态的文本图像数据集，<strong>共80T数据</strong>，并提供了色情图片过滤、水印图片过滤、高分辨率图片、美学图片等子集和模型，供不同方向研究。</p>
+<p>LAION-5B中包括23.2亿的英语，22.6亿的100+语言及12.7亿的未知语言，我们将子集分别标记为：</p>
+<p><strong>●</strong> laion2B-en (应该是我们要的2B数据集)</p>
+<p><strong>●</strong> <strong>laion2B-multi</strong></p>
+<p><strong>●</strong> <strong>laion1B-nolang</strong></p>
+<p>LAION训练了一个基于CLIP嵌入的色情内容识别模型NSFW，可以过滤3%的不适图片，NSFW准确率约96%，过滤后有子集：</p>
+<p>laion2B-en-safety</p>
+<p>laion2B-multi-safety</p>
+<p>laion1B-nolang-safety</p>
+<p>LAION训练了一个水印识别模型，过滤后有子集：</p>
+<p>laion2B-en-watermark</p>
+<p>laion2B-multi-watermark</p>
+<p>laion1B-nolang-watermark</p>
+<p>一个170M的超分辨率子集：</p>
+<p>laion-high-resolution</p>
+<p>一个120M的美学图片子集，可以用来做图片生成：</p>
+<p>laion-aesthetic</p>
+<h3 id="子集">子集</h3>
+<p>LAION-5B 提供了多种子集，以满足不同的研究需求：</p>
+<ul>
+<li><p><strong>LAION-400M</strong>：规模较小，约 400
+万个图像-文本对，方便快速实验。</p></li>
+<li><p><strong>LAION-2B</strong>：包含 20
+亿对，适合中等规模实验。</p></li>
+<li><p><strong>LAION-5B</strong>：完整数据集。</p>
+<figure>
+<img src="/2025/01/04/laion-dataset/image-20250104222449781.png"
+alt="image-20250104222449781" />
+<figcaption aria-hidden="true">image-20250104222449781</figcaption>
+</figure></li>
+</ul>
+<h3 id="laion-2b-hd-子集">LAION-2B-HD 子集</h3>
+<ul>
+<li><p><strong>图像-文本对总数</strong>：约 <strong>1.2
+亿对</strong>。</p></li>
+<li><p><strong>图像分辨率</strong>：</p></li>
+<li><p>大多数图像的分辨率在 <strong>1024×1024
+像素</strong>或更高。</p></li>
+<li><p><strong>数据来源</strong>：</p></li>
+<li><p>从 LAION-2B
+数据集中过滤生成，确保图像清晰度高，文本描述相关性强。</p></li>
+</ul>
+<h4 id="特点">特点</h4>
+<ul>
+<li><p>高质量图像，适合图像生成、超级分辨率等任务。</p></li>
+<li><p>文本描述更贴近高质量图像语义。</p></li>
+</ul>
+<p><strong>LAION-2B-HD</strong> 是从 LAION
+数据集中筛选出的高质量、高分辨率图像子集，适合需要高分辨率图像和精确文本描述的任务。</p>
+<h2 id="下载方法">下载方法：</h2>
+<p>https://github.com/rom1504/img2dataset/blob/main/dataset_examples/laion-high-resolution.md</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/03/hugging-download/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1439,139 +1552,6 @@ descriptors.我们需要更为强大的特征提取算子。</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/06/paper-diggingInto/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/06/paper-diggingInto/" class="post-title-link" itemprop="url">paper-diggingInto</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-06 22:36:37" itemprop="dateCreated datePublished" datetime="2019-12-06T22:36:37+08:00">2019-12-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:13:03" itemprop="dateModified" datetime="2024-05-20T23:13:03+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3
-id="digging-into-self-supervised-monocular-depth-estimation论文阅读">《Digging
-into Self-Supervised Monocular Depth Estimation》论文阅读</h3>
-<h5 id="目标-self-supervised-monoculr-depth-estimation">目标：
-self-supervised monoculr depth estimation</h5>
-<h5 id="摘要">摘要：</h5>
-<p>1、一个最小重投影损失，解决遮挡问题。</p>
-<p>2、一个全分辨率多尺度取样方法，减少视觉误差。</p>
-<p>3、一个自动遮挡损失，忽视违反相机运动假设的像素，不让其训练。</p>
-<h5 id="损失函数">损失函数</h5>
-<h5 id="重投影损失函数">1、重投影损失函数</h5>
-<p><span class="math inline">\({L_p} =
-\sum_{t^{&#39;}}pe(I_{t},I_{t^{&#39;}\rightarrow t})\)</span></p>
-<p>其中 ： $pe(I_{a},I_{b})=(1-SSIM(I_{a},I_{b}))+（1-)||I_{a}-I_{b}|| $
-目标就是相近的fram的appearance应该相同。pe是用来衡量两幅图的差距的。</p>
-<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
-x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
-<h5 id="edge-aware-smoothness">2、edge-aware smoothness</h5>
-<p>论文给出的解释是we can extract this interpretable depth from the
-model. This is an ill-posed problem as there is an extremely large
-number of possible incorrect depths per pixel which can correctly
-reconstruct the novel view given the relative pose between those two
-views.传统的双目和multi-view stereo方法通过enforcing smoothness in the
-depth maps来解决，反正我不是很懂。</p>
-<p><span class="math inline">\(L_{s}=|\partial x d^{*}_{t}|e^{-|\partial
-x I_t|} +|\partial y d^{*}_{t}|e^{-|\partial y I_t|}\)</span></p>
-<p>其中：<span
-class="math inline">\(d^{*}_{t}=d_{t}/\bar{d_{t}}\)</span> ,
-这样处理的目的是避免深度消失。</p>
-<h5 id="对损失函数的提高">3、对损失函数的提高</h5>
-<h6
-id="a在目标frame和source-frame选择误差小的像素匹配这是为了拒绝被遮挡像素带来的误差增大的训练">a、在目标frame和source
-frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6>
-<p><img src="/2019/12/06/paper-diggingInto/appearance-loss.png" /></p>
-<p>所以：$ L_{p}=min,pe(I_{t},I_{t^{'}t})$</p>
-<h6 id="bauto-masking-stationary-pixels">b、Auto-Masking Stationary
-Pixels</h6>
-<p>self-supervised monocular training基于的假设是moving camera和static
-scene。所以如果camera is static（比如车停下来画面不动）画面有object
-motion（有其他车辆经过）就会有'holes' of infinite depth in depth
-maps。针对这个问题作者提出一个mask。({0,1})</p>
-<p>即reprojection error of the wraped image (I_{t^{'} t}) is lower than
-that of the original, unwraped source image (I^{'}_{t}) .</p>
-<p><span class="math inline">\(\mu =[min_{t^{&#39;}}\,
-pe(I_{t},I_{t^{&#39;}\rightarrow {t}})&lt;min_{t}\,
-pe(I_{t},I_{t^{&#39;}})]\)</span></p>
-<p>原因是基于作者提出的两个分析：</p>
-<p>（1）static camera 由same
-pixels表明。所以这个时候(pe(I_{t},I_{t^{'}}))
-几乎非常小，所以这种情况下可以把static camera去掉。</p>
-<p>（2）一个moving object at equivalent relative translation to the
-camera，or a low of pixels。</p>
-<h6 id="cmulti-scale-estimation">c、Multi-scale Estimation</h6>
-<p>为了解决bininear sampler带来的gradient locality，避免训练stuck in
-local minima，现有模型通常采用的方法是multi-scale depth
-prediction和image reconstruction。与其他人将input image 降到resolution
-of each decoder不同，作者upsample the lower resolution depth
-maps，然后reproject,resample这样去计算</p>
-<h5 id="最终loss">4、最终Loss</h5>
-<p><span class="math inline">\(L=\mu L_{p}+\lambda L_{s}\)</span></p>
-<h5 id="其他考虑">5、其他考虑</h5>
-<p>(1)depthnetwork总体是encoder-decoder结构。encoder是resnet18并且采用Pretrain
-weights.decoder输出的深度的sigmoid值$$ 处理为depth.(D=) .</p>
-<p>寻找这样的a,b使得D的范围在0.1~100units.</p>
-<p>(2)pose network最后的输出会被scale by
-0.01。同时虽然深度网络输入是三个连续的RGB图，pose
-network的输入被处理为两幅RGB或者6个channel。相应的filter扩展一组，weights除以2.（维持filter的总和为1）.同时对输入图像进行了数据增强。horizontal
-flips和color argumentation.</p>
-<p>(3)输入图像大小为640*192. 损失函数中的() 取0.001。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1641,7 +1621,7 @@ flips和color argumentation.</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

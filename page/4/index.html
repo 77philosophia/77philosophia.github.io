@@ -145,6 +145,195 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/06/from-transformer-to-llm/" class="post-title-link" itemprop="url">从Transformer到LLM:Architecture,Training and Usage</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-06 22:11:16 / Modified: 23:09:12" itemprop="dateCreated datePublished" datetime="2025-01-06T22:11:16+08:00">2025-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="nlp-basic-concepts">NLP basic concepts</h3>
+<h4 id="两个nlp的主要问题">1. 两个NLP的主要问题</h4>
+<p>表示和建模：</p>
+<p>a.Representation:将语言表示为机器语言：如BERT,Openai embedding</p>
+<ol start="2" type="a">
+<li>Modeling:用统计方法建模，GPT, chatGPT</li>
+</ol>
+<ol type="1">
+<li><p>怎么表示words</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106225834152.png"
+alt="image-20250106225834152" />
+<figcaption aria-hidden="true">image-20250106225834152</figcaption>
+</figure></li>
+</ol>
+<p>将单词分散到向量空间：将token映射到向量空间，向量空间(vector space)
+是用来表示文本数据的一种高纬空间。在这个空间中，每个token或文本单元都被表示为一个向量。这些向量捕捉了文本单元的语义信息，并使得数学计算（如距离计算、相似度计算）成为可能。</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230157598.png"
+alt="image-20250106230157598" />
+<figcaption aria-hidden="true">image-20250106230157598</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>建模</p>
+<p>语言模型LLM: 语言模型预测任何单词序列在给定语言语料库中的可能性</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230245416.png"
+alt="image-20250106230245416" />
+<figcaption aria-hidden="true">image-20250106230245416</figcaption>
+</figure></li>
+</ol>
+<ul>
+<li><p>怎么学习语言模型</p>
+<ul>
+<li><p>自回归模型Autogressive LM:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230342821.png"
+alt="image-20250106230342821" />
+<figcaption aria-hidden="true">image-20250106230342821</figcaption>
+</figure></li>
+<li><p>Bi-gram/N-gram model:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230354621.png"
+alt="image-20250106230354621" />
+<figcaption aria-hidden="true">image-20250106230354621</figcaption>
+</figure></li>
+<li><p>Marked LM:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230523067.png"
+alt="image-20250106230523067" />
+<figcaption aria-hidden="true">image-20250106230523067</figcaption>
+</figure></li>
+<li><p>几种语言模型的学习方式</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230534541.png"
+alt="image-20250106230534541" />
+<figcaption aria-hidden="true">image-20250106230534541</figcaption>
+</figure></li>
+<li><p>为什么语言模型有比较好的表示</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230544997.png"
+alt="image-20250106230544997" />
+<figcaption aria-hidden="true">image-20250106230544997</figcaption>
+</figure></li>
+<li><p>总结</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230557957.png"
+alt="image-20250106230557957" />
+<figcaption aria-hidden="true">image-20250106230557957</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h3 id="attention机制和transformer">attention机制和transformer</h3>
+<h4 id="attention来源翻译任务seq2seq">1.
+attention来源：翻译任务seq2seq</h4>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230706080.png"
+alt="image-20250106230706080" />
+<figcaption aria-hidden="true">image-20250106230706080</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230717889.png"
+alt="image-20250106230717889" />
+<figcaption aria-hidden="true">image-20250106230717889</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230732617.png"
+alt="image-20250106230732617" />
+<figcaption aria-hidden="true">image-20250106230732617</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230745379.png"
+alt="image-20250106230745379" />
+<figcaption aria-hidden="true">image-20250106230745379</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230757155.png"
+alt="image-20250106230757155" />
+<figcaption aria-hidden="true">image-20250106230757155</figcaption>
+</figure>
+<h4 id="结构">2. 结构</h4>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230817984.png"
+alt="image-20250106230817984" />
+<figcaption aria-hidden="true">image-20250106230817984</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230830430.png"
+alt="image-20250106230830430" />
+<figcaption aria-hidden="true">image-20250106230830430</figcaption>
+</figure>
+<h3 id="训练lm">训练LM</h3>
+<h3 id="pretrained-model用法微调和prompt">Pretrained
+model用法（微调和prompt）</h3>
+<h3 id="transformer除语言外其他应用">transformer除语言外其他应用</h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/style-transfer-paper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1549,119 +1738,6 @@ alt="image-20250104224313553" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/laion-dataset/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/04/laion-dataset/" class="post-title-link" itemprop="url">laion数据集</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-04 22:24:05 / Modified: 22:25:08" itemprop="dateCreated datePublished" datetime="2025-01-04T22:24:05+08:00">2025-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="laion-5b">LAION-5B</h2>
-<p>LAION-5B 是目前规模最大的开放多模态数据集之一，包含 58.5 亿个 <a
-target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=CLIP&amp;spm=1001.2101.3001.7020">CLIP</a>
-[5]过滤的图像-文本对的数据集，比 LAION-400M 大 14
-倍，是世界第一大规模、多模态的文本图像数据集，<strong>共80T数据</strong>，并提供了色情图片过滤、水印图片过滤、高分辨率图片、美学图片等子集和模型，供不同方向研究。</p>
-<p>LAION-5B中包括23.2亿的英语，22.6亿的100+语言及12.7亿的未知语言，我们将子集分别标记为：</p>
-<p><strong>●</strong> laion2B-en (应该是我们要的2B数据集)</p>
-<p><strong>●</strong> <strong>laion2B-multi</strong></p>
-<p><strong>●</strong> <strong>laion1B-nolang</strong></p>
-<p>LAION训练了一个基于CLIP嵌入的色情内容识别模型NSFW，可以过滤3%的不适图片，NSFW准确率约96%，过滤后有子集：</p>
-<p>laion2B-en-safety</p>
-<p>laion2B-multi-safety</p>
-<p>laion1B-nolang-safety</p>
-<p>LAION训练了一个水印识别模型，过滤后有子集：</p>
-<p>laion2B-en-watermark</p>
-<p>laion2B-multi-watermark</p>
-<p>laion1B-nolang-watermark</p>
-<p>一个170M的超分辨率子集：</p>
-<p>laion-high-resolution</p>
-<p>一个120M的美学图片子集，可以用来做图片生成：</p>
-<p>laion-aesthetic</p>
-<h3 id="子集">子集</h3>
-<p>LAION-5B 提供了多种子集，以满足不同的研究需求：</p>
-<ul>
-<li><p><strong>LAION-400M</strong>：规模较小，约 400
-万个图像-文本对，方便快速实验。</p></li>
-<li><p><strong>LAION-2B</strong>：包含 20
-亿对，适合中等规模实验。</p></li>
-<li><p><strong>LAION-5B</strong>：完整数据集。</p>
-<figure>
-<img src="/2025/01/04/laion-dataset/image-20250104222449781.png"
-alt="image-20250104222449781" />
-<figcaption aria-hidden="true">image-20250104222449781</figcaption>
-</figure></li>
-</ul>
-<h3 id="laion-2b-hd-子集">LAION-2B-HD 子集</h3>
-<ul>
-<li><p><strong>图像-文本对总数</strong>：约 <strong>1.2
-亿对</strong>。</p></li>
-<li><p><strong>图像分辨率</strong>：</p></li>
-<li><p>大多数图像的分辨率在 <strong>1024×1024
-像素</strong>或更高。</p></li>
-<li><p><strong>数据来源</strong>：</p></li>
-<li><p>从 LAION-2B
-数据集中过滤生成，确保图像清晰度高，文本描述相关性强。</p></li>
-</ul>
-<h4 id="特点">特点</h4>
-<ul>
-<li><p>高质量图像，适合图像生成、超级分辨率等任务。</p></li>
-<li><p>文本描述更贴近高质量图像语义。</p></li>
-</ul>
-<p><strong>LAION-2B-HD</strong> 是从 LAION
-数据集中筛选出的高质量、高分辨率图像子集，适合需要高分辨率图像和精确文本描述的任务。</p>
-<h2 id="下载方法">下载方法：</h2>
-<p>https://github.com/rom1504/img2dataset/blob/main/dataset_examples/laion-high-resolution.md</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1731,7 +1807,7 @@ alt="image-20250104222449781" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
