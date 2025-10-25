@@ -145,6 +145,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/17/Object-Detection-Review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/17/Object-Detection-Review/" class="post-title-link" itemprop="url">Object-Detection-Review</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-17 22:35:15" itemprop="dateCreated datePublished" datetime="2019-12-17T22:35:15+08:00">2019-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-05-20 22:36:11" itemprop="dateModified" datetime="2024-05-20T22:36:11+08:00">2024-05-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="论文题目objection-detection-with-deep-learning-a-review">论文题目：Objection
+Detection with Deep Learning: A Review</h1>
+<h5 id="introduction">1.Introduction</h5>
+<p>目标检测子类包括脸部检测(face detection)，行人检测(pedestrian
+detection)，躯体骨骼检测(skeleton detection)等等。</p>
+<p>目标检测的困难：在视角(viewpoints),姿势(poses),遮挡(occlusions),和光照条件(lightling
+conditions)存在很大不同。</p>
+<p>目标检测的任务<strong>=目标定位(object location)+目标分类(object
+classification)</strong>。因此pipeline有三个阶段：<strong>目标区域选取(informative
+region selection),特征提取(feature
+extraction),分类(classification)</strong></p>
+<h6 id="a.informative-region-selection">a.Informative region
+selection</h6>
+<p>解决方法是multi-scale sliding
+window。因为你不知道目标会在图像的哪个位置出现，有多大。这个方法的缺点显而易见：expensive</p>
+<h6 id="b.feature-extraction">b.feature extraction</h6>
+<p>sift,hog算子等都可以用来提取物体特征，但是由于表面，光照，北京等影响很难设计一个具体的算子去特别识别一个目标。</p>
+<h6 id="c.classification">c.classification</h6>
+<p>比如SVM，AdaBoost, DPM</p>
+<p>以上描述的传统算法缺点1、sliding window低效性。2、semantic gap cannot
+be bridged by the low-level
+descriptors.我们需要更为强大的特征提取算子。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2019/12/06/paper-diggingInto/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -438,7 +525,7 @@ truth的深度值有零值存在，在输入深度网络训练的时候采用RMS
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

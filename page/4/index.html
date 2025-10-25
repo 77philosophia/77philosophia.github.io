@@ -145,6 +145,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/train-vpred/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/06/train-vpred/" class="post-title-link" itemprop="url">基于noobai-vpred0.65底膜的训练</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-06 23:14:28 / Modified: 23:20:42" itemprop="dateCreated datePublished" datetime="2025-01-06T23:14:28+08:00">2025-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="comfyui工作流加载">1. comfyui工作流加载</h2>
+<p>需要增加节点，直接使用官方提供的工作流即可。</p>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231614399.png"
+alt="image-20250106231614399" />
+<figcaption aria-hidden="true">image-20250106231614399</figcaption>
+</figure>
+<h2 id="webui运行">2.webui运行</h2>
+<p>根据https://huggingface.co/Laxhar/noob_sdxl_v_pred_test（一个月以前的说明文档），无法在webui里运行。</p>
+<p>根据https://huggingface.co/Laxhar/noobai-XL-Vpred-0.65s?not-for-all-audiences=true</p>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231748876.png"
+alt="image-20250106231748876" />
+<figcaption aria-hidden="true">image-20250106231748876</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231801221.png"
+alt="image-20250106231801221" />
+<figcaption aria-hidden="true">image-20250106231801221</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/06/train-vpred/image-20250106231816557.png"
+alt="image-20250106231816557" />
+<figcaption aria-hidden="true">image-20250106231816557</figcaption>
+</figure>
+<h2 id="lora脚本训练">3.lora脚本训练</h2>
+<p>将parameterization=1 --v_parameterization --zero_terminal_snr
+--scale_v_pred_loss_like_noise_pred --debiased_estimation_loss<br />
+</p>
+<p>在https://civitai.com/models/833294/noobai-xl-nai-xl
+下面找到分享提示要将noise相关的都让之不生效 包括offset_noise之类的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1318,426 +1407,6 @@ prompt 来指示模型回答时的语气、详细程度或者其他特定要求�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/aigc-paper-share/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/04/aigc-paper-share/" class="post-title-link" itemprop="url">AIGC论文reading</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-04 22:26:20 / Modified: 22:43:16" itemprop="dateCreated datePublished" datetime="2025-01-04T22:26:20+08:00">2025-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="stable-diffusion-原理">Stable diffusion 原理</h2>
-<p>从data产生noise很容易，从noise产生data是生成</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222656242.png"
-alt="image-20250104222656242" />
-<figcaption aria-hidden="true">image-20250104222656242</figcaption>
-</figure>
-<h2 id="一致性保持目标">一致性保持目标：</h2>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222713620.png"
-alt="image-20250104222713620" />
-<figcaption aria-hidden="true">image-20250104222713620</figcaption>
-</figure>
-<h1 id="解法">解法：</h1>
-<h2 id="storydiffusion做保持">StoryDiffusion：做保持</h2>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222809450.png"
-alt="image-20250104222809450" />
-<figcaption aria-hidden="true">image-20250104222809450</figcaption>
-</figure>
-<p>产出这些漫画的研究出自南开大学、字节跳动等机构。在《StoryDiffusion：Consistent
-Self-Attention for long-range image and video
-generation》这篇论文中，该研究团队提出了一种名为 StoryDiffusion
-的新方法，用于生成一致的图像和视频以讲述复杂故事。</p>
-<ul>
-<li><p>论文地址：https://arxiv.org/pdf/2405.01434v1</p></li>
-<li><p>项目主页：https://storydiffusion.github.io/</p></li>
-</ul>
-<p>如上图所示，使用Consistent
-Self-Attention生成的图像成功保持了身份和服装的一致性，这对于讲故事至关重要。</p>
-<h4 id="主要亮点一致性图像生成">主要亮点：一致性图像生成</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222859537.png"
-alt="image-20250104222859537" />
-<figcaption aria-hidden="true">image-20250104222859537</figcaption>
-</figure>
-<h4 id="总结">总结：</h4>
-<p>应用场景：小批次人物服装、身份的保持</p>
-<h2
-id="omg多人物图像生成的工具垫图-区域分离重绘">OMG：多人物图像生成的工具（垫图
-+ 区域分离重绘）</h2>
-<p>主页: https://kongzhecn.github.io/omg-project/</p>
-<p>代码: https://github.com/kongzhecn/OMG/</p>
-<h4 id="背景">背景：</h4>
-<p>单概念的定制化生成，Textual Inversion，
-LORA，InstanceID等方法已经比较成熟了。而对于多概念的定制化生成，如果直接使用LORA融合等方法，主要挑战在于不同的概念信息之间的信息泄漏，造成属性混乱。比如想要生成一个特定的黑色长发男角色，一个特定的紫色短发女角色，在单图出单角色时正常，但是在单图出双角色时，很有可能发型发色信息就混乱了，比如可能出现紫色长发女角色。比较容易想到的做法就是垫图+掩码。</p>
-<p>难点：个性化保持、空间遮挡</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222920431.png"
-alt="image-20250104222920431" />
-<figcaption aria-hidden="true">image-20250104222920431</figcaption>
-</figure>
-<p>多概念个性化（multi-concept
-personalization）指的是在同一个图像生成过程中，同时整合和表达多个不同的概念或主题。这种方法要求在生成图像时，能够准确保留和表现每个概念的独特特征，同时保证它们之间的协调和和谐。例如，在生成一个包含多个不同人物、背景和物体的图像时，必须确保每个元素都能清晰地展现其独特性，并且整体图像具有一致性和美感。</p>
-<h4 id="先看效果">先看效果：</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104222948149.png"
-alt="image-20250104222948149" />
-<figcaption aria-hidden="true">image-20250104222948149</figcaption>
-</figure>
-<h4 id="即插即用">即插即用</h4>
-<table>
-<colgroup>
-<col style="width: 44%" />
-<col style="width: 55%" />
-</colgroup>
-<thead>
-<tr>
-<th><strong>OMG +</strong> <strong>LoRA</strong> <strong>(ID with
-multiple images)</strong></th>
-<th><img src="/2025/01/04/aigc-paper-share/image-20250104223125232.png"
-alt="image-20250104223125232" /></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>OMG + InstantID (ID with single image)</strong></td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223145816.png"
-alt="image-20250104223145816" /></td>
-</tr>
-<tr>
-<td><strong>OMG + ControlNet (Layout Control )</strong></td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223207497.png"
-alt="image-20250104223207497" /></td>
-</tr>
-<tr>
-<td><strong>OMG + style LoRAs (Style Control)</strong></td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223217116.png"
-alt="image-20250104223217116" /></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="怎么做到">怎么做到：</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223238466.png"
-alt="image-20250104223238466" />
-<figcaption aria-hidden="true">image-20250104223238466</figcaption>
-</figure>
-<p>OMG是一种两阶段的生成方法，一阶段先用无角色信息的文生图模型垫图生成布局，然后提取垫图全面的视觉信息（mask
-和 attention map），二阶段将各角色的特定概念信息作用于对应的 mask
-区域，避免信息泄露，属性错乱，并复用一阶段的 attention
-map，维持构图布局不变。这里的概念信息可以是 LoRA 也可以是
-InstantID。</p>
-<h5
-id="一阶段生成构图布局并提取视觉信息">1.一阶段：生成构图布局并提取视觉信息</h5>
-<p>首先用一个全局的prompt p在文生图模型T2I上生成一张垫图</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223305875.png"
-alt="image-20250104223305875" />
-<figcaption aria-hidden="true">image-20250104223305875</figcaption>
-</figure>
-<p>这里要注意的是，没有任何角色信息(lora/InstanceId)</p>
-<p>第一阶段，我们要提取垫图的视觉信息，这里的视觉信息有两项：生成过程中每一时间步每一层的注意力图
-attention map
-和每个角色的分割掩码。注意力图在生图过程中记得保存即可，而角色的掩码图，则是基于角色类别的基本词（man、woman），使用开集检测分割的模型（如
-GroundingDION+SAM、YoloWorld+EfficientSAM）来进行分割。</p>
-<h5 id="第二阶段多概念定制化去噪">第二阶段：多概念定制化去噪</h5>
-<p>为了避免概念信息泄露，造成角色属性错乱，OMG
-在进行第二阶段多概念定制化生成时不进行 LoRA
-融合，而是使用多个单概念的模型分别进行推理，并作用于一阶段得到的各自掩码区域中。即一个
-LoRA 只负责一个角色区域的生成。这称为概念噪声混合（Concept Noise
-Blending）。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223331480.png"
-alt="image-20250104223331480" />
-<figcaption aria-hidden="true">image-20250104223331480</figcaption>
-</figure>
-<h5 id="不同时间步开启混合">不同时间步开启混合：</h5>
-<p>下图对比了第二阶段中不同时间步开启概念噪声混合对最终生成结果的影响，最左侧是从一开始，第
-50 步（因为用了 DDIM 采样器）就开启概念噪声混合，最右侧表示第 0
-步才开启，相当于没开启，即完全等于第一阶段的结果，中间是 0-50
-步之间开启。可以看到，概念噪声混合开启得越早，概念特征保持得越好。并且，开启得越早对图像构图布局的影响也越大，开启的越晚，构图布局与第一阶段结果越相近。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223346380.png"
-alt="image-20250104223346380" />
-<figcaption aria-hidden="true">image-20250104223346380</figcaption>
-</figure>
-<h4 id="总结-1">总结：</h4>
-<p>想要在有交叠的情况下，精确地控制多个概念的属性特征，基本思路是 ”垫图
-+ 区域分离重绘“
-的方案，但是这种方法会有个问题：如果多个概念的基本语义类是一样的，比如两个
-woman，这时候 zero-shot
-分割模型怎么工作，对于相同语义类的多概念很难进行可控的个性化生成</p>
-<h2
-id="threatergen多轮对话llmimage-generation">ThreaterGen：多轮对话（LLM+image
-generation）</h2>
-<p><strong>https://howe140.github.io/theatergen.io/</strong></p>
-<h4 id="背景-1">背景：</h4>
-<ol type="1">
-<li>语义一致性——现有方法在处理复杂描述（如空间关系、数量或指代表达“它们”等）时遇到困难，导致生成的图像在语义上与用户请求不一致；(2)
-上下文一致性——在多轮对话中的图像生成过程中，同一实体经常难以在不同轮次中保持一致特征，甚至可能被遗忘。例如，同一只狗在不同轮次中看起来不同而没有用户编辑。</li>
-</ol>
-<h4 id="先看效果-1">先看效果：</h4>
-<table>
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 69%" />
-</colgroup>
-<thead>
-<tr>
-<th>讲故事</th>
-<th><img src="/2025/01/04/aigc-paper-share/image-20250104223537655.png"
-alt="image-20250104223537655" /></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>多轮编辑</td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223550213.png"
-alt="image-20250104223550213" /></td>
-</tr>
-<tr>
-<td>定量：在自己的数据集上测试</td>
-<td><img src="/2025/01/04/aigc-paper-share/image-20250104223626463.png"
-alt="image-20250104223626463" /></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="怎么做到-1">怎么做到：</h4>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223722467.png"
-alt="image-20250104223722467" />
-<figcaption aria-hidden="true">image-20250104223722467</figcaption>
-</figure>
-<p>本文提出的 ppl 如图，可以分为三个阶段</p>
-<p>1.第一阶段是 LLM 的角色设计：用 LLM 完成角色设计，包括角色的外观描述
-+ layout 信息。</p>
-<p>2.第二阶段用 T2I 完成第一阶段角色的图片生成和 latent 提取，作为
-reference img</p>
-<p>3.第三阶段整合前两个阶段的信息，生成符合用户输入 prompt 的图片。</p>
-<hr />
-<h5 id="第一阶段llm-角色设计">1.第一阶段，LLM 角色设计</h5>
-<p>在这一阶段，利用 LLM，根据用户输入的要求，把对应 prompt
-的信息做格式化，格式化的输出包含了背景 prompt、neg
-prompt，另外最核心的部分是各个主体的 prompt。每一个主体 prompt 都是一个
-triplet 对，是一个包含了 id、prompt、layout（bbox 格式）的三元组。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223810670.png"
-alt="image-20250104223810670" />
-<figcaption aria-hidden="true">image-20250104223810670</figcaption>
-</figure>
-<h5 id="第二阶段reference-img-生成">2.第二阶段，reference img 生成</h5>
-<p>根据第一阶段给出的主体 prompt，用 T2I
-模型生成一张对应角色的参考图片，这张参考图后续会通过 ip-adapter
-来注入模型。有了 reference img，就可以针对各个 prompt
-生成对应的图片，步骤如下：</p>
-<p>a）根据 ref img + 待生成
-prompt，可以生成一张（只）包含该主体的图片</p>
-<p>b）对上述图片做分割，得到前景的物体。因为一条 prompt
-里面可能包含多个物体，所以需要对每一个出现的物体都执行第一、二步。</p>
-<p>c）根据 LLM 给出的 layout
-信息，将第二部去除背景的主体贴在对应位置上（需要做 scale 的适配）。</p>
-<p>d）然后对第三步得到的图片，计算 canny 图，另外经过一次 SD
-的前传得到每一步的 feature 作为生成的 guidance（称为 latent
-guidance）。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223829556.png"
-alt="image-20250104223829556" />
-<figcaption aria-hidden="true">image-20250104223829556</figcaption>
-</figure>
-<h5 id="第三阶段信息整合图片生成">第三阶段，信息整合+图片生成</h5>
-<p>在这一阶段，会把上述格式化的 prompt 合并，作为 SD 输入的 text
-prompt。canny 信息通过 controlnet 注入 SD。而 lantent guidance
-注入方式如下，会选择在一定的 step
-范围内注入而不是全过程都加。注入的时候，主体 mask 区域内用 latent
-guidance，mask外则用 SD 本身生成的内容。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223847906.png"
-alt="image-20250104223847906" />
-<figcaption aria-hidden="true">image-20250104223847906</figcaption>
-</figure>
-<h4 id="总结-2">总结：</h4>
-<p>1.利用 LLM + T2I 的能力来做连续故事的 ip 保持。通过 LLM
-保证生成故事上下文的连续性，以及人物的关联性；通过 LLM
-来生成主体的特征描述，将这个特征描述送给 T2I
-模型生成该主体的一张参考图。LLM 还被用来生成图片的
-layout，用来控制每一个主体的生成位置。</p>
-<p>2.多轮生成过程中，允许用户通过外部输入来改变生成结果，允许用户交互</p>
-<h2
-id="autostudio在多轮交互式图像生成中打造一致的主体">AutoStudio：在多轮交互式图像生成中打造一致的主体</h2>
-<h4 id="背景-2">背景：</h4>
-<p>文本到图像(TGI)生成模型在生成单张图像方面已经表现出色,更具挑战性的任务——多轮交互式图像生成开始吸引相关研究社区的注意.这个任务要求模型在多个回合中与用户互动，以生成连贯的图像序列。然而，由于用户可能频繁切换主体，目前的努力难以在生成多样化图像的同时保持主体一致性。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223924036.png"
-alt="image-20250104223924036" />
-<figcaption aria-hidden="true">image-20250104223924036</figcaption>
-</figure>
-<h4 id="效果">效果：</h4>
-<h5
-id="量化指标autostudio在所有指标上都明显优于之前的方法">1.量化指标：AutoStudio<strong>在所有指标上都明显优于之前的方法</strong>。</h5>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104223944051.png"
-alt="image-20250104223944051" />
-<figcaption aria-hidden="true">image-20250104223944051</figcaption>
-</figure>
-<h5 id="可视化">2.可视化：</h5>
-<p>Theatergen无法处理人物之间复杂的互动（如拥抱和接吻），而MiniGemini则难以保持主体的一致性。</p>
-<p>Intelligent
-Grimm和StoryDiffusion无法在多回合互动中保持多个角色之间的一致性，并表现出有限的编辑效果。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224024890.png"
-alt="image-20250104224024890" />
-<figcaption aria-hidden="true">image-20250104224024890</figcaption>
-</figure>
-<h4 id="怎么做到-2">怎么做到：</h4>
-<p>他们的目标是引入一个多功能、可扩展的框架，通过多智能体协作，可以将任何所需的LLM架构和扩散骨干结合到框架中，以满足用户多轮生成的多样化需求。</p>
-<p>具体而言，AutoStudio包括三个基于LLM的智能体：</p>
-<ul>
-<li><p><strong>主题管理器</strong>解释对话，识别不同的主题，并为其分配适当的上下文；-》ID，prompt</p></li>
-<li><p><strong>布局*<em>*</em>生成器</strong>为每个主题生成部分级别的边界框，以控制主题的位置；-》coarse
-layout</p></li>
-<li><p><strong>监督员</strong>为布局生成器提供布局改进和修正的建议。</p></li>
-</ul>
-<p>最后，<strong>绘制器</strong>基于扩散模型完成基于改进布局的图像生成。</p>
-<p>此外，研究人员在绘制器中引入了一个<strong>并行*<em>*</em>UNet</strong>（P-UNet），它具有一种新颖的架构，利用两个并行的交叉注意力模块分别增强文本和图像嵌入的潜在主题特征。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224046351.png"
-alt="image-20250104224046351" />
-<figcaption aria-hidden="true">image-20250104224046351</figcaption>
-</figure>
-<h5 id="主题管理器">主题管理器：</h5>
-<p>1.历史输入 2.预定义prompt</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224101887.png"
-alt="image-20250104224101887" />
-<figcaption aria-hidden="true">image-20250104224101887</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224109475.png"
-alt="image-20250104224109475" />
-<figcaption aria-hidden="true">image-20250104224109475</figcaption>
-</figure>
-<h5 id="layout管理器">layout管理器：</h5>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224123560.png"
-alt="image-20250104224123560" />
-<figcaption aria-hidden="true">image-20250104224123560</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224131380.png"
-alt="image-20250104224131380" />
-<figcaption aria-hidden="true">image-20250104224131380</figcaption>
-</figure>
-<h5 id="supervisor管理器">supervisor管理器</h5>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224146486.png"
-alt="image-20250104224146486" />
-<figcaption aria-hidden="true">image-20250104224146486</figcaption>
-</figure>
-<h5 id="图像生成">图像生成：</h5>
-<p>有了好的布局，就能生成好的具有一致多主体表现的吸引人图像吗？</p>
-<p>现在的：模型不微调，图像可控-》depth、open pose-》controlnet</p>
-<p>1.主体初始化生成：</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224202197.png"
-alt="image-20250104224202197" />
-<figcaption aria-hidden="true">image-20250104224202197</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224209991.png"
-alt="image-20250104224209991" />
-<figcaption aria-hidden="true">image-20250104224209991</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224217340.png"
-alt="image-20250104224217340" />
-<figcaption aria-hidden="true">image-20250104224217340</figcaption>
-</figure>
-<p>2.PUnet</p>
-<p>将去噪过程中任意UNet层的输入潜在特征表示为Z。我们将UNet层的原始交叉注意力模块拆分为两个并行的文本和图像交叉注意力模块（分别表示为PTCA和PICA）来优化ZZZ。这两个模块具有相同的架构，其关键思想是计算ZZZ与每个主体文本/图像嵌入之间的特征相似性。</p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224244780.png"
-alt="image-20250104224244780" />
-<figcaption aria-hidden="true">image-20250104224244780</figcaption>
-</figure>
-<h4 id="总结-3">总结：</h4>
-<p>1.工程化应用和控制很好，总-分的思路去控制生成。</p>
-<p>2.引入监督器形成反馈链路。</p>
-<p>关于generator《-》supervisor，考试-评分的耦合结构关系，</p>
-<p>阿里数学竞赛ai最高分：</p>
-<p><a
-target="_blank" rel="noopener" href="https://blog.richardstu.com/solution-sharing-and-some-thoughts-about-alibaba-mathematical-competition-for-ai">Solution
-Sharing and Some Thoughts about Alibaba Global Mathematical Competition
-for AI</a></p>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224306153.png"
-alt="image-20250104224306153" />
-<figcaption aria-hidden="true">image-20250104224306153</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/04/aigc-paper-share/image-20250104224313553.png"
-alt="image-20250104224313553" />
-<figcaption aria-hidden="true">image-20250104224313553</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1807,7 +1476,7 @@ alt="image-20250104224313553" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
