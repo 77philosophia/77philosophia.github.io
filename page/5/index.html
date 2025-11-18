@@ -145,6 +145,260 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/ai-scaler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/ai-scaler/" class="post-title-link" itemprop="url">ai-scaler</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-05 16:23:35 / Modified: 16:27:30" itemprop="dateCreated datePublished" datetime="2025-01-05T16:23:35+08:00">2025-01-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="为什么需要ai-upscaler">为什么需要ai upscaler</h2>
+<p>为了展现图片在屏幕上，图片一般需要被放大，从而看起来质量就会很低。</p>
+<h2 id="为什么不用传统的upscaler">为什么不用传统的upscaler</h2>
+<p>传统的resize的算法，比如最近邻插值或者Lanczos插值，只用到了图像的像素。图像容易corrupted或者扭曲。没有很好的算法能准确弥补这些缺失的信息。</p>
+<h2 id="ai-upscaler怎么工作">AI upscaler怎么工作</h2>
+<p>AI
+upscaler是神经网络训练了大量数据得到的，在图像放大时可以填充细节信息。</p>
+<figure>
+<img src="/2025/01/05/ai-scaler/image-20250105162728273.png"
+alt="image-20250105162728273" />
+<figcaption aria-hidden="true">image-20250105162728273</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/langchain-robot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/04/langchain-robot/" class="post-title-link" itemprop="url">用lanchain做ai robot</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-04 23:34:19 / Modified: 23:56:18" itemprop="dateCreated datePublished" datetime="2025-01-04T23:34:19+08:00">2025-01-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="什么是langchin">什么是langchin</h3>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104233619635.png"
+alt="image-20250104233619635" />
+<figcaption aria-hidden="true">image-20250104233619635</figcaption>
+</figure>
+<p>langchain是一个支持大语言模型相关应用开发的框架。</p>
+<p>使得建设与ai相关的应用会更容易。</p>
+<ul>
+<li><p>集成：将外部数据，比如文件、api、应用集成进来</p></li>
+<li><p>代理：和环境集成</p></li>
+</ul>
+<p>组件 - LangChain
+使得更换必要的抽象和组件以使用语言模型变得轻而易举。</p>
+<p>自定义链 - LangChain
+提供现成的支持来使用和自定义“链”——一系列串联在一起的操作。</p>
+<p>速度 🚢 - 这个团队的交付速度非常快。您将会跟上最新的 LLM 功能。</p>
+<p>社区 👥 - 极好的 Discord 和社区支持，见面会、黑客松等活动。</p>
+<h2 id="llms">LLMs</h2>
+<ul>
+<li>公司开发和控制的专有模型：成本高、许可证限制、闭源</li>
+<li>开源模型：开源、灵活性、可能缺乏大公司的支持和资源</li>
+</ul>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104233744531.png"
+alt="image-20250104233744531" />
+<figcaption aria-hidden="true">image-20250104233744531</figcaption>
+</figure>
+<p>用api</p>
+<p>AzureOpenAI:适用于一般的长文本生成任务，如小说写作、文章创作等。</p>
+<p>AzureChatOpenAI:适用于涉及大量对话的文本生成任务，尤其是需要管理对话上下文时。</p>
+<p>根据你的具体需求选择合适的模型。如果主要任务是长文本创作且对话不是主要部分，建议使用
+AzureOpenAI。如果有大量对话且需要更好地管理对话上下文，建议使用
+AzureChatOpenAI。</p>
+<p>AzureOpenAI 会报错</p>
+<p>Error code: 400 - {'error': {'code': 'OperationNotSupported',
+'message': 'The completion operation does not work with the specified
+model, gpt-4o. Please choose different model and try again. You can
+learn more about which models can be used with each operation here:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#This basic example demostrate the LLM response and ChatModel Response</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.llms <span class="keyword">import</span> AzureOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.chat_models <span class="keyword">import</span> AzureChatOpenAI</span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv, find_dotenv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the OpenAI library configuration using the retrieved environment variables</span></span><br><span class="line">OPENAI_API_TYPE = <span class="string">&quot;azure&quot;</span></span><br><span class="line">OPENAI_API_BASE = <span class="string">&quot;https://sparkopenai2024.openai.azure.com/&quot;</span></span><br><span class="line">OPENAI_API_VERSION = <span class="string">&quot;2024-02-15-preview&quot;</span></span><br><span class="line">OPENAI_API_KEY = <span class="string">&quot;xxx&quot;</span></span><br><span class="line">GPT4V_ENDPOINT = <span class="string">&quot;https://sparkopenai2024.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize an instance of AzureOpenAI using the specified settings</span></span><br><span class="line"><span class="comment"># llm = AzureOpenAI(</span></span><br><span class="line"><span class="comment">#     openai_api_version=OPENAI_API_VERSION,</span></span><br><span class="line"><span class="comment">#     openai_api_key=OPENAI_API_KEY,</span></span><br><span class="line"><span class="comment">#     openai_api_base=OPENAI_API_BASE,</span></span><br><span class="line"><span class="comment">#     openai_api_type=OPENAI_API_TYPE,</span></span><br><span class="line"><span class="comment">#     deployment_name=&quot;gpt-4o&quot;  # Name of the deployment for identification</span></span><br><span class="line"><span class="comment"># )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize an instance of AzureChatOpenAI using the specified settings</span></span><br><span class="line">chat_llm = AzureChatOpenAI(</span><br><span class="line">    openai_api_version=OPENAI_API_VERSION,</span><br><span class="line">    openai_api_key=OPENAI_API_KEY,</span><br><span class="line">    openai_api_base=OPENAI_API_BASE,</span><br><span class="line">    openai_api_type=OPENAI_API_TYPE,</span><br><span class="line">    deployment_name=<span class="string">&quot;gpt-4o&quot;</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the response from AzureOpenAI LLM for a specific question</span></span><br><span class="line"><span class="comment"># print(&quot;AzureOpenAI LLM Response: &quot;, llm(&quot; what is the weather in mumbai today?&quot;))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the response from AzureChatOpenAI for the same question</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AzureOpenAI ChatLLM Response: &quot;</span>, chat_llm.predict(<span class="string">&quot;what is the weather in mumbai today?&quot;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">如果直接与大模型交互-&gt;chatGPT。自从发现可以利</span><br><span class="line">用自有数据来增强大语言模型（LL</span><br><span class="line">M）的能力以来，如何将 LL</span><br><span class="line">M 的通用</span><br><span class="line">有效结合一直是热门话题。</span><br><span class="line">知识与个人数据</span><br><span class="line">1. 微调(finetue)</span><br><span class="line">2.</span><br><span class="line">RAG(检索增强)</span><br></pre></td></tr></table></figure>
+<h3
+id="先来考虑一个关于小说内容的chatrobot">先来考虑一个关于小说内容的chatRobot:</h3>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104234107482.png"
+alt="image-20250104234107482" />
+<figcaption aria-hidden="true">image-20250104234107482</figcaption>
+</figure>
+<p><strong>topic</strong>:</p>
+<ul>
+<li>文档分割</li>
+<li>文档 <strong>Load</strong>：数据加载， <strong>LangChain</strong>
+提供的 <strong>80</strong>
+多种独特的加载器，以访问包括音频和视频在内的各种数据源。</li>
+<li>向量存储和嵌入：深入了解嵌入的概念，探索 <strong>LangChain</strong>
+中的向量存储集成。</li>
+<li>检索：掌握在 <strong>Vector</strong>
+存储中访问和索引数据的高级技术，使您能够检索语义查询之外的最相关信息。</li>
+<li>问题解答：构建一次性问题解答解决方案<strong>/</strong>总结方案。</li>
+</ul>
+<h4 id="long-text-summarisation">Long text summarisation</h4>
+<h5 id="为什么context-window会是limit">为什么context
+window会是limit</h5>
+<p>当前大多数的语言模型是基于解码器的模型。这些模型使用了变换器架构中的解码器部分来预测下一个标记的概率。然后，将这个预测的标记附加到输入文本中，形成预测下一个标记的输入。</p>
+<p><strong>Context Window Size = Input Sequence Length + Prompt Length +
+O</strong></p>
+<p><strong>utput Sequence Length</strong></p>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104234423043.png"
+alt="image-20250104234423043" />
+<figcaption aria-hidden="true">image-20250104234423043</figcaption>
+</figure>
+<p>举个例子：如果context window的限制是4097，prompt的token
+size是50，期待输出的总结内容是200，那么最大的输入文本的token
+size就是4097-50-200=3847tokens，大概对应3000个词。</p>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>LLMs受限于固定的上下文窗口，比如chatgpt的limit
+tokens是4096，大概对应3000多个词。对于这个问题有两种解决方案：第一种用更大context
+window的LLMs;第二种方法是化整为零，将长文本分成很多个短文本，分别送进模型处理然后合并，或者选择最相关的部分然后送进去分析。</p>
+</blockquote>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104234750149.png"
+alt="image-20250104234750149" />
+<figcaption aria-hidden="true">image-20250104234750149</figcaption>
+</figure>
+<p>文档分割：</p>
+<p>CharacterTextSplitter:直接按字符数量分割文本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c_splitter = CharacterTextSplitter(</span><br><span class="line">    chunk_size=chunk_size,</span><br><span class="line">    chunk_overlap=chunk_overlap,</span><br><span class="line">    separator = &#x27; &#x27;    //主要在哪一块分割</span><br><span class="line">)</span><br><span class="line">c_splitter.split_text(text3)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>RecursiveCharacterTextSplitter: 按照递归规则分割文本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">r_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=150,</span><br><span class="line">    chunk_overlap=0,</span><br><span class="line">    separators=[&quot;\n\n&quot;, &quot;\n&quot;, &quot;(?&lt;=\. )&quot;, &quot; &quot;, &quot;&quot;]</span><br><span class="line">)</span><br><span class="line">r_splitter.split_text(some_text)</span><br></pre></td></tr></table></figure></li>
+<li><p>TokenTextSplitter：跟LLMs里的token的概念对齐</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text_splitter = TokenTextSplitter(chunk_size=10, chunk_overlap=0)</span><br></pre></td></tr></table></figure></li>
+<li><p>Context aware splitting</p></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from langchain.document_loaders import NotionDirectoryLoader</span><br><span class="line">from langchain.text_splitter import MarkdownHeaderTextSplitter</span><br><span class="line"></span><br><span class="line">markdown_document = &quot;&quot;&quot;# Title\n\n \</span><br><span class="line">## Chapter 1\n\n \</span><br><span class="line">Hi this is Jim\n\n Hi this is Joe\n\n \</span><br><span class="line">### Section \n\n \</span><br><span class="line">Hi this is Lance \n\n </span><br><span class="line">## Chapter 2\n\n \</span><br><span class="line">Hi this is Molly&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">headers_to_split_on = [</span><br><span class="line">    (&quot;#&quot;, &quot;Header 1&quot;),</span><br><span class="line">    (&quot;##&quot;, &quot;Header 2&quot;),</span><br><span class="line">    (&quot;###&quot;, &quot;Header 3&quot;),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">markdown_splitter = MarkdownHeaderTextSplitter(</span><br><span class="line">    headers_to_split_on=headers_to_split_on</span><br><span class="line">)</span><br><span class="line">md_header_splits = markdown_splitter.split_text(markdown_document)</span><br></pre></td></tr></table></figure>
+<h3 id="rag搜索增强">RAG搜索增强</h3>
+<figure>
+<img src="/2025/01/04/langchain-robot/image-20250104235342635.png"
+alt="image-20250104235342635" />
+<figcaption aria-hidden="true">image-20250104235342635</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p><strong>query</strong>和<strong>prompt</strong>的区别是什么？</p>
+<p>在使用 <strong>RetrievalQA chain</strong> 进行问答时， prompt 和
+query
+是两个不同的概念。理解它们的区别对于构建有效的问答系统非常重要。</p>
+<ol type="1">
+<li><strong>Query（查询）</strong> ：</li>
+</ol>
+<p>◦ query 是用户提出的问题或查询。例如，“<strong>What is the capital of
+France?</strong>”</p>
+<p>◦ 在 qa_chain_mr 中， query
+是必须的，因为它是整个问答流程的起点。系统根据 query
+去检索相关的文档，然后从中抽取答</p>
+<p>案。</p>
+<ol start="2" type="1">
+<li><strong>Prompt（提示词）</strong> ：</li>
+</ol>
+<p>◦ prompt
+是用于指导语言模型生成答案的额外文本或上下文。它可以包含特定的指示或格式化信息，以帮助模型生成更合适的响应。</p>
+<p>提供prompt可以帮助模型更好地理解上下文或期望的回答形式。例如，你可以提供一个
+prompt 来指示模型回答时的语气、详细程度或者其他特定要求。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/aigc-paper-share/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1551,340 +1805,6 @@ lab</a></p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/18/nuscenes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/18/nuscenes/" class="post-title-link" itemprop="url">nuscenes</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-18 12:19:50" itemprop="dateCreated datePublished" datetime="2020-08-18T12:19:50+08:00">2020-08-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:24:11" itemprop="dateModified" datetime="2024-05-20T23:24:11+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。</p>
-<h3 id="item名词">1.item名词</h3>
-<p>nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所以我们得到数据的过程就是根据官方提供的接口和函数找接口取数据的过程。具体的栏目有：</p>
-<table>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 77%" />
-</colgroup>
-<thead>
-<tr>
-<th>Item</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Scene</td>
-<td>整个数据集一共1000个场景，Mini的有10个。每20s是一个场景</td>
-</tr>
-<tr>
-<td>sample</td>
-<td>An annotated snapshot of a scene at a particular timestamp</td>
-</tr>
-<tr>
-<td>Sample_data</td>
-<td>Data collected from a particular sensor.</td>
-</tr>
-<tr>
-<td>Instance</td>
-<td>Enumeration of all object instance we observed</td>
-</tr>
-<tr>
-<td>Category</td>
-<td>Taxonomy of object categories (e.g. vehicle, human).</td>
-</tr>
-<tr>
-<td>Attribute</td>
-<td>Property of an instance that can change while the category remains
-the same.</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td>可见性</td>
-</tr>
-<tr>
-<td>Sensor</td>
-<td>nuscenes有6个camera,1个lidar,5个radar.我们主要做的detection任务只涉及到camera.所以接下来只会涉及到camera.</td>
-</tr>
-<tr>
-<td>Calibrated sensor</td>
-<td>Definition of a particular sensor as calibrated on a particular
-vehicle.进行坐标转换的时候主要用到的数据，上面的sensor其实只有一些基本信息，没有坐标转换参数。所以要进行坐标转换工作主要使用这类数据</td>
-</tr>
-</tbody>
-</table>
-<h3 id="nuscenes涉及的几个坐标系">2. Nuscenes涉及的几个坐标系</h3>
-<ul>
-<li>global坐标系：一般的bbox，ego
-pose都是在全局坐标系下给出的，可以理解为人为设定的一个坐标系，具体也不知道在哪儿。</li>
-<li>ego坐标系：车体坐标系，注意calibrated
-sensor相机的外参是相对车体给出的。</li>
-<li>摄像机坐标系</li>
-</ul>
-<h3 id="scene">3. Scene</h3>
-<p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
-<p><code>nusc.scene</code> 返回列表，可以根据下标去索引具体的scene.</p>
-<p><img src="/2020/08/18/nuscenes/图片1.png" /></p>
-<h3 id="sample">4.Sample</h3>
-<p>在scenes中，每半秒（2
-HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
-<p>•We define sample as an annotated keyframe of a scene at a given
-timestamp. A keyframe is a frame where the time-stamps of data from all
-the sensors should be very close to the time-stamp of the sample it
-points to.</p>
-<p><code>my_sample = nusc.get('sample',first_sample)</code></p>
-<p><img src="/2020/08/18/nuscenes/图片2.png" /></p>
-<p><code>nusc.list_scene</code> 列举出所有的场景</p>
-<p><code>nusc.list_sample(my_sample_token["token"])</code> 列举出related
-sample_data keyframes and sample_annotation associated with a sample</p>
-<h3 id="sample_data">5. Sample_data</h3>
-<p>从一个sample中具体取出哪路相机数据。</p>
-<p><code>my_sample['data']</code> 列举出12个token,分别是6 camera 5 radar
-1 lidar</p>
-<p><img src="/2020/08/18/nuscenes/图片3.png" /></p>
-<p>具体取出某个sensor的数据：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sensor = &#x27;CAM_FRONT&#x27;</span><br><span class="line">Cam_front_data = nusc.get(&#x27;sample_data&#x27;,my_sample[&#x27;data&#x27;][sensor])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片4.png" /></p>
-<p>根据sample_data的token取出路径、annotationh和相机内参的接口，检测任务的dataloader很好用.这个函数tutorial没有给，源代码有。传入的第二个可见性的参数是关于bbox的，具体可看源代码。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_path,box_list,cam_intrinsic = nusc.get_sample_data(token,visibility)</span><br></pre></td></tr></table></figure>
-<p>可视化某一个sample_data:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nusc.render_sample_data(cam_front_data[&#x27;token&#x27;])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片6.png" /></p>
-<h3 id="sample_annotation">6. Sample_annotation</h3>
-<p>sample_annotation refers to any bounding box defining the position of
-an object seen in a sample. All location data is given with respect to
-the global coordinate
-system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
-<p><img src="nuscenes/图片5.png" style="zoom:75%;" /></p>
-<p>可视化sample_annotation:</p>
-<p><img src="/2020/08/18/nuscenes/图片12.png" /></p>
-<h3 id="instance">7.instance</h3>
-<p>Object instance are instances that need to be detected or tracked by
-an AV.</p>
-<p><code>nusc.instance</code> 返回instance的列表，可以通过下标索引。</p>
-<h3 id="category">8. category</h3>
-<p><code>nusc.list_categories()</code></p>
-<p><img src="/2020/08/18/nuscenes/图片8.png" /></p>
-<h3 id="attribute">9. attribute</h3>
-<p>An attribute is a property of an instance that may change throughout
-different parts of a scene while the category remains the same.</p>
-<p><img src="/2020/08/18/nuscenes/图片9.png" /></p>
-<h3 id="visibility">10. visibility</h3>
-<p>visibility可视化及描述：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">anntoken=<span class="string">&#x27;a7d0722bce164f88adf03ada491ea0ba&#x27;</span></span><br><span class="line">visibility_token = nusc.get(<span class="string">&#x27;sample_annotation&#x27;</span>,anntoken)[<span class="string">&#x27;visibility_token&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Visibility:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(nusc.get(<span class="string">&#x27;visibility&#x27;</span>,visibility_token)))</span><br><span class="line">nusc.render_annotation(anntoken)</span><br></pre></td></tr></table></figure>
-<p>Visibility: {'description': 'visibility of whole object is between 80
-and 100%', 'token': '4', 'level': 'v80-100'}</p>
-<p><img src="/2020/08/18/nuscenes/图片10.png" /></p>
-<h3 id="sensor">11. sensor</h3>
-<p>1 lidar, 5 radar, 6 cameras</p>
-<h3 id="calibrated_sensor">12. Calibrated_sensor</h3>
-<p>calibrated_sensor consists of the definition of a particular sensor
-(lidar/radar/camera) as calibrated on a particular vehicle.
-注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
-<p><img src="/2020/08/18/nuscenes/图片14.png" /></p>
-<p>3D bounding box坐标：X points forward, Y to the left, Z up</p>
-<p>理解“with respect to ego vehicle body
-frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
-<p><span class="math display">\[(\left[ \begin{array}{l} x_{ego}\\\\
-y_{ego}\\\\ z_{ego} \end{array} \right] = R\left[ \begin{array}{l}
-x_{camera}\\\\ y_{camera}\\\\ z_{camera} \end{array} \right] +
-T)\]</span></p>
-<p>相应的把ego vehicle坐标系下的bbox转换到sensor coord system就是：</p>
-<p><img src="/2020/08/18/nuscenes/图片15.png" /></p>
-<h3 id="ego_pose">13. Ego_pose</h3>
-<p>go_pose contains information about the location (encoded in
-translation) and the orientation (encoded in rotation) of the ego
-vehicle, with respect to the <strong>global coordinate
-system</strong>.</p>
-<p>ego_pose的数量和sample_data是一样的，这两者是一一对应的关系。<u>其实我有点不懂为什么每一个sample_data对应有一个ego_pose，六路相机也就是一个sample不应该对应一个ego
-pose吗</u></p>
-<p>•描述的是车体自己（x forward,y left,z
-up）相对于全局坐标系的旋转R和平移T。这个R通过四元数给出。</p>
-<p>•理解ego pose的R和T都是相对于（with respect
-to）全局坐标系这句话;也就是ego坐标系中的一个坐标要变换到全局坐标系中就是</p>
-<p><span class="math inline">\(\left[ \begin{array}{l} x_{global}\\\\
-y_{global}\\\\ z_{global} \end{array} \right] = R\left[ \begin{array}{l}
-x_{ego}\\\\ y_{ego}\\\\ z_{ego} \end{array} \right] + T\)</span></p>
-<p>其中公式左边是全局坐标系中的坐标。</p>
-<h3
-id="nuscenes评测只涉及detection方面">14.nuscenes评测（只涉及detection方面）</h3>
-<p>•Nuscenes的评测程序可以在devkit中的eval找到。</p>
-<p>•README中规定了相应的sample_result的格式。prediction的结果要按照规定格式组织jason文件。sample_result的表和sample_annotation的表设计为一样的，所以完全可以用sample_annotation的工具和接口去操作sample_result.同时注意生成的结果即使没有识别出框，必须存在相应的token.</p>
-<p>•虽然nuscenes训练有23类，但是评测处理similar和rare的类别，考虑到每一类的frequency,最终只归纳了10类，并且每一类有个detection
-range(meters)。超过这个距离识别出来的框忽略。</p>
-<p><a
-target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#data-annotation">这个链接可以看到数据集各个类别的频率</a></p>
-<h5 id="预处理">1.预处理</h5>
-<p>GT和predition bboxes:</p>
-<p>•超过距离的移除；</p>
-<p>•Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
-<p>GT bboxes:</p>
-<p>•没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
-<h5 id="评测矩阵">2.评测矩阵</h5>
-<p>mAP:
-一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的IOU@0.3,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
-<p>TP metircs：其他因素的误差矩阵。Average of translation, velocity,
-scale, orientation and attribute errors.</p>
-<p>NDS(nuscenes detection score): the weighted sum of the
-above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP
-metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
-<h5 id="true-positive-metrics">3.True Positive metrics</h5>
-<p>•TP衡量translation/scale/orientation/velocity/attribute errors</p>
-<p>•所以TP矩阵计算匹配时都要满足center distance在2m之类</p>
-<p>•最终计算平均在recall&gt;10%，达不到这个阈值某类的TP
-errors所有都会被设置为1.</p>
-<p>•Average Translation
-error(ATE):bbox的中心到ego原点的L2范数(meters)。即公式</p>
-<p><span class="math inline">\(\sqrt{ {(x1 - x2)^2} + {(y1 - y2)^2} +
-{(z1 - z2)^2} }\)</span></p>
-<p>. 区分于上面计算mAP作为阈值的distance:<span
-class="math inline">\(\sqrt{(z1-z2)^2}\)</span></p>
-<p>•Average Scale Error(ASE): 对齐中心和朝向之后计算1-IOU</p>
-<p>•Average Orientation Error(AOE):最小的yaw
-angle差异（radians）.一般类都是360度衡量，barriers在180度衡量，cones忽略这个指标。</p>
-<p>•Average Velocity Error(AVE):absolute velocity error in
-m/s.barrier和cone忽略这个指标。</p>
-<p>•Average Attribute
-Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标</p>
-<p>•TP矩阵每个类分别计算，对于所有类别取均值得到Map,mASE,mAOE,mAVE,mAAE.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/08/BaiduApi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/08/BaiduApi/" class="post-title-link" itemprop="url">matlab调用百度API获取两地运输距离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-08 22:21:10" itemprop="dateCreated datePublished" datetime="2020-08-08T22:21:10+08:00">2020-08-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:24:34" itemprop="dateModified" datetime="2024-05-20T23:24:34+08:00">2024-05-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1
-id="matlab调用百度api获取两地运输距离">matlab调用百度API获取两地运输距离</h1>
-<p>1、
-首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。</p>
-<p>2、 获取距离的函数用python写的，<a
-target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/article/details/81098724">python版本获取距离</a>。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiduDistanceClass():</span><br><span class="line">    def __init__ (self,s1,s2,t1,t2):</span><br><span class="line">        self.s1 = str(s1)</span><br><span class="line">        self.s2 = str(s2)</span><br><span class="line">        self.t1 = str(t1)</span><br><span class="line">        self.t2 = str(t2)</span><br><span class="line">        </span><br><span class="line">    def getDistance(self):</span><br><span class="line">        a1=r&quot;http://api.map.baidu.com/routematrix/v2/driving?output=json&quot;</span><br><span class="line">        a2=r&quot;&amp;origins=&quot;+self.s1+&quot;,&quot;+self.s2</span><br><span class="line">        a3=r&quot;&amp;destinations=&quot;+self.t1+&quot;,&quot;+self.t2</span><br><span class="line">        a4=r&quot;&amp;coord_type=wgs84&quot;</span><br><span class="line">        a5=r&quot;&amp;tactics=11&quot;</span><br><span class="line">        a6=r&quot;&amp;ak=your_key&quot;</span><br><span class="line">        url=a1+a2+a3+a4+a5+a6</span><br><span class="line">        </span><br><span class="line">        b = urlopen(url)</span><br><span class="line">        c=b.read()</span><br><span class="line">        result = json.loads(c)</span><br><span class="line">        return result[&quot;result&quot;][0][&quot;distance&quot;][&quot;value&quot;]/1000</span><br></pre></td></tr></table></figure>
-<p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a
-target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
-<p><img src="/2020/08/08/BaiduApi/pyversion.png" /></p>
-<p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个"助教"目录下。</p>
-<p><img src="/2020/08/08/BaiduApi/目录.png" /></p>
-<p>接下来你就可以在matlab里面调用python函数了。创建一个python类：</p>
-<p><img src="/2020/08/08/BaiduApi/python.png" /></p>
-<p>调用函数得到距离。这里s1,s2是源地点的纬度，经度；t1,t2是目标地点的纬度，经度。我这里测试用的上海和北京并在高德地图上面验证符合。</p>
-<p><img src="/2020/08/08/BaiduApi/distance.png" /></p>
-<p>注意这里得到的是公里，因为程序除了1000，API直接返回的是米，如果要以米为单位可以不除。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1954,7 +1874,7 @@ target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2041,59 +1961,6 @@ target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 

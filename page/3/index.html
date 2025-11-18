@@ -145,6 +145,262 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/28/ubuntu-nvidia-driver-noNetwork/" class="post-title-link" itemprop="url">ubuntu-nvidia-driver-noNetwork</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-04-28 17:56:37 / Modified: 18:08:15" itemprop="dateCreated datePublished" datetime="2025-04-28T17:56:37+08:00">2025-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡驱动之后没有network</h1>
+<p>https://blog.csdn.net/weixin_44286126/article/details/131455726</p>
+<p>排查思路：</p>
+<p>1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg
+查看新旧镜像是否有安装包的差异。</p>
+<ol start="2" type="1">
+<li>原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/VLM-VLA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/27/VLM-VLA/" class="post-title-link" itemprop="url">VLM-VLA</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-04-27 17:13:02 / Modified: 17:14:04" itemprop="dateCreated datePublished" datetime="2025-04-27T17:13:02+08:00">2025-04-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>大致回顾了一下VLM的concept和结构，大概就是对image和text进行向量空间表示，通过contrastive
+learning让同一个事物的二者特征在embedding空间里相近。</p>
+<p>just like 哲学就是哲学家的历史，从paper publication
+history看一下vla/vlm的区别和发展。don't be fooled by 高大上的名词。</p>
+<h1 id="vlm"><strong>VLM</strong></h1>
+<h1 id="vlm的定义"><strong>VLM的定义</strong></h1>
+<p>多模态模型处理一种类型以上的输入，比如vision+text
+models。下面说的大概是研究多模态的一种，比如vision language
+models.需要理解和处理image和text的信息。相关的任务比如image
+captioning(e.g.CLIP), visual question
+answering(GPT-4-vision)，text-to-image(e.g.DALL-E)，或者text-to-video
+generation(sora).</p>
+<h1 id="vlm的结构"><strong>VLM的结构</strong></h1>
+<p>VLM的结构在于如何融合视觉和文本模态，不同的架构会在早期阶段、中间阶段或者最后阶段进行信息的融合或者对齐。有很多种，可以看看几种最常见的：</p>
+<h2 id="llavalarge-language-and-vision-assistant"><strong>LLaVA(Large
+Language and Vision Assistant)</strong></h2>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a6d6e809e475597e6c83b7a5467cc1b9b1b1cf35b05de7367edf29a23485286baa512d4ecd6a23dc66c64adc2a3bc0c83.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>图像经过clip并投影到embedding
+vectors，文本通过文本模型产生相应的embedding
+vectors。处在相同的维度空间里，可以进一步无缝集成。</p>
+<p>在训练LLaVA模型中有两个阶段：</p>
+<p>1.pre-training for feature alignment.
+只有投影矩阵在数据集CC3M上进行更新。</p>
+<figure>
+<img
+src="https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e84d17910d9e7d63213bffcf9a87c1aab68c6fa978b73ce9d9bddef934264e90602517809c9a88bd1?tmpCode=b2bef226-f447-45ac-8fa7-2a6efc08cd77"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li>Fine-tuning End-to-End. 投影矩阵和LLM会在两个不同的场景进行更新：
+<ol type="1">
+<li>visual chat:LLaVA
+根据我们生成的多模式指令跟踪数据进行了微调，以适应日常面向用户的应用。</li>
+<li>Science QA:LLaVA 针对科学领域的多模态推理数据集进行了微调。</li>
+</ol></li>
+</ol>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c4ee39340545c1810032fdf6ec961d9b8280818ad1a39f1eb6c03bec04b3171c863a771ca118fcc80.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="llava-model的组成"><strong>LLaVA model的组成</strong></h3>
+<h4 id="vision-encoder"><strong>Vision Encoder</strong></h4>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a8169d9d9ddf3b83fb68af4e589ff4560e0af6934db815dd3d4873be65aacbe1f4f69c02138fa35209a0503d9106918e3.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>visual
+encoder将image划分为小的patches，比如16x16像素这样。每个patch被处理转换成数值形式，在送给image
+encoder;</p>
+<p>image
+enconder由多个blocks组成，主要目的是加强图像的视觉表示。包括feedforward
+layers,用来提取高层特征；attention layers关注图像的相关性.</p>
+<p>vision
+encoders的training目标是尽量减少images的向量表示和text描述的差异度。在训练期间，目标是开发一个模型，该模型能够将图像的嵌入转换为与文本紧密一致的表示。</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8968a78147832cebbe7366e02e12c7c3c233e5af64135f1de429bae9669baa2e10300bf43c4f2a3e7a4.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="embedding-models"><strong>Embedding Models</strong></h4>
+<p>Embeddings认为是tokens的密集数学表示(compact numerical
+representations).根源来自分布假设，相似位置的词语有相近的meanings.</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dfce406188c32a716b26e334a1b4675672c7cd1c938ecf5ad9e0005879e3da24024ad4d15891f4e49e.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="llava的推理"><strong>LLaVA的推理</strong></h3>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4af7ef46e557ff1e118f0fc5dee6617dc42b5443ede480f28923d2b3d49d7a1732db1f0c05db8c5a083.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>image和text都转换为embeddings之后，由attention决定关注哪一部分。</p>
+<h1 id="vla"><strong>VLA</strong></h1>
+<p>以RT-2为例</p>
+<h2 id="vla-model和vlm-model"><strong>VLA model和VLM model</strong></h2>
+<p>VLM模型是一种能处理visual和自然语言的机器学习模型，VLM
+是在互联网规模的图像和文本数据上进行训练的。比如RT-2中用到的base VLA
+model:PaLI-X PaLM-E</p>
+<p>RT-2提出了一种方法将预训练的VLA
+model用在机器人轨迹数据上，其中机器人轨迹数据用文本形式进行编码。</p>
+<h2 id="rt-2-model"><strong>RT-2 model</strong></h2>
+<p>将机器人的轨迹数据编码为text tokens，对vla模型进行fine tune.</p>
+<h2 id="效果"><strong>效果</strong></h2>
+<h3 id="泛化性"><strong>泛化性</strong></h3>
+<p>这项研究的一项重要发现是 RT-2
+模型令人印象深刻的泛化能力。该模型在处理新物体、背景和环境时展现出显著提升的性能。它可以解读机器人训练数据中未曾出现的命令，并根据用户指令进行基本的推理。这种推理能力源于底层语言模型运用思维链推理的能力。该模型的推理能力示例包括：判断哪个物体（石头）可以用来做临时锤子，或者哪种饮料最适合疲惫的人（能量饮料）。这种程度的泛化能力是机器人控制领域的一大进步。</p>
+<h3 id="新兴能力"><strong>新兴能力</strong></h3>
+<p>RT-2
+模型的另一个令人兴奋的方面是它展现出的涌现能力。通过利用从互联网规模预训练中获得的知识，该模型可以执行训练期间未明确传授的任务。例如，它可以重新利用已学技能，将物体放置在语义指示的位置附近，或解释物体之间的关系，以确定拾取哪个物体以及将其放置在何处。例如，诸如“捡起即将从桌子上掉下来的袋子”或“将香蕉移动到二加一的和”（均如图
+1
+所示）之类的命令——要求机器人对机器人数据中从未见过的物体或场景执行操作任务——需要从基于网络的数据中转化而来的知识才能运行。这些涌现能力展示了
+VLA
+模型在将知识从网络规模数据迁移到现实世界机器人控制方面的强大能力。</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e3a45c6badaef44ca130f2aa95930983137950b62161dc0f419c48d2d743c40903620870ff0d76157.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="消融实验"><strong>消融实验</strong></h3>
+<p>该研究论文还将 RT-2
+模型的性能与多个基线模型进行了比较。结果表明，RT-2
+在泛化能力和涌现能力方面均优于基线模型。此外，论文还探讨了模型规模和训练策略对泛化性能的影响。结果发现，更大的模型以及与网络数据协同微调可以带来更好的泛化性能。</p>
+<h3 id="缺点"><strong>缺点</strong></h3>
+<p>虽然 RT-2 模型展现出巨大的潜力，但仍存在一些局限性。实时运行大型 VLA
+模型的计算成本很高，需要开展更多研究来优化其推理速度。此外，目前可用于微调的开源
+VLM 模型数量有限。未来的研究应侧重于开发实现更高频率控制的技术，并使更多
+VLM 模型可用于训练 VLA 模型。</p>
+<h1 id="参考文献"><strong>参考文献：</strong></h1>
+<p>https://medium.com/<span class="citation"
+data-cites="aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07">@aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07</span></p>
+<p>https://alinlab.kaist.ac.kr/ai602_2024_fall.html</p>
+<p>https://alinlab.kaist.ac.kr/ai602_2025_spring.html</p>
+<p>https://medium.com/black-coffee-robotics/vision-language-action-vla-models-llms-for-robots-f60ba0b79579</p>
+<p>https://medium.com/<span class="citation"
+data-cites="LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249">@LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/RL-Basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1738,372 +1994,6 @@ alt="image-20250107191329941" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/lora-scripts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/07/lora-scripts/" class="post-title-link" itemprop="url">lora-scripts</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-07 00:47:35 / Modified: 10:58:07" itemprop="dateCreated datePublished" datetime="2025-01-07T00:47:35+08:00">2025-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107004758199.png"
-alt="image-20250107004758199" />
-<figcaption aria-hidden="true">image-20250107004758199</figcaption>
-</figure>
-<h3 id="准备lora-scripts环境">1. 准备lora-scripts环境</h3>
-<p>https://github.com/Akegarasu/lora-scripts</p>
-<blockquote>
-<p>[!CAUTION]</p>
-<p>需要用python3.9，按照仓库代码指示进行安装，安装成功可以启动ui页面。</p>
-</blockquote>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107104846559.png"
-alt="image-20250107104846559" />
-<figcaption aria-hidden="true">image-20250107104846559</figcaption>
-</figure>
-<h3 id="准备数据集">2. 准备数据集</h3>
-<ol type="1">
-<li>lora训练脚本图片默认大小是1024x1024,如果训练图片大小不够，可以对图片进行高清放大：</li>
-</ol>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105006386.png"
-alt="image-20250107105006386" />
-<figcaption aria-hidden="true">image-20250107105006386</figcaption>
-</figure>
-<h3 id="打标筛选">3. 打标+筛选</h3>
-<p>打标的基本步骤：用<strong>webui</strong>的<strong>tagger</strong>打标工具自动打标，生成<strong>txt</strong>文件，人工修正标签。</p>
-<p>在这个过程里面我用到的一些人工打标的原则：</p>
-<blockquote>
-<p>[!NOTE]</p>
-<ol type="1">
-<li>过滤多人交互的复杂图片，不确定的可以只留单人图。凑足<strong>100</strong>张图片</li>
-<li>打标风格标签用简单的无意义的单个词，如sznanpinds。（我一般用小说前两个拼音首字母+nanpinds/nvpinds）</li>
-<li>筛选标签
-<ol type="1">
-<li>合并删除重复、矛盾的标签，比如shirt,white shirt-&gt;white shirt;
-gray hair, brown hair -&gt; brown hair</li>
-<li>删除识别错误的标签</li>
-</ol></li>
-</ol>
-</blockquote>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105300989.png"
-alt="image-20250107105300989" />
-<figcaption aria-hidden="true">image-20250107105300989</figcaption>
-</figure>
-<h4 id="修改训练脚本train.sh">4. 修改训练脚本train.sh</h4>
-<ol type="1">
-<li><p>底膜设置、数据集文件夹、输出文件设置</p>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105409825.png"
-alt="image-20250107105409825" />
-<figcaption aria-hidden="true">image-20250107105409825</figcaption>
-</figure></li>
-<li><p>训练数据集地址，
-，数据集文件夹的命名是<strong>repeat</strong>次数**_<strong>含义，比如我在训练风格</strong>lora**的时候我希望</p>
-<p>每张图片训练的时候<strong>repeat
-20</strong>次<strong>,</strong>我的数据集文件夹命名就是<strong>20_xxxStyle</strong></p></li>
-</ol>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105459729.png"
-alt="image-20250107105459729" />
-<figcaption aria-hidden="true">image-20250107105459729</figcaption>
-</figure>
-<p>但是在脚本里填数据集位置的时候不能直接写这里</p>
-<p>的<strong>/xxx/datasets/large_filterMultiPeople_addOld_datasets/12-</strong></p>
-<p><strong>SheZhengWang/output_x2/training/20_shezhengwang</strong>，要写到上一级父目录，因此数据集地址</p>
-<p>是<strong>/xxx/datasets/large_filterMultiPeople_addOld_datasets/12-</strong></p>
-<p><strong>SheZhengWang/output_x2/training</strong>，这个目录下只有<strong>20_xxx</strong>一个文件夹。</p>
-<ol start="3" type="1">
-<li>模型输出文件夹<strong>output_dir_name</strong>，log目录，避免新run覆盖旧的模型文件。</li>
-</ol>
-<h4 id="测试">5. 测试</h4>
-<p>在输出文件夹会有一些模型文件，可以选择一轮的模型复制到<strong>webui</strong>的<strong>models/LoRA</strong>目录下（或者comfyui相应的目录下面），刷新加载选中之后用提示词<strong>+lora</strong>模型就可以出图了。注意<strong>lora</strong>训练一般都会过拟合，一般<strong>10</strong>～<strong>20</strong>个<strong>epoch</strong>就可以，之后的<strong>epoch</strong>虽然还会损失下降，但是已经过拟合了。</p>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105655243.png"
-alt="image-20250107105655243" />
-<figcaption aria-hidden="true">image-20250107105655243</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105706660.png"
-alt="image-20250107105706660" />
-<figcaption aria-hidden="true">image-20250107105706660</figcaption>
-</figure>
-<p>测试图可以勾选Hires.fix高清放大和ADetailer面部修复得到更好的出图效果。如我在训练动漫数据用到的参数如下：</p>
-<figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105804953.png"
-alt="image-20250107105804953" />
-<figcaption aria-hidden="true">image-20250107105804953</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/lora-training-background/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/06/lora-training-background/" class="post-title-link" itemprop="url">一些lora训练的背景知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-06 23:23:29" itemprop="dateCreated datePublished" datetime="2025-01-06T23:23:29+08:00">2025-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-07 19:25:27" itemprop="dateModified" datetime="2025-01-07T19:25:27+08:00">2025-01-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="understanding-stable-diffusion-models">1. Understanding stable
-diffusion models</h3>
-<ul>
-<li><p>Stable diffusion 怎样理解concepts</p>
-<ul>
-<li>Stable
-diffusion已经有了大量的知识，如果我们训练lora,非常重要的就是理解和区分"New
-concepts"和"modified concepts"</li>
-<li>New concepts:这些是模型之前没遇到的或者是未充分体现</li>
-<li>Modified concepts:调整或者完善模型的现有理解</li>
-</ul></li>
-<li><p>lora种类：只用关注标准的就行。</p></li>
-<li><p>理解sd模型</p>
-<ul>
-<li><p>Latent
-space:一张512x512像素的图片大小是4x512x512，计算很耗费。因此一个解决方法是latent
-space.将数学上复杂的对象比如image转换为简单压缩的形式。</p></li>
-<li><p>一个做这种压缩过程的就是VAE,将图像压缩到它的latent
-space然后将其重建为原来的形式。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>In the case of Stable Diffusion,for an image of size 512x512, the VAE
-compresses it to 64x64x4 =16,384 values, making the process extremely
-more efficient.</p>
-</blockquote></li>
-<li><p>Text encoder, tokenizer and Embeddings</p>
-<ul>
-<li><p>kenizer将输入分词</p></li>
-<li><p>Text encoder将token编码成数字向量</p></li>
-<li><p>编码后的向量叫做embedding</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>Example:"Poiuytrezay",is encoded by the Text Encoder into "po
-#628","iu#14292","y #88","Tre #975"，“z #89”, "ay</w> #551",where the
-numbers represent the embedding ids within stable diffusion.</p>
-</blockquote></li>
-</ul></li>
-<li><p>Unet</p>
-<ul>
-<li><p>unet是一个关键部分，它mix embedding和latent-encoded图像into a
-mathematical soup 输出一个"noise" prediction.然后这个noise
-prediction会被removed
-from图像从而"denoise"it.训练lora的时候这也是train的主要部分，因为it is
-the one making prediction.</p>
-<figure>
-<img
-src="/2025/01/06/lora-training-background/image-20250106235503406.png"
-alt="image-20250106235503406" />
-<figcaption aria-hidden="true">image-20250106235503406</figcaption>
-</figure></li>
-</ul></li>
-</ul></li>
-</ul>
-<h3 id="训练的准备">2. 训练的准备</h3>
-<ul>
-<li><p>数据集</p>
-<ul>
-<li>“A bad apple spoils the bunch”</li>
-<li>Activation tags:特殊的触发词，
-prompt模型产生或者强调相应的视觉元素。</li>
-<li>The activation tag should be a unique tag that represents your
-concept/character/style and should be present as the FIRST element in
-the caption files of your dataset.</li>
-</ul></li>
-<li><p>Training script/UI</p>
-<ul>
-<li><p>各种训练脚本/ui都有相同的参数设置，只是会在部分features上有区别。</p></li>
-<li><p>理解Lora,Dreambooth和TI(text inversion)</p>
-<ul>
-<li>sd的模型用传统的fine-tune的技术可能会耗费大量资源，下面是一些替代的技术。
-<ul>
-<li>DreamBooth:与常规微调没有太大区别，但通常针对单个概念。与常规微调的主要区别在于事先保存。</li>
-<li>Textual inversion:创新新的嵌入帮助模型学习新关联</li>
-<li>LoRA:这是一种只修改模型权重的一小部分的技术。</li>
-<li>Pivotal Tuning:</li>
-<li>hypernetwork</li>
-</ul></li>
-</ul></li>
-<li><p>Base model for training</p>
-<ul>
-<li>总是用bf16/fp16 pruned模型用于训练</li>
-<li>用四种base model：NAI, SD1.5, SD2.1 SDXL
-<ul>
-<li>真实性：SD1.5，SD2.1, or SDXL(your choice)</li>
-<li>Anime/cartoon:NSI,SDXL</li>
-</ul></li>
-</ul></li>
-<li><p>Dreambooth</p>
-<ul>
-<li><p>简单解释：Dreambooth是一种微调AI模型部分内容（特别是unet和文本编码器）的方法，使用稀有标记和正则化图像来维护模型的现有知识。生成的Dreambooth模型是一个检查点。</p></li>
-<li><p>详细解释：文本到图像模型（如稳定扩散）最初在大量数据集上进行训练，以学习广泛的概念。这种初始训练形成了模型的“先验”<strong>——</strong>关于各种物体和想法（如不同的动物、车辆等）的基本知识。在这种情况下，引入新概念可能会很棘手。传统的微调（涉及根据新数据调整模型参数）可能会使模型忘记一些原始训练（称为“语言漂移”或“灾难性遗忘”).<strong>Dreambooth</strong>
-提供了一种解决方案，可以在添加新概念的同时，使用特定于类的先验保存和稀有标记来减轻模型先验知识的丢失。</p></li>
-<li><p>Regularization images/Class-specific prior preservation</p>
-<p>Dreambooth使用一种特殊方法来保持模型的原始知识不变。它涉及使用与新概念属于同一“类别”但已经是模型知识一部分的图像来训练模型。在这里，“类别”是指实体（如对象、概念或数据点）所属的广泛类别或组。</p>
-<p>例如，如果您正在教它关于特定类型的狗（例如金毛猎犬）的知识，您还包括使用初始模型生成的狗的一般图像。这有助于模型在学习新的特定类型时记住其关于狗的原始训练。</p></li>
-</ul></li>
-<li><p>Rare tokens</p>
-<ul>
-<li>在引入新概念时，<strong>Dreambooth</strong>
-建议使用不常见或罕见的标记 <strong>-</strong>
-模型不会与已知内容紧密关联的唯一标识符。由于它们先前的关联较弱，它将使语言漂移的影响较小（因为它将失去可能毫无意义的关联）
-。这可以防止新训练干扰模型的现有功能。此类标记的示例可能是：“<strong>olis</strong>”、“<strong>bnha</strong>”或“<strong>hta</strong>”。要用罕见标记表示新概念，您可以将罕见标记与类一起使用（例如“一个
-<strong>olis</strong> 女孩”，其中 <strong>olis</strong>
-可以是您想要训练的任何新角色） 。</li>
-</ul></li>
-<li><p>How Dreambooth apply to lora</p>
-<ul>
-<li><strong>LoRA</strong> 需要与现有的微调方法协同工作。最常用的方法是
-<strong>Dreambooth</strong> 和文本反转。但是，由于 <strong>LoRA</strong>
-与文本反转不兼容，因此它主要与 <strong>Dreambooth</strong> 结合使用。将
-<strong>LoRA</strong> 与<strong>Dreambooth</strong>
-结合使用的主要区别在于它如何改进模型：<strong>LoRA</strong>
-减少了需要调整的参数总数，并专注于微调模型的注意力层。这意味着它不会改变模型的整个单元和文本编码器。实际上，指导
-<strong>Dreambooth</strong> 的原则也适用于 <strong>LoRA</strong>。在
-<strong>LoRA</strong>
-训练中省略罕见的标记或正则化图像可能会导致“语言漂移”<strong>——</strong>模型开始失去其原始的训练准确性。虽然包含这些元素不是强制性的，但在训练期间注意这个潜在问题很重要。</li>
-</ul></li>
-</ul>
-<p>使用<strong>LoRA</strong> 时的一个关键挑战是有效地整合多个概念。一些
-<strong>LoRA</strong>
-模型最终会生成类似于其训练数据集中不同元素的拼贴图像（又称“拼贴画”）
-。最好的 <strong>LoRA</strong>
-不仅会生成高质量的图像，还会保留原始模型的广泛功能。例如，如果您要针对特定名人调整模型，则目标是实现该名人的变化（例如头发颜色变化）
-，而不会失去模型准确识别或描绘其他名人的能力。</p></li>
-</ul>
-<h3 id="lora">Lora</h3>
-<p>单纯引入模型，很多时候并不会触发LoRA的效果，因为LoRA在训练时基本都会加入若干个特殊的触发词，所以使用时也需要在提示词中输入触发词才能激活LoRA的效果。</p>
-<blockquote>
-<p>[!IMPORTANT]</p>
-<p>存在一些特殊的Lora不需要触发词，只要引入模型就能生效。</p>
-</blockquote>
-<p>理论上引入的LoRA不限个数（只是插件限制了），但同时引入多个LoRA模型时，同类的LoRA尽量不要重复。例如一个影响服饰、一个影响画风，它们之间是不会冲突的，还能起到很好的互补作用。但是如果两个
-<strong>LoRA</strong>
-都是影响容貌的，就有可能冲突，这时可以适当调节它们之间的权重，以其中一个为主、另一个则稍微起到调味作用就可以了。</p>
-<h4 id="lora的应用场景">lora的应用场景：</h4>
-<ol type="1">
-<li><p>描绘特定人物形象</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>大部分LoRA为了确保泛用性，训练使用的底膜都是SD大模型，所以一般情况下LoRA不挑模型，尤其是参考图上没有标注模型信息的LoRA,放心切换大模型就好。</p>
-</blockquote>
-<p>其实除了这些针对“某一个人”的LoRA之外，还有针对“某一类人”的LoRA模型——不局限于某一个人、而是实现了一个大方向的整体美化，例如：</p>
-<ul>
-<li>Fashion Girl: 使用时尚女性照片训练的模型</li>
-<li>Cute Girl: 使用可爱女性照片训练的模型</li>
-<li>AsianMale: 使用亚洲型男面孔训练的模型</li>
-</ul>
-<p>现在追加一个AsianMale的LoRA,权重不需要设置太高（免得喧宾夺主）：&lt;lora:Lora-Custom-ModelLiXian:0.3&gt;,1man</p></li>
-<li><p>描绘特定画风</p></li>
-<li><p>描绘特定概念</p></li>
-<li><p>穿着特定服饰</p></li>
-<li><p>添加特定元素</p>
-<p>特定元素其实算是服饰类的延伸，只不过它更小、更专。搭配局部重绘使用。</p></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2173,7 +2063,7 @@ the caption files of your dataset.</li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
