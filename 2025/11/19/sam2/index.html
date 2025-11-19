@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="F智能问答 数据库的优缺点、异同： Es,mysql,redis bm25 TF-IDF milvus向量数据库 Ginas.ai lightRAG">
+  <meta name="description" content="1.sam2环境安装 Url: https:&#x2F;&#x2F;github.com&#x2F;facebookresearch&#x2F;sam2?tab&#x3D;readme-ov-file 12345678910111213141.conda create -n sam2 python&#x3D;3.112.nvidia-smi &#x2F;&#x2F;查看最高支持的CUDA 12.8&#x2F;&#x2F; 进入pytorch官网查看安装版本：https:&#x2F;&#x2F;pytorch.org">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Garfield&#39;s blog">
-<meta property="og:url" content="http://77philosophia.github.io/2025/04/21/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/index.html">
+<meta property="og:title" content="sam2环境部署以及GUI搭建">
+<meta property="og:url" content="http://77philosophia.github.io/2025/11/19/sam2/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="F智能问答 数据库的优缺点、异同： Es,mysql,redis bm25 TF-IDF milvus向量数据库 Ginas.ai lightRAG">
+<meta property="og:description" content="1.sam2环境安装 Url: https:&#x2F;&#x2F;github.com&#x2F;facebookresearch&#x2F;sam2?tab&#x3D;readme-ov-file 12345678910111213141.conda create -n sam2 python&#x3D;3.112.nvidia-smi &#x2F;&#x2F;查看最高支持的CUDA 12.8&#x2F;&#x2F; 进入pytorch官网查看安装版本：https:&#x2F;&#x2F;pytorch.org">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-04-21T09:35:22.843Z">
-<meta property="article:modified_time" content="2025-04-21T09:35:22.844Z">
+<meta property="article:published_time" content="2025-11-19T07:54:12.000Z">
+<meta property="article:modified_time" content="2025-11-19T07:59:09.654Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://77philosophia.github.io/2025/04/21/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/">
+<link rel="canonical" href="http://77philosophia.github.io/2025/11/19/sam2/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title> | Garfield's blog</title>
+  <title>sam2环境部署以及GUI搭建 | Garfield's blog</title>
   
 
 
@@ -150,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/21/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/11/19/sam2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +163,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          sam2环境部署以及GUI搭建
         </h1>
 
         <div class="post-meta">
@@ -172,8 +172,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2025-04-21 17:35:22" itemprop="dateCreated datePublished" datetime="2025-04-21T17:35:22+08:00">2025-04-21</time>
+              <time title="Created: 2025-11-19 15:54:12 / Modified: 15:59:09" itemprop="dateCreated datePublished" datetime="2025-11-19T15:54:12+08:00">2025-11-19</time>
             </span>
 
           
@@ -187,14 +188,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="f智能问答">F智能问答</h1>
-<p>数据库的优缺点、异同：</p>
-<p>Es,mysql,redis</p>
-<p>bm25</p>
-<p>TF-IDF</p>
-<p>milvus向量数据库</p>
-<p>Ginas.ai</p>
-<h1 id="lightrag">lightRAG</h1>
+        <h3 id="sam2环境安装">1.sam2环境安装</h3>
+<p>Url: https://github.com/facebookresearch/sam2?tab=readme-ov-file</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.conda create -n sam2 python=3.11</span><br><span class="line"></span><br><span class="line">2.nvidia-smi //查看最高支持的CUDA 12.8</span><br><span class="line">// 进入pytorch官网查看安装版本：https://pytorch.org/get-started/locally/</span><br><span class="line">pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126</span><br><span class="line"></span><br><span class="line">pip install -e .</span><br><span class="line">pip install -e &quot;.[notebooks]&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 下载模型</span><br><span class="line">cd checkpoints &amp;&amp; \</span><br><span class="line">./download_ckpts.sh &amp;&amp; \</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
+<h3 id="sam2-gui">2. Sam2 gui</h3>
+<p>基于这个仓库进行改造：https://github.com/YunxuanMao/SAM2-GUI</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">在上面的SAM目录下：</span><br><span class="line">将mask_app.py放到根目录下</span><br><span class="line"></span><br><span class="line">pip install -r requirements.txt</span><br><span class="line">sam2 gui用的有些库比较老，和SAM2不兼容，因此升级了几个包</span><br><span class="line">pip install --upgrade gradio</span><br><span class="line">pip install --upgrade matplotlib numpy</span><br><span class="line">// pip list | grep gradio</span><br><span class="line">// gradio                               5.49.1</span><br><span class="line">// gradio_client                        1.13.3</span><br><span class="line"></span><br><span class="line">mask_app.py设置模型和配置文件，注意SAM2官方用的是2.1</span><br><span class="line">    parser.add_argument(&quot;--checkpoint_dir&quot;, type=str, default=&quot;checkpoints/sam2.1_hiera_large.pt&quot;)</span><br><span class="line">    parser.add_argument(&quot;--model_cfg&quot;, type=str, default=&quot;configs/sam2.1/sam2.1_hiera_l.yaml&quot;)</span><br><span class="line"></span><br><span class="line">python mask_app.py --root_dir ./data_root</span><br></pre></td></tr></table></figure>
+<h3 id="gui执行">3.GUI执行</h3>
+<p>a.将视频文件提取帧（这里存入的是PNG）</p>
+<figure>
+<img
+src="/2025/11/19/sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b9806db1f397f248180168a5883a7a71819e352394fc8257659a752c18982f3e8579d17a12fe57b012.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>b.选择初始帧提取SAM特征（这里会报错，定位到SAM2的MISC.PY里面没有支持PNG图片，直接加上就行）</p>
+<figure>
+<img
+src="/2025/11/19/sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b98ad7bdf5c85b3c0f5a86b33c300b704e0467a4a87aa09e3589a17306de87f1d1fed6d43adee18774.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li>后面依次操作就行</li>
+</ol>
+<p>把SAM2和GUI一起的PIPELINE放到了GIT里</p>
+<p>https://github.com/77philosophia/sam2#</p>
 
     </div>
 
@@ -210,13 +229,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/03/14/stable-diffusion-history/problem%201/" rel="prev" title="">
-      <i class="fa fa-chevron-left"></i> 
+    <a href="/2025/11/18/some-culture/" rel="prev" title="some-culture">
+      <i class="fa fa-chevron-left"></i> some-culture
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/04/27/RL-Basic/" rel="next" title="RL-Basic">
-      RL-Basic <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -275,7 +291,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#f%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94"><span class="nav-number">1.</span> <span class="nav-text">F智能问答</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lightrag"><span class="nav-number">2.</span> <span class="nav-text">lightRAG</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#sam2%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">1.sam2环境安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sam2-gui"><span class="nav-number">2.</span> <span class="nav-text">2. Sam2 gui</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gui%E6%89%A7%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">3.GUI执行</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
