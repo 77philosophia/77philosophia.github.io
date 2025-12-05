@@ -145,6 +145,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/python-multi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/07/python-multi/" class="post-title-link" itemprop="url">python多线程-多进程-异步programming</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-07 19:15:37 / Modified: 19:22:58" itemprop="dateCreated datePublished" datetime="2025-01-07T19:15:37+08:00">2025-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="背景知识">背景知识</h3>
+<figure>
+<img src="/2025/01/07/python-multi/image-20250107192244341.png"
+alt="image-20250107192244341" />
+<figcaption aria-hidden="true">image-20250107192244341</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/07/python-multi/image-20250107192257067.png"
+alt="image-20250107192257067" />
+<figcaption aria-hidden="true">image-20250107192257067</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/comfyui-env/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1453,130 +1522,6 @@ alt="image-20250105235015001" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/prompt-engineering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/05/prompt-engineering/" class="post-title-link" itemprop="url">Prompt Design and Engineering</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-05 23:12:42 / Modified: 23:47:01" itemprop="dateCreated datePublished" datetime="2025-01-05T23:12:42+08:00">2025-01-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>[!TIP]</p>
-<p>Prompt engineering:指令+questions+input+example</p>
-</blockquote>
-<h3 id="llms的limitations">LLMs的limitations</h3>
-<ul>
-<li>短暂记忆</li>
-<li>输出不一致性</li>
-<li>过期信息</li>
-<li>内容捏造</li>
-<li>领域专业性</li>
-</ul>
-<h3 id="一些建议和技巧">一些建议和技巧</h3>
-<ul>
-<li>CoT prompting</li>
-<li>让模型通过其他方式输出真实的东西</li>
-<li>直接结束prompt</li>
-<li>强势的态度</li>
-<li>让ai自我纠正</li>
-<li>产生不同的观点</li>
-<li>保持状态+角色扮演（gpt的web端维护了一个session，api没有实现）</li>
-<li>教算法</li>
-<li><strong>LLMs的本质是往前读并补全文本，因此examples的顺序和prompt的顺序很重要。</strong></li>
-<li>Affordances:达到一定条件触发的函数</li>
-</ul>
-<h3 id="高级建议和技巧">高级建议和技巧</h3>
-<ul>
-<li>CoT
-<ul>
-<li>Zero-shot: lets think step by step...</li>
-<li>Manual-Cot:</li>
-</ul></li>
-<li>ToT(Tree of thought)</li>
-</ul>
-<h3 id="工具">工具：</h3>
-<ul>
-<li>ART</li>
-<li>通过自一致性增强依赖性</li>
-<li>反思</li>
-<li>专家prompt：prompt chainer</li>
-<li>Streamlining Complex Tasks with Chains</li>
-<li>引导性的输出with rails</li>
-<li>流水线的Prompt设计with自动的prompt engineering</li>
-</ul>
-<h3 id="argmenting-llms-through-external-knowledge--rag">Argmenting LLMs
-through External Knowledge -RAG</h3>
-<ul>
-<li>RAG-aware Prompting Techniques</li>
-</ul>
-<h3 id="llm-agents">LLM Agents</h3>
-<h4 id="agents">Agents</h4>
-<ul>
-<li>Reasoning without Observation</li>
-<li>Reason And Act</li>
-<li>Dialog-Enabled Resolving Agents</li>
-</ul>
-<h3 id="工具和框架">工具和框架</h3>
-<ul>
-<li>Langchain</li>
-<li>Semantic Kernel</li>
-<li>The Guidance</li>
-<li>Nemo Guardrails</li>
-<li>LlamaIndex</li>
-<li>FastRAG</li>
-<li>Auto-GPT</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1646,7 +1591,7 @@ through External Knowledge -RAG</h3>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

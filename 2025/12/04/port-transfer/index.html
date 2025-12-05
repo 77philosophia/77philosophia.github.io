@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="场景 在可以连接的远程服务器某图片文件夹下面启用了一个图片服务： 12&#x2F;&#x2F; cd xxx&#x2F;image_root&#x2F;python -m http.server 8005 想在我的本地mac上面直接访问这个端口，看到图片，用termius的端口转发。  发现有local rule和remote rule两种方式。我的理解是“把远程服务器的端口转发到我的电脑&#x2F;本地上”，所以一开始设置的remote rul">
+<meta property="og:type" content="article">
+<meta property="og:title" content="端口转发">
+<meta property="og:url" content="http://77philosophia.github.io/2025/12/04/port-transfer/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="场景 在可以连接的远程服务器某图片文件夹下面启用了一个图片服务： 12&#x2F;&#x2F; cd xxx&#x2F;image_root&#x2F;python -m http.server 8005 想在我的本地mac上面直接访问这个端口，看到图片，用termius的端口转发。  发现有local rule和remote rule两种方式。我的理解是“把远程服务器的端口转发到我的电脑&#x2F;本地上”，所以一开始设置的remote rul">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2025/12/04/port-transfer/port-transfer/image-20251204162857205.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/12/04/port-transfer/port-transfer/image-20251204163013848.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/12/04/port-transfer/port-transfer/213832060-a3ecff25-d3bb-4466-8a5b-4875e0685ed8.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/12/04/port-transfer/port-transfer/213830877-a9372e34-cdbe-48e1-b692-cb458330526d.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/12/04/port-transfer/port-transfer/213830765-61eb5769-b98e-4fd1-b31c-ed456a783686.png">
+<meta property="article:published_time" content="2025-12-04T08:25:47.000Z">
+<meta property="article:modified_time" content="2025-12-05T01:47:00.644Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2025/12/04/port-transfer/port-transfer/image-20251204162857205.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/12/04/port-transfer/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>端口转发 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/12/04/port-transfer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          端口转发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-04 16:25:47" itemprop="dateCreated datePublished" datetime="2025-12-04T16:25:47+08:00">2025-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-12-05 09:47:00" itemprop="dateModified" datetime="2025-12-05T09:47:00+08:00">2025-12-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="场景">场景</h3>
+<p>在可以连接的远程服务器某图片文件夹下面启用了一个图片服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// cd xxx/image_root/</span><br><span class="line">python -m http.server 8005</span><br></pre></td></tr></table></figure>
+<p>想在我的本地mac上面直接访问这个端口，看到图片，用termius的端口转发。</p>
+<p><img src="port-transfer/image-20251204162857205.png" alt="image-20251204162857205" style="zoom:30%;" /></p>
+<p>发现有local rule和remote
+rule两种方式。我的理解是“把远程服务器的端口转发到我的电脑/本地上”，所以一开始设置的remote
+rule,结果应该是local rule.于是去探究了一下端口转发背后的规律。</p>
+<p>这里是local
+rule之后可以在本机访问。（也可以用远程服务器ip:8005,如果防火墙没有限制的话）</p>
+<p><img src="port-transfer/image-20251204163013848.png" alt="image-20251204163013848" style="zoom:30%;" /></p>
+<p>参考：https://github.com/mohammedAcheddad/SSH_port_forwarding</p>
+<h3 id="介绍">介绍</h3>
+<p>Ssh是一种安全连接远程服务器的协议。重要的功能之一就是端口转发，可以绕开远程服务器防火墙的限制进行通信。有三种转发类型：本地转发local
+forwarding,远程转发remote forwarding,动态转发dynamic forwarding.</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>问了一些gpt为什么ssh可以绕开防火墙：</p>
+<p>实际上是把流量包裹在ssh里，而ssh的服务一般是对外开放的，防火墙没有限制。</p>
+</blockquote>
+<h3 id="端口转发类型">端口转发类型</h3>
+<h4 id="本地转发local-forwarding">本地转发local forwarding</h4>
+<p>意味着将你的ip+port和远端服务的ip+port映射起来。当你访问你本地的ip+port的之后，就会将request重定位到远端的ip+port.
+语法如下：（我理解：把xxx和xxx关联起来）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L local_port:remote_host:remote_port user@remote_server</span><br></pre></td></tr></table></figure>
+<p>比如，你想把本地的8080端口转发到远程server的80端口：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 8080:remote_server:80 user@remote_server</span><br></pre></td></tr></table></figure>
+<p>举例应用：</p>
+<ul>
+<li>由于远程服务器防火墙限制，本地无法访问远程server的web服务</li>
+<li>想访问运行在remote
+server的数据库，建立端口转发之后访问数据库可以仿佛就在本地运行一样。</li>
+<li>绕过某些block某些网页/服务的企业防火墙</li>
+</ul>
+<p><img src="port-transfer/213832060-a3ecff25-d3bb-4466-8a5b-4875e0685ed8.png" alt="enter image description here" style="zoom:60%;" /></p>
+<h4 id="远程转发remote-forwarding">远程转发remote forwarding</h4>
+<p>将remote
+server的某个端口转发到本地。用于本地机器的一些资源，远程服务器想访问。</p>
+<p>（想象一根通信的线路拉到了本地）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -R remote_port:local_host:local_port user@remote_server</span><br></pre></td></tr></table></figure>
+<p>比如，如果你想转发远程服务器的80到本地的8080</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -R 80:localhost:8080 user@remote_server</span><br></pre></td></tr></table></figure>
+<p>举例子应用：</p>
+<ul>
+<li>远程user访问本地服务</li>
+<li>远程服务器管理设置反向隧道（不懂）</li>
+<li>允许远程机器访问本地开发服务器。</li>
+</ul>
+<p><img src="port-transfer/213830877-a9372e34-cdbe-48e1-b692-cb458330526d.png" alt="enter image description here" style="zoom:60%;" /></p>
+<h4 id="动态转发">动态转发</h4>
+<p>将本地机器某端口的所有流量通过ssh转发到远程服务器。用于希望将远程服务器用作所有流量的代理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -D local_port user@remote_server</span><br></pre></td></tr></table></figure>
+<p>比如将本地访问1080的所有流量转发到远程server:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -D 1080 user@remote_server</span><br></pre></td></tr></table></figure>
+<p>举例子说明：</p>
+<ul>
+<li>使用远程服务器作为所有流量的代理</li>
+<li>从远程服务器访问本地网络资源。</li>
+<li>使用远程服务器作为代理绕开互联网啊或者地理限制。</li>
+<li><img src="port-transfer/213830765-61eb5769-b98e-4fd1-b31c-ed456a783686.png" alt="img" style="zoom:60%;" /></li>
+</ul>
+<h3 id="几种转发方式比较">几种转发方式比较</h3>
+<p>端口转发方面，每种转发类型都有不同的用途，适用于不同的场景。本地转发适用于需要访问本地计算机无法直接访问的远程服务器上的服务的情况。远程转发适用于需要允许远程服务器访问本地计算机上运行的服务的情况。动态转发适用于希望将远程服务器用作所有网络流量的代理的情况。</p>
+<p>值得注意的是，以上所有类型的端口转发都可以在同一个 SSH
+连接中一起使用。</p>
+<h3 id="安全">安全</h3>
+<p>使用 SSH 隧道时，务必注意安全问题，因为黑客可能会利用 SSH
+隧道漏洞入侵您的网络。以下是一些确保 SSH 隧道安全的步骤：</p>
+<ol type="1">
+<li>所有可以访问远程服务器的账户都应使用强密码。</li>
+<li>如果可能，请使用公钥认证而非密码认证。这将防止攻击者猜测您的密码并访问您的帐户。</li>
+<li>限制可以访问远程服务器的帐户数量，并严格控制谁可以访问公钥认证所需的私钥。</li>
+<li>使用防火墙和其他安全措施来保护远程服务器和本地网络。</li>
+<li>监控远程服务器和本地网络是否存在可疑活动，如果发现任何可疑活动，应采取适当措施。</li>
+<li>请确保远程服务器和本地网络上的所有软件和操作系统都已安装最新的安全补丁。</li>
+</ol>
+<p>按照这些步骤操作，可以帮助确保 SSH
+隧道的安全，并保护您的网络免受潜在攻击</p>
+<h3 id="参考">参考：</h3>
+<p>https://github.com/mohammedAcheddad/SSH_port_forwarding</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/11/19/sam2/" rel="prev" title="sam2环境部署以及GUI搭建">
+      <i class="fa fa-chevron-left"></i> sam2环境部署以及GUI搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">端口转发类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E8%BD%AC%E5%8F%91local-forwarding"><span class="nav-number">3.1.</span> <span class="nav-text">本地转发local forwarding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%BD%AC%E5%8F%91remote-forwarding"><span class="nav-number">3.2.</span> <span class="nav-text">远程转发remote forwarding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%BD%AC%E5%8F%91"><span class="nav-number">3.3.</span> <span class="nav-text">动态转发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E7%A7%8D%E8%BD%AC%E5%8F%91%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83"><span class="nav-number">4.</span> <span class="nav-text">几种转发方式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8"><span class="nav-number">5.</span> <span class="nav-text">安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
