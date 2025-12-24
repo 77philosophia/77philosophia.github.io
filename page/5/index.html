@@ -145,6 +145,651 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/06/from-transformer-to-llm/" class="post-title-link" itemprop="url">从Transformer到LLM:Architecture,Training and Usage</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-06 22:11:16 / Modified: 23:09:12" itemprop="dateCreated datePublished" datetime="2025-01-06T22:11:16+08:00">2025-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="nlp-basic-concepts">NLP basic concepts</h3>
+<h4 id="两个nlp的主要问题">1. 两个NLP的主要问题</h4>
+<p>表示和建模：</p>
+<p>a.Representation:将语言表示为机器语言：如BERT,Openai embedding</p>
+<ol start="2" type="a">
+<li>Modeling:用统计方法建模，GPT, chatGPT</li>
+</ol>
+<ol type="1">
+<li><p>怎么表示words</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106225834152.png"
+alt="image-20250106225834152" />
+<figcaption aria-hidden="true">image-20250106225834152</figcaption>
+</figure></li>
+</ol>
+<p>将单词分散到向量空间：将token映射到向量空间，向量空间(vector space)
+是用来表示文本数据的一种高纬空间。在这个空间中，每个token或文本单元都被表示为一个向量。这些向量捕捉了文本单元的语义信息，并使得数学计算（如距离计算、相似度计算）成为可能。</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230157598.png"
+alt="image-20250106230157598" />
+<figcaption aria-hidden="true">image-20250106230157598</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>建模</p>
+<p>语言模型LLM: 语言模型预测任何单词序列在给定语言语料库中的可能性</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230245416.png"
+alt="image-20250106230245416" />
+<figcaption aria-hidden="true">image-20250106230245416</figcaption>
+</figure></li>
+</ol>
+<ul>
+<li><p>怎么学习语言模型</p>
+<ul>
+<li><p>自回归模型Autogressive LM:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230342821.png"
+alt="image-20250106230342821" />
+<figcaption aria-hidden="true">image-20250106230342821</figcaption>
+</figure></li>
+<li><p>Bi-gram/N-gram model:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230354621.png"
+alt="image-20250106230354621" />
+<figcaption aria-hidden="true">image-20250106230354621</figcaption>
+</figure></li>
+<li><p>Marked LM:</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230523067.png"
+alt="image-20250106230523067" />
+<figcaption aria-hidden="true">image-20250106230523067</figcaption>
+</figure></li>
+<li><p>几种语言模型的学习方式</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230534541.png"
+alt="image-20250106230534541" />
+<figcaption aria-hidden="true">image-20250106230534541</figcaption>
+</figure></li>
+<li><p>为什么语言模型有比较好的表示</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230544997.png"
+alt="image-20250106230544997" />
+<figcaption aria-hidden="true">image-20250106230544997</figcaption>
+</figure></li>
+<li><p>总结</p>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230557957.png"
+alt="image-20250106230557957" />
+<figcaption aria-hidden="true">image-20250106230557957</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h3 id="attention机制和transformer">attention机制和transformer</h3>
+<h4 id="attention来源翻译任务seq2seq">1.
+attention来源：翻译任务seq2seq</h4>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230706080.png"
+alt="image-20250106230706080" />
+<figcaption aria-hidden="true">image-20250106230706080</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230717889.png"
+alt="image-20250106230717889" />
+<figcaption aria-hidden="true">image-20250106230717889</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230732617.png"
+alt="image-20250106230732617" />
+<figcaption aria-hidden="true">image-20250106230732617</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230745379.png"
+alt="image-20250106230745379" />
+<figcaption aria-hidden="true">image-20250106230745379</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230757155.png"
+alt="image-20250106230757155" />
+<figcaption aria-hidden="true">image-20250106230757155</figcaption>
+</figure>
+<h4 id="结构">2. 结构</h4>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230817984.png"
+alt="image-20250106230817984" />
+<figcaption aria-hidden="true">image-20250106230817984</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/01/06/from-transformer-to-llm/image-20250106230830430.png"
+alt="image-20250106230830430" />
+<figcaption aria-hidden="true">image-20250106230830430</figcaption>
+</figure>
+<h3 id="训练lm">训练LM</h3>
+<h3 id="pretrained-model用法微调和prompt">Pretrained
+model用法（微调和prompt）</h3>
+<h3 id="transformer除语言外其他应用">transformer除语言外其他应用</h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/style-transfer-paper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/06/style-transfer-paper/" class="post-title-link" itemprop="url">style-transfer-paper</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-06 00:21:27 / Modified: 21:25:32" itemprop="dateCreated datePublished" datetime="2025-01-06T00:21:27+08:00">2025-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="风格">风格</h1>
+<p>AIGC领域中的一项重要子任务就是对图像进行风格化处理，<strong>一般涉及到对图像视觉外观和纹理进行编辑（被视为风格信息），同时保留其底层对象、结构和概念不变（被视为是内容信息）</strong>。为了达到这种编辑效果，就需要实现对图像中风格和内容进行分离。现有的方法通常需要训练专门的分离模型或者需要进行大量的优化，使用成本较高。</p>
+<p>查看相关paper的网址：</p>
+<p>https://www.paperdigest.org/article/?id=style_transfer</p>
+<h3
+id="南京航空航天大学diffusestunleashing-the-capability-of-the-diffusion-model-for-style-transfer">2024/10/19南京航空航天大学《DiffuseST:Unleashing
+the Capability of the Diffusion Model for Style Transfer》</h3>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106101004946.png"
+alt="image-20250106101004946" />
+<figcaption aria-hidden="true">image-20250106101004946</figcaption>
+</figure>
+<p>提出了一种training-free的风格转移方法，balancing文本，图像style和图像content的特征结合起来。具体方法：</p>
+<p>对于一张内容图像Ic,和一张风格图像Is</p>
+<p>a.使用BLIP Diffusion中的BLIP-2的encoder产生Is的text-aligned
+embedding的表示。</p>
+<p>b.为了提取空间特征，在DDIM
+inverse的过程中content和style分支保留U-net的feature</p>
+<p>c.在diffusion模型的step-by-step过程中分离content和style的注入。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106101632557.png"
+alt="image-20250106101632557" />
+<figcaption aria-hidden="true">image-20250106101632557</figcaption>
+</figure>
+<h3 id="text-representation-extraction">Text representation
+extraction</h3>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106105738256.png"
+alt="image-20250106105738256" />
+<figcaption aria-hidden="true">image-20250106105738256</figcaption>
+</figure>
+<p>风格的特征很难用text描述，而image features又很少作为sd模型的condition
+input.</p>
+<p>因此，先采用Blip-diffusion里的blip-2 encoder将style
+image的特征表示为文本表示。此外，我们用clip的到content
+image的embedding信息。</p>
+<h3 id="spatial-representation-extraction">Spatial representation
+extraction</h3>
+<p>用DDIM算法提取图像特征。每一层u-net有一个残差块，一个self-attention模块去加强特征表示，一个cross-attention模块和text
+condition交互。关注前两个blocks，调查发现主要保持图像空间的语义和结构特征。</p>
+<h4 id="content和style的injection">content和style的injection</h4>
+<p>用相应注入层unet的两层参数替换到target branch.</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106110415815.png"
+alt="image-20250106110415815" />
+<figcaption aria-hidden="true">image-20250106110415815</figcaption>
+</figure>
+<h3 id="implicit-style-content-separation-using-b-lora">《Implicit
+Style-Content Separation using B-LoRA》</h3>
+<h4 id="主要工作">主要工作：</h4>
+<p>将LoRA(低秩适应)机制引入到图像编辑领域，提出了一种称为B-LoRA的框架，该框架可以隐式分离单个图像中的风格和内容组件，同时继承了LoRA的各种优势，包括轻量化训练和即插即用等功能。此外，作者通过深度分析现有流行扩散模型（Stable
+Diffusion XL,
+SDXL）的内部架构，发现仅需要联合设置两个B-LoRA块即可以实现图像内容和风格的分离，从而显著的提升各种下游图像风格化任务的性能和效果。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106112237612.png"
+alt="image-20250106112237612" />
+<figcaption aria-hidden="true">image-20250106112237612</figcaption>
+</figure>
+<p>提出了一种称为B-LoRA的风格转换框架，如上图所示，由于B-LoRA继承了原始LoRA的优势，具有高度的任务灵活性，同时不容易出现过拟合（仅优化模型注意层中新加入的低秩权重，预训练模型的参数保持冻结）。<strong>通过对SDXL内部结构进行分析，作者发现仅需要对两个特定的transformer层设置B-LoRA块就可以实现对图像内容和风格的分离</strong>。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106112514801.png"
+alt="image-20250106112514801" />
+<figcaption aria-hidden="true">image-20250106112514801</figcaption>
+</figure>
+<p>B-LoRA的另一个优点是即插即用的灵活性，它可以作为单独的组件应用到各种下游图像编辑任务中，而不需要任何额外的训练或微调。例如上图展示的风格迁移、文本引导的风格操作和条件图像生成等任务。</p>
+<h4 id="方法">方法：</h4>
+<h5 id="对sdxl结构分析">对sdxl结构分析</h5>
+<p>sdxl是一个基于扩散的文本到图像生成模型，其主干网络采用了一个大型unet架构，由70个注意力层组成，这些注意力层可以被分成11个transformer块，前两个和最后三个块分别包含4个和6个注意力层，中间6个块各包含10个注意力层，细节如下图所示。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106161123542.png"
+alt="image-20250106161123542" />
+<figcaption aria-hidden="true">image-20250106161123542</figcaption>
+</figure>
+<p>SDXL可以接受文本作为条件进行生成，具体来说，给定文本提示，首先使用OpenClip
+ViT-bigG和CLIP
+ViT-L两个模型对其进行编码，然后将两个编码拼接起来作为最终的文本条件，随后将通过交叉注意力层馈入到网络中。由于本文的目标是将输入图像的风格和内容解耦为单独的信号再进行处理，因而需要对sdxl每个层对生成图像的风格或内容的贡献进行判定。</p>
+<p>判定方法非常简单，即将不同的文本提示注入到每个sdxl
+transformer块的交叉注意力层中，随后计算这些提示与生成图像之间的语义相似度。当只改变第i个块对应的输入提示时，如果观察到生成图像的变化较为明显，则表明该块对图像质量变化占主导地位。在实际操作时，作者重点检查了sdxl的6个中间transformer块，并且定义了两组随机的文本提示content和style,其中前者通过修改对象类别来定义内容，后者通过修改颜色来定义风格，然后使用CLIP来计算生成图像的变化程度。对于一对提示px,p，作者通过将变化提示px的嵌入注入到i块中，同时将原始p的嵌入注入到其它层中来生成新图像。对6个transformer块均执行后可以得到6幅图像，可以计算得到每一对提示的变化相似度得分：</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106162626224.png"
+alt="image-20250106162626224" />
+<figcaption aria-hidden="true">image-20250106162626224</figcaption>
+</figure>
+<p>作者总共挑选了400对内容和风格提示进行了实验，实验结果表明sdxl模型中的第2，4个transformer块对生成内容的影响最大，而第5个块对生成风格的影响最大，如下图所示：</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106175938180.png"
+alt="image-20250106175938180" />
+<figcaption aria-hidden="true">image-20250106175938180</figcaption>
+</figure>
+<h4 id="基于lora的内容和风格分离">基于lora的内容和风格分离</h4>
+<p>基于上述发现，作者认为仅需要对第2，4和第5个块进行优化就可以实现隐层特征的解耦，而无需对整体模型微调。作者引入了Lora模块[1]来对这两部分进行单独优化，另w0表示预训练sdxl模型的冻结权重，令delta{w_i}表示每个块的低秩适应矩阵，优化过程主要分为两部分，第一部分优化delta{w_2}delta{w_5}，第二部分优化delta{w_4}delta{w_5}。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106180723828.png"
+alt="image-20250106180723828" />
+<figcaption aria-hidden="true">image-20250106180723828</figcaption>
+</figure>
+<p>优化过程和生成结果如上图所示，可以看出，delta{w_2}delta{w_4}更倾向于控制图像中内容信息，且delta{w_4}可以更好的捕捉到图像中的细节信息。作者将这种解耦方式称为B-LoRA,因为其只对两个Transformer块进行了Lora微调，这样可以节省70%的显存占用。</p>
+<h4 id="b-lora的风格化操作">B-lora的风格化操作</h4>
+<p>在实验图像内容和风格的解耦后，作者重点对delta{w_4}和delta{w_5}两层进行微调，其中delta{w_4}捕获内容，delta{w_5}捕获风格，通过微调他们的参数来实现图像的风格化操作，整体过程如下图所示：</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106190120481.png"
+alt="image-20250106190120481" />
+<figcaption aria-hidden="true">image-20250106190120481</figcaption>
+</figure>
+<p>给定一个内容图像Ic和一个风格图像Is,分别学习它们对应的B-LoRA权重delta{w_4}和delta{w_5}.然后将这两个B-LoRA权重组合到预训练的sdxl模型中，就可以将Ic的内容与Is的风格进行融合，来生成一个新的风格化图像（如上图1所示）。为了实现文本为条件的图像风格化效果（如上图2所示），只要使用内容图像Ic对应的B-LoRA权重delta{w_4},将其与用户输入的文本提示进行融合就可以实现对图像风格的编辑，这样可以很好的保留Ic的内容特征。此外还可以通过排除delta{w_4}仅使用delta{w_5}的方式来调整模型仅关注图像Is中的特定风格，这样允许用户通过输入不同的文本来单独控制生成内容（如上图3所示）。</p>
+<h4 id="效果">效果：</h4>
+<p>（1）图像风格迁移：给定一个内容图像和一个风格图像，通过组合两个B-LoRA的权重实现风格迁移。</p>
+<p>（2）基于文本的图像风格编辑：仅使用内容图像的B-LoRA权重，加上文本提示实现对图像风格的编辑。</p>
+<p>（3）一致的风格生成：使用风格图像的B-LoRA权重，生成具有相同风格的新图像。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106200150033.png"
+alt="image-20250106200150033" />
+<figcaption aria-hidden="true">image-20250106200150033</figcaption>
+</figure>
+<p>其中前两行展示了图像风格迁移的效果，即要求模型迁移style图像中的风格，同时保留content图像中的内容。可以看到，本文的方法相比其他方法更加稳定。此外，第三行图像展示了基于文本的图像风格编辑的效果，可以看到本文方法对输入对象的内容进行了良好的保留。</p>
+<h4 id="限制">限制：</h4>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106200410031.png"
+alt="image-20250106200410031" />
+<figcaption aria-hidden="true">image-20250106200410031</figcaption>
+</figure>
+<p>对一些风格和内容紧密结合的图像来说，风格信息对目标身份起到了决定性作用，因此当对这种图像中的内容进行风格化处理时，很容易丢失目标的身份信息，如上图(a)(b)所示。此外，B-LoRA在面对一些复杂场景时也会出现难以准确捕获场景结构的情况，如上图(c)所示。作者表明这些局限性可以通过进一步探索LoRA解耦的属性来解决，例如在解耦时考虑更加细粒度的结构、形状、颜色、纹理等属性。</p>
+<h3
+id="harnessing-the-latent-diffusion-model-for-training-free-image-style-transfer">《Harnessing
+the latent Diffusion Model for Training-Free Image Style Transfer》</h3>
+<p>先看一下效果：</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106200730275.png"
+alt="image-20250106200730275" />
+<figcaption aria-hidden="true">image-20250106200730275</figcaption>
+</figure>
+<p>在unet做风格迁移时代，方法是finetune模型，计算量很大；作者借鉴了当时做style
+transfer的一种方法，AdaIn;但是直接用到现在的diffusion
+model里面受限于channels的数量而不能有很好的效果。作者提出了一种STRDP的算法，变化了LDM的去噪过程，将AdaIN用一种不同的方式重复应用到lantent
+diffusion
+model的unet结构里。这个算法是training-free的，而且可以保留原图的颜色。</p>
+<h4 id="related-work">Related work</h4>
+<ul>
+<li>Direct Image Optimization:基于vgg
+features设计style和content的loss,优化像素值。</li>
+<li>Image Feature
+Transformation:将一个content图像和一个image图像提取特征，然后在content
+features里面添加style feature最后做个decode
+AdaIN的方法。主要就是将风格数据转移到图像特征当中。也提出了一种网络结构，将图像特征的均值和方差替换掉content特征的均值和方差。</li>
+<li>Diffusion Models:
+<ul>
+<li>重点是可控制性</li>
+<li>Guidance:guided
+diffusion得到一个提供的梯度作为去噪过程中的指导。需要附加的模型和额外的训练。</li>
+<li>Additive control:Controlnet包含了一份克隆的diffusion
+model和新的finuetune的参数。用额外的输入比如line
+arts,depth去finetune这些新参数。</li>
+<li>Tuning.通过fine-tune提供预训练LDM的可控制性。比如有的方法优化text
+embedding包含style信息。</li>
+</ul></li>
+</ul>
+<h3 id="背景知识">背景知识</h3>
+<ul>
+<li>Diffusion
+Models:将数据x加噪到高斯，去噪过程让网络预测噪声从而恢复数据x</li>
+<li>Latent Diffusion Models:LDM将数据x映射到latent
+space中对应z，从而降低计算量。这种表示方法也有一个问题，传统的给diffusion
+model加控制的方法，如果不经过额外的训练，无法直接用到LDM中。</li>
+<li>Adaptive Instance Normalization:</li>
+<li><figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106202947906.png"
+alt="image-20250106202947906" />
+<figcaption aria-hidden="true">image-20250106202947906</figcaption>
+</figure></li>
+</ul>
+<p>仿照之前的AdaIn的方法，在提取过程中用风格的均值和方差替换content
+feature的均值和方差，按照上面的公式，这个框架的缺陷就是要重新训练一个decoder去将输出转换为image.</p>
+<h4 id="我们的方法">我们的方法</h4>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106204716157.png"
+alt="image-20250106204716157" />
+<figcaption aria-hidden="true">image-20250106204716157</figcaption>
+</figure>
+<p>方法：</p>
+<p>首先style image和content image都会被转换到latent
+space,然后都会经过前向的diffusion process,通过加噪产生一系列的noisy
+latent
+representations.再反向的diffusion过程中，不断运用AdaIN集成style和content的隐变量。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106212104981.png"
+alt="image-20250106212104981" />
+<figcaption aria-hidden="true">image-20250106212104981</figcaption>
+</figure>
+<p>对降噪过程中u-net的参数执行AdaIn算法。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>均值和方差可以很大程度的影响风格转换效果，那么我想改变一张图片的风格，如果先对其进行去风格化，再进行风格嵌入，效果是不是会出奇的好呢？</p>
+</blockquote>
+<p>AdaIN全称为Adaptive Instance
+Normalization,是一种图像处理技术，用于实现风格迁移。它的计算公式如下：</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106212330208.png"
+alt="image-20250106212330208" />
+<figcaption aria-hidden="true">image-20250106212330208</figcaption>
+</figure>
+<h4 id="对比效果">对比效果</h4>
+<p>保留了原图的颜色</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106212355074.png"
+alt="image-20250106212355074" />
+<figcaption aria-hidden="true">image-20250106212355074</figcaption>
+</figure>
+<h5 id="参数控制">参数控制：</h5>
+<p>S参数来控制在应用style
+transfer之前我们对原始的content和noise加多少噪声。如果S=1，原图像加噪成高斯噪声，是无法重构出原图的。因此我们要控制好s的值。</p>
+<figure>
+<img src="/2025/01/06/style-transfer-paper/image-20250106212530108.png"
+alt="image-20250106212530108" />
+<figcaption aria-hidden="true">image-20250106212530108</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/hires-fix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/hires-fix/" class="post-title-link" itemprop="url">hires-fix</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-05 23:53:34" itemprop="dateCreated datePublished" datetime="2025-01-05T23:53:34+08:00">2025-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-06 00:19:40" itemprop="dateModified" datetime="2025-01-06T00:19:40+08:00">2025-01-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://medium.com/rendernet/using-hires-fix-to-upscale-your-stable-diffusion-images-8d8e2826593e</p>
+<p>https://medium.com/<span class="citation"
+data-cites="realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-optimize-image-quality-d9bbf369e3f">@realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-optimize-image-quality-d9bbf369e3f</span></p>
+<p>放大图片除了使用A1111's的图生图/extras选项，还可以使用Hires.Fix。后者可以在generate过程中增大分辨率，得到更好的效果。</p>
+<h3 id="upscaler">Upscaler</h3>
+<p>Latent, R-ESRGAN 4x+ and R-ESRGAN 4x+ Anime6B都可以尝试一下。</p>
+<figure>
+<img src="/2025/01/05/hires-fix/image-20250105235616276.png"
+alt="image-20250105235616276" />
+<figcaption aria-hidden="true">image-20250105235616276</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/05/hires-fix/image-20250105235627073.png"
+alt="image-20250105235627073" />
+<figcaption aria-hidden="true">image-20250105235627073</figcaption>
+</figure>
+<h3 id="hires-steps">Hires steps:</h3>
+<p>Hires
+steps在初试采样后refine图片质量，他们发生在每一步采样步之后的上采样过程，总的steps是sampling
+steps + Hires steps.</p>
+<figure>
+<img src="/2025/01/05/hires-fix/image-20250106001527600.png"
+alt="image-20250106001527600" />
+<figcaption aria-hidden="true">image-20250106001527600</figcaption>
+</figure>
+<p>Hires steps的值是0-150，0的时候Hires steps = sampling
+steps.所以如果你的sampling steps是20，hires
+steps是0，那么总步数是40.选择合适的数值很重要，过低或者过高都会使得图片质量变差。一般10-15根据经验会得到更好的选择。但是如果采样步数大于50，hires
+steps可以设置为sampling steps的一半。</p>
+<h3 id="denoising-strength">Denoising strength</h3>
+<p>对图片质量有很大的影响，也会改变图片内容。</p>
+<p>设置为0对图片没有影响，设置成1会很大改变图片内容。</p>
+<p>webui设置的默认值是0.7，但是在大多数case里这个设置都太强了，初始建议设置到0.3到0.5然后从上往下调整。</p>
+<figure>
+<img src="/2025/01/05/hires-fix/image-20250106001856856.png"
+alt="image-20250106001856856" />
+<figcaption aria-hidden="true">image-20250106001856856</figcaption>
+</figure>
+<p>用webui的xyz工具进行测试选出合适的scaler</p>
+<figure>
+<img src="/2025/01/05/hires-fix/image-20250106001935542.png"
+alt="image-20250106001935542" />
+<figcaption aria-hidden="true">image-20250106001935542</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/improve-rag/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/improve-rag/" class="post-title-link" itemprop="url">提高rag的技巧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-05 23:48:54 / Modified: 23:51:07" itemprop="dateCreated datePublished" datetime="2025-01-05T23:48:54+08:00">2025-01-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://readmedium.com/these-are-the-3-langchain-functions-i-used-to-improve-my-rag-00413ccb7094</p>
+<ol type="1">
+<li>Multi Query Retriever</li>
+<li>Long Context Recorder</li>
+<li>Contextual Compression</li>
+</ol>
+<figure>
+<img src="/2025/01/05/improve-rag/image-20250105235015001.png"
+alt="image-20250105235015001" />
+<figcaption aria-hidden="true">image-20250105235015001</figcaption>
+</figure>
+<h3 id="long-context-reorder">Long-Context Reorder</h3>
+<p>https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/long_context_reorder/</p>
+<p>无论你的模型架构如何，当包含超过 <strong>10</strong>
+个检索到的文档时，性能都会显著下降。简而言之：当模型必须在长上下文中访问相关信息时，它们往往会忽略提供的文档。</p>
+<p>策略：</p>
+<p>将不太相关的文档放在列表的中间，而更相关的文档放在开头和结尾。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/prompt-engineering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1093,591 +1738,10 @@ alt="image-20250104224313553" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/laion-dataset/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/04/laion-dataset/" class="post-title-link" itemprop="url">laion数据集</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-04 22:24:05 / Modified: 22:25:08" itemprop="dateCreated datePublished" datetime="2025-01-04T22:24:05+08:00">2025-01-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="laion-5b">LAION-5B</h2>
-<p>LAION-5B 是目前规模最大的开放多模态数据集之一，包含 58.5 亿个 <a
-target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=CLIP&amp;spm=1001.2101.3001.7020">CLIP</a>
-[5]过滤的图像-文本对的数据集，比 LAION-400M 大 14
-倍，是世界第一大规模、多模态的文本图像数据集，<strong>共80T数据</strong>，并提供了色情图片过滤、水印图片过滤、高分辨率图片、美学图片等子集和模型，供不同方向研究。</p>
-<p>LAION-5B中包括23.2亿的英语，22.6亿的100+语言及12.7亿的未知语言，我们将子集分别标记为：</p>
-<p><strong>●</strong> laion2B-en (应该是我们要的2B数据集)</p>
-<p><strong>●</strong> <strong>laion2B-multi</strong></p>
-<p><strong>●</strong> <strong>laion1B-nolang</strong></p>
-<p>LAION训练了一个基于CLIP嵌入的色情内容识别模型NSFW，可以过滤3%的不适图片，NSFW准确率约96%，过滤后有子集：</p>
-<p>laion2B-en-safety</p>
-<p>laion2B-multi-safety</p>
-<p>laion1B-nolang-safety</p>
-<p>LAION训练了一个水印识别模型，过滤后有子集：</p>
-<p>laion2B-en-watermark</p>
-<p>laion2B-multi-watermark</p>
-<p>laion1B-nolang-watermark</p>
-<p>一个170M的超分辨率子集：</p>
-<p>laion-high-resolution</p>
-<p>一个120M的美学图片子集，可以用来做图片生成：</p>
-<p>laion-aesthetic</p>
-<h3 id="子集">子集</h3>
-<p>LAION-5B 提供了多种子集，以满足不同的研究需求：</p>
-<ul>
-<li><p><strong>LAION-400M</strong>：规模较小，约 400
-万个图像-文本对，方便快速实验。</p></li>
-<li><p><strong>LAION-2B</strong>：包含 20
-亿对，适合中等规模实验。</p></li>
-<li><p><strong>LAION-5B</strong>：完整数据集。</p>
-<figure>
-<img src="/2025/01/04/laion-dataset/image-20250104222449781.png"
-alt="image-20250104222449781" />
-<figcaption aria-hidden="true">image-20250104222449781</figcaption>
-</figure></li>
-</ul>
-<h3 id="laion-2b-hd-子集">LAION-2B-HD 子集</h3>
-<ul>
-<li><p><strong>图像-文本对总数</strong>：约 <strong>1.2
-亿对</strong>。</p></li>
-<li><p><strong>图像分辨率</strong>：</p></li>
-<li><p>大多数图像的分辨率在 <strong>1024×1024
-像素</strong>或更高。</p></li>
-<li><p><strong>数据来源</strong>：</p></li>
-<li><p>从 LAION-2B
-数据集中过滤生成，确保图像清晰度高，文本描述相关性强。</p></li>
-</ul>
-<h4 id="特点">特点</h4>
-<ul>
-<li><p>高质量图像，适合图像生成、超级分辨率等任务。</p></li>
-<li><p>文本描述更贴近高质量图像语义。</p></li>
-</ul>
-<p><strong>LAION-2B-HD</strong> 是从 LAION
-数据集中筛选出的高质量、高分辨率图像子集，适合需要高分辨率图像和精确文本描述的任务。</p>
-<h2 id="下载方法">下载方法：</h2>
-<p>https://github.com/rom1504/img2dataset/blob/main/dataset_examples/laion-high-resolution.md</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/03/hugging-download/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/03/hugging-download/" class="post-title-link" itemprop="url">hugging-download</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-03 19:38:45" itemprop="dateCreated datePublished" datetime="2025-01-03T19:38:45+08:00">2025-01-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-04 22:16:12" itemprop="dateModified" datetime="2025-01-04T22:16:12+08:00">2025-01-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="hugging-face登录方式">1.Hugging face登录方式</h3>
-<p>huggingface废弃用户名和密码的登录方式，用token</p>
-<p>wget --header="Authorization: Bearer hf_xxx"<br />
-</p>
-<p>https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt</p>
-<h3
-id="可以下载sd1.5下载数据集却403-forbidden">2.可以下载sd1.5,下载数据集却403
-forbidden</h3>
-<ol type="1">
-<li>403 forbidden（将token权限增加write,我全打开了）</li>
-<li><figure>
-<img src="/2025/01/03/hugging-download/image-20250103194111502.png"
-alt="image-20250103194111502" />
-<figcaption aria-hidden="true">image-20250103194111502</figcaption>
-</figure></li>
-</ol>
-<p>https://discuss.huggingface.co/t/error-403-what-to-do-about-it/12983</p>
-<h3
-id="国内机器访问huggingface网络不好无法下载">3.国内机器访问huggingface网络不好，无法下载</h3>
-<p>用镜像网站hf-mirror.com</p>
-<figure>
-<img src="/2025/01/03/hugging-download/image-20250103194152062.png"
-alt="image-20250103194152062" />
-<figcaption aria-hidden="true">image-20250103194152062</figcaption>
-</figure>
-<p>wget --header="Authorization: Bearer hf_xxx"
-https://hf-mirror.com/datasets/laion/laion-high-resolution/resolve/main/.part-00000-45914064-d424-4c1c-8d96-dc8125c645fb-c000.snappy.parquet.crc</p>
-<h3 id="下载laion数据集用img2dataset工具">4.
-下载laion数据集用img2dataset工具</h3>
-<p>注意huggingface的laion
-high-resolution文件里有两种文件类型，crc是parquet的校验文件，下了没用，要下载parquet文件是数据集的metadata</p>
-<h3 id="wandb超时">wandb超时</h3>
-<p>export WANDB_MODE=offline</p>
-<h2 id="步骤">步骤：</h2>
-<ol type="1">
-<li><p>下载metadata</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;0..127&#125;; do </span><br><span class="line"></span><br><span class="line">  wget --header=&quot;Authorization: Bearer hf_xxx&quot; https://hf-mirror.com/datasets/laion/laion-high-resolution/resolve/main/part-$(printf &quot;%05d&quot; $i)-45914064-d424-4c1c-8d96-dc8125c645fb-c000.snappy.parquet</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>2.下载原数据</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export WANDB_MODE=offline</span><br><span class="line"></span><br><span class="line">img2dataset --url_list laion-high-resolution --input_format &quot;parquet&quot;\</span><br><span class="line"></span><br><span class="line">​     --url_col &quot;URL&quot; --caption_col &quot;TEXT&quot; --output_format webdataset\</span><br><span class="line"></span><br><span class="line">​      --output_folder laion-high-resolution-output --processes_count 16 --thread_count 64 --image_size 1024\</span><br><span class="line"></span><br><span class="line">​      --resize_only_if_bigger=True --resize_mode=&quot;keep_ratio&quot; --skip_reencode=True \</span><br><span class="line"></span><br><span class="line">​       --save_additional_columns &#x27;[&quot;similarity&quot;,&quot;hash&quot;,&quot;punsafe&quot;,&quot;pwatermark&quot;,&quot;LANGUAGE&quot;]&#x27; --enable_wandb True</span><br></pre></td></tr></table></figure>
-<p>应该已经开始下载了</p>
-<figure>
-<img src="/2025/01/03/hugging-download/image-20250104221538386.png"
-alt="image-20250104221538386" />
-<figcaption aria-hidden="true">image-20250104221538386</figcaption>
-</figure>
-<h2 id="下载数据集结果">下载数据集结果</h2>
-<figure>
-<img src="/2025/01/03/hugging-download/image-20250104221607364.png"
-alt="image-20250104221607364" />
-<figcaption aria-hidden="true">image-20250104221607364</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/02/stable-diffusion-history/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/02/stable-diffusion-history/" class="post-title-link" itemprop="url">stable-diffusion-history</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-02 18:59:15" itemprop="dateCreated datePublished" datetime="2025-01-02T18:59:15+08:00">2025-01-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-03 19:17:30" itemprop="dateModified" datetime="2025-01-03T19:17:30+08:00">2025-01-03</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191320002.png"
-alt="image-20250103191320002" />
-<figcaption aria-hidden="true">image-20250103191320002</figcaption>
-</figure>
-<h3 id="第一篇文章-2015">第一篇文章-2015</h3>
-<p>关于diffusion的第一篇文章来自于 <a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/1503.03585">Deep Unsupervised Learning using
-Nonequilibrium Thermodynamics</a> paper published in 2015.
-受到非平衡统计物理的启发，引入了一个模型，将数据的结构破坏成t
-steps。这个过程叫做forward diffusion;在此之后恢复叫做reverse
-diffusion</p>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191354356.png"
-alt="image-20250103191354356" />
-<figcaption aria-hidden="true">image-20250103191354356</figcaption>
-</figure>
-<p>这个前向的diffusion过程来自于马尔可夫链，就是t时刻的结果只与t-1时刻的结果相关。</p>
-<p>然后是逆像的diffusion过程，通过gan预测每一步的分布。</p>
-<h3
-id="图像生成再次引入diffusion-2020">图像生成再次引入diffusion-2020</h3>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion
-Probabilistic Models</a> from 2020这篇文章取得了让人印象深刻的效果</p>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191420017.png"
-alt="image-20250103191420017" />
-<figcaption aria-hidden="true">image-20250103191420017</figcaption>
-</figure>
-<p>他们证实了reparameterization的技巧可以用在reverse
-diffusion的过程中形成封闭的解决方案。</p>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191436862.png"
-alt="image-20250103191436862" />
-<figcaption aria-hidden="true">image-20250103191436862</figcaption>
-</figure>
-<p>并且发现预测每一步的噪音而不是噪音背后的图像得到更好的结果。在CIFAR10数据集上进行了测试，在IS和FID得分中都取得了sota.</p>
-<p>重新引入diffusion为后面的midjourney和stable
-diffusion都打下了基础。</p>
-<h3 id="clip">CLIP</h3>
-<p>OpenAi 发布了他们的论文 <a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.00020">Learning Transferable Visual
-Models From Natural Language Supervision</a> and a <a
-target="_blank" rel="noopener" href="https://openai.com/research/clip">blog post</a>和
-开源的多模态的zero-shot CLIP模型。</p>
-<p>这个模型在语言的监督下学习了视觉的特征，这不是一个新概念，但是它将text
-prompt匹配图像做的很好。</p>
-<p>它们抓取了互联网的超过400百万张图片，他们发现将text
-prompt适配到每个任务更好，相比传统的分类模型来说。比如传统的分类模型打的标签就是类别dog，但是在text
-prompt里面就是a photo of dog。</p>
-<p>它们的预训练包括：</p>
-<ul>
-<li><p>基于transformer的text encoder</p></li>
-<li><p>基于vision transformer的image encoder</p></li>
-<li><p>基于resnet的image encoder</p></li>
-</ul>
-<p>输出的向量text encoder:Ti和Image encoder Ii
-然后用在它们下一步的对比预训练过程中。</p>
-<p>输入是</p>
-<ul>
-<li><p>一个prompt用于描述图像中的物体，如a photo of big
-{object}</p></li>
-<li><p>包含该物体的图像</p></li>
-<li><figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191507830.png"
-alt="image-20250103191507830" />
-<figcaption aria-hidden="true">image-20250103191507830</figcaption>
-</figure></li>
-</ul>
-<p>text和image encoder输出的向量构成text-image对，构成一个矩阵</p>
-<ul>
-<li><p>矩阵元素是一个image vector和text vector的乘积，<em>Ii *
-Ti</em>.</p></li>
-<li><p>矩阵对角元素是matching的text-image对</p></li>
-<li><p>每行非对角元素是text和image不匹配对应的</p></li>
-</ul>
-<p>模型目标是最大化对角线元素的值，最小化非对角线元素值。这个过程输出的是对比性表示，捕捉的是图片和文本shared的特征，因此叫_Contrastive
-Language-Image_ <em>Pre-training</em>.</p>
-<p>这个模型输出的是image和text的embedding表示，这些embeddings可以通过cosine相似度或者欧几里得距离来衡量相似度，这些相似度可以用在很多任务中，比如GAN
-模型中的判别器或图像分类器</p>
-<h1
-id="guided-language-to-image-diffusion-for-generation-and-editing-glide-2021年底">Guided
-Language to Image Diffusion for Generation and Editing
-(GLIDE)-2021年底</h1>
-<p>OPENAI发表论文_<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10741">GLIDE:
-Towards Photorealistic Image Generation and Editing with Text-Guided
-Diffusion Models</a>_. 运用了guided diffusion和comparing CLIP guidance
-vs *Classifier-free
-guidance,允许扩散模型从文本中学习。在diffusion层中使用__unet__结构。用到text-image的__数据集__，这个数据集在DALL-E中也被使用。*</p>
-<h5 id="guided-diffusion">Guided diffusion</h5>
-<p>使用transformer model去encode text
-prompt,将最后一层embedding的输出作为diffusion模型的class-conditioning，这个class-conditioning使用了attention去关注forward/backward/denising
-attention层。</p>
-<h5 id="clip-guidance">Clip guidance</h5>
-<p>在推理过程中的去噪扩散过程中，使用clip进行分类起指导。用clip的点积对比矩阵梯度扰乱去噪均值，将初始去噪图像移动到
-CLIP 预测高文本图像匹配的方向。类似于 Google 的 dreep deam 模型。</p>
-<h5 id="classifier-free-guidance">Classifier-free guidance</h5>
-<p>在训练过程中同时提供没有text
-guidance的example，在推理的去噪阶段，让模型预测两次噪声，一次有prompt一次没有。text
-guidance会影响预测的噪音值。有text的预测noise:(<em>εθ(xt|y)</em>),没有的(<em>εθ(xt|∅)</em>)。文本造成的不同在每个时间步t会乘以一个系数s,然后加到预测的噪音上。这样推着噪音预测向正确的方向进行。因为我们在每一步都考虑了更多文本特定的噪声，从而增强了文本添加的噪声效果。</p>
-<h1 id="εˆθxty-εθxt-s-εθxty-εθxt"><em>εˆθ(xt|y) = εθ(xt|∅) + s ·
-(εθ(xt|y) − εθ(xt|∅))</em></h1>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191611149.png"
-alt="image-20250103191611149" />
-<figcaption aria-hidden="true">image-20250103191611149</figcaption>
-</figure>
-<p>结果发现classfier-free guidance比clip guidance效果更好</p>
-<p>最后他们训练diffusion用的256x256，因为扩散过程是其运行的像素空间中非常密集的过程。因此他们也训练了一个encoder和decoder用于降采样和复原图片到1024x1024。</p>
-<h3 id="latent-diffusion-2021年底">Latent diffusion-2021年底</h3>
-<p>论文 the _<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10752">High-Resolution
-Image Synthesis with Latent Diffusion Models</a>__，
-主要将diffusion过程从像素空间移到了latent
-space，使得diffusion过程更加的高效_</p>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191635342.png"
-alt="image-20250103191635342" />
-<figcaption aria-hidden="true">image-20250103191635342</figcaption>
-</figure>
-<p>Latent Diffusion
-模型首先训练autoEncoder模型，encoder提取与原图最相似最重要的部分到latent
-space，
-decoder基于latent空间的表示生成原图。然后，将unet中的扩散过程用在pretrained
-auto encoder编码器的latent space
-representation.他们也发现classifier-free guidance提升质量。</p>
-<p>UNet
-还使用交叉注意力层，允许它们用作不同类型的条件输入生成器，例如文本到图像和超分辨率。</p>
-<p>autoencoder的decoder层把latent space上采样恢复到1024x1024.</p>
-<h3 id="dall-e2-2022年初">DALL-E2-2022年初</h3>
-<p>OpenAI发布论文 _<a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.06125">Hierarchical Text-Conditional
-Image Generation with CLIP
-Latents</a>__，这是一个__继承__工作来自于clip,
-dall-e和glide.本文的作者确实将该模型称为 unclip，因为该模型将 CLIP
-模型中的文本嵌入转换回图像。_</p>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191656226.png"
-alt="image-20250103191656226" />
-<figcaption aria-hidden="true">image-20250103191656226</figcaption>
-</figure>
-<p>可以注意到虚线下方，prior model输出一个clip image
-embedding，然后用于diffusion decoder的去噪过程中的condition.</p>
-<ol type="1">
-<li><p>take一个预训练好的clip模型，冻结权重</p></li>
-<li><p>将prompt通过clip encode成一个embedding向量</p></li>
-<li><p>一个基于扩散的prior model将text embedding 匹配到相应的clip image
-embedding.所以prior model产生clip model会产生的图像。</p></li>
-<li><p>使用调整过的glide模型，他们通过去噪/反向扩散过程以随机方式映射图像嵌入。这使得模型能够生成许多与相似视觉概念相关的可能图像。</p></li>
-</ol>
-<p>为什么要用prior去产生image embedding</p>
-<figure>
-<img
-src="/2025/01/02/stable-diffusion-history/image-20250103191713661.png"
-alt="image-20250103191713661" />
-<figcaption aria-hidden="true">image-20250103191713661</figcaption>
-</figure>
-<p>比起单纯的caption或者text embedding，prior产生的image
-embedding能产生更好的结果，如上图。</p>
-<p>但是openai没有开源模型的权重。</p>
-<h3 id="开源的latent-diffusionstable-diffusion-2022">开源的latent
-diffusion(stable diffusion)-2022</h3>
-<p>开源模型stable diffusion由Stability AI发布</p>
-<p>https://medium.com/<span class="citation"
-data-cites="vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5">@vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd54d5</span></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/12/31/new_laptop_settings/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/31/new_laptop_settings/" class="post-title-link" itemprop="url">新电脑配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-12-31 17:41:52" itemprop="dateCreated datePublished" datetime="2024-12-31T17:41:52+08:00">2024-12-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-02 18:54:28" itemprop="dateModified" datetime="2025-01-02T18:54:28+08:00">2025-01-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="对象">对象</h2>
-<p>Mac pro m4</p>
-<h3 id="终端配置iterm2oh-my-zsh">1.
-终端配置<strong>iterm2+oh-my-zsh</strong></h3>
-<p>要自己安装<strong>command line
-tools</strong>和home-brew(https://www.jianshu.com/p/e0471aa6672d)</p>
-<p>https://github.com/sirius1024/iterm2-with-oh-my-zsh</p>
-<h3 id="termius">2. Termius</h3>
-<p>https://termius.com/download/macos</p>
-<h3 id="typora">3.typora</h3>
-<p><strong>https://github.com/shuhongfan/TyporaCrack</strong></p>
-<h3 id="vpn">4. vpn</h3>
-<p>可乐云：https://my.coke1.link/</p>
-<p>另一个：https://apk.okzapp.app/index.php#/register?code=QIFC23KC
-（朋友说用了三年多了没有跑路）</p>
-<p>我之前用的是DuangCloud，2024下半年华丽嘎了</p>
-<h3 id="其他问题">5. 其他问题</h3>
-<h4 id="vpn开启全局代理之后终端无法安装包">5.1
-vpn开启全局代理之后终端无法安装包</h4>
-<p>设置：</p>
-<figure>
-<img src="/2024/12/31/new_laptop_settings/image-20250102095721650.png"
-alt="image-20250102095721650.png" />
-<figcaption aria-hidden="true">image-20250102095721650.png</figcaption>
-</figure>
-<p>现象：终端无法访问国外资源</p>
-<figure>
-<img src="/2024/12/31/new_laptop_settings/image-20250102103106455.png"
-alt="image-20250102103106455.png" />
-<figcaption aria-hidden="true">image-20250102103106455.png</figcaption>
-</figure>
-<p>解决方法：查看vpn代理端口并配置终端的代理端口：</p>
-<figure>
-<img src="/2024/12/31/new_laptop_settings/image-20250102103359294.png"
-alt="image-20250102103359294.png" />
-<figcaption aria-hidden="true">image-20250102103359294.png</figcaption>
-</figure>
-<figure>
-<img src="/2024/12/31/new_laptop_settings/image-20250102103235915.png"
-alt="image-20250102103235915" />
-<figcaption aria-hidden="true">image-20250102103235915</figcaption>
-</figure>
-<p>以上参考链接：https://blog.csdn.net/silence_xz/article/details/136669658?spm=1001.2101.3001.6650.5&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;utm_relevant_index=10</p>
-<h4 id="npm安装不动">5.2 npm安装不动</h4>
-<p>现象：</p>
-<figure>
-<img src="/2024/12/31/new_laptop_settings/image-20250102103717638.png"
-alt="image-20250102103717638" />
-<figcaption aria-hidden="true">image-20250102103717638</figcaption>
-</figure>
-<p>解决方法：换源</p>
-<p><code>npm config set registry http://registry.npmmirror.com</code></p>
-<p>参考链接：http://liuw.tech/2022/11/05/hexo-%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2hexo/</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1743,9 +1807,13 @@ alt="image-20250102103717638" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
       </div>
   </nav>
 </div>
