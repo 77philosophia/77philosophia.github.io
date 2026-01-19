@@ -20,16 +20,17 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="购买和组装 淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。">
+  <meta name="description" content="购买和组装 淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。 接下来记录几个关键的步骤。 usb端口绑定  [!IMPORTANT] 我有一个LEROBOT主臂主板USB口是&#x2F;dev&#x2F;ttyACM0，还有一个从臂usb口是&#x2F;dev&#x2F;ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lerobot-exp">
 <meta property="og:url" content="http://77philosophia.github.io/2025/12/22/lerobot-exp/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="购买和组装 淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。">
+<meta property="og:description" content="购买和组装 淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。 接下来记录几个关键的步骤。 usb端口绑定  [!IMPORTANT] 我有一个LEROBOT主臂主板USB口是&#x2F;dev&#x2F;ttyACM0，还有一个从臂usb口是&#x2F;dev&#x2F;ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMO">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-12-22T06:07:27.000Z">
-<meta property="article:modified_time" content="2025-12-22T06:17:23.856Z">
+<meta property="article:modified_time" content="2026-01-19T06:30:51.757Z">
 <meta property="article:author" content="philosophia">
+<meta property="article:tag" content="lerobot">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://77philosophia.github.io/2025/12/22/lerobot-exp/">
@@ -172,10 +173,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-12-22 14:07:27 / Modified: 14:17:23" itemprop="dateCreated datePublished" datetime="2025-12-22T14:07:27+08:00">2025-12-22</time>
+              <time title="Created: 2025-12-22 14:07:27" itemprop="dateCreated datePublished" datetime="2025-12-22T14:07:27+08:00">2025-12-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-01-19 14:30:51" itemprop="dateModified" datetime="2026-01-19T14:30:51+08:00">2026-01-19</time>
+              </span>
 
           
 
@@ -190,6 +197,78 @@
       
         <h3 id="购买和组装">购买和组装</h3>
 <p>淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。</p>
+<p>接下来记录几个关键的步骤。</p>
+<h3 id="usb端口绑定">usb端口绑定</h3>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>我有一个LEROBOT主臂主板USB口是/dev/ttyACM0，还有一个从臂usb口是/dev/ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMOD
+666</p>
+</blockquote>
+<p>这种情况在机器人开发（如 LeRobot）中非常常见。由于 Linux 系统分配
+<code>/dev/ttyACM*</code>
+是按照插拔顺序随机分配的，且默认权限受限，最稳妥的解决方案是<strong>编写
+udev 规则</strong>。</p>
+<p>通过 udev 规则，你可以根据硬件的唯一序列号（Serial
+Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code> 和
+<code>/dev/slave_arm</code>），并自动设置 <code>0666</code> 权限。</p>
+<hr />
+<h3 id="第一步获取设备的硬件信息">第一步：获取设备的硬件信息</h3>
+<p>你需要找到两个主板的
+<strong>idVendor</strong>、<strong>idProduct</strong> 以及最重要的
+<strong>serial</strong>（序列号）。</p>
+<ol type="1">
+<li><p>拔掉从臂，只插上<strong>主臂</strong>。</p></li>
+<li><p>运行以下命令查看信息：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">udevadm info -a -n /dev/ttyACM0 | grep -E &quot;idVendor|idProduct|serial&quot; | head -n 3</span><br></pre></td></tr></table></figure>
+<p><em>注意：如果你的主臂在</em>
+<code>/dev/ttyACM1</code><em>，请相应修改路径。</em></p></li>
+<li><p><strong>记录输出结果</strong>，例如：</p>
+<ul>
+<li><code>ATTRS&#123;idVendor&#125;=="2e8a"</code></li>
+<li><code>ATTRS&#123;idProduct&#125;=="000a"</code></li>
+<li><code>ATTRS&#123;serial&#125;=="1234567890AB"</code>（这是区分两个相同型号主板的关键）</li>
+</ul></li>
+<li><p>拔掉主臂，插上<strong>从臂</strong>，重复上述步骤，记录从臂的序列号。</p></li>
+</ol>
+<hr />
+<h3 id="第二步创建-udev-规则文件">第二步：创建 udev 规则文件</h3>
+<p>创建一个新的规则文件：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/udev/rules.d/99-lerobot.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中输入以下内容（请将 <code>xxxx</code>
+替换为你刚才查到的实际数值）：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 主臂 (Master Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;主臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;master_arm&quot;</span><br><span class="line"></span><br><span class="line"># 从臂 (Slave Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;从臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;slave_arm&quot;</span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="第三步应用规则并验证">第三步：应用规则并验证</h3>
+<ol type="1">
+<li><p><strong>加载新规则：</strong></p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo udevadm control --reload-rules</span><br><span class="line">sudo udevadm trigger</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>验证绑定是否成功：</strong> 插上两个主板，运行：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/master_arm /dev/slave_arm</span><br></pre></td></tr></table></figure>
+<p>你会看到类似这样的输出，显示它们已经指向了 <code>ttyACM*</code>：
+<code>lrwxrwxrwx 1 root root 7 Dec 18 10:00 /dev/master_arm -&gt; ttyACM0</code></p></li>
+<li><p><strong>检查权限：</strong></p></li>
+</ol>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
+<p>你会发现权限已经是 <code>crw-rw-rw-</code> (即
+666)，不再需要手动修改。</p>
+<hr />
+<h3 id="核心优势">核心优势</h3>
+<ul>
+<li><strong>持久性：</strong>
+无论重启还是重新插拔，<code>/dev/master_arm</code>
+永远指向正确的主板。</li>
+<li><strong>零配置：</strong> 你在 LeRobot
+的代码或配置文件中，直接将端口设置为 <code>/dev/master_arm</code>
+即可。</li>
+<li><strong>权限自动化：</strong> <code>MODE="0666"</code>
+彻底解决了权限拒绝（Permission Denied）的问题。</li>
+</ul>
 
     </div>
 
@@ -198,6 +277,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/lerobot/" rel="tag"># lerobot</a>
+          </div>
 
         
 
@@ -270,7 +352,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AD%E4%B9%B0%E5%92%8C%E7%BB%84%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">购买和组装</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AD%E4%B9%B0%E5%92%8C%E7%BB%84%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">购买和组装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#usb%E7%AB%AF%E5%8F%A3%E7%BB%91%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">usb端口绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E8%8E%B7%E5%8F%96%E8%AE%BE%E5%A4%87%E7%9A%84%E7%A1%AC%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">第一步：获取设备的硬件信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E5%88%9B%E5%BB%BA-udev-%E8%A7%84%E5%88%99%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">第二步：创建 udev 规则文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%E5%BA%94%E7%94%A8%E8%A7%84%E5%88%99%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="nav-number">5.</span> <span class="nav-text">第三步：应用规则并验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF"><span class="nav-number">6.</span> <span class="nav-text">核心优势</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -289,7 +371,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
