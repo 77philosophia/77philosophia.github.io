@@ -145,6 +145,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/06/11/Q-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/06/11/Q-learning/" class="post-title-link" itemprop="url">Q-learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-06-11 09:49:30 / Modified: 09:58:34" itemprop="dateCreated datePublished" datetime="2025-06-11T09:49:30+08:00">2025-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Q-learning是强化学习最基础的算法。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>reward和expected reward的区别</p>
+</blockquote>
+<p>为了弄清楚它是如何工作的，让我们先考虑一个exptected reward如下：</p>
+<p>R = _{t=0}^{} {^t r_t}</p>
+<p>r_t是t时刻的reward而^t是折损因子。</p>
+<p>举个例子，如：</p>
+<ul>
+<li>action #1: 伸开arm(t=0)-&gt; 得到reward=0</li>
+<li>action #2: 打开hand(t=1)-&gt; 得到reward=0</li>
+<li>action #3: 抓取物体(t=2)-&gt;得到reward=10</li>
+</ul>
+<p>我们只在动作3的时候得到了reward值，但是显然action
+1的动作对最终的rewards是有贡献的。因此我们考虑下面的累积reward.假如</p>
+<p><span class="math display">\[ \gamma=0.99 \]</span> <span
+class="math display">\[
+R_{t=0}=0+0.99\times0+0.99^2\times10=9.801
+\]</span> 同上，R_{t=1}=9.9,R_{t=2}=10</p>
+<p>Q-value就是基于这种expected cumulative reward.</p>
+<p>在上面的例子中，如果你能看到一个object在你面前(state of "you see an
+object"), the action "伸开arm"就会有一个高的expected
+reward.反之，如果你哪儿都看不到object,“伸开arm”就会有低的expected
+reward.</p>
+<p>Q-value就描述的是对应的state和action的值Q(s,a)，假如s和a都是一维的离散值，Q(s,a)就是一个table。如图所示：</p>
+<figure>
+<img
+src="/2025/06/11/Q-learning/5eecdaf48460cde52547efa5bb6ba7e71098e7b78a78034375b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e0a42984b012b58c12bf18d6e8fb8a65ffd14710d290d3b9b3f298fe17245bfff45143ea1c4f77cd4.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>在状态s2的时候最优的action是选择a2,s3是a4.</p>
+<p>实际中，action space和observation
+space可能都有超过1维。举例子，在CarPole中，state(observation)是4维的浮点数。Q-table就是1维的action
+space和4维的observation
+space的组合。在Q-learning中，我们通过下面的更新迭代优化这个table.（t=0,1,2,...）</p>
+<p>Q_{t}(s_{t},a_{t})是当前的Q值，Q_{t+1}(s_{t},a_{t})是更新后的Q值。
+<span class="math display">\[
+Q_{t+1}(s_t,a_t) = Q_t(s_t,a_t) + \alpha \left( r_t + \gamma
+\max_a{Q_t(s_{t+1},a)} - Q_t(s_t,a_t) \right)
+\]</span> rate</p>
+<p>上面的公式可以这样理解：</p>
+<ul>
+<li><p>你期望在s_{t}采取动作a_{t},得到了reward是r_{t},状态转移到s_{t+1
+}</p></li>
+<li><p>下一个最优的动作会满足a_{t+1}=max_{a}Q(s_{t+1},a).采取了最优动作后，会得到期望的reward是：_
+<span class="math display">\[
+r_{t}+\gamma max_{a}Q(s_{t+1},a)
+\]</span></p></li>
+<li><p>将这个最优的q-value与当前的q-value值Q(s_{t},a_{t})对比，然后用学习率。</p></li>
+</ul>
+<h3 id="实现细节"><strong>实现细节：</strong></h3>
+<p>q_table开始是zero初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">q_table = np.zeros(new_observation_shape + (env.action_space.n,))</span><br><span class="line">q_table.shape</span><br></pre></td></tr></table></figure>
+<p>开始训练的时候总会选择wrong
+actions（agent还没学到什么东西），之后随着学习逐渐选择q-table里面最优的action.用一个参数epsilon去控制这个行为。（这种exploration算法叫做Epsilon-Greedy）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line">alpha = 0.1</span><br><span class="line">epsilon = 1</span><br><span class="line">epsilon_decay = epsilon / 4000</span><br><span class="line"></span><br><span class="line"># pick up action from q-table with greedy exploration</span><br><span class="line">def pick_sample(s, epsilon):</span><br><span class="line">    # get optimal action,</span><br><span class="line">    # but with greedy exploration (to prevent picking up same values in the first stage)</span><br><span class="line">    if np.random.random() &gt; epsilon:</span><br><span class="line">        a = np.argmax(q_table[tuple(s)])</span><br><span class="line">    else:</span><br><span class="line">        a = np.random.randint(0, env.action_space.n)</span><br><span class="line">    return a</span><br><span class="line"></span><br><span class="line">env = gym.make(&quot;CartPole-v1&quot;)</span><br><span class="line">reward_records = []</span><br><span class="line">for i in range(6000):</span><br><span class="line">    # Run episode till done</span><br><span class="line">    done = False</span><br><span class="line">    total_reward = 0</span><br><span class="line">    s, _ = env.reset()</span><br><span class="line">    s_dis = get_discrete_state(s)</span><br><span class="line">    while not done:</span><br><span class="line">        a = pick_sample(s_dis, epsilon)</span><br><span class="line">        s, r, term, trunc, _ = env.step(a)</span><br><span class="line">        done = term or trunc</span><br><span class="line">        s_dis_next = get_discrete_state(s)</span><br><span class="line"></span><br><span class="line">        # Update Q-Table</span><br><span class="line">        maxQ = np.max(q_table[tuple(s_dis_next)])</span><br><span class="line">        q_table[tuple(s_dis)][a] += alpha * (r + gamma * maxQ - q_table[tuple(s_dis)][a])</span><br><span class="line"></span><br><span class="line">        s_dis = s_dis_next</span><br><span class="line">        total_reward += r</span><br><span class="line"></span><br><span class="line">    # Update epsilon for each episode</span><br><span class="line">    if epsilon - epsilon_decay &gt;= 0:</span><br><span class="line">        epsilon -= epsilon_decay</span><br><span class="line"></span><br><span class="line">    # Record total rewards in episode (max 500)</span><br><span class="line">    print(&quot;Run episode&#123;&#125; with rewards &#123;&#125;&quot;.format(i, total_reward), end=&quot;\r&quot;)</span><br><span class="line">    reward_records.append(total_reward)</span><br><span class="line"></span><br><span class="line">print(&quot;\nDone&quot;)</span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/13/python-warmup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1247,73 +1363,6 @@ alt="image-20250428181152069" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/28/ubuntu-nvidia-driver-noNetwork/" class="post-title-link" itemprop="url">ubuntu-nvidia-driver-noNetwork</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-04-28 17:56:37 / Modified: 18:08:15" itemprop="dateCreated datePublished" datetime="2025-04-28T17:56:37+08:00">2025-04-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1
-id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡驱动之后没有network</h1>
-<p>https://blog.csdn.net/weixin_44286126/article/details/131455726</p>
-<p>排查思路：</p>
-<p>1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg
-查看新旧镜像是否有安装包的差异。</p>
-<ol start="2" type="1">
-<li>原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1383,7 +1432,7 @@ id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
