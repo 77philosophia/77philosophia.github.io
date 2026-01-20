@@ -20,15 +20,22 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Garfield&#39;s blog">
-<meta property="og:url" content="http://77philosophia.github.io/archives/2025/06/index.html">
+  <meta name="description" content="vae是什么 VAE由三部分组成，VAE encoder, latent space, vae decoder vae encoder将原始的数据信息X进行编码映射到latent space空间中，latent space是代表训练数据的一个隐式空间，从中进行采样得到采样数据Z&#39;，最终通过VAE DECODER的解码过程可以把数据恢复X&#39; 贝叶斯框架下的因果推断   image-202601201">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vae">
+<meta property="og:url" content="http://77philosophia.github.io/2026/01/20/vae/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="vae是什么 VAE由三部分组成，VAE encoder, latent space, vae decoder vae encoder将原始的数据信息X进行编码映射到latent space空间中，latent space是代表训练数据的一个隐式空间，从中进行采样得到采样数据Z&#39;，最终通过VAE DECODER的解码过程可以把数据恢复X&#39; 贝叶斯框架下的因果推断   image-202601201">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/vae/image-20260120163052283.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/vae/image-20260120163204904.png">
+<meta property="article:published_time" content="2026-01-20T08:24:26.000Z">
+<meta property="article:modified_time" content="2026-01-20T08:32:07.463Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/01/20/vae/image-20260120163052283.png">
 
-<link rel="canonical" href="http://77philosophia.github.io/archives/2025/06/">
+<link rel="canonical" href="http://77philosophia.github.io/2026/01/20/vae/">
 
 
 <script id="page-configurations">
@@ -36,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Garfield's blog</title>
+  <title>vae | Garfield's blog</title>
   
 
 
@@ -139,51 +146,93 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">Nice! 66 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/20/vae/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vae
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-01-20 16:24:26 / Modified: 16:32:07" itemprop="dateCreated datePublished" datetime="2026-01-20T16:24:26+08:00">2026-01-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
+        <h3 id="vae是什么">vae是什么</h3>
+<p>VAE由三部分组成，VAE encoder, latent space, vae decoder vae
+encoder将原始的数据信息X进行编码映射到latent space空间中，latent
+space是代表训练数据的一个隐式空间，从中进行采样得到采样数据Z'，最终通过VAE
+DECODER的解码过程可以把数据恢复X'</p>
+<h3 id="贝叶斯框架下的因果推断">贝叶斯框架下的因果推断</h3>
+<figure>
+<img src="/2026/01/20/vae/image-20260120163052283.png"
+alt="image-20260120163052283" />
+<figcaption aria-hidden="true">image-20260120163052283</figcaption>
+</figure>
+<h3 id="重参数化技巧">重参数化技巧</h3>
+<figure>
+<img src="/2026/01/20/vae/image-20260120163204904.png"
+alt="image-20260120163204904" />
+<figcaption aria-hidden="true">image-20260120163204904</figcaption>
+</figure>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-06-11T09:49:30+08:00"
-              content="2025-06-11">
-          06-11
-        </time>
-      </div>
+      <footer class="post-footer">
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/06/11/Q-learning/" itemprop="url">
-            <span itemprop="name">Q-learning</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/01/19/camera-read/" rel="prev" title="camera的同步和异步读取（opencv和realsense）">
+      <i class="fa fa-chevron-left"></i> camera的同步和异步读取（opencv和realsense）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -236,6 +285,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#vae%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">vae是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%A1%86%E6%9E%B6%E4%B8%8B%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD"><span class="nav-number">2.</span> <span class="nav-text">贝叶斯框架下的因果推断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%8F%82%E6%95%B0%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="nav-number">3.</span> <span class="nav-text">重参数化技巧</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
