@@ -437,7 +437,7 @@ Latency 被 SDK 压到了最低。</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-20 15:17:31" itemprop="dateModified" datetime="2026-01-20T15:17:31+08:00">2026-01-20</time>
+                <time title="Modified: 2026-01-20 15:23:34" itemprop="dateModified" datetime="2026-01-20T15:23:34+08:00">2026-01-20</time>
               </span>
 
           
@@ -503,7 +503,11 @@ padding.</li>
 <ul>
 <li>Vae
 encoder由多个ACTEncoderLayer组成，每个ACTEncoderLayer是由nn.MultiHeadAttention+dropout+Linear层组成</li>
-<li><img src="act-network/image-20260120142926726.png" alt="image-20260120142926726" style="zoom:50%;" /></li>
+<li><figure>
+<img src="/2026/01/04/act-network/image-20260120152238278.png"
+alt="image-20260120152238278" />
+<figcaption aria-hidden="true">image-20260120152238278</figcaption>
+</figure></li>
 </ul></li>
 </ul>
 <hr />
@@ -524,7 +528,11 @@ class="math display">\[
 \]</span></p></li>
 <li><p>根据重参数化的采样技巧：</p>
 <ul>
-<li><img src="act-network/image-20260120143643905.png" alt="image-20260120143643905" style="zoom:50%;" /></li>
+<li><figure>
+<img src="/2026/01/04/act-network/image-20260120152310177.png"
+alt="image-20260120152310177" />
+<figcaption aria-hidden="true">image-20260120152310177</figcaption>
+</figure></li>
 </ul></li>
 </ul>
 <p>​ 可以得到采样后的latent sample: (Batch, 32)</p>
@@ -628,7 +636,11 @@ ground_truth_action=b,s,d)</p></li>
 <li><p>Kld_loss是vae的dkl(latent_pdf || stand_normal)
 均值和方差的维度是(batch, latent_dim=32)</p></li>
 <li><p>上面的损失函数就是vae的损失，其来源来自于：</p>
-<p><img src="act-network/image-20260120151526440.png" alt="image-20260120151526440" style="zoom:50%;" /></p></li>
+<figure>
+<img src="/2026/01/04/act-network/image-20260120152331170.png"
+alt="image-20260120152331170" />
+<figcaption aria-hidden="true">image-20260120152331170</figcaption>
+</figure></li>
 </ul>
 <h3 id="act推理">act推理</h3>
 <ul>
