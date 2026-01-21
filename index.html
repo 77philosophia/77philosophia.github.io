@@ -145,6 +145,229 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/20/smolvla/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/20/smolvla/" class="post-title-link" itemprop="url">smolvla</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-01-20 16:34:13" itemprop="dateCreated datePublished" datetime="2026-01-20T16:34:13+08:00">2026-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-01-21 11:36:34" itemprop="dateModified" datetime="2026-01-21T11:36:34+08:00">2026-01-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文：https://www.alphaxiv.org/zh/overview/2506.01844</p>
+<h3 id="smolvla主要架构">smolVLA主要架构</h3>
+<pre><code>[Paper]()
+
+Designed by Hugging Face.
+┌──────────────────────────────┐
+│                 actions      │
+│                    ▲         │
+│ ┌─────────┐      ┌─|────┐    │
+│ |         │────► │      │    │
+│ |         │ kv   │      │    │
+│ |         │────► │Action│    │
+│ |   VLM   │cache │Expert│    |
+│ │         │────► |      │    │
+│ │         │      │      │    │
+│ └▲──▲───▲─┘      └───▲──┘    |
+│  │  |   |            │       |
+│  |  |   |          noise     │
+│  │  │ state                  │
+│  │ language tokens           │
+│  image(s)                    │
+└──────────────────────────────┘</code></pre>
+<ul>
+<li><p>对输入进行的处理：</p>
+<ul>
+<li>Images:[(Batch, C,512,512), (Batch, C,512,512)] (两路相机)</li>
+<li>Img_masks:([B],[B])
+(image级别的mask，不同机器人配置的相机个数不一样，为了统一对齐格式)</li>
+<li>Lang_tokens:(Batch, lang_len=48)</li>
+<li>Lang_masks:(Batch, 48)</li>
+<li>State:(Batch, state_dim=32)
+实验中机器人关节dim=6，其余的是padding</li>
+<li>Actions:(Batch,chunk_size=50,action_dim=32)</li>
+<li>Noise:(Batch,chunk_size=50,noise_dim=action_dim=32)</li>
+</ul></li>
+<li><p>对输入进行处理</p>
+<ul>
+<li><p>第一步：多模态融合(embed_prefix)</p>
+<ul>
+<li>对每张images(Batch,C=3,H=512,W=512),vit的结构中14x14是一个patch,则图像的sequence长度是L=(512/14)x(512/14)=32x32=1024,提取经过vlm模型的vision_model的last_hidden_state得到(Batch,
+Len=1024,D=hidden_dim=768)</li>
+<li>经过vlm结构的connector(把图像特征对齐到跟语言空间一致)最终是(Batch,64,960)</li>
+<li>对文本进行处理：
+<ul>
+<li>Lang_tokens:(Batch,48) -&gt; Embedding -&gt;(Batch,48,960)</li>
+<li>State;(Batch,32)-&gt;nn.Linear()-&gt;(Batch,960)-&gt;unsqueezed:(Batch,1,960)</li>
+</ul></li>
+<li>输出拼接：
+<ul>
+<li>Embs:[image_embed, image_embed, lang_embed, state_embed]</li>
+<li>Pad_masks:[1,1,...(B,64), 1,1,1...(B,64), 1/0...(B,48), 1(B,1)
+]</li>
+<li>Attn_masks:[0,0,...(64), 0,0,...(64), 0,0,0,...(48), 1]</li>
+</ul></li>
+</ul>
+<hr /></li>
+<li><p>第二步：融合action和time(embed_suffix)</p>
+<ul>
+<li><p>Flow Matching原理</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120165038918.png"
+alt="image-20260120165038918" />
+<figcaption aria-hidden="true">image-20260120165038918</figcaption>
+</figure></li>
+<li><p>根据flow matching的原理：</p>
+<ul>
+<li><p>输入actions:(batch, chunk_size=50, action_dim=32),</p>
+<p>输入noise:(batch, 50,32)</p>
+<p>Time:(B) -&gt; (B,1,1)</p></li>
+<li><p>则x_t = noise + (1-time)*actions, 速度u_t =
+noise-actions</p></li>
+<li><p>这里注意对noise采样是正态分布随机采样，但是对时间t采取的是beta分布：</p></li>
+</ul>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120165422935.png"
+alt="image-20260120165422935" />
+<figcaption aria-hidden="true">image-20260120165422935</figcaption>
+</figure>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>那我们如何将time信息和noise_action很好的fuse在一起，这是个problem,
+我们来看embed_suffix是如何做的。</p>
+</blockquote></li>
+<li><p>对noised_action:(Batch,chunk_size=50,action_dim=32)-&gt;nn.Linear()-&gt;(batch,
+chunk_size=50,720)</p></li>
+<li><p>对time:(B)-&gt;sin_cos的方法对(0,1)区间的时间数值进行编码-&gt;(Batch,720)-&gt;repeat-&gt;(Batch,50,720)</p></li>
+<li><p>用mlp(Linear-&gt;Silu-&gt;Linear-&gt;Silu)
+将action和time结合起来, 最后得到noised_actions_with_time:(batch,
+50,720), pad_masks:[1,1,1...] (B,50), attn_masks:[1,1,1,...] (B,50)</p>
+<hr /></li>
+</ul></li>
+<li><p>最后把所有的输入信息concate在一起</p>
+<ul>
+<li><p>[img, img, lang, state, noised_action_with_time]</p></li>
+<li><p>Pad_masks: (B, 64x2+48+1+50). -&gt; (B,227)</p></li>
+<li><p>Attn_masks: (B, 64x2+48+1+50). -&gt; (B,227)</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120170605891.png"
+alt="image-20260120170605891" />
+<figcaption aria-hidden="true">image-20260120170605891</figcaption>
+</figure>
+<hr /></li>
+</ul></li>
+<li><p>第三步： VLM_with_expert的推理</p>
+<ul>
+<li>首先，总体来看通过vlm_with_expert的推理会得到一个(batch,50,720)的tensor-&gt;nn.Linear(720,32=padded
+action dim)-&gt;得到估计的v_t</li>
+<li>和上面的u_t真值做mse_loss</li>
+<li>所以这一步的关键其实是看VLM_with_expert是怎么把这些信息做整合的</li>
+</ul>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120212329700.png"
+alt="image-20260120212329700" />
+<figcaption aria-hidden="true">image-20260120212329700</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><p>输入:</p>
+<ul>
+<li>Inputs_embeds:[prefix_embes, suffix_embs]</li>
+<li>Prefix_embs:[img, img, lang, state] (Batch,64+64+48+1,960)</li>
+<li>Suffix_embeds: [noised_actions]. (B,50,720)</li>
+</ul></li>
+<li><p>VLM_with_Expert的网络结构</p>
+<ul>
+<li><p>[vlm.text_model, lm_expert(transformer
+decoder结构)]。分别有16层；是一个典型的“大模型带小模型”的结构。并且这两个网络结构的层数是一样的，在每一层都进行特征融合。</p></li>
+<li><p>16层计算</p>
+<ul>
+<li>对于奇数层，采取的是joint
+attention,代码里的方法是forward_attn_layer(把vlm每次的hidden
+state和expert每次的hidden
+state拼接在一起，作为一个统一的长序列，在同一个注意力机制下相互观察)</li>
+<li>对于偶数层采取的是cross_attention,代码里的方法是forward_cross_attn_layer(互相查询方式的观察)</li>
+<li>每一层的观察得到attn_output:(batch, 177+50, 960)</li>
+<li>然后分开使用各自网络这一层的linear, norm, mlp层回到各自hidden
+state的维度，vlm是（Batch,177,960), expert是（Batch,50,720)
+(虽然attn_out_dim=960,但是expert可以通过自己层的proj回到720的维度)</li>
+</ul></li>
+<li><p>接下来可以关注一下奇数层的joint_attention(self_attention)和偶数层的cross_attention具体是如何实现的。</p>
+<ul>
+<li><p>Self_attention: 即将两个hidden state
+tensor堆叠起来，然后运行multihead attntion计算，互相观察。</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260121113442948.png"
+alt="image-20260121113442948" />
+<figcaption aria-hidden="true">image-20260121113442948</figcaption>
+</figure></li>
+<li><p>Cross_attention</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260121113625317.png"
+alt="image-20260121113625317" />
+<figcaption aria-hidden="true">image-20260121113625317</figcaption>
+</figure></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/20/vae/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1218,90 +1441,6 @@ server的某个端口转发到本地。用于本地机器的一些资源，远�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/11/19/sam2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/19/sam2/" class="post-title-link" itemprop="url">sam2环境部署以及GUI搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-11-19 15:54:12 / Modified: 15:59:09" itemprop="dateCreated datePublished" datetime="2025-11-19T15:54:12+08:00">2025-11-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="sam2环境安装">1.sam2环境安装</h3>
-<p>Url: https://github.com/facebookresearch/sam2?tab=readme-ov-file</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.conda create -n sam2 python=3.11</span><br><span class="line"></span><br><span class="line">2.nvidia-smi //查看最高支持的CUDA 12.8</span><br><span class="line">// 进入pytorch官网查看安装版本：https://pytorch.org/get-started/locally/</span><br><span class="line">pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126</span><br><span class="line"></span><br><span class="line">pip install -e .</span><br><span class="line">pip install -e &quot;.[notebooks]&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 下载模型</span><br><span class="line">cd checkpoints &amp;&amp; \</span><br><span class="line">./download_ckpts.sh &amp;&amp; \</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
-<h3 id="sam2-gui">2. Sam2 gui</h3>
-<p>基于这个仓库进行改造：https://github.com/YunxuanMao/SAM2-GUI</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">在上面的SAM目录下：</span><br><span class="line">将mask_app.py放到根目录下</span><br><span class="line"></span><br><span class="line">pip install -r requirements.txt</span><br><span class="line">sam2 gui用的有些库比较老，和SAM2不兼容，因此升级了几个包</span><br><span class="line">pip install --upgrade gradio</span><br><span class="line">pip install --upgrade matplotlib numpy</span><br><span class="line">// pip list | grep gradio</span><br><span class="line">// gradio                               5.49.1</span><br><span class="line">// gradio_client                        1.13.3</span><br><span class="line"></span><br><span class="line">mask_app.py设置模型和配置文件，注意SAM2官方用的是2.1</span><br><span class="line">    parser.add_argument(&quot;--checkpoint_dir&quot;, type=str, default=&quot;checkpoints/sam2.1_hiera_large.pt&quot;)</span><br><span class="line">    parser.add_argument(&quot;--model_cfg&quot;, type=str, default=&quot;configs/sam2.1/sam2.1_hiera_l.yaml&quot;)</span><br><span class="line"></span><br><span class="line">python mask_app.py --root_dir ./data_root</span><br></pre></td></tr></table></figure>
-<h3 id="gui执行">3.GUI执行</h3>
-<p>a.将视频文件提取帧（这里存入的是PNG）</p>
-<figure>
-<img
-src="/2025/11/19/sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b9806db1f397f248180168a5883a7a71819e352394fc8257659a752c18982f3e8579d17a12fe57b012.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>b.选择初始帧提取SAM特征（这里会报错，定位到SAM2的MISC.PY里面没有支持PNG图片，直接加上就行）</p>
-<figure>
-<img
-src="/2025/11/19/sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b98ad7bdf5c85b3c0f5a86b33c300b704e0467a4a87aa09e3589a17306de87f1d1fed6d43adee18774.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ol type="1">
-<li>后面依次操作就行</li>
-</ol>
-<p>把SAM2和GUI一起的PIPELINE放到了GIT里</p>
-<p>https://github.com/77philosophia/sam2#</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1371,12 +1510,12 @@ alt="img" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

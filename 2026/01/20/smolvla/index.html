@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="论文：https:&#x2F;&#x2F;www.alphaxiv.org&#x2F;zh&#x2F;overview&#x2F;2506.01844 smolVLA主要架构 [Paper]()  Designed by Hugging Face. ┌──────────────────────────────┐ │                 actions      │ │                    ▲         │ │">
+<meta property="og:type" content="article">
+<meta property="og:title" content="smolvla">
+<meta property="og:url" content="http://77philosophia.github.io/2026/01/20/smolvla/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="论文：https:&#x2F;&#x2F;www.alphaxiv.org&#x2F;zh&#x2F;overview&#x2F;2506.01844 smolVLA主要架构 [Paper]()  Designed by Hugging Face. ┌──────────────────────────────┐ │                 actions      │ │                    ▲         │ │">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260120165038918.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260120165422935.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260120170605891.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260120212329700.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260121113442948.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260121113625317.png">
+<meta property="article:published_time" content="2026-01-20T08:34:13.000Z">
+<meta property="article:modified_time" content="2026-01-21T03:36:34.874Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="aerobat, robot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/01/20/smolvla/image-20260120165038918.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/01/20/smolvla/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>smolvla | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/20/smolvla/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          smolvla
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-01-20 16:34:13" itemprop="dateCreated datePublished" datetime="2026-01-20T16:34:13+08:00">2026-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-01-21 11:36:34" itemprop="dateModified" datetime="2026-01-21T11:36:34+08:00">2026-01-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>论文：https://www.alphaxiv.org/zh/overview/2506.01844</p>
+<h3 id="smolvla主要架构">smolVLA主要架构</h3>
+<pre><code>[Paper]()
+
+Designed by Hugging Face.
+┌──────────────────────────────┐
+│                 actions      │
+│                    ▲         │
+│ ┌─────────┐      ┌─|────┐    │
+│ |         │────► │      │    │
+│ |         │ kv   │      │    │
+│ |         │────► │Action│    │
+│ |   VLM   │cache │Expert│    |
+│ │         │────► |      │    │
+│ │         │      │      │    │
+│ └▲──▲───▲─┘      └───▲──┘    |
+│  │  |   |            │       |
+│  |  |   |          noise     │
+│  │  │ state                  │
+│  │ language tokens           │
+│  image(s)                    │
+└──────────────────────────────┘</code></pre>
+<ul>
+<li><p>对输入进行的处理：</p>
+<ul>
+<li>Images:[(Batch, C,512,512), (Batch, C,512,512)] (两路相机)</li>
+<li>Img_masks:([B],[B])
+(image级别的mask，不同机器人配置的相机个数不一样，为了统一对齐格式)</li>
+<li>Lang_tokens:(Batch, lang_len=48)</li>
+<li>Lang_masks:(Batch, 48)</li>
+<li>State:(Batch, state_dim=32)
+实验中机器人关节dim=6，其余的是padding</li>
+<li>Actions:(Batch,chunk_size=50,action_dim=32)</li>
+<li>Noise:(Batch,chunk_size=50,noise_dim=action_dim=32)</li>
+</ul></li>
+<li><p>对输入进行处理</p>
+<ul>
+<li><p>第一步：多模态融合(embed_prefix)</p>
+<ul>
+<li>对每张images(Batch,C=3,H=512,W=512),vit的结构中14x14是一个patch,则图像的sequence长度是L=(512/14)x(512/14)=32x32=1024,提取经过vlm模型的vision_model的last_hidden_state得到(Batch,
+Len=1024,D=hidden_dim=768)</li>
+<li>经过vlm结构的connector(把图像特征对齐到跟语言空间一致)最终是(Batch,64,960)</li>
+<li>对文本进行处理：
+<ul>
+<li>Lang_tokens:(Batch,48) -&gt; Embedding -&gt;(Batch,48,960)</li>
+<li>State;(Batch,32)-&gt;nn.Linear()-&gt;(Batch,960)-&gt;unsqueezed:(Batch,1,960)</li>
+</ul></li>
+<li>输出拼接：
+<ul>
+<li>Embs:[image_embed, image_embed, lang_embed, state_embed]</li>
+<li>Pad_masks:[1,1,...(B,64), 1,1,1...(B,64), 1/0...(B,48), 1(B,1)
+]</li>
+<li>Attn_masks:[0,0,...(64), 0,0,...(64), 0,0,0,...(48), 1]</li>
+</ul></li>
+</ul>
+<hr /></li>
+<li><p>第二步：融合action和time(embed_suffix)</p>
+<ul>
+<li><p>Flow Matching原理</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120165038918.png"
+alt="image-20260120165038918" />
+<figcaption aria-hidden="true">image-20260120165038918</figcaption>
+</figure></li>
+<li><p>根据flow matching的原理：</p>
+<ul>
+<li><p>输入actions:(batch, chunk_size=50, action_dim=32),</p>
+<p>输入noise:(batch, 50,32)</p>
+<p>Time:(B) -&gt; (B,1,1)</p></li>
+<li><p>则x_t = noise + (1-time)*actions, 速度u_t =
+noise-actions</p></li>
+<li><p>这里注意对noise采样是正态分布随机采样，但是对时间t采取的是beta分布：</p></li>
+</ul>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120165422935.png"
+alt="image-20260120165422935" />
+<figcaption aria-hidden="true">image-20260120165422935</figcaption>
+</figure>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>那我们如何将time信息和noise_action很好的fuse在一起，这是个problem,
+我们来看embed_suffix是如何做的。</p>
+</blockquote></li>
+<li><p>对noised_action:(Batch,chunk_size=50,action_dim=32)-&gt;nn.Linear()-&gt;(batch,
+chunk_size=50,720)</p></li>
+<li><p>对time:(B)-&gt;sin_cos的方法对(0,1)区间的时间数值进行编码-&gt;(Batch,720)-&gt;repeat-&gt;(Batch,50,720)</p></li>
+<li><p>用mlp(Linear-&gt;Silu-&gt;Linear-&gt;Silu)
+将action和time结合起来, 最后得到noised_actions_with_time:(batch,
+50,720), pad_masks:[1,1,1...] (B,50), attn_masks:[1,1,1,...] (B,50)</p>
+<hr /></li>
+</ul></li>
+<li><p>最后把所有的输入信息concate在一起</p>
+<ul>
+<li><p>[img, img, lang, state, noised_action_with_time]</p></li>
+<li><p>Pad_masks: (B, 64x2+48+1+50). -&gt; (B,227)</p></li>
+<li><p>Attn_masks: (B, 64x2+48+1+50). -&gt; (B,227)</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120170605891.png"
+alt="image-20260120170605891" />
+<figcaption aria-hidden="true">image-20260120170605891</figcaption>
+</figure>
+<hr /></li>
+</ul></li>
+<li><p>第三步： VLM_with_expert的推理</p>
+<ul>
+<li>首先，总体来看通过vlm_with_expert的推理会得到一个(batch,50,720)的tensor-&gt;nn.Linear(720,32=padded
+action dim)-&gt;得到估计的v_t</li>
+<li>和上面的u_t真值做mse_loss</li>
+<li>所以这一步的关键其实是看VLM_with_expert是怎么把这些信息做整合的</li>
+</ul>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260120212329700.png"
+alt="image-20260120212329700" />
+<figcaption aria-hidden="true">image-20260120212329700</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><p>输入:</p>
+<ul>
+<li>Inputs_embeds:[prefix_embes, suffix_embs]</li>
+<li>Prefix_embs:[img, img, lang, state] (Batch,64+64+48+1,960)</li>
+<li>Suffix_embeds: [noised_actions]. (B,50,720)</li>
+</ul></li>
+<li><p>VLM_with_Expert的网络结构</p>
+<ul>
+<li><p>[vlm.text_model, lm_expert(transformer
+decoder结构)]。分别有16层；是一个典型的“大模型带小模型”的结构。并且这两个网络结构的层数是一样的，在每一层都进行特征融合。</p></li>
+<li><p>16层计算</p>
+<ul>
+<li>对于奇数层，采取的是joint
+attention,代码里的方法是forward_attn_layer(把vlm每次的hidden
+state和expert每次的hidden
+state拼接在一起，作为一个统一的长序列，在同一个注意力机制下相互观察)</li>
+<li>对于偶数层采取的是cross_attention,代码里的方法是forward_cross_attn_layer(互相查询方式的观察)</li>
+<li>每一层的观察得到attn_output:(batch, 177+50, 960)</li>
+<li>然后分开使用各自网络这一层的linear, norm, mlp层回到各自hidden
+state的维度，vlm是（Batch,177,960), expert是（Batch,50,720)
+(虽然attn_out_dim=960,但是expert可以通过自己层的proj回到720的维度)</li>
+</ul></li>
+<li><p>接下来可以关注一下奇数层的joint_attention(self_attention)和偶数层的cross_attention具体是如何实现的。</p>
+<ul>
+<li><p>Self_attention: 即将两个hidden state
+tensor堆叠起来，然后运行multihead attntion计算，互相观察。</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260121113442948.png"
+alt="image-20260121113442948" />
+<figcaption aria-hidden="true">image-20260121113442948</figcaption>
+</figure></li>
+<li><p>Cross_attention</p>
+<figure>
+<img src="/2026/01/20/smolvla/image-20260121113625317.png"
+alt="image-20260121113625317" />
+<figcaption aria-hidden="true">image-20260121113625317</figcaption>
+</figure></li>
+</ul></li>
+</ul></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/aerobat-robot/" rel="tag"># aerobat, robot</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/01/20/vae/" rel="prev" title="vae">
+      <i class="fa fa-chevron-left"></i> vae
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#smolvla%E4%B8%BB%E8%A6%81%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">smolVLA主要架构</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

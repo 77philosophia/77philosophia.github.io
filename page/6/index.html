@@ -145,6 +145,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/Blip-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/Blip-2/" class="post-title-link" itemprop="url">Blip-2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-05 16:31:01 / Modified: 16:38:22" itemprop="dateCreated datePublished" datetime="2025-01-05T16:31:01+08:00">2025-01-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="背景">背景：</h3>
+<p><strong>Vision-language
+pre-training,</strong>将视觉和语言的只是结合起来。但是模型通常高<strong>cost</strong>，因为需要端到端训练<strong>vison</strong>和<strong>language</strong>模型<strong>(</strong>通常用<strong>transformers)</strong>。因此需要一种更不复杂的<strong>vision-language</strong>模型，不需要端到端的训练，于是<strong>BLIP-2</strong>就产生了。</p>
+<h3
+id="blip-2-bootstrapping-language-image-pre-training-with-frozen-image-encoders-and-large-language-models"><strong>BLIP-2:
+Bootstrapping Language-Image Pre-training with Frozen Image Encoders and
+Large Language Models</strong></h3>
+<p>作者采用了一个轻量级的<strong>querying
+transfomer</strong>结构作为<strong>frozen image</strong>和<strong>text
+encoders</strong>的<strong>bottleneck.</strong>首先用<strong>image
+encoder</strong>提取图像特征，然后送给语言模型去理解。但是语言模型没有在<strong>image</strong>上面训练过，因此它无法直接理解这些视觉表示。为了解决这个问题，<strong>Q-Former</strong>采用一些可学习的<strong>querying
+vectors</strong>，在两个阶段进行预训练；</p>
+<p>（1）vision-language representation learning with a frozen image
+encoder</p>
+<ol start="2" type="1">
+<li>vision-to-language generative learning stage with a frozen text
+encoder</li>
+</ol>
+<figure>
+<img src="/2025/01/05/Blip-2/image-20250105163736925.png"
+alt="image-20250105163736925" />
+<figcaption aria-hidden="true">image-20250105163736925</figcaption>
+</figure>
+<p>Q-Former包括两个子模块：</p>
+<p>a.一个image transformer和frozen image encoder交互。</p>
+<p>b.一个</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/webui-api/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1548,240 +1632,6 @@ target="_blank" rel="noopener" href="https://www.coursera.org/learn/introduction
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/23/backend/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/23/backend/" class="post-title-link" itemprop="url">backend</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-23 14:00:15" itemprop="dateCreated datePublished" datetime="2024-05-23T14:00:15+08:00">2024-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-24 19:14:29" itemprop="dateModified" datetime="2024-05-24T19:14:29+08:00">2024-05-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="week-1">Week 1</h1>
-<h4 id="node-js">1. Node js</h4>
-<p>Node js是javascript在服务器端的编程框架， express是其开发框架。</p>
-<p>server大概有三种：database server / web server(http) / application
-server</p>
-<p>js的特点：Event-driven, 异步asynchronous, 非阻塞，<a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9TZXJ2ZXJTaWRlSmF2YXNjcmlwdC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MTZ9.6yLbDHSnA7Ffyp8kq9u1jq8zNAs1QiwSi8fIG0quUxg">js了解</a></p>
-<h5 id="js-module">js module</h5>
-<figure>
-<img src="/2024/05/23/backend/image-20240523143047893.png"
-alt="image-20240523143047893" />
-<figcaption aria-hidden="true">image-20240523143047893</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523143135653.png"
-alt="image-20240523143135653" />
-<figcaption aria-hidden="true">image-20240523143135653</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523143215979.png"
-alt="image-20240523143215979" />
-<figcaption aria-hidden="true">image-20240523143215979</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523143324541.png"
-alt="image-20240523143324541" />
-<figcaption aria-hidden="true">image-20240523143324541</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523143354049.png"
-alt="image-20240523143354049" />
-<figcaption aria-hidden="true">image-20240523143354049</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523144020865.png"
-alt="image-20240523144020865" />
-<figcaption aria-hidden="true">image-20240523144020865</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523144848936.png"
-alt="image-20240523144848936" />
-<figcaption aria-hidden="true">image-20240523144848936</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523145015691.png"
-alt="image-20240523145015691" />
-<figcaption aria-hidden="true">image-20240523145015691</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523145042861.png"
-alt="image-20240523145042861" />
-<figcaption aria-hidden="true">image-20240523145042861</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9BZHZhbmNlZF9Ob2RlLmpzX21vZHVsZXMubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTUzfQ.oUQg6uIJbbEgp0GByD36iHMr_gMmReyJYVykaSrHGbA">高级js模块</a></p>
-<figure>
-<img src="/2024/05/23/backend/image-20240523145912229.png"
-alt="image-20240523145912229" />
-<figcaption aria-hidden="true">image-20240523145912229</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMV9JbnRyb2R1Y3Rpb25Ub1NlcnZlclNpZGVKYXZhU2NyaXB0JTJGSGFuZHNPbl9MYWJfRmlyc3RTZXJ2ZXJTaWRlU2NyaXB0Lm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyNH0.4cNsJQ7n8QzVT8x1BO0QhMW5jb7Kp_aXW3VILCc2h9Y">lab:使用nodejs创建服务端程序</a></p>
-<figure>
-<img src="/2024/05/23/backend/image-20240523152832502.png"
-alt="image-20240523152832502" />
-<figcaption aria-hidden="true">image-20240523152832502</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9HbG9zc2FyeS8yMDAzODkuMTFfTTFfR2xvc3NhcnkubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTQ0fQ.TuD3KX8yEEewo2CIDv2AyjGmWI1EMdClt8Tdw1m5MKY">一些概念</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTFfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MzV9.4M92HAb93JO5_DdTXT_jL2vJa-pfHrJ3Cxw2C_HASVE">服务器端js简介</a></p>
-<h1 id="week-2">Week 2</h1>
-<p>nodejs通过非阻塞的方式调用所有io</p>
-<figure>
-<img src="/2024/05/23/backend/image-20240523154546786.png"
-alt="image-20240523154546786" />
-<figcaption aria-hidden="true">image-20240523154546786</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523154705545.png"
-alt="image-20240523154705545" />
-<figcaption aria-hidden="true">image-20240523154705545</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240523185448246.png"
-alt="image-20240523185448246" />
-<figcaption aria-hidden="true">image-20240523185448246</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb25Ub0FzeW5jQXdhaXQubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU3fQ.QLu1ThZK6P3pv6Q24iyROVj8RZZnSPyZzOIx3e7Kuz0">async/await</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMl9Bc3luY19DYWxsYmFjayUyRkhhbmRzT25fTGFiX0FzeW5jX0NhbGxiYWNrLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUzMX0.qV1jLSpoScLWvGOZKXv95pbhkyzEOctJ9yOy5CscDQ4">异步回调编程</a></p>
-<figure>
-<img src="/2024/05/23/backend/image-20240524112320066.png"
-alt="image-20240524112320066" />
-<figcaption aria-hidden="true">image-20240524112320066</figcaption>
-</figure>
-<p><a href="">术语表 - 使用回调编程的异步 I/O</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTJfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1Mzh9.JPvmEnhXrPQHLGLyZDW-7kzx2espu7krfqxdFJp9Ao0">Asynchronous
-I/O with Callback Program</a></p>
-<h1 id="express网络框架">Express网络框架</h1>
-<p>node js不是一个运行框架，是一个runtime
-environment用于在server上面运行js code</p>
-<figure>
-<img src="/2024/05/23/backend/image-20240524115011622.png"
-alt="image-20240524115011622" />
-<figcaption aria-hidden="true">image-20240524115011622</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240524115044107.png"
-alt="image-20240524115044107" />
-<figcaption aria-hidden="true">image-20240524115044107</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240524115606544.png"
-alt="image-20240524115606544" />
-<figcaption aria-hidden="true">image-20240524115606544</figcaption>
-</figure>
-<h4 id="中间件和路由器">中间件和路由器</h4>
-<p>本文将讨论<em>中间件</em> 和<em>路由</em>这两个术语。</p>
-<p>中间件是位于应用程序、数据库或服务之间的软件，允许这些不同的技术进行通信。它在分布式系统中为终端用户创建无缝交互。</p>
-<p>Express
-是一个消息传递框架，用于处理路由和编写中间件。应用程序的前端使用 Express
-来促进后端组件之间的通信，而前端和后端服务无需使用相同的语言。前端与中间件通信，而不是直接与后端通信。</p>
-<p>像 Express 这样的消息框架通常包含 JSON、REST API
-和网络服务。旧的消息框架可能包含可扩展标记语言（XML）和简单对象访问协议（SOAP），而不是
-JSON 和 REST
-API。消息传递框架提供了一种处理不同应用间数据传输的标准化方法。</p>
-<p>网络服务器是连接网站和数据库的中间件的一个例子。网络服务器处理业务逻辑，并根据请求从数据库路由数据。<em>路由</em>
-是将 GET、POST 或 DELETE 等 HTTP 请求与 URL 以及处理该 URL
-的函数相关联的代码部分。路由在网络开发中用于根据浏览器 URL
-确定的规则分割应用程序的用户界面。</p>
-<p>路由器功能统称为 "中间件"。中间件负责响应 HTTP
-请求或调用中间件链中的其他函数。Express 通过 Router 类处理路由器函数，如
-Router.get()。顾名思义，Router.get() 负责处理 HTTP GET
-请求。其他路由器函数包括 Router.post()、Router.put() 和
-Router.delete()，使用方法基本相同。这些方法需要两个参数，一个 URL
-路径和一个回调函数。</p>
-<p>除了路由之外，中间件还负责通过加密和解密数据来提供服务间的安全连接，通过将流量分配到不同的服务器来管理应用程序负载，以及在数据返回客户端之前对数据进行排序或过滤。</p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb24tdG8tQXV0aGVudGljYXRpb24ubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU1fQ.iKf3HQ4FD9ESfd0H1cH8R1eONRumBzDQAQYVyD3SO34">身份验证和授权</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://d3c33hcgiwev3.cloudfront.net/L1T_uyeHSHGyROFLyqZRxQ_2ee09d6aa6ba4736920c2f6a31faa6f1_Writing-RESTful-APIs-Reading.docx.pdf?Expires=1716681600&amp;Signature=IJLmbTFs~gRZ3Ij9yrXrNVeNbu5kADjvREy0SkQt7eovyMZNnOX6YaZFa7Cs2fOVg4Fg4JOsSBxmsgho3a~kMxWsDVQGpDO79Ai2NjvK1Jv5~pe0z7FlTvajvO62pgLJFpBaegWY12EM5mjzVwzMHDILZrSNF7luz~2R3gb8-3s_&amp;Key-Pair-Id=APKAJLTNE6QMUY6HBC5A">http
-method/rest api</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlM19FeHByZXNzSlMlMkZIYW5kcy1vbl9MYWJfQ1JVRC5tZCIsInRvb2xfdHlwZSI6InRoZWlhIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MjZ9.30Vfc7qrnD9jo_XAW4oiq9zJ1ax_0swsPwmRIL34JLk">lab:crud
-with nodejs</a></p>
-<figure>
-<img src="/2024/05/23/backend/image-20240524174736995.png"
-alt="image-20240524174736995" />
-<figcaption aria-hidden="true">image-20240524174736995</figcaption>
-</figure>
-<figure>
-<img src="/2024/05/23/backend/image-20240524174805639.png"
-alt="image-20240524174805639" />
-<figcaption aria-hidden="true">image-20240524174805639</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://www.coursera.org/learn/developing-backend-apps-with-nodejs-and-express/ungradedWidget/IO1Oa/glossary-express-web-application-framework">express
-web术语</a></p>
-<p>test-project/ node_modules/ config/ db.js //Database connection and
-configuration credentials.js //Passwords/API keys for external services
-used by your app models/ //For mongoose schemas items.js prices.js
-routes/ //All routes for different entities in different files items.js
-prices.js app.js routes.js //Require all routes in this and then require
-this file in package.json</p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGUHJhY3RpY2VQcm9qZWN0X0ZyaWVuZHNMaXN0X1dpdGhBdXRoJTJGaW5zdHJ1Y3Rpb25zLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyM30.0Rshfz3KAokqUCOpGERC0zmSL26a7aKKCtJLaZIUsKc">practice
-lab</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1851,12 +1701,12 @@ lab</a></p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

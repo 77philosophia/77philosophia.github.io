@@ -145,6 +145,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/11/19/sam2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/11/19/sam2/" class="post-title-link" itemprop="url">sam2环境部署以及GUI搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-11-19 15:54:12 / Modified: 15:59:09" itemprop="dateCreated datePublished" datetime="2025-11-19T15:54:12+08:00">2025-11-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="sam2环境安装">1.sam2环境安装</h3>
+<p>Url: https://github.com/facebookresearch/sam2?tab=readme-ov-file</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.conda create -n sam2 python=3.11</span><br><span class="line"></span><br><span class="line">2.nvidia-smi //查看最高支持的CUDA 12.8</span><br><span class="line">// 进入pytorch官网查看安装版本：https://pytorch.org/get-started/locally/</span><br><span class="line">pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126</span><br><span class="line"></span><br><span class="line">pip install -e .</span><br><span class="line">pip install -e &quot;.[notebooks]&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 下载模型</span><br><span class="line">cd checkpoints &amp;&amp; \</span><br><span class="line">./download_ckpts.sh &amp;&amp; \</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
+<h3 id="sam2-gui">2. Sam2 gui</h3>
+<p>基于这个仓库进行改造：https://github.com/YunxuanMao/SAM2-GUI</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">在上面的SAM目录下：</span><br><span class="line">将mask_app.py放到根目录下</span><br><span class="line"></span><br><span class="line">pip install -r requirements.txt</span><br><span class="line">sam2 gui用的有些库比较老，和SAM2不兼容，因此升级了几个包</span><br><span class="line">pip install --upgrade gradio</span><br><span class="line">pip install --upgrade matplotlib numpy</span><br><span class="line">// pip list | grep gradio</span><br><span class="line">// gradio                               5.49.1</span><br><span class="line">// gradio_client                        1.13.3</span><br><span class="line"></span><br><span class="line">mask_app.py设置模型和配置文件，注意SAM2官方用的是2.1</span><br><span class="line">    parser.add_argument(&quot;--checkpoint_dir&quot;, type=str, default=&quot;checkpoints/sam2.1_hiera_large.pt&quot;)</span><br><span class="line">    parser.add_argument(&quot;--model_cfg&quot;, type=str, default=&quot;configs/sam2.1/sam2.1_hiera_l.yaml&quot;)</span><br><span class="line"></span><br><span class="line">python mask_app.py --root_dir ./data_root</span><br></pre></td></tr></table></figure>
+<h3 id="gui执行">3.GUI执行</h3>
+<p>a.将视频文件提取帧（这里存入的是PNG）</p>
+<figure>
+<img
+src="/2025/11/19/sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b9806db1f397f248180168a5883a7a71819e352394fc8257659a752c18982f3e8579d17a12fe57b012.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>b.选择初始帧提取SAM特征（这里会报错，定位到SAM2的MISC.PY里面没有支持PNG图片，直接加上就行）</p>
+<figure>
+<img
+src="/2025/11/19/sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b98ad7bdf5c85b3c0f5a86b33c300b704e0467a4a87aa09e3589a17306de87f1d1fed6d43adee18774.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li>后面依次操作就行</li>
+</ol>
+<p>把SAM2和GUI一起的PIPELINE放到了GIT里</p>
+<p>https://github.com/77philosophia/sam2#</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/11/18/some-culture/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1149,122 +1233,6 @@ greedy action sampling。这种方式也叫on-policy learning.</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/07/04/DQN-algorithm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/07/04/DQN-algorithm/" class="post-title-link" itemprop="url">Deep Q-Network(DQN)（2015年google mind）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-07-04 16:12:57 / Modified: 16:14:06" itemprop="dateCreated datePublished" datetime="2025-07-04T16:12:57+08:00">2025-07-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Q-learning算法中，Q-table的state是离散化的，计算上并不有优势。为了解决这个问题，在deep
-Q-learning算法中，我们用Q-function而不是Q-table去得到当前状态的最优action.并且通过神经网络去实现这个function,叫做Q-Network.</p>
-<figure>
-<img
-src="/2025/07/04/DQN-algorithm/5eecdaf48460cde54ce74650ecebabaf8b9e6f149ce2646675b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4afb89c91f441846759dc75a9e61d2f71afce2785efbe89fbb8a51ab0ebea36187825490f22a87800ab.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>我们优化这个Q-network而不是Q-table.</p>
-<p>首先，我们以在Q-learning中讨论的Bellman equation开始：</p>
-<p>Q^*(s_{t},a_{t}) = r_{t} + <em>aQ(s</em>{t+1},a)</p>
-<p>Q^*表示最优的Q值。</p>
-<p>和之前的例子一样，我们优化这个Q-function通过最小化r_{t}+<em>aQ(s</em>{t+1},a)和Q(s_{t},a_{t})的差值，通过epsilon-greedy
-sampling.</p>
-<figure>
-<img
-src="/2025/07/04/DQN-algorithm/5eecdaf48460cde54ce74650ecebabaf8b9e6f149ce2646675b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e7ff3b24a4875cbcc5185c73e24cf61e4a6c4526101e6fed7cb51fe19b4c8fe077e1f3b79cf61406b.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>然而，在DQN,我们隔开一个网络用来产生targetmax_{a}Q(s_{t+1},a)从原来的Q-network当中Q(s_{t},a_{t})。记住我们之前更新了在状态s_{t}的value而不是下一个状态s_{t+1}的值。如果target网络和Q-Network是一样的，在优化过程中，target的权重也发生了改变，因此会失去训练的稳定性。这个算法隔开了一个target网络在优化过程中去保持更新过程中没有更新（/训练）的权重。</p>
-<p>笔记：一般，尤其是有一个明确的目标，首先是goal
-state附近的states被优化，其他状态会从goal到start的顺序逐步被优化。最后通过优化可以找到达到目标的trajectory.</p>
-<p>当是个明显失败的state的时候，也是一样的。（没失败的trajectory会被优化过程找到）</p>
-<p>在这个场景中，s_{t+1}的value值会在s_{t}优化之前被优化。（因为s_{t}强依赖于s_{t+1}）.</p>
-<p>每C轮更新，就克隆Q-network去得到一个新的target newrork,如图所示：</p>
-<p>因此我们构建2个网络，Q-Network和target-network.</p>
-<p>上面的这个network输出2个值，每个value对应每个action的预估Q-value.</p>
-<p>在CarPole的例子中，我们有2个actions（left or
-right），然后会输出对应的2个值。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class QNet(nn.Module):</span><br><span class="line">    def __init__(self, hidden_dim=64):</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden = nn.Linear(4, hidden_dim)</span><br><span class="line">        self.output = nn.Linear(hidden_dim, 2)</span><br><span class="line"></span><br><span class="line">    def forward(self, s):</span><br><span class="line">        outs = self.hidden(s)</span><br><span class="line">        outs = F.relu(outs)</span><br><span class="line">        outs = self.output(outs)</span><br><span class="line">        return outs</span><br><span class="line"></span><br><span class="line">q_model = QNet().to(device)</span><br><span class="line">q_target_model = QNet().to(device)</span><br><span class="line">q_target_model.load_state_dict(q_model.state_dict())</span><br><span class="line">_ = q_target_model.requires_grad_(False)</span><br></pre></td></tr></table></figure>
-<p>在之前原始的Q-learning学习算法中，我们将sequential
-samples(trajectory)每次训练更新q-table.</p>
-<p>在DQN当中，为了避免只从最近的经验中学习和提高训练稳定性，我们用replay
-memory(也叫experience replay)。算法存储最近N次的experience
-tuples,进行更新的时候随机在N次中采样。</p>
-<p>在DQN算法中，通过最小化MSE loss来进行优化。</p>
-<p>L = E[((r_t+<em>aQ(s</em>{t+1},a_t))-Q(s_t,a_t))^2]</p>
-<p>note: 用E表示expected
-value因为神经网络为batch中所有可能的samples优化minimize
-loss，不是为一个单一的loss</p>
-<p>然而，如果在一次episode达到terminal
-state，下一个状态就不存在因此损失也就变成</p>
-<p>(r_t-Q(s_t,a_t))^2,因此最终的损失就会成为：</p>
-<p>L = E[((r_t+(1-d_t)<em>aQ(s</em>{t+1},a_t))-Q(s_t,a_t))^2]</p>
-<p>如果episode is done那么d_t = 1否则就是0.</p>
-<p>在CarPole中，returns
-'done'有两种情况，一种termination终止，一种truncation。当任务失败或者结束，在termination
-flag中返回true.当达到最大的500次actions次数的限制，truncation
-flag返回true.因此，我们设置dt=1只有termination是true.（如果我们在truncation中设置dt=1,这个状态下的q-value会underestimated,尽管任务成功了）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">gamma = 0.99</span><br><span class="line"></span><br><span class="line">opt = torch.optim.Adam(q_model.parameters(), lr=0.0005)</span><br><span class="line"></span><br><span class="line">def optimize(states, actions, rewards, next_states, dones):</span><br><span class="line">    #</span><br><span class="line">    # Compute target</span><br><span class="line">    #</span><br><span class="line"></span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        # compute Q(s_&#123;t+1&#125;)                               : size=[batch_size, 2]</span><br><span class="line">        target_vals_for_all_actions = q_target_model(next_states)</span><br><span class="line">        # compute argmax_a Q(s_&#123;t+1&#125;)                      : size=[batch_size]</span><br><span class="line">        target_actions = torch.argmax(target_vals_for_all_actions, 1)</span><br><span class="line">        # compute max Q(s_&#123;t+1&#125;)                           : size=[batch_size]</span><br><span class="line">        target_actions_one_hot = F.one_hot(target_actions, env.action_space.n).float()</span><br><span class="line">        target_vals = torch.sum(target_vals_for_all_actions * target_actions_one_hot, 1)</span><br><span class="line">        # compute r_t + gamma * (1 - d_t) * max Q(s_&#123;t+1&#125;) : size=[batch_size]</span><br><span class="line">        target_vals_masked = (1.0 - dones) * target_vals</span><br><span class="line">        q_vals1 = rewards + gamma * target_vals_masked</span><br><span class="line"></span><br><span class="line">    opt.zero_grad()</span><br><span class="line"></span><br><span class="line">    #</span><br><span class="line">    # Compute q-value</span><br><span class="line">    #</span><br><span class="line">    actions_one_hot = F.one_hot(actions, env.action_space.n).float()</span><br><span class="line">    q_vals2 = torch.sum(q_model(states) * actions_one_hot, 1)</span><br><span class="line"></span><br><span class="line">    #</span><br><span class="line">    # Get MSE loss and optimize</span><br><span class="line">    #</span><br><span class="line">    loss = F.mse_loss(</span><br><span class="line">        q_vals1.detach(),</span><br><span class="line">        q_vals2,</span><br><span class="line">        reduction=&quot;mean&quot;)</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br></pre></td></tr></table></figure>
-<h4 id="epsilon-greedy-strategy"><strong>epsilon-greedy
-strategy:</strong></h4>
-<p>如果只是random picks up actions，agent不会收敛到optimal
-behavious；如果总是选择最优的action,就不会探索新的actions,也不会收敛到最优。</p>
-<p>epsilon-greedy
-strategy,在早期阶段探索新动作，逐渐选择最优的动作去训练。（实现exploration和exploitation的一个平衡）</p>
-<p>区分rl learning里的sampling size和batch size</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1334,12 +1302,12 @@ strategy,在早期阶段探索新动作，逐渐选择最优的动作去训练�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

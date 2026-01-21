@@ -145,6 +145,132 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/comfyui-env/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/07/comfyui-env/" class="post-title-link" itemprop="url">comfyui环境搭建+问题记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-07 19:15:27 / Modified: 19:19:41" itemprop="dateCreated datePublished" datetime="2025-01-07T19:15:27+08:00">2025-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="环境安装">环境安装</h3>
+<ol type="1">
+<li><p>import torchaudio的时候报错“undefined symbol”</p>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191646057.png"
+alt="image-20250107191646057" />
+<figcaption aria-hidden="true">image-20250107191646057</figcaption>
+</figure></li>
+</ol>
+<p>推测还是版本不兼容，按照下面这个博客的版本进行安装</p>
+<p><strong>pip install torch==2.1.0</strong></p>
+<p><strong>pip install torchvision==0.16.0</strong></p>
+<p><strong>pip install torchaudio==2.1.0</strong></p>
+<p><strong>https://blog.csdn.net/qq_45599476/article/details/140207176</strong></p>
+<p>再次启动就好了</p>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191710761.png"
+alt="image-20250107191710761" />
+<figcaption aria-hidden="true">image-20250107191710761</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>在点击Queue Prompt出图的时候报错</p>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191754873.png"
+alt="image-20250107191754873" />
+<figcaption aria-hidden="true">image-20250107191754873</figcaption>
+</figure></li>
+</ol>
+<p>现这个工程中<strong>xformers</strong>也没有成功运行。</p>
+<p><strong>https://github.com/comfyanonymous/ComfyUI/issues/4870</strong></p>
+<p><strong>The torch repo has a release wheel of xformers that works
+with torch 2.4.1</strong></p>
+<p><strong>pip3 install -U xformers --index-url</strong>
+<strong>https://download.pytorch.org/whl/cu124</strong> <strong>should
+pull</strong></p>
+<p>*<strong>0.0.28.post1*</strong></p>
+<p><strong>https://pytorch.org/get-started/previous-versions/</strong></p>
+<p>解决还是变包：</p>
+<p><strong>pip install torch==2.4.1</strong></p>
+<p><strong>Pip install torchvision==0.19.1</strong></p>
+<p><strong>Pip install torchaudio==2.4.1</strong></p>
+<p><strong>pip3 install -U xformers --index-url</strong>
+<strong>https://download.pytorch.org/whl/cu124</strong> <strong>should
+pull</strong></p>
+<p>*<strong>0.0.28.post1*</strong></p>
+<p>成功出图</p>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191854078.png"
+alt="image-20250107191854078" />
+<figcaption aria-hidden="true">image-20250107191854078</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191903222.png"
+alt="image-20250107191903222" />
+<figcaption aria-hidden="true">image-20250107191903222</figcaption>
+</figure>
+<h3 id="测试">测试：</h3>
+<p>安装和sd跑同一个prompt</p>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191927650.png"
+alt="image-20250107191927650" />
+<figcaption aria-hidden="true">image-20250107191927650</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/07/comfyui-env/image-20250107191936508.png"
+alt="image-20250107191936508" />
+<figcaption aria-hidden="true">image-20250107191936508</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1451,90 +1577,6 @@ through External Knowledge -RAG</h3>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/Blip-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/05/Blip-2/" class="post-title-link" itemprop="url">Blip-2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-05 16:31:01 / Modified: 16:38:22" itemprop="dateCreated datePublished" datetime="2025-01-05T16:31:01+08:00">2025-01-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="背景">背景：</h3>
-<p><strong>Vision-language
-pre-training,</strong>将视觉和语言的只是结合起来。但是模型通常高<strong>cost</strong>，因为需要端到端训练<strong>vison</strong>和<strong>language</strong>模型<strong>(</strong>通常用<strong>transformers)</strong>。因此需要一种更不复杂的<strong>vision-language</strong>模型，不需要端到端的训练，于是<strong>BLIP-2</strong>就产生了。</p>
-<h3
-id="blip-2-bootstrapping-language-image-pre-training-with-frozen-image-encoders-and-large-language-models"><strong>BLIP-2:
-Bootstrapping Language-Image Pre-training with Frozen Image Encoders and
-Large Language Models</strong></h3>
-<p>作者采用了一个轻量级的<strong>querying
-transfomer</strong>结构作为<strong>frozen image</strong>和<strong>text
-encoders</strong>的<strong>bottleneck.</strong>首先用<strong>image
-encoder</strong>提取图像特征，然后送给语言模型去理解。但是语言模型没有在<strong>image</strong>上面训练过，因此它无法直接理解这些视觉表示。为了解决这个问题，<strong>Q-Former</strong>采用一些可学习的<strong>querying
-vectors</strong>，在两个阶段进行预训练；</p>
-<p>（1）vision-language representation learning with a frozen image
-encoder</p>
-<ol start="2" type="1">
-<li>vision-to-language generative learning stage with a frozen text
-encoder</li>
-</ol>
-<figure>
-<img src="/2025/01/05/Blip-2/image-20250105163736925.png"
-alt="image-20250105163736925" />
-<figcaption aria-hidden="true">image-20250105163736925</figcaption>
-</figure>
-<p>Q-Former包括两个子模块：</p>
-<p>a.一个image transformer和frozen image encoder交互。</p>
-<p>b.一个</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1604,12 +1646,12 @@ alt="image-20250105163736925" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
