@@ -145,6 +145,778 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/17/C-Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/17/C-Notes/" class="post-title-link" itemprop="url">C++_Notes</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-17 17:20:02" itemprop="dateCreated datePublished" datetime="2025-01-17T17:20:02+08:00">2025-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-04 00:06:09" itemprop="dateModified" datetime="2025-02-04T00:06:09+08:00">2025-02-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="lec2-types-and-structures">Lec2: types and structures</h2>
+<p>1.STL：standard template Library</p>
+<p>访问stl中的元素要用std::（IDK为什么不用stl）</p>
+<p>2.c++是一种静态类型语言：runtime之前变量、函数就被赋予了类型。</p>
+<p>与之相对应的动态类型语言：runtime时候根据变量和函数的value确认类型</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>编译型语言和解释型语言的主要区别：source code翻译成机器码的时机</p>
+</blockquote>
+<p>3.struct：绑定各种不同类型的变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Student s;</span><br><span class="line">s.name = <span class="string">&quot;Sarah&quot;</span>;</span><br><span class="line">s.state = <span class="string">&quot;CA&quot;</span>;</span><br><span class="line">s.age = <span class="number">21</span>;</span><br><span class="line">等价于</span><br><span class="line">Student s = &#123;<span class="string">&quot;Sarah&quot;</span>,<span class="string">&quot;CA&quot;</span>,<span class="number">21</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>4.std::pair</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::pari&lt;<span class="type">int</span>,string&gt; numSuffix = &#123;<span class="number">1</span>,<span class="string">&quot;st&quot;</span>&#125;;</span><br><span class="line">numSuffix.first</span><br></pre></td></tr></table></figure>
+<p>一般通过std::pair返回success状态+result</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::pair&lt;<span class="type">bool</span>, Student&gt; <span class="title">lookupStudent</span><span class="params">(string name)</span> </span>&#123;</span><br><span class="line">Student blank;</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">notFound</span>(name)) <span class="keyword">return</span> std::<span class="built_in">make_pair</span>(<span class="literal">false</span>, blank);</span><br><span class="line">Student result = <span class="built_in">getStudentWithName</span>(name);</span><br><span class="line"><span class="keyword">return</span> std::<span class="built_in">make_pair</span>(<span class="literal">true</span>, result);</span><br><span class="line">&#125;</span><br><span class="line">std::pair&lt;<span class="type">bool</span>, Student&gt; output = <span class="built_in">lookupStudent</span>(“Julie”)</span><br></pre></td></tr></table></figure>
+<p>5.auto:让编译器自主推导类型</p>
+<h2
+id="lec3initializationreferences">Lec3:Initialization&amp;References</h2>
+<h3 id="uniform-initialization">1. Uniform initialization</h3>
+<p>对所有类型都适用，在声明的时候立即初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>&#125;;</span><br><span class="line">std::pair&lt;<span class="type">int</span>, string&gt; numSuffix1&#123;<span class="number">1</span>,<span class="string">&quot;st&quot;</span>&#125;;</span><br><span class="line">Student s&#123;<span class="string">&quot;Sarah&quot;</span></span><br><span class="line">, <span class="string">&quot;CA&quot;</span></span><br><span class="line">, <span class="number">21</span>&#125;;</span><br><span class="line"><span class="comment">// less common/nice for primitive types, but possible!</span></span><br><span class="line"><span class="type">int</span> x&#123;<span class="number">5</span>&#125;;</span><br><span class="line">string f&#123;<span class="string">&quot;Sarah&quot;</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>vector初始化的时候要注意</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">vec1</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line"><span class="comment">// makes &#123;5, 5, 5&#125;, not &#123;3, 5&#125;!</span></span><br><span class="line"><span class="comment">// uses a std::initializer_list (more later)</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec2&#123;<span class="number">3</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">// makes &#123;3, 5&#125;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>使用uniform initialization的方式去初始化任何你的non-primitive typed
+variables,但是不要用vec(n,k)</p>
+</blockquote>
+<h3 id="auto">2. auto</h3>
+<p>编译器推断类型，用于类型名字明显而且冗长的时候用auto代替来让代码清晰。</p>
+<h3 id="structured-binding">3.Structured Binding</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># before</span></span><br><span class="line"><span class="keyword">auto</span> p =</span><br><span class="line">std::<span class="built_in">make_pair</span>(“s”, <span class="number">5</span>);</span><br><span class="line">string a = p.first;</span><br><span class="line"><span class="type">int</span> b = p.second;</span><br><span class="line"></span><br><span class="line"><span class="meta">#after</span></span><br><span class="line"><span class="keyword">auto</span> p =</span><br><span class="line">std::<span class="built_in">make_pair</span>(“s”, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">auto</span> [a, b] = p;</span><br><span class="line"><span class="comment">// a is string, b is int</span></span><br><span class="line"><span class="comment">// auto [a, b] =</span></span><br><span class="line">std::<span class="built_in">make_pair</span>(...);</span><br></pre></td></tr></table></figure>
+<p>对structs结构也适用</p>
+<h3 id="引用refrence">4.引用refrence</h3>
+<h3 id="左值和右值">5. 左值和右值</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//l-values可以出现在=的左边和右边</span></span><br><span class="line"><span class="comment">//x是一个l-value</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">3</span>;</span><br><span class="line"><span class="type">int</span> y = x;</span><br><span class="line"><span class="comment">//l-values有名字</span></span><br><span class="line"><span class="comment">//l-values不是暂时的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//r-value只出现在=的右边</span></span><br><span class="line"><span class="comment">// 3是一个r-value</span></span><br><span class="line"><span class="comment">// r-value没有名字，是暂时的</span></span><br></pre></td></tr></table></figure>
+<p>看一些错误示例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">shift</span><span class="params">(vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [num1, num2]: nums) &#123;</span><br><span class="line">num1++;</span><br><span class="line">num2++;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">shift</span>(&#123;&#123;<span class="number">1</span>, <span class="number">1</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// &#123;&#123;1, 1&#125;&#125; is an rvalue, it can’t be referenced</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//改正：</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">shift</span><span class="params">(vector&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [num1, num2]: nums) &#123;</span><br><span class="line">num1++;</span><br><span class="line">num2++;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">auto</span> my_nums = &#123;&#123;<span class="number">1</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line"><span class="built_in">shift</span>(my_nums);</span><br></pre></td></tr></table></figure>
+<p>引用只能创建在变量上</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>&amp; thisWontWork = <span class="number">5</span>; <span class="comment">// This doesn&#x27;t work!</span></span><br></pre></td></tr></table></figure>
+<h3 id="const和const引用">6. const和const引用</h3>
+<p>const可以修饰references或者非引用变量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt; c_vec&#123;<span class="number">7</span>, <span class="number">8</span>&#125;; <span class="comment">// a const variable</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; ref = vec; <span class="comment">// a regular reference  </span></span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; c_ref = vec; <span class="comment">// a const reference</span></span><br><span class="line">vec.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// OKAY</span></span><br><span class="line">c_vec.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// BAD - const</span></span><br><span class="line">ref.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// OKAY     </span></span><br><span class="line">c_ref.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// BAD - const</span></span><br></pre></td></tr></table></figure>
+<p>不能用non-const引用修饰一个const变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt; c_vec&#123;<span class="number">7</span>, <span class="number">8</span>&#125;; <span class="comment">// a const variable</span></span><br><span class="line"><span class="comment">// BAD - can&#x27;t declare non-const ref to const vector</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; bad_ref = c_vec;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fixed</span></span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; bad_ref = c_vec;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BAD - Can&#x27;t declare a non-const reference as equal</span></span><br><span class="line"><span class="comment">// to a const reference!</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; ref = c_ref;</span><br></pre></td></tr></table></figure>
+<p>加上auto(简而言之：auto自动推断类型不会推断const，auto修饰const也要加上)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt; c_vec&#123;<span class="number">7</span>, <span class="number">8</span>&#125;;</span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; ref = vec;</span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; c_ref = vec;</span><br><span class="line"><span class="keyword">auto</span> copy = c_ref; <span class="comment">// a non-const copy</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> copy = c_ref; <span class="comment">// a const copy</span></span><br><span class="line"><span class="keyword">auto</span>&amp; a_ref = ref; <span class="comment">// a non-const reference</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span>&amp; c_aref = ref; <span class="comment">// a const reference</span></span><br></pre></td></tr></table></figure>
+<p>记住：c++默认会制造拷贝在做变量赋值的时候，如果需要用引用需要加&amp;</p>
+<blockquote>
+<p>[!TIP]</p>
+<p>占用内存小的没有必要用引用，比如int,double</p>
+<p>需要改变变量的可以用引用</p>
+<p>不需要调整值，但是变量大的，可以用const reference</p>
+</blockquote>
+<p>也可以返回引用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Note that the parameter must be a non-const reference to return</span></span><br><span class="line"><span class="comment">// a non-const reference to one of its elements!</span></span><br><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">front</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt;&amp; vec)</span> </span>&#123;</span><br><span class="line"><span class="comment">// assuming vec.size() &gt; 0</span></span><br><span class="line"><span class="keyword">return</span> vec[<span class="number">0</span>];</span><br><span class="line">CODE DEMO</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; numbers&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="built_in">front</span>(numbers) = <span class="number">4</span>; <span class="comment">// vec = &#123;4, 2, 3&#125;</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>返回const引用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">const</span> <span class="type">int</span>&amp; <span class="title">front</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt;&amp; vec)</span> </span>&#123;</span><br><span class="line"><span class="comment">// assuming vec.size() &gt; 0</span></span><br><span class="line"><span class="keyword">return</span> vec[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="lec7-streams">Lec7: Streams</h3>
+<p>Streams: input/output的抽象，把data和data的string表示进行转化。</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250119002648265.png"
+alt="image-20250119002648265" />
+<figcaption aria-hidden="true">image-20250119002648265</figcaption>
+</figure>
+<p>output streams</p>
+<p>类型是std::ostream</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250119231100562.png"
+alt="image-20250119231100562" />
+<figcaption aria-hidden="true">image-20250119231100562</figcaption>
+</figure>
+<p>output file streams</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250119231150353.png"
+alt="image-20250119231150353" />
+<figcaption aria-hidden="true">image-20250119231150353</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>Std:cout是一个全局的constant object，通过#include<iostream>引入</p>
+<p>其他的output stream需要先初始化</p>
+</blockquote>
+<p>Std::cin</p>
+<p>类型是std::istream</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x;</span><br><span class="line">std::cin &gt;&gt; x;</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250119231451766.png"
+alt="image-20250119231451766" />
+<figcaption aria-hidden="true">image-20250119231451766</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250119231638276.png"
+alt="image-20250119231638276" />
+<figcaption aria-hidden="true">image-20250119231638276</figcaption>
+</figure>
+<p>Std::istream可以看出一个character的sequence，在遇到空格、tab、换行符的时候就会将buffer的值赋给变量。</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250120140203477.png"
+alt="image-20250120140203477" />
+<figcaption aria-hidden="true">image-20250120140203477</figcaption>
+</figure>
+<p>input streams输入类型错误的时候，继续读入的东西就无效了</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250120140418147.png"
+alt="image-20250120140418147" />
+<figcaption aria-hidden="true">image-20250120140418147</figcaption>
+</figure>
+<p>Std::get line()</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250120140526819.png"
+alt="image-20250120140526819" />
+<figcaption aria-hidden="true">image-20250120140526819</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250120140621449.png"
+alt="image-20250120140621449" />
+<figcaption aria-hidden="true">image-20250120140621449</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>"&gt;&gt;"提取single输入转换为built-in类型；如果要读入整行，需要用std::getline(istream&amp;
+stream, string&amp; line);</p>
+</blockquote>
+<p>注意std::getline(istream&amp; stream, string&amp;
+line)的参数都是传引用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::string line;</span><br><span class="line">std::<span class="built_in">getline</span>(cin, line); <span class="comment">//line changed now!</span></span><br><span class="line"><span class="comment">//say the user entered “Hello World 42!”</span></span><br><span class="line">std::cout &lt;&lt; line &lt;&lt; std::endl;</span><br><span class="line"><span class="comment">//should print out “Hello World 42!”</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>不要弄混&gt;&gt;和getline</p>
+<p>"&gt;&gt;"读直到下一个空格字符并且不会读入该空格字符</p>
+<p>getline读直到遇到下一个分隔符（默认就是）并且会读入这个换行符</p>
+</blockquote>
+<h5 id="input-file-streams">Input File Streams</h5>
+<ul>
+<li><p>类型是std::ifstream</p></li>
+<li><p>接收字符串必须用“&gt;&gt;”（从file中接收字符串并且转换为built-in类型）</p></li>
+<li><p>ifstream必须先初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::ifstream <span class="title">in</span><span class="params">(“out.txt”)</span></span>;</span><br><span class="line"><span class="comment">// in is now an ifstream that reads from out.txt</span></span><br><span class="line">string str;</span><br><span class="line">in &gt;&gt; str; <span class="comment">// first word in out.txt goes into str</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="stringstreams">Stringstreams</h3>
+<p>stream读写到string对象中；</p>
+<p>目的：允许对string的输入输出按照stream来。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::string input = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="function">std::stringstream <span class="title">stream</span><span class="params">(input)</span></span>;</span><br><span class="line"><span class="type">int</span> number;</span><br><span class="line">stream &gt;&gt; number;</span><br><span class="line">std::cout &lt;&lt; number &lt;&lt; std::endl; <span class="comment">// Outputs &quot;123&quot; </span></span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>streams将data和data的字符串形式进行相互转换</li>
+<li>控制台cin/cout，文件i/ofstreams,字符串i/o stringstreams</li>
+<li>Send data to a stream用stream name &lt;&lt; data</li>
+<li>从stream提取data用stream_name &gt;&gt; data,
+并且还会将数据类型转换为data的数据类型</li>
+</ul>
+<h2 id="containers">Containers</h2>
+<p>容器种类：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250121165106294.png"
+alt="image-20250121165106294" />
+<figcaption aria-hidden="true">image-20250121165106294</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250121165136897.png"
+alt="image-20250121165136897" />
+<figcaption aria-hidden="true">image-20250121165136897</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250121170648848.png"
+alt="image-20250121170648848" />
+<figcaption aria-hidden="true">image-20250121170648848</figcaption>
+</figure>
+<h5 id="container-adaptors-容器适配器">container adaptors
+容器适配器</h5>
+<h2 id="lec6-iterators-and-pointers">Lec6: iterators and pointers</h2>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250122191923467.png"
+alt="image-20250122191923467" />
+<figcaption aria-hidden="true">image-20250122191923467</figcaption>
+</figure>
+<h2 id="lec7classes">Lec7:classes</h2>
+<p>class相关的略</p>
+<h3 id="template">template</h3>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123163820237.png"
+alt="image-20250123163820237" />
+<figcaption aria-hidden="true">image-20250123163820237</figcaption>
+</figure>
+<p>模版类：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123164006679.png"
+alt="image-20250123164006679" />
+<figcaption aria-hidden="true">image-20250123164006679</figcaption>
+</figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mypair.h</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function">First <span class="title">getFirst</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">Second <span class="title">getSecond</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> First, <span class="keyword">typename</span> Second&gt; <span class="keyword">class</span> <span class="title class_">MyPair</span> &#123;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setFirst</span><span class="params">(First f)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setSecond</span><span class="params">(Second f)</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">First first;</span><br><span class="line">Second second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>实现一个模版类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mypair.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> “mypair.h”</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> First, <span class="keyword">typename</span> Second&gt; <span class="comment">//必须要声明每个成员函数都是模版的</span></span><br><span class="line"><span class="function">First <span class="title">MyPair::getFirst</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Second, <span class="keyword">typename</span> First&gt;</span></span><br><span class="line"><span class="function">Second <span class="title">MyPair::getSecond</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>Templates不会产生代码直到实例化，因此要将.cpp文件包含在.h文件里。</p>
+</blockquote>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123170609616.png"
+alt="image-20250123170609616" />
+<figcaption aria-hidden="true">image-20250123170609616</figcaption>
+</figure>
+<p>理解c++编译器对于非模版类做了什么</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123170737511.png"
+alt="image-20250123170737511" />
+<figcaption aria-hidden="true">image-20250123170737511</figcaption>
+</figure>
+<p>理解c++编译器对于模版类做了什么</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123170841268.png"
+alt="image-20250123170841268" />
+<figcaption aria-hidden="true">image-20250123170841268</figcaption>
+</figure>
+<p>修复：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123171745108.png"
+alt="image-20250123171745108" />
+<figcaption aria-hidden="true">image-20250123171745108</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250123171805421.png"
+alt="image-20250123171805421" />
+<figcaption aria-hidden="true">image-20250123171805421</figcaption>
+</figure>
+<h2 id="lec8-templateclassesconst">Lec8: templateclassesconst</h2>
+<p>模版的用途就是将不同类型要实现相同功能的逻辑抽象出来，</p>
+<p>将一个特定类型的类改为模版类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyPair</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="type">int</span> <span class="title">getFirst</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getSecond</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setFirst</span><span class="params">(<span class="type">int</span> f)</span></span>;</span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setSecond</span><span class="params">(<span class="type">int</span> f)</span></span>;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	<span class="type">int</span> first;</span><br><span class="line">  	<span class="type">int</span> second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>写一个模版类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> First，<span class="keyword">typename</span> Second&gt; <span class="keyword">class</span> <span class="title class_">MyPair</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function">First <span class="title">getFirst</span><span class="params">()</span></span>;</span><br><span class="line">  	<span class="function">Second <span class="title">getSecond</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setFirst</span><span class="params">(First f)</span></span>;</span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setSecond</span><span class="params">(Second f)</span></span>;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	First first;</span><br><span class="line">  	Second second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>类外实现：</p>
+<p>a.要声明类的成员函数是模版函数</p>
+<p>b.要注意模版类的命名空间不是MyPair而是MyPair&lt;First, Second&gt;</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126171712040.png"
+alt="image-20250126171712040" />
+<figcaption aria-hidden="true">image-20250126171712040</figcaption>
+</figure>
+<p>模版类的成员类型：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126171841419.png"
+alt="image-20250126171841419" />
+<figcaption aria-hidden="true">image-20250126171841419</figcaption>
+</figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vector.h</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class</span> <span class="title class_">vector</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">using</span> iterator = T*</span><br><span class="line">    </span><br><span class="line">  iterator <span class="built_in">begin</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//vector.cpp</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">iterator vector&lt;T&gt;::<span class="built_in">begin</span>() &#123;...&#125;  <span class="comment">// error，iterator是类里面的一个嵌套类型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//vector.cpp 修正</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> vector&lt;T&gt;::iterator vector&lt;T&gt;::<span class="built_in">begin</span>() &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>1.using type_name =
+type定义了一个嵌套的类型，就如同vector<T>::iterator</p>
+<p>2.使用类定义vector<T>之前要加typename</p>
+</blockquote>
+<p>总结：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126172439971.png"
+alt="image-20250126172439971" />
+<figcaption aria-hidden="true">image-20250126172439971</figcaption>
+</figure>
+<h4 id="const">const</h4>
+<p>类里，const-interface是所有标记为const的成员函数; const
+ClassName只能使用const-interface</p>
+<p>比如：const Student</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="function">std::string <span class="title">stringify</span><span class="params">(<span class="type">const</span> Student&amp; s)</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> s.<span class="built_in">getName</span>() + <span class="string">&quot; is &quot;</span> + std::<span class="built_in">to_string</span>(s.<span class="built_in">getAge</span>()) +</span><br><span class="line"><span class="string">&quot; years old.&quot;</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// With our new const-interface, this will work :)</span></span><br></pre></td></tr></table></figure>
+<p>类StrVector的at可以标记为const吗</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126182231645.png"
+alt="image-20250126182231645" />
+<figcaption aria-hidden="true">image-20250126182231645</figcaption>
+</figure>
+<p>返回的是引用，依然可以修改。从语义上来说不能标记为const</p>
+<p>需要新建立一个关于at的const版本的函数</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126182354489.png"
+alt="image-20250126182354489" />
+<figcaption aria-hidden="true">image-20250126182354489</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>不要重复造轮子，而是用static_cast和const_cast重用相关的逻辑。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string&amp; <span class="title">StrVector::at</span><span class="params">(<span class="type">size_t</span> index)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (index &gt;= <span class="built_in">size</span>()) &#123;</span><br><span class="line">		<span class="keyword">throw</span> std::<span class="built_in">out_of_range</span>(<span class="string">&quot;Index out of range in at.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">operator</span>[](index); <span class="comment">// operator[] = return *(begin() + index)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> std::string&amp; <span class="title">StrVector::at</span><span class="params">(<span class="type">size_t</span> index)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">static_cast</span>&lt;<span class="type">const</span> std::string&amp;&gt;(<span class="built_in">const_cast</span>&lt;StrVecotr*&gt;(<span class="keyword">this</span>)-&gt;<span class="built_in">at</span>(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126182750157.png"
+alt="image-20250126182750157" />
+<figcaption aria-hidden="true">image-20250126182750157</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126182800510.png"
+alt="image-20250126182800510" />
+<figcaption aria-hidden="true">image-20250126182800510</figcaption>
+</figure>
+<p>关于类的begin()和end()类似于at，也需要一个const版本的逻辑</p>
+<p>解决方法：const_iterator</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126182947080.png"
+alt="image-20250126182947080" />
+<figcaption aria-hidden="true">image-20250126182947080</figcaption>
+</figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StrVector</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">using</span> iterator = std::string*;</span><br><span class="line"><span class="keyword">using</span> const_ iterator = <span class="type">const</span> std::string*;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line"><span class="function"><span class="type">size_t</span> <span class="title">size</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">push_back</span><span class="params">(<span class="type">const</span> std::string&amp; elem)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> std::string&amp; <span class="title">at</span><span class="params">(<span class="type">size_t</span> indx)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">begin</span><span class="params">()</span><span class="type">const</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">end</span><span class="params">()</span><span class="type">const</span></span>;</span><br><span class="line"><span class="comment">/*...*</span></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250126183014764.png"
+alt="image-20250126183014764" />
+<figcaption aria-hidden="true">image-20250126183014764</figcaption>
+</figure>
+<h2 id="lec9-template-functions">Lec9: template functions</h2>
+<p>类似模版类，模版函数直到使用才会编译。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">smarterMyMin</span><span class="params">(T a, U b)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a &lt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码没有生成直到实例化，这样运行更快（<strong>生成的代码针对具体类型</strong>，没有额外的运行时检查或类型转换。）</p>
+<p>根据这个特点模版可以用在高效性方面。</p>
+<h4 id="template-metaprogramming">template metaprogramming</h4>
+<p>代码只在编译过程中运行一次。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">unsigned</span> n&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Factorial</span> &#123;</span><br><span class="line">  <span class="keyword">enum</span> &#123;value = n * Factorial&lt;n<span class="number">-1</span>&gt;::value&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Factorial</span>&lt;<span class="number">0</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">enum</span> &#123;value = <span class="number">1</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; Factorial&lt;<span class="number">10</span>&gt;::value &lt;&lt; endl; <span class="comment">// prints 3628800, but run during compile time!</span></span><br></pre></td></tr></table></figure>
+<h4 id="aside-constexpr">aside: constexpr</h4>
+<p>另一个在编译期间产生code的工具：constexpr关键字</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123; <span class="comment">// function declared as constexpn</span></span><br><span class="line"><span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">fib</span>(n-l) * n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="type">const</span> <span class="type">long</span> <span class="type">long</span> bigval = <span class="built_in">fib</span>(<span class="number">20</span>);</span><br><span class="line">std: : cout &lt;&lt; bigval &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>TMP是意外发现的，不是被发明的，使用场合也不多；可能用在加速矩阵数学运算/特殊设计/游戏图像方面。</p>
+<h2 id="lec10-functions_and_lambdas">Lec10: functions_and_lambdas</h2>
+<h4 id="predicate-functions">predicate Functions</h4>
+<p>返回true或者false的函数</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250127173135145.png"
+alt="image-20250127173135145" />
+<figcaption aria-hidden="true">image-20250127173135145</figcaption>
+</figure>
+<ul>
+<li>函数指针
+<ul>
+<li>Function pointers可以和其他指针一样被对待</li>
+<li>可以像变量一样传递</li>
+<li>可以像函数一样被call</li>
+</ul></li>
+</ul>
+<p>有个问题，泛化性比较差</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250128235600102.png"
+alt="image-20250128235600102" />
+<figcaption aria-hidden="true">image-20250128235600102</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250128235614504.png"
+alt="image-20250128235614504" />
+<figcaption aria-hidden="true">image-20250128235614504</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250128235627468.png"
+alt="image-20250128235627468" />
+<figcaption aria-hidden="true">image-20250128235627468</figcaption>
+</figure>
+<p>我们想传递更多信息，但是不允许传递两个以上的参数</p>
+<p>我们需要可以传递更多信息但是不需要传递一个以上参数的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> var = [capture-clause](<span class="keyword">auto</span> praram) -&gt; <span class="type">bool</span></span><br><span class="line">&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="lambdas">lambdas</h4>
+<p>Inline,匿名函数</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250128235902715.png"
+alt="image-20250128235902715" />
+<figcaption aria-hidden="true">image-20250128235902715</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250128235916833.png"
+alt="image-20250128235916833" />
+<figcaption aria-hidden="true">image-20250128235916833</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250128235932720.png"
+alt="image-20250128235932720" />
+<figcaption aria-hidden="true">image-20250128235932720</figcaption>
+</figure>
+<p>= 通过value捕获</p>
+<p>&amp;通过引用捕获</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250129000033376.png"
+alt="image-20250129000033376" />
+<figcaption aria-hidden="true">image-20250129000033376</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>use lambda当你需要一个短的函数或者需要局部值；</p>
+<p>如果需要更多逻辑或者重载，使用函数指针</p>
+</blockquote>
+<h4 id="functor">functor</h4>
+<p>functor是实现了operator()的类；</p>
+<p>他们可以create closures对于customized functions</p>
+<ul>
+<li>Closure:一个functor object的单一实例化。（sigle instantiation）</li>
+<li>lambdas是一个换肤（reskin）of functors.</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">functor</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="type">int</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="type">int</span> arg)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> num + arg;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">auto</span> lambda = [&amp;num](<span class="type">int</span> arg)&#123;num += arg;&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203121340540.png"
+alt="image-20250203121340540" />
+<figcaption aria-hidden="true">image-20250203121340540</figcaption>
+</figure>
+<h4 id="virtual-functions">virtual functions</h4>
+<p>看一个例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="comment">// constructors and other methods go here!</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span> </span>&#123;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;I&#x27;m an animal!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125; <span class="comment">// private information and the rest of the class goes here!</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> : Animal &#123; <span class="comment">// this syntax tells us we&#x27;re a subclass of Animal!</span></span><br><span class="line"><span class="comment">// constructors and private information here!</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span> </span>&#123;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;I&#x27;m an animal!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125; <span class="comment">// private information and the rest of the class goes here!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们传递一个dog对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(Animal* animal)</span> </span>&#123; animal-&gt;<span class="built_in">speak</span>();</span><br><span class="line"><span class="comment">// can take in any animal and make it speak!</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">Animal* myAnimal = <span class="keyword">new</span> Animal;</span><br><span class="line">Dog* myDog = <span class="keyword">new</span> Dog;</span><br><span class="line"><span class="built_in">func</span>(myAnimal);</span><br><span class="line">fun</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203182923379.png"
+alt="image-20250203182923379" />
+<figcaption aria-hidden="true">image-20250203182923379</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>如果指针指向一个夫类对象，不知道要使用子类的方法；</p>
+<p>同样的问题存在于将一个夫类的指针指向子类的对象；</p>
+</blockquote>
+<p>解决方法：将夫类被overriden的方法声明为virtual</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203183111810.png"
+alt="image-20250203183111810" />
+<figcaption aria-hidden="true">image-20250203183111810</figcaption>
+</figure>
+<h2 id="lec11-operators和operators-overload">Lec11 operators和operators
+overload</h2>
+<p>可以overload的operator:</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203212741087.png"
+alt="image-20250203212741087" />
+<figcaption aria-hidden="true">image-20250203212741087</figcaption>
+</figure>
+<p>不能重载的运算符：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203212810612.png"
+alt="image-20250203212810612" />
+<figcaption aria-hidden="true">image-20250203212810612</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203212856249.png"
+alt="image-20250203212856249" />
+<figcaption aria-hidden="true">image-20250203212856249</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203212905125.png"
+alt="image-20250203212905125" />
+<figcaption aria-hidden="true">image-20250203212905125</figcaption>
+</figure>
+<p>有两种重载运算符的方法：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203213204584.png"
+alt="image-20250203213204584" />
+<figcaption aria-hidden="true">image-20250203213204584</figcaption>
+</figure>
+<p>非成员函数的重载更被stl所接纳：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203213525137.png"
+alt="image-20250203213525137" />
+<figcaption aria-hidden="true">image-20250203213525137</figcaption>
+</figure>
+<p>成员函数的重载可以访问this-&gt;和私有变量</p>
+<p>对于非成员函数的重载需要通过friend访问</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203213844189.png"
+alt="image-20250203213844189" />
+<figcaption aria-hidden="true">image-20250203213844189</figcaption>
+</figure>
+<p>注意new和delete的非成员函数重载，由于不针对特定类型的输入，会影响全局。</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203214025479.png"
+alt="image-20250203214025479" />
+<figcaption aria-hidden="true">image-20250203214025479</figcaption>
+</figure>
+<h2 id="lec12-特殊的成员函数">Lec12 特殊的成员函数</h2>
+<p>六种特殊的成员函数：</p>
+<ul>
+<li>默认构造函数 default constructor</li>
+<li>析构函数 destructor</li>
+<li>拷贝构造函数 copy constructor</li>
+<li>拷贝赋值运算符copy assignment operator</li>
+<li>移动构造函数move constructor</li>
+<li>移动赋值运算符move assignment operator</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Widget</span>(); <span class="comment">// default constructor</span></span><br><span class="line">  <span class="built_in">Widget</span>(<span class="type">const</span> Widget&amp; w); <span class="comment">//copy constructor 创建了一个新的对象</span></span><br><span class="line">  Widget&amp; <span class="keyword">operator</span> = (<span class="type">const</span> Widget&amp; w); <span class="comment">//拷贝赋值运算符 copy assignment operator 将一个已经存在的对象赋值给另一个</span></span><br><span class="line">  ～<span class="built_in">Widget</span>(); <span class="comment">// destructor</span></span><br><span class="line">  <span class="built_in">Widget</span>(Widget&amp;&amp; rhs); <span class="comment">//move constructor</span></span><br><span class="line">  Widget&amp; <span class="keyword">operator</span> = (Widget&amp;&amp; rhs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为什么需要override</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203224111121.png"
+alt="image-20250203224111121" />
+<figcaption aria-hidden="true">image-20250203224111121</figcaption>
+</figure>
+<h3 id="default-delete">default &amp; delete</h3>
+<p>想要禁止拷贝</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203224234915.png"
+alt="image-20250203224234915" />
+<figcaption aria-hidden="true">image-20250203224234915</figcaption>
+</figure>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>应用： std::unique_ptr 只想要一份实例的拷贝</p>
+<p>实现了MoveConstructible和MoveAssignable，但是拷贝构造和拷贝赋值没有实现</p>
+</blockquote>
+<h3 id="default">=default</h3>
+<p>保持默认的构造函数的实现（用户定义构造函数编译器不会默认生成，如果要保留需要=default）</p>
+<p>原则上：</p>
+<ol type="1">
+<li>默认构造函数可以用的时候不要新定义</li>
+<li>如果不得不定义destructor, copy constructor或者copy assignment
+operator，这三个都应该被重定义</li>
+</ol>
+<h3 id="move">move</h3>
+<p>总是拷贝开销会很大；</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203225320261.png"
+alt="image-20250203225320261" />
+<figcaption aria-hidden="true">image-20250203225320261</figcaption>
+</figure>
+<h2 id="lect14-c里的move语义">Lect14 C++里的move语义</h2>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203225430293.png"
+alt="image-20250203225430293" />
+<figcaption aria-hidden="true">image-20250203225430293</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203225438211.png"
+alt="image-20250203225438211" />
+<figcaption aria-hidden="true">image-20250203225438211</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203225520653.png"
+alt="image-20250203225520653" />
+<figcaption aria-hidden="true">image-20250203225520653</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203225547927.png"
+alt="image-20250203225547927" />
+<figcaption aria-hidden="true">image-20250203225547927</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203231122204.png"
+alt="image-20250203231122204" />
+<figcaption aria-hidden="true">image-20250203231122204</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203233445459.png"
+alt="image-20250203233445459" />
+<figcaption aria-hidden="true">image-20250203233445459</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203233620968.png"
+alt="image-20250203233620968" />
+<figcaption aria-hidden="true">image-20250203233620968</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203233632186.png"
+alt="image-20250203233632186" />
+<figcaption aria-hidden="true">image-20250203233632186</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203233809478.png"
+alt="image-20250203233809478" />
+<figcaption aria-hidden="true">image-20250203233809478</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203233858206.png"
+alt="image-20250203233858206" />
+<figcaption aria-hidden="true">image-20250203233858206</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203233912300.png"
+alt="image-20250203233912300" />
+<figcaption aria-hidden="true">image-20250203233912300</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234104709.png"
+alt="image-20250203234104709" />
+<figcaption aria-hidden="true">image-20250203234104709</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234159789.png"
+alt="image-20250203234159789" />
+<figcaption aria-hidden="true">image-20250203234159789</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234259860.png"
+alt="image-20250203234259860" />
+<figcaption aria-hidden="true">image-20250203234259860</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234308018.png"
+alt="image-20250203234308018" />
+<figcaption aria-hidden="true">image-20250203234308018</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234428066.png"
+alt="image-20250203234428066" />
+<figcaption aria-hidden="true">image-20250203234428066</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234444525.png"
+alt="image-20250203234444525" />
+<figcaption aria-hidden="true">image-20250203234444525</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234501070.png"
+alt="image-20250203234501070" />
+<figcaption aria-hidden="true">image-20250203234501070</figcaption>
+</figure>
+<h3 id="heck">heck &amp;&amp;</h3>
+<p>区分拷贝赋值和移动赋值</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234545870.png"
+alt="image-20250203234545870" />
+<figcaption aria-hidden="true">image-20250203234545870</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234750833.png"
+alt="image-20250203234750833" />
+<figcaption aria-hidden="true">image-20250203234750833</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234805928.png"
+alt="image-20250203234805928" />
+<figcaption aria-hidden="true">image-20250203234805928</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234828322.png"
+alt="image-20250203234828322" />
+<figcaption aria-hidden="true">image-20250203234828322</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234916234.png"
+alt="image-20250203234916234" />
+<figcaption aria-hidden="true">image-20250203234916234</figcaption>
+</figure>
+<p>使用std::move</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234931990.png"
+alt="image-20250203234931990" />
+<figcaption aria-hidden="true">image-20250203234931990</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203234943875.png"
+alt="image-20250203234943875" />
+<figcaption aria-hidden="true">image-20250203234943875</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203235220492.png"
+alt="image-20250203235220492" />
+<figcaption aria-hidden="true">image-20250203235220492</figcaption>
+</figure>
+<p>SMFs使用规则：</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203235250464.png"
+alt="image-20250203235250464" />
+<figcaption aria-hidden="true">image-20250203235250464</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203235338280.png"
+alt="image-20250203235338280" />
+<figcaption aria-hidden="true">image-20250203235338280</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203235348312.png"
+alt="image-20250203235348312" />
+<figcaption aria-hidden="true">image-20250203235348312</figcaption>
+</figure>
+<h2 id="lec14-type-safety-and-stdoptional">Lec14: Type Safety and
+std::optional</h2>
+<p>类型检查需要检查数组是否为空和是否越界，否则会返回未定义的行为。</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250203235855513.png"
+alt="image-20250203235855513" />
+<figcaption aria-hidden="true">image-20250203235855513</figcaption>
+</figure>
+<p>通过std::pair返回返回状态和返回值</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000001279.png"
+alt="image-20250204000001279" />
+<figcaption aria-hidden="true">image-20250204000001279</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000011320.png"
+alt="image-20250204000011320" />
+<figcaption aria-hidden="true">image-20250204000011320</figcaption>
+</figure>
+<p>用std::optinal<T>返回false时候的值。</p>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000101966.png"
+alt="image-20250204000101966" />
+<figcaption aria-hidden="true">image-20250204000101966</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000140494.png"
+alt="image-20250204000140494" />
+<figcaption aria-hidden="true">image-20250204000140494</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000150587.png"
+alt="image-20250204000150587" />
+<figcaption aria-hidden="true">image-20250204000150587</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000301227.png"
+alt="image-20250204000301227" />
+<figcaption aria-hidden="true">image-20250204000301227</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000549867.png"
+alt="image-20250204000549867" />
+<figcaption aria-hidden="true">image-20250204000549867</figcaption>
+</figure>
+<figure>
+<img src="/2025/01/17/C-Notes/image-20250204000606798.png"
+alt="image-20250204000606798" />
+<figcaption aria-hidden="true">image-20250204000606798</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/python-multi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1447,81 +2219,6 @@ alt="image-20250106001935542" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/improve-rag/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/05/improve-rag/" class="post-title-link" itemprop="url">提高rag的技巧</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-05 23:48:54 / Modified: 23:51:07" itemprop="dateCreated datePublished" datetime="2025-01-05T23:48:54+08:00">2025-01-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>https://readmedium.com/these-are-the-3-langchain-functions-i-used-to-improve-my-rag-00413ccb7094</p>
-<ol type="1">
-<li>Multi Query Retriever</li>
-<li>Long Context Recorder</li>
-<li>Contextual Compression</li>
-</ol>
-<figure>
-<img src="/2025/01/05/improve-rag/image-20250105235015001.png"
-alt="image-20250105235015001" />
-<figcaption aria-hidden="true">image-20250105235015001</figcaption>
-</figure>
-<h3 id="long-context-reorder">Long-Context Reorder</h3>
-<p>https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/long_context_reorder/</p>
-<p>无论你的模型架构如何，当包含超过 <strong>10</strong>
-个检索到的文档时，性能都会显著下降。简而言之：当模型必须在长上下文中访问相关信息时，它们往往会忽略提供的文档。</p>
-<p>策略：</p>
-<p>将不太相关的文档放在列表的中间，而更相关的文档放在开头和结尾。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1591,12 +2288,12 @@ alt="image-20250105235015001" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
