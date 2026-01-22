@@ -147,6 +147,144 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/12/22/lerobot-exp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/22/lerobot-exp/" class="post-title-link" itemprop="url">lerobot-exp</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-22 14:07:27" itemprop="dateCreated datePublished" datetime="2025-12-22T14:07:27+08:00">2025-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-01-19 14:30:51" itemprop="dateModified" datetime="2026-01-19T14:30:51+08:00">2026-01-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="购买和组装">购买和组装</h3>
+<p>淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。</p>
+<p>接下来记录几个关键的步骤。</p>
+<h3 id="usb端口绑定">usb端口绑定</h3>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>我有一个LEROBOT主臂主板USB口是/dev/ttyACM0，还有一个从臂usb口是/dev/ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMOD
+666</p>
+</blockquote>
+<p>这种情况在机器人开发（如 LeRobot）中非常常见。由于 Linux 系统分配
+<code>/dev/ttyACM*</code>
+是按照插拔顺序随机分配的，且默认权限受限，最稳妥的解决方案是<strong>编写
+udev 规则</strong>。</p>
+<p>通过 udev 规则，你可以根据硬件的唯一序列号（Serial
+Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code> 和
+<code>/dev/slave_arm</code>），并自动设置 <code>0666</code> 权限。</p>
+<hr />
+<h3 id="第一步获取设备的硬件信息">第一步：获取设备的硬件信息</h3>
+<p>你需要找到两个主板的
+<strong>idVendor</strong>、<strong>idProduct</strong> 以及最重要的
+<strong>serial</strong>（序列号）。</p>
+<ol type="1">
+<li><p>拔掉从臂，只插上<strong>主臂</strong>。</p></li>
+<li><p>运行以下命令查看信息：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">udevadm info -a -n /dev/ttyACM0 | grep -E &quot;idVendor|idProduct|serial&quot; | head -n 3</span><br></pre></td></tr></table></figure>
+<p><em>注意：如果你的主臂在</em>
+<code>/dev/ttyACM1</code><em>，请相应修改路径。</em></p></li>
+<li><p><strong>记录输出结果</strong>，例如：</p>
+<ul>
+<li><code>ATTRS&#123;idVendor&#125;=="2e8a"</code></li>
+<li><code>ATTRS&#123;idProduct&#125;=="000a"</code></li>
+<li><code>ATTRS&#123;serial&#125;=="1234567890AB"</code>（这是区分两个相同型号主板的关键）</li>
+</ul></li>
+<li><p>拔掉主臂，插上<strong>从臂</strong>，重复上述步骤，记录从臂的序列号。</p></li>
+</ol>
+<hr />
+<h3 id="第二步创建-udev-规则文件">第二步：创建 udev 规则文件</h3>
+<p>创建一个新的规则文件：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/udev/rules.d/99-lerobot.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中输入以下内容（请将 <code>xxxx</code>
+替换为你刚才查到的实际数值）：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 主臂 (Master Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;主臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;master_arm&quot;</span><br><span class="line"></span><br><span class="line"># 从臂 (Slave Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;从臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;slave_arm&quot;</span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="第三步应用规则并验证">第三步：应用规则并验证</h3>
+<ol type="1">
+<li><p><strong>加载新规则：</strong></p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo udevadm control --reload-rules</span><br><span class="line">sudo udevadm trigger</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>验证绑定是否成功：</strong> 插上两个主板，运行：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/master_arm /dev/slave_arm</span><br></pre></td></tr></table></figure>
+<p>你会看到类似这样的输出，显示它们已经指向了 <code>ttyACM*</code>：
+<code>lrwxrwxrwx 1 root root 7 Dec 18 10:00 /dev/master_arm -&gt; ttyACM0</code></p></li>
+<li><p><strong>检查权限：</strong></p></li>
+</ol>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
+<p>你会发现权限已经是 <code>crw-rw-rw-</code> (即
+666)，不再需要手动修改。</p>
+<hr />
+<h3 id="核心优势">核心优势</h3>
+<ul>
+<li><strong>持久性：</strong>
+无论重启还是重新插拔，<code>/dev/master_arm</code>
+永远指向正确的主板。</li>
+<li><strong>零配置：</strong> 你在 LeRobot
+的代码或配置文件中，直接将端口设置为 <code>/dev/master_arm</code>
+即可。</li>
+<li><strong>权限自动化：</strong> <code>MODE="0666"</code>
+彻底解决了权限拒绝（Permission Denied）的问题。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/12/10/git-ssh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -875,284 +1013,10 @@ alt="img" /></p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/10/09/c-notes-0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/09/c-notes-0/" class="post-title-link" itemprop="url">c++知识复习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-10-09 15:19:24" itemprop="dateCreated datePublished" datetime="2025-10-09T15:19:24+08:00">2025-10-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-10-31 14:58:01" itemprop="dateModified" datetime="2025-10-31T14:58:01+08:00">2025-10-31</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>参考：https://courses.grainger.illinois.edu/cs225/fa2025/pages/lectures.html</p>
-<h2 id="week-1-c-review">week 1 c++ review</h2>
-<p>内存管理：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Stack: 局部变量存储</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Heap:动态存储</span></span><br><span class="line"><span class="type">int</span>* x = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-<p>传参数有三种情况：value传递、pointer to value传递、reference传递</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Pass by Value: 原来对象的临时拷贝</span></span><br><span class="line"><span class="built_in">addBook</span>(Book book)</span><br><span class="line"> <span class="comment">// pass by Pointer to Value: 堆地址</span></span><br><span class="line"><span class="built_in">addBook</span>(Book* book)</span><br><span class="line"><span class="comment">// Pass by reference: 当前存在变量的一个别名</span></span><br><span class="line"><span class="built_in">addBook</span>(Book&amp; book)</span><br></pre></td></tr></table></figure>
-<p>管理：</p>
-<p>栈上的局部存储是计算机管理的</p>
-<p>堆上通过new和free管理。</p>
-<p>内存管理中的owership: 通过资源的创建和销毁来判断谁是对象的ower</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251009162725641.png"
-alt="image-20251009162725641" />
-<figcaption aria-hidden="true">image-20251009162725641</figcaption>
-</figure>
-<p>由owner负责资源的创建和销毁。</p>
-<p>其中，std::vector是一个智能容器，当std::vector被销毁的时候，会为其中所有的对象执行析构程序。</p>
-<p>The Rule of Three</p>
-<p>如果在一个类中定义了下面三个函数的其中一个，那么有必要这三个都定义。</p>
-<ul>
-<li>Destructor</li>
-<li>拷贝构造函数</li>
-<li>拷贝赋值运算符</li>
-</ul>
-<p>The Rule of Zero：Rule of Three的推论</p>
-<p>声明了自定义析构函数、拷贝/移动构造函数或拷贝/移动赋值运算符的类应当专门处理所有权问题。其他类则不应声明自定义析构函数、拷贝/移动构造函数或拷贝/移动赋值运算符。</p>
-<p>总结：https://courses.grainger.illinois.edu/cs225/fa2025/assets/lectures/notes/Lecture_2.pdf</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251009164748928.png"
-alt="image-20251009164748928" />
-<figcaption aria-hidden="true">image-20251009164748928</figcaption>
-</figure>
-<h3 id="templates">Templates</h3>
-<p>写generic code， 类型在实例化的时候确定</p>
-<h3 id="c的数据结构类型">c++的数据结构类型</h3>
-<p>Lists, Trees, Graphs, Hash Tables</p>
-<h4 id="抽象数据类型adt定义">抽象数据类型ADT定义:</h4>
-<p>一种描述数据类型的方式，包括描述存储的Data和可以执行的Operations.</p>
-<p>(实际的执行细节并不相关)</p>
-<h4 id="list-adt">List ADT:</h4>
-<ul>
-<li><p>有序的item集合。</p></li>
-<li><p>每个元素可以是异质/同质的；size可以是固定的或者resizable的。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>这里强类型语言，c++之类的一般是同质的，也就是std::vector存储的元素数据类型是同质的；但是动态类型语言，比如python就可以异质的。我们在定义ADT的时候只关心集合和顺序，不关心元素的类型设置。</p>
-</blockquote></li>
-<li><p>最小的操作定义集合：（Insert, Delete, isEmpty, getDdata, Create
-empty list)</p></li>
-<li><p>实现</p>
-<ul>
-<li><p>ArrayList或者Linked List</p>
-<p><img src="c-notes-0/image-20251009172938063.png" alt="image-20251009172938063" style="zoom:50%;" /></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// List.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">List</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">/*...*/</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">insertAtFront</span><span class="params">(<span class="type">const</span> T&amp; t)</span></span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	<span class="keyword">class</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">      T &amp; data;</span><br><span class="line">      ListNode* next;</span><br><span class="line">      <span class="built_in">ListNode</span>(T &amp; data):</span><br><span class="line">      	<span class="built_in">data</span>(data), <span class="built_in">next</span>(<span class="literal">NULL</span>) &#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  </span><br><span class="line">  	ListNode *head_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// List.hpp</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;List.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> List&lt;T&gt;::<span class="built_in">insertAtFront</span>(T &amp; t) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> List&lt;T&gt;::ListNode *&amp; List&lt;T&gt;::_index(<span class="type">unsigned</span> index) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>涉及的考虑：</p>
-<ul>
-<li><p>通过ListNode来实现List</p></li>
-<li><p>Data by
-reference：引用一旦初始化就不能改变指向的对象+引用必须绑定到有效对象，不能为null+引用不需要额外的指针解引用操作，访问效率更高。</p></li>
-<li><p>Next by pointer:
-可以修改指向的对象+可以为空nullptr(default)</p></li>
-<li><p>```c++ class ListNode { T &amp; data; ListNode * next;
-ListNode(T&amp; data): data(data), next(NULL) {} };
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line">方法insertAtFront(data)</span><br><span class="line"></span><br><span class="line">```c++</span><br><span class="line">ListNode* tmp = new ListNode(data)</span><br><span class="line">tmp-&gt;next = head_</span><br><span class="line">head_ = tmp</span><br></pre></td></tr></table></figure></p></li>
-</ul></li>
-</ul></li>
-</ul>
-<p>方法_index()</p>
-<p>关键点：如果返回List*&amp;
-可以调整指针本身的指向，也可以调整指针指向对象的内容；但是ListNode*
-不能抬调整指针本身的指向，因为函数返回的是一个指针的副本。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>返回指针的引用相对返回指针来说，好处在于可以避免头指针的特殊处理和进行原地修改。</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> List&lt;T&gt;::ListNode *&amp; List&lt;T&gt;::_index(<span class="type">unsigned</span> index) &#123;</span><br><span class="line">  <span class="keyword">if</span> (index == <span class="number">0</span>) <span class="keyword">return</span> _head;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    ListNode* currently = _head;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>; i &lt; index <span class="number">-1</span> ; i++) &#123;</span><br><span class="line">      currently = curr-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> curr-&gt;next;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>typename关键字是为了在编译的第一阶段（还没有实例化的时候）告诉编译器这是一个类型而不是一个变量或者函数。</p>
-<p>举例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">do_somethingk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  T::NestedMember* ptr; <span class="comment">// 是类型还是值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">T可能是</span><br><span class="line"><span class="number">1.</span>一个结构体A,内部有一个类型叫NestedMember</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">  <span class="keyword">using</span> NestedMember = <span class="type">int</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 此时T::NestedMember* ptr； -》 int* ptr;(类型)</span></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>一个结构体B,内部有一个静态变量叫NestedMember</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">B</span> &#123;</span><br><span class="line">  <span class="type">static</span> <span class="type">int</span> NestedMember;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此时T::NestedMember* ptr; -&gt; B::NestedMember 乘以 ptr （值）</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<h4 id="模版类的通常写法">模版类的通常写法</h4>
-<p>首先明确c++模版类的成员函数通常不能向普通类那样，将声明放在.h中，将实现放在独立的.cpp文件中。</p>
-<p>编译器需要看到模版类的完全定义和实现才能实例化生成具体的代码。</p>
-<p><u>将模版的实现代码必须放在头文件中，可以通过.hpp文件存放实现，#include到.h文件中，既能满足编译器要求又能将接口和实现分割开，</u></p>
-<h3 id="week-3">week 3:</h3>
-<p>讲了linked list, array list, vector, queue, stack</p>
-<p>Iterators:提供了一种在不暴露容器的内部数据结构情况下遍历容器内元素的方法</p>
-<p>一个类要想有iterator,需要两个functions:</p>
-<ul>
-<li>Iterator begin()</li>
-<li>Iterator end()</li>
-</ul>
-<p>实际的iterator定义在外部类内部的一个类</p>
-<ul>
-<li>它是基类的一个 std::iterator</li>
-<li>至少实现以下的操作
-<ul>
-<li>GetNext: Iterator&amp; operator ++()</li>
-<li>Dereference: Const T&amp; operator* ()</li>
-<li>Compare Objects: bool operator !=(const Iterator&amp;)</li>
-</ul></li>
-</ul>
-<h4 id="week-5">week 5:</h4>
-<p>BST:二叉搜索树</p>
-<p>KD-tree:
-一种多维欧几里得空间组织点数据的二叉树结构，为了高效处理多维值搜索问题。最常见的是最近邻搜索和范围搜索。</p>
-<h6 id="lambda-functions">Lambda Functions</h6>
-<p><img src="c-notes-0/image-20251024171333728.png" alt="image-20251024171333728" style="zoom:50%;" /></p>
-<p><img src="c-notes-0/image-20251024171353578.png" alt="image-20251024171353578" style="zoom:50%;" /></p>
-<h3 id="week6">week6:</h3>
-<h6 id="kd-tree">kd-tree</h6>
-<ol type="1">
-<li><p>先看ranged-based search</p>
-<p><img src="c-notes-0/image-20251025135615031.png" alt="image-20251025135615031" style="zoom:50%;" /></p></li>
-</ol>
-<p><img src="c-notes-0/image-20251025135640514.png" alt="image-20251025135640514" style="zoom:50%;" /></p>
-<p>k-d tree的最近邻搜索</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025141204535.png"
-alt="image-20251025141204535" />
-<figcaption aria-hidden="true">image-20251025141204535</figcaption>
-</figure>
-<p>Kd树最开始的搜索过程类似于BST,如果没有找到合适的就要进行backward搜索找最近邻，在此过程中不断更细腻最优值。</p>
-<p>BST的搜索速度和树的高度有关，结合元素个数来看，就是和平衡程度有关，给个数学上的量化就是：</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025141828589.png"
-alt="image-20251025141828589" />
-<figcaption aria-hidden="true">image-20251025141828589</figcaption>
-</figure>
-<p>AVL: 具有自我平衡能力的二叉树（通过BST rotation来实现）</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025141919241.png"
-alt="image-20251025141919241" />
-<figcaption aria-hidden="true">image-20251025141919241</figcaption>
-</figure>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025142118651.png"
-alt="image-20251025142118651" />
-<figcaption aria-hidden="true">image-20251025142118651</figcaption>
-</figure>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025142201533.png"
-alt="image-20251025142201533" />
-<figcaption aria-hidden="true">image-20251025142201533</figcaption>
-</figure>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025142707864.png"
-alt="image-20251025142707864" />
-<figcaption aria-hidden="true">image-20251025142707864</figcaption>
-</figure>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251025143030887.png"
-alt="image-20251025143030887" />
-<figcaption aria-hidden="true">image-20251025143030887</figcaption>
-</figure>
-<h3 id="week7-avl-tree">week7: AVL tree</h3>
-<p>AVL树是一个调整的平衡过的二叉搜索树。</p>
-<ul class="task-list">
-<li><label><input type="checkbox" />四种旋转方式(L，R, LR,
-RL)</label></li>
-<li><label><input type="checkbox" />旋转操作o(1)时间复杂度</label></li>
-<li><label><input type="checkbox" />旋转操作保留bst的特性</label></li>
-<li><label><input
-type="checkbox" />insert操作最多只能增加1个不平衡度/高度</label></li>
-</ul>
-<p>Big-O的衡量方法假设所有操作花费同样的时间，但是保存数据不止内存，还有硬盘，云，mass
-storage.</p>
-<p>一个网址：https://gist.github.com/hellerbarde/2843375</p>
-<p>Latency:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">L1 cache reference ......................... 0.5 ns</span><br><span class="line">Branch mispredict ............................ 5 ns</span><br><span class="line">L2 cache reference ........................... 7 ns</span><br><span class="line">Mutex lock/unlock ........................... 25 ns</span><br><span class="line">Main memory reference ...................... 100 ns             </span><br><span class="line">Compress 1K bytes with Zippy ............. 3,000 ns  =   3 µs</span><br><span class="line">Send 2K bytes over 1 Gbps network ....... 20,000 ns  =  20 µs</span><br><span class="line">SSD random read ........................ 150,000 ns  = 150 µs</span><br><span class="line">Read 1 MB sequentially from memory ..... 250,000 ns  = 250 µs</span><br><span class="line">Round trip within same datacenter ...... 500,000 ns  = 0.5 ms</span><br><span class="line">Read 1 MB sequentially from SSD* ..... 1,000,000 ns  =   1 ms</span><br><span class="line">Disk seek ........................... 10,000,000 ns  =  10 ms</span><br><span class="line">Read 1 MB sequentially from disk .... 20,000,000 ns  =  20 ms</span><br><span class="line">Send packet CA-&gt;Netherlands-&gt;CA .... 150,000,000 ns  = 150 ms</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="/2025/10/09/c-notes-0/687474703a2f2f692e696d6775722e636f6d2f6b307431652e706e67.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4 id="b-tree">B tree</h4>
-<p><img src="c-notes-0/image-20251030205819871.png" alt="image-20251030205819871" style="zoom:50%;" /></p>
-<h3 id="week8-heap">week8: heap</h3>
-<p>常规队列：first In first out</p>
-<p>优先队列：每个数据插入的时候有个priority,
-remove的时候按照这个priority remove</p>
-<p>为什么用std::vector排序的方式实现优先队列不算高效</p>
-<h5 id="堆">堆</h5>
-<p>一种树形结构，用来实现优先队列。</p>
-<p>注意，和堆内存是两个概念，没有直接联系。</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251031102421808.png"
-alt="image-20251031102421808" />
-<figcaption aria-hidden="true">image-20251031102421808</figcaption>
-</figure>
-<p>构建一个堆：</p>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251031104255094.png"
-alt="image-20251031104255094" />
-<figcaption aria-hidden="true">image-20251031104255094</figcaption>
-</figure>
-<p>关于构建堆，插入删除的总结：</p>
-<p>https://courses.grainger.illinois.edu/cs225/fa2025/assets/lectures/handouts/cs225fa25-21-heapsanalysis-handout.pdf</p>
-<h4 id="disjoint-set-并查集">disjoint set 并查集</h4>
-<figure>
-<img src="/2025/10/09/c-notes-0/image-20251031112656403.png"
-alt="image-20251031112656403" />
-<figcaption aria-hidden="true">image-20251031112656403</figcaption>
-</figure>
-<h3 id="week-9">week 9:</h3>
-<p>图</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1218,7 +1082,7 @@ alt="image-20251031112656403" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">71</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

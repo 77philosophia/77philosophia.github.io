@@ -147,6 +147,219 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/22/vla-valuable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/22/vla-valuable/" class="post-title-link" itemprop="url">vla in robot鲁棒性探索</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-01-22 13:38:40 / Modified: 14:07:04" itemprop="dateCreated datePublished" datetime="2026-01-22T13:38:40+08:00">2026-01-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>下面是来自medium的一篇文章的几乎翻译</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>1.目前的vla本质还是数据采样模仿学习，因此环境条件、物体状态等一变准确率就急速下降；与此相对应的腕部相机表现强劲，因为腕部相机更能克服干扰。要提高泛化就得堆数据。</p>
+<p>2.lang
+token在其中几乎不起到语义理解作用，language变化和指令变化几乎不影响动作行为。vla没有语言和现实机器人操作对应起来的理解能力。</p>
+<p>https://www.alphaxiv.org/zh/overview/2510.03827</p>
+<p>https://www.alphaxiv.org/zh/overview/2510.13626</p>
+</blockquote>
+<p>vla的几种方案：</p>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09246">自回归方法：将机器人动作离散化为标记，并在大规模演示（如Openvla</a>和<a
+target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/10900471/">Tinyvla）</a>上训练端到端策略；</li>
+<li>基于扩散的模型：通过生成式扩散专家（例如 pi
+序列）生成连续轨迹（https://www.pi.website/blog）</li>
+<li>强化学习方法：超越监督式微调，例如<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.18719">Vla-rl</a>。</li>
+</ul>
+<p>然而，这些训练好的VLA模型仅在非常熟悉的场景和环境中展现出一定的性能，缺乏真正的泛化能力。VLA模型的迁移性非常低，同时我们也注意到，现有的基准测试缺乏对分布变化下模型性能的全面评估，这凸显了在多样化条件下进行系统、细粒度鲁棒性评估的必要性。</p>
+<p>最近，我偶然发现了一篇名为 LIBERO-plus
+的论文，它通过系统性的参数变化和各种扰动维度，对当前的 VLA
+模型进行了详细的脆弱性分析，深入剖析了模型在不同条件下的性能。如果您感兴趣，请访问<a
+target="_blank" rel="noopener" href="https://sylvestf.github.io/LIBERO-plus/">https://sylvestf.github.io/LIBERO-plus/查看更多详情。</a></p>
+<p>这项工作并非创建更多任务，而是主要集中于引入扰动因子，以研究不同的扰动因子如何影响
+VLA 的性能，并将其应用于测试案例/阶段：</p>
+<h2 id="扰动因子">扰动因子：</h2>
+<ul>
+<li><strong>对象布局</strong>：添加混淆对象（随机向任务场景中添加 n
+个额外的未见对象）和/或改变目标对象的位置（x、y、z）和方向（俯仰、偏航、滚动）。</li>
+<li><strong>背景纹理</strong>：改变环境的场景纹理（例如，从彩绘墙到砖墙），并随机改变工作表面的纹理（例如，桌面或地板）。</li>
+<li><strong>光照条件</strong>：改变光照强度、方向、颜色和阴影图案，以影响场景风格。</li>
+<li><strong>相机视角</strong>：改变第三人称相机的视角/姿态和视野——改变相机距离、球形位置和相机方向。</li>
+<li><strong>机器人初始状态</strong>：改变机械臂的初始关节位置（qpos）。</li>
+<li><strong>语言说明</strong>：重写任务说明，以增加语言的丰富性和复杂性，例如重写为更长、更口语化的形式，其中包含额外的但与任务无关的上下文线索，或涉及推理的复杂性。</li>
+<li><strong>传感器噪声：</strong>注入光度失真，以评估在输入质量下降的情况下的鲁棒性，包括运动模糊、高斯模糊、变焦模糊、玻璃模糊以及雾霾。</li>
+</ul>
+<p>上述扰动是通过修改场景 XML 定义文件或修改任务描述文件 (BDDL)
+来实现的。</p>
+<h2 id="已测试的vla模型概述">已测试的VLA模型概述</h2>
+<ul>
+<li><strong>OpenVLA（Kim 等，2024）和 OpenVLA-OFTs（Kim
+等，2025）</strong>：该系列 VLA 基于 Prismatic-7B VLM 构建——VLM 是一个由
+SigLIP 和 DINOv2 组成的视觉编码器，其输出与 Llama2-7B
+语言骨干的输入空间融合，该语言骨干通过交叉注意力机制整合视觉和文本输入。为了使
+VLM 骨干适应机器人控制，连续的机器人动作被离散化为每个维度 256
+个区间，并以标记的形式表示在 LLM 词汇表中。Llama 分词器中最不常用的 256
+个标记被替换为动作标记，训练过程采用应用于动作序列的标准下一个标记预测目标（因此训练损失为交叉熵）。OpenVLA
+在 Open X-Embodiment (OpenX) 数据集上进行了预训练。</li>
+<li><strong>π0（Black 等人）和 π0-fast（Pertsch
+等人，2025）</strong>：核心模型包含一个用于语义理解多模态输入（多张 RGB
+图像、语言指令和本体感觉状态）的 VLM
+基类（PaliGemma），并将动作标记投影并路由到一个更小的动作专家模型。该框架类似于
+Transfusion 框架，后者使用多个目标函数训练单个
+Transformer：连续输出标记使用流匹配损失，离散标记使用交叉熵损失。</li>
+<li><strong>Nora（Hung et al.,
+2025）</strong>：它采用Qwen-2.5-VL-3B多模态模型作为骨干网络，该模型具有强大的视觉语义理解能力。它使用FAST+分词器将连续的动作标记离散化，从而输出离散的动作序列。此外，它还在Open
+X-Embodiment数据集上进行了预训练。</li>
+<li><strong>WorldVLA（Cen等人，2025）：</strong>一种自回归动作-世界模型，它将视觉-语言-动作建模和世界建模统一到一个集成框架中。其核心思想是联合学习用于动作生成的策略模型和用于未来状态预测的世界模型，从而使这两个组件能够相互增强。该模型基于Chameleon初始化，Chameleon是一个统一的图像理解和生成模型。它采用了三个分词器：一个基于VQ-GAN的图像分词器、一个基于BPE的文本分词器，以及一个动作分词器，该动作分词器将连续机器人动作的每个维度离散化为256个区间。所有模态（文本、图像、动作）都被离散化为词元，并在统一的序列中进行自回归建模。在训练过程中，动作建模数据训练模型，使其能够根据语言指令和图像观测历史生成动作块，损失函数仅基于动作词元计算。世界建模数据用于训练模型，使其能够根据当前图像和动作预测下一帧图像，损失函数仅基于
+图像标记计算。这种联合训练策略鼓励学习共享表征：世界模型获取环境物理信息以辅助生成与任务相关的动作，而动作模型则增强视觉理解以支持准确的帧预测。</li>
+<li><strong>UniVLA（Li等人，2025）：</strong>该架构基于预训练的Prismatic-7B
+VLM模型构建。其关键创新在于扩展了LLM的词汇表，引入了特殊的动作标记来表示量化的潜在动作。该模型以视觉观察和语言指令作为输入，并自回归地预测一系列潜在动作标记。</li>
+<li><strong>RIPT-VLA（Brohan 等人，2022）：</strong>其基础模型为
+OpenVLA-OFT。这项工作通过添加一个轻量级的辅助头来增强模型，该辅助头用于预测动作分布的尺度参数
+σθ，使其与强化学习 (RL) 兼容。在标准的预训练和监督微调 (SFT)
+阶段之后，它引入了强化交互式后训练 (RIPT)
+的第三阶段。该策略的核心是动态采样留一法后训练优化 (LOOP)
+框架——一种动态拒绝机制，它过滤掉所有 K
+次展开都获得相同奖励（全部成功或全部失败）的上下文样本，从而确保训练批次包含有意义的学习信号。</li>
+</ul>
+<h2 id="基准建设">基准建设</h2>
+<p><a
+target="_blank" rel="noopener" href="https://libero-project.github.io/main.html">LIBERO</a>最初包含 40
+个评估任务，分为四个泛化子任务（空间、物体、目标、长距离）。这项工作为每个子任务生成了
+500 个实例，涵盖七个扰动维度，因此总共有 500 * 4 * 7 = 14,000
+个任务。之后，为了避免天花板效应，我们移除了所有模型或绝大多数模型都能解决的任务。然后，作者进一步平衡了剩余任务在各个增强子维度上的分布，以防止偏差。最终的测试基准数据集包含
+10,030 个任务，涵盖所有七个维度。</p>
+<p>按回车键或点击查看完整尺寸的图片</p>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*PBizSwIa2GxGOKh9C38s4A.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*eJcsziTFJlMEEWqqbxl3xQ.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h2 id="结果">结果</h2>
+<p>研究结果共同揭示了当前甚大阵列（VLA）泛化能力的显著缺陷。如图所示，即使是微小的扰动也会导致性能急剧下降。</p>
+<p>按回车键或点击查看完整尺寸的图片</p>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*PsC0_dkqtw_AYNnasuvx3Q.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ul>
+<li>发现
+1：在各种输入扰动下，性能会显著下降，尤其是在相机视角和机器人初始状态发生变化时。</li>
+<li>发现2：模型最容易受到相机视角和机器人初始状态变化的影响，这需要对空间几何和本体感觉有较高的理解水平。相比之下，模型对光照和背景变化表现出相对的适应能力，因为这些变化属于更表面、更低层次的视觉变化。</li>
+<li>发现
+3：语言扰动导致大多数模型的平均性能下降幅度第二小（-25.3），这表明模型可能比预期的更少依赖语言指令，并可能利用视觉环境中的任务线索。</li>
+<li>发现 4：与仅依赖第三人称视角的模型（例如
+OpenVLA-OFT_w）相比，采用第一人称腕部摄像头的模型（例如
+OpenVLA-OFT）展现出更优异的泛化能力，尤其是在应对摄像头视角变化时。此外，强调多样性和协同训练的训练策略（例如
+π0,π0-fast）能够持续产生在多种扰动类型下都更稳健的模型，这凸显了接触不同数据分布的重要性。</li>
+<li>发现
+5：虽然模型表现出能够忽略干扰物体的能力，但当目标物体发生位移时，它们却无法进行泛化，这表明它们依赖于记忆的位置线索，而不是学习不变的物体语义。</li>
+<li>发现
+6：在光照扰动下性能的相对稳定性主要归功于腕部摄像头的近距离视角，它提供了与光照无关的几何线索。缺乏腕部摄像头输入的模型对光照变化表现出显著更高的敏感性。</li>
+<li>发现7：VLA模型不具备强大的跨对象指令执行泛化能力。在目标被替换的任务中，模型的成功率几乎降至零。例如，原任务指令“<em>拿起字母汤”</em>被替换为<em>“拿起番茄酱”。</em></li>
+<li>发现 8：VLA
+模型似乎更依赖于固定的视觉-动作映射，而不是充分利用语言信号进行任务决策。</li>
+</ul>
+<p>另一篇论文也得出了同样的结论，即
+libero-pro，https://zxy-mllab.github.io/LIBERO-PRO-Webpage/</p>
+<p>以下是其研究结果，与上述内容类似：</p>
+<ul>
+<li>该模型能否推广到新对象？</li>
+</ul>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*Xv8KhRSINYgNNPuLsCh0hw.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>当用一个不相关的物品（例如，字母
+汤，第三行）替换沙拉酱时，模型仍然执行相同的动作轨迹，试图拿起这个与指令不符的新物品。此外，它在语义无关的物品上的失败
+也凸显了其无法正确地将语言指称与物品语义相匹配。</p>
+<ul>
+<li>该模型是否适用于各种指令？</li>
+</ul>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*yzWMERMGBRHWMB66ayyyVg.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>当指令被替换为无意义的输入（例如，“xxx”）时，模型仍然产生相同的动作序列，再次检索并执行将沙拉酱放入篮子的模式。因此，模型在释义指令和无意义指令下表现出的一致性，不应被视为成功泛化到语义扰动的结果，而应被视为其无法理解或解释指令的证据，表明其过度依赖于机械的模式执行。</p>
+<ul>
+<li>该模型对物体放置位置的敏感度如何？</li>
+</ul>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*kGUB7dCH1RNNANU9CLEn1g.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>该图显示了 VLA
+对物体初始位置的高度敏感性——将杯子放在稍微不同的位置可能会导致任务完全失败。</p>
+<p>总之，当我们看到这些令人印象深刻的指标时，我们应该停下来问问自己——它们真的那么有效吗？还是只是过度拟合死记硬背的结果？</p>
+<p>按回车键或点击查看完整尺寸的图片</p>
+<figure>
+<img src="/2026/01/22/vla-valuable/1*-baS0o5UJO-zm-Re7P-R_A.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>摘自论文：https://zxy-mllab.github.io/LIBERO-PRO-Webpage/</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/22/no-look-back/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -172,7 +385,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2026-01-22 11:22:45 / Modified: 13:33:20" itemprop="dateCreated datePublished" datetime="2026-01-22T11:22:45+08:00">2026-01-22</time>
+              <time title="Created: 2026-01-22 11:22:45 / Modified: 13:37:26" itemprop="dateCreated datePublished" datetime="2026-01-22T11:22:45+08:00">2026-01-22</time>
             </span>
 
           
@@ -194,8 +407,7 @@
 <p>那就是假装无事发生。</p>
 <p>继续起床、锻炼、吃饭、睡觉，假装不曾出现。</p>
 <p>我要足够坚强和冷漠。</p>
-<p>但是有时候我也想喝点酒一直睡过去，在梦里泪流满面</p>
-<p>有时候就忍不住盼望，春天什么时候到来</p>
+<p>但是有时候我就忍不住盼望，春天什么时候到来</p>
 <p>这个冬天实在太漫长了</p>
 
       
@@ -1501,148 +1713,10 @@ i)，归一化之后乘以各自的值。
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/12/22/lerobot-exp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/12/22/lerobot-exp/" class="post-title-link" itemprop="url">lerobot-exp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-12-22 14:07:27" itemprop="dateCreated datePublished" datetime="2025-12-22T14:07:27+08:00">2025-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-19 14:30:51" itemprop="dateModified" datetime="2026-01-19T14:30:51+08:00">2026-01-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="购买和组装">购买和组装</h3>
-<p>淘宝购买的“幻尔”开源六轴机械臂，买的成品，和网上的开源方案比，不用进行3D打印和电路级别的组装，拿到之后只用安装腕部相机和全景相机，进行机械臂的校准即可。</p>
-<p>接下来记录几个关键的步骤。</p>
-<h3 id="usb端口绑定">usb端口绑定</h3>
-<blockquote>
-<p>[!IMPORTANT]</p>
-<p>我有一个LEROBOT主臂主板USB口是/dev/ttyACM0，还有一个从臂usb口是/dev/ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMOD
-666</p>
-</blockquote>
-<p>这种情况在机器人开发（如 LeRobot）中非常常见。由于 Linux 系统分配
-<code>/dev/ttyACM*</code>
-是按照插拔顺序随机分配的，且默认权限受限，最稳妥的解决方案是<strong>编写
-udev 规则</strong>。</p>
-<p>通过 udev 规则，你可以根据硬件的唯一序列号（Serial
-Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code> 和
-<code>/dev/slave_arm</code>），并自动设置 <code>0666</code> 权限。</p>
-<hr />
-<h3 id="第一步获取设备的硬件信息">第一步：获取设备的硬件信息</h3>
-<p>你需要找到两个主板的
-<strong>idVendor</strong>、<strong>idProduct</strong> 以及最重要的
-<strong>serial</strong>（序列号）。</p>
-<ol type="1">
-<li><p>拔掉从臂，只插上<strong>主臂</strong>。</p></li>
-<li><p>运行以下命令查看信息：</p>
-<p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">udevadm info -a -n /dev/ttyACM0 | grep -E &quot;idVendor|idProduct|serial&quot; | head -n 3</span><br></pre></td></tr></table></figure>
-<p><em>注意：如果你的主臂在</em>
-<code>/dev/ttyACM1</code><em>，请相应修改路径。</em></p></li>
-<li><p><strong>记录输出结果</strong>，例如：</p>
-<ul>
-<li><code>ATTRS&#123;idVendor&#125;=="2e8a"</code></li>
-<li><code>ATTRS&#123;idProduct&#125;=="000a"</code></li>
-<li><code>ATTRS&#123;serial&#125;=="1234567890AB"</code>（这是区分两个相同型号主板的关键）</li>
-</ul></li>
-<li><p>拔掉主臂，插上<strong>从臂</strong>，重复上述步骤，记录从臂的序列号。</p></li>
-</ol>
-<hr />
-<h3 id="第二步创建-udev-规则文件">第二步：创建 udev 规则文件</h3>
-<p>创建一个新的规则文件：</p>
-<p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/udev/rules.d/99-lerobot.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中输入以下内容（请将 <code>xxxx</code>
-替换为你刚才查到的实际数值）：</p>
-<p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 主臂 (Master Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;主臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;master_arm&quot;</span><br><span class="line"></span><br><span class="line"># 从臂 (Slave Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;从臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;slave_arm&quot;</span><br></pre></td></tr></table></figure>
-<hr />
-<h3 id="第三步应用规则并验证">第三步：应用规则并验证</h3>
-<ol type="1">
-<li><p><strong>加载新规则：</strong></p>
-<p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo udevadm control --reload-rules</span><br><span class="line">sudo udevadm trigger</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>验证绑定是否成功：</strong> 插上两个主板，运行：</p>
-<p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/master_arm /dev/slave_arm</span><br></pre></td></tr></table></figure>
-<p>你会看到类似这样的输出，显示它们已经指向了 <code>ttyACM*</code>：
-<code>lrwxrwxrwx 1 root root 7 Dec 18 10:00 /dev/master_arm -&gt; ttyACM0</code></p></li>
-<li><p><strong>检查权限：</strong></p></li>
-</ol>
-<p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
-<p>你会发现权限已经是 <code>crw-rw-rw-</code> (即
-666)，不再需要手动修改。</p>
-<hr />
-<h3 id="核心优势">核心优势</h3>
-<ul>
-<li><strong>持久性：</strong>
-无论重启还是重新插拔，<code>/dev/master_arm</code>
-永远指向正确的主板。</li>
-<li><strong>零配置：</strong> 你在 LeRobot
-的代码或配置文件中，直接将端口设置为 <code>/dev/master_arm</code>
-即可。</li>
-<li><strong>权限自动化：</strong> <code>MODE="0666"</code>
-彻底解决了权限拒绝（Permission Denied）的问题。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1708,7 +1782,7 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">71</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
