@@ -147,6 +147,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/22/no-look-back/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/22/no-look-back/" class="post-title-link" itemprop="url">no-look-back</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-01-22 11:22:45 / Modified: 11:31:53" itemprop="dateCreated datePublished" datetime="2026-01-22T11:22:45+08:00">2026-01-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>想到姥姥去世的时候，我听到消息，都没有哭。</p>
+<p>我更加繁忙的工作和锻炼，不知道说着什么样的话，和什么样的人寒暄。</p>
+<p>我容易生出很多感情。</p>
+<p>一遇到分离，我就无法淡定和继续生活。</p>
+<p>我有了一套处理离别的方法，去和所有重要的分离与死亡做预演。</p>
+<p>那就是假装无事发生。</p>
+<p>继续起床、锻炼、吃饭、睡觉，假装不曾出现。</p>
+<p>我要足够坚强和冷漠。</p>
+<p>但是我有时候就忍不住盼望，春天什么时候到来</p>
+<p>这个冬天实在太漫长了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/21/sam-family/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1570,71 +1638,6 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/12/10/git-ssh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/12/10/git-ssh/" class="post-title-link" itemprop="url">git-ssh</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-12-10 10:19:32 / Modified: 11:09:01" itemprop="dateCreated datePublished" datetime="2025-12-10T10:19:32+08:00">2025-12-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2
-id="下载代码仓库代码zip文件夹如何关联git历史">下载代码仓库代码zip文件夹如何关联git历史</h2>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd xxx</span><br><span class="line">git init</span><br><span class="line"></span><br><span class="line">git add remote   （注意要用ssh而不是https）</span><br><span class="line">git fetch origin</span><br></pre></td></tr></table></figure>
-<p>第一遍添加的https仍然要输入密码</p>
-<h3
-id="ssh-agent避免每次重新输入密码">ssh-agent避免每次重新输入密码</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eval $(ssh-agent -s)</span><br><span class="line">ssh-add ~/.ssh/id_rsa_new</span><br><span class="line"></span><br><span class="line">git remote set-url origin xxx (关联地址从https-》ssh)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1704,7 +1707,7 @@ id="ssh-agent避免每次重新输入密码">ssh-agent避免每次重新输入�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -147,6 +147,64 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/27/stable-diffusion-history/x##%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84class%20TreeNode%20{%20%20T%20val;%20%20TreeNode%20left;%20%20TreeNode%20right;}void%20printTraverse(TreeNode%20input)%20{%20%20stdvec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/27/stable-diffusion-history/x##%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84class%20TreeNode%20%7B%20%20T%20val;%20%20TreeNode%20left;%20%20TreeNode%20right;%7Dvoid%20printTraverse(TreeNode%20input)%20%7B%20%20stdvec/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-27 16:32:02" itemprop="dateCreated datePublished" datetime="2025-01-27T16:32:02+08:00">2025-01-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">## 二叉树的数据结构</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line">	T val;</span><br><span class="line">	TreeNode* left;</span><br><span class="line">	TreeNode* right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printTraverse</span><span class="params">(TreeNode* input)</span> </span>&#123;</span><br><span class="line">	std::vector&lt;T&gt; res;</span><br><span class="line">	TreeNode* curr_node = input;</span><br><span class="line">	<span class="type">bool</span> fromLeftToRight = <span class="literal">true</span>; <span class="comment">//记录从左往右打印还是从右往左打印</span></span><br><span class="line">	<span class="keyword">if</span>(input == nullprt) &#123;</span><br><span class="line">		std::cout &lt;&lt; ...</span><br><span class="line">	&#125;</span><br><span class="line">	std::queue&lt;TreeNode*&gt; curr_queue;</span><br><span class="line">  curr_queue.<span class="built_in">push_back</span>(input);</span><br><span class="line">	<span class="keyword">while</span>(!curr_queue.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">		<span class="type">int</span> capacity = curr_queue.<span class="built_in">size</span>(); <span class="comment">// 因为拿出来的时候还在往后放</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; capacity; ++i) &#123;</span><br><span class="line">				TreeNode* curr = curr_queue.<span class="built_in">pop</span>()</span><br><span class="line">				<span class="keyword">if</span>(fromLeftToRight)&#123;</span><br><span class="line">					res.<span class="built_in">push_back</span>(curr-&gt;val);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					res.<span class="built_in">insert</span>(res.<span class="built_in">size</span>()-i, curr-&gt;val);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(curr_node-&gt;left!=<span class="literal">nullptr</span>) &#123;</span><br><span class="line">					curr_queue.<span class="built_in">push_back</span>(curr_node-&gt;left);		</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(curr_node-&gt;right!=<span class="literal">nullptr</span>) &#123;</span><br><span class="line">					curr_queue.<span class="built_in">push_back</span>(curr_node-&gt;right);		</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		fromLeftToRight = !fromLeftToRight</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/17/C-Notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2113,114 +2171,6 @@ alt="image-20250106212530108" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/hires-fix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/05/hires-fix/" class="post-title-link" itemprop="url">hires-fix</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-05 23:53:34" itemprop="dateCreated datePublished" datetime="2025-01-05T23:53:34+08:00">2025-01-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-06 00:19:40" itemprop="dateModified" datetime="2025-01-06T00:19:40+08:00">2025-01-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>https://medium.com/rendernet/using-hires-fix-to-upscale-your-stable-diffusion-images-8d8e2826593e</p>
-<p>https://medium.com/<span class="citation"
-data-cites="realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-optimize-image-quality-d9bbf369e3f">@realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-optimize-image-quality-d9bbf369e3f</span></p>
-<p>放大图片除了使用A1111's的图生图/extras选项，还可以使用Hires.Fix。后者可以在generate过程中增大分辨率，得到更好的效果。</p>
-<h3 id="upscaler">Upscaler</h3>
-<p>Latent, R-ESRGAN 4x+ and R-ESRGAN 4x+ Anime6B都可以尝试一下。</p>
-<figure>
-<img src="/2025/01/05/hires-fix/image-20250105235616276.png"
-alt="image-20250105235616276" />
-<figcaption aria-hidden="true">image-20250105235616276</figcaption>
-</figure>
-<figure>
-<img src="/2025/01/05/hires-fix/image-20250105235627073.png"
-alt="image-20250105235627073" />
-<figcaption aria-hidden="true">image-20250105235627073</figcaption>
-</figure>
-<h3 id="hires-steps">Hires steps:</h3>
-<p>Hires
-steps在初试采样后refine图片质量，他们发生在每一步采样步之后的上采样过程，总的steps是sampling
-steps + Hires steps.</p>
-<figure>
-<img src="/2025/01/05/hires-fix/image-20250106001527600.png"
-alt="image-20250106001527600" />
-<figcaption aria-hidden="true">image-20250106001527600</figcaption>
-</figure>
-<p>Hires steps的值是0-150，0的时候Hires steps = sampling
-steps.所以如果你的sampling steps是20，hires
-steps是0，那么总步数是40.选择合适的数值很重要，过低或者过高都会使得图片质量变差。一般10-15根据经验会得到更好的选择。但是如果采样步数大于50，hires
-steps可以设置为sampling steps的一半。</p>
-<h3 id="denoising-strength">Denoising strength</h3>
-<p>对图片质量有很大的影响，也会改变图片内容。</p>
-<p>设置为0对图片没有影响，设置成1会很大改变图片内容。</p>
-<p>webui设置的默认值是0.7，但是在大多数case里这个设置都太强了，初始建议设置到0.3到0.5然后从上往下调整。</p>
-<figure>
-<img src="/2025/01/05/hires-fix/image-20250106001856856.png"
-alt="image-20250106001856856" />
-<figcaption aria-hidden="true">image-20250106001856856</figcaption>
-</figure>
-<p>用webui的xyz工具进行测试选出合适的scaler</p>
-<figure>
-<img src="/2025/01/05/hires-fix/image-20250106001935542.png"
-alt="image-20250106001935542" />
-<figcaption aria-hidden="true">image-20250106001935542</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2290,7 +2240,7 @@ alt="image-20250106001935542" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
