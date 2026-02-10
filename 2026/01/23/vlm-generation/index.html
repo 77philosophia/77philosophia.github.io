@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="https:&#x2F;&#x2F;medium.com&#x2F;@xiaxiami&#x2F;how-vision-language-models-are-trained-a-deep-dive-into-the-vlm-training-process-1ba1d8704bb0 讨论类似gpt-4v,gemini,flamingo,minigpt-4等vlm模型是如何训练的，训练过程和纯语言模型或者视觉模型有什么不一样。本篇内容只">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vlm是如何训练出来的">
+<meta property="og:url" content="http://77philosophia.github.io/2026/01/23/vlm-generation/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;medium.com&#x2F;@xiaxiami&#x2F;how-vision-language-models-are-trained-a-deep-dive-into-the-vlm-training-process-1ba1d8704bb0 讨论类似gpt-4v,gemini,flamingo,minigpt-4等vlm模型是如何训练的，训练过程和纯语言模型或者视觉模型有什么不一样。本篇内容只">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/01/23/vlm-generation/1*zHsQXHxTBeHW7KQ6qoT0Ag.png">
+<meta property="article:published_time" content="2026-01-23T03:16:26.000Z">
+<meta property="article:modified_time" content="2026-01-23T05:53:15.820Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/01/23/vlm-generation/1*zHsQXHxTBeHW7KQ6qoT0Ag.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/01/23/vlm-generation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>vlm是如何训练出来的 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/23/vlm-generation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vlm是如何训练出来的
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-01-23 11:16:26 / Modified: 13:53:15" itemprop="dateCreated datePublished" datetime="2026-01-23T11:16:26+08:00">2026-01-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>https://medium.com/<span class="citation"
+data-cites="xiaxiami/how-vision-language-models-are-trained-a-deep-dive-into-the-vlm-training-process-1ba1d8704bb0">@xiaxiami/how-vision-language-models-are-trained-a-deep-dive-into-the-vlm-training-process-1ba1d8704bb0</span></p>
+<p>讨论类似gpt-4v,gemini,flamingo,minigpt-4等vlm模型是如何训练的，训练过程和纯语言模型或者视觉模型有什么不一样。本篇内容只讨论端到端的训练过程，包括：</p>
+<ul>
+<li>架构overview</li>
+<li>vision和lang编码选择</li>
+<li>数据准备</li>
+<li>预训练目标</li>
+<li>训练策略</li>
+<li>针对下游任务的微调</li>
+</ul>
+<h3 id="vlm-model定义">vlm model定义</h3>
+<p>同时处理图像（或视频）输入和文本输入，以学习跨模态特征。这些模型经过训练能协调处理视觉和文本模态从而处理以下任务：</p>
+<ul>
+<li>Image captioning</li>
+<li>visual question answering</li>
+<li>referring expression comprehension</li>
+<li>Image-text retrieval</li>
+<li>multimodal dialogue</li>
+</ul>
+<h3 id="vlm架构总览">vlm架构总览</h3>
+<p>大多数vlm架构师two-tower结构或者fusion架构，包括：</p>
+<ol type="1">
+<li><p>vision encoder:把 images转换成embeddings</p>
+<ul>
+<li>经常的backbones:
+<ul>
+<li>viT</li>
+<li>clip vit</li>
+<li>convNext</li>
+<li>Swin transformer</li>
+</ul></li>
+<li>举例:
+<ul>
+<li>input images-&gt;patch embedding-&gt;vit layers-&gt;visual
+tokens</li>
+</ul></li>
+</ul></li>
+<li><p>llm的text encoder: 处理输入文本或者产生文本</p>
+<ul>
+<li>经常的选择：
+<ul>
+<li>Bert, Roberta(for non-generative models)</li>
+<li>GPT-2/3,LLaMA,OPT(for generative models)</li>
+</ul></li>
+<li>举例子：
+<ul>
+<li>Text-&gt;tokenizer-&gt;embeddings-&gt;Transformer decoder</li>
+</ul></li>
+</ul></li>
+<li><p>Cross-modal fusion module: 联系两种模态</p>
+<ul>
+<li>选择：
+<ul>
+<li>Cross-attention layers</li>
+<li>concatenation + joint transformer</li>
+<li>adapters 或者projection layers for aligning dimensions</li>
+</ul></li>
+</ul>
+<h3 id="数据准备">数据准备</h3>
+<ol type="1">
+<li>Image-text pairs
+<ul>
+<li>LAION-400M/5B</li>
+<li>Conceptual Captions(CC3M, CC12M)</li>
+<li>COCO Captions</li>
+<li>RedCaps</li>
+<li>YFCC-100M</li>
+</ul></li>
+<li>Visual instruction data
+<ul>
+<li>在指令调优的VLMs中使用</li>
+<li>比如LLaVA-style conversations(image + prompt -&gt;response)</li>
+<li>MiniGPT-4 prompts</li>
+<li>Self-instruct data for images</li>
+</ul></li>
+<li>合成渲染数据
+<ul>
+<li>生成标题，基于ocr的描述或者图表</li>
+<li>帮助模型学习视觉推理</li>
+</ul></li>
+</ol>
+<h3 id="预训练目标-pretrainning-objectives">预训练目标 pretrainning
+objectives</h3>
+<p>预训练目标取决于vlm的种类。</p>
+<ol type="1">
+<li><p>对比学习Contrastive Learning(CLIP-style)</p>
+<ul>
+<li><p>最大化image和text对的相似度</p></li>
+<li><p>Clip, align, blip(as a stage)</p>
+<figure>
+<img src="/2026/01/23/vlm-generation/1*zHsQXHxTBeHW7KQ6qoT0Ag.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure></li>
+</ul></li>
+<li><p>Image-Conditioned Language Modeling 图像条件的语言建模</p>
+<ul>
+<li>训练text deoder根据图像特征产生captions或者问题答案</li>
+<li>举例子
+<ul>
+<li>BLIP-2</li>
+<li>LLaVA</li>
+<li>MiniGPT-4</li>
+</ul></li>
+</ul></li>
+<li><p>Masked Modeling(Multimodal MLM)。 盖住输入并进行预测</p>
+<ul>
+<li>Masked language modeling(MLM)</li>
+<li>Masked image modeling(MIM)</li>
+<li>比如：
+<ul>
+<li>ALBEF</li>
+<li>UNITER</li>
+</ul></li>
+</ul></li>
+<li><p>下一句话预测/匹配</p>
+<ul>
+<li>二分类器是否匹配</li>
+<li>这个caption描述这张图像了吗</li>
+</ul></li>
+</ol>
+<h3 id="vlm-training-pipeline">vlm training pipeline</h3>
+<ol type="1">
+<li>初始化vision encoder
+<ul>
+<li>Vit( from clip或者dino)</li>
+<li>根据数据和算力决定Freeze/finetune</li>
+</ul></li>
+<li>对齐模态
+<ul>
+<li>增加投影层将image/text投影到同一个维度</li>
+<li>应用对齐损失（constative or matching）</li>
+</ul></li>
+<li>增加cross-attention
+<ul>
+<li>插入cross-attention从文本到语言token</li>
+<li>这使得诸如vqa之类的任务能够尽早融合</li>
+</ul></li>
+<li>在大规模pairs进行预训练
+<ul>
+<li>在大规模图像对上训练</li>
+<li>数十万步</li>
+<li>使用fp16/bf16和梯度检查点来减少内存占用</li>
+</ul></li>
+<li>指导性的调整(optional)
+<ul>
+<li>将图像和prompt喂到模型中</li>
+<li>训练产生合适的文本response</li>
+</ul></li>
+</ol>
+<h3 id="关键实现细节">关键实现细节</h3>
+<h5 id="positional-embeddings">positional embeddings</h5>
+<ul>
+<li>为image patches 和text tokens分别使用学习性/sinusoidal位置编码</li>
+<li>相对位置编码提高了灵活性</li>
+</ul>
+<h5 id="image-tokenization">image tokenization</h5>
+<ul>
+<li>图像被分割成图像块（vit）或者tokens（vq-vae）</li>
+<li>另一种方法：使用object detector的区域特征（比如visualBERT）</li>
+</ul>
+<h3 id="training-tricks">training tricks</h3>
+<ul>
+<li>课程学习Easy-&gt;to-&gt;hard，先学简单的再学复杂的</li>
+<li>混合数据集和特定任务损失权重，不同数据集权重不同</li>
+<li>标题质量过滤</li>
+</ul></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/01/22/vla-valuable/" rel="prev" title="vla in robot鲁棒性探索">
+      <i class="fa fa-chevron-left"></i> vla in robot鲁棒性探索
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/01/23/the-women/" rel="next" title="the-women">
+      the-women <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#vlm-model%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">vlm model定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vlm%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">vlm架构总览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">数据准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E8%AE%AD%E7%BB%83%E7%9B%AE%E6%A0%87-pretrainning-objectives"><span class="nav-number">4.</span> <span class="nav-text">预训练目标 pretrainning
+objectives</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vlm-training-pipeline"><span class="nav-number">5.</span> <span class="nav-text">vlm training pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">6.</span> <span class="nav-text">关键实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#positional-embeddings"><span class="nav-number">6.0.1.</span> <span class="nav-text">positional embeddings</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#image-tokenization"><span class="nav-number">6.0.2.</span> <span class="nav-text">image tokenization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#training-tricks"><span class="nav-number">7.</span> <span class="nav-text">training tricks</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
