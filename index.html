@@ -147,6 +147,281 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/31/rl-line/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/03/31/rl-line/" class="post-title-link" itemprop="url">rl-outline</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-03-31 10:17:21 / Modified: 16:10:21" itemprop="dateCreated datePublished" datetime="2026-03-31T10:17:21+08:00">2026-03-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://gemini.google.com/app/e21ea8ed5b222650</p>
+<figure>
+<img src="/2026/03/31/rl-line/image-20260331160925725.png"
+alt="image-20260331160925725" />
+<figcaption aria-hidden="true">image-20260331160925725</figcaption>
+</figure>
+<figure>
+<img src="/2026/03/31/rl-line/image-20260331160938967.png"
+alt="image-20260331160938967" />
+<figcaption aria-hidden="true">image-20260331160938967</figcaption>
+</figure>
+<figure>
+<img src="/2026/03/31/rl-line/image-20260331160947753.png"
+alt="image-20260331160947753" />
+<figcaption aria-hidden="true">image-20260331160947753</figcaption>
+</figure>
+<figure>
+<img src="/2026/03/31/rl-line/image-20260331161001373.png"
+alt="image-20260331161001373" />
+<figcaption aria-hidden="true">image-20260331161001373</figcaption>
+</figure>
+<figure>
+<img src="/2026/03/31/rl-line/image-20260331161010583.png"
+alt="image-20260331161010583" />
+<figcaption aria-hidden="true">image-20260331161010583</figcaption>
+</figure>
+<figure>
+<img src="/2026/03/31/rl-line/image-20260331161018888.png"
+alt="image-20260331161018888" />
+<figcaption aria-hidden="true">image-20260331161018888</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/21/mle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/03/21/mle/" class="post-title-link" itemprop="url">mle</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-03-21 14:43:21 / Modified: 14:45:45" itemprop="dateCreated datePublished" datetime="2026-03-21T14:43:21+08:00">2026-03-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="极大似然估计mle">极大似然估计(MLE)</h4>
+<p>寻找一组参数，使得这组参数下观测到当前数据的概率最大。</p>
+<p>如果数据是完整的即没有隐藏变量，所有特征和标签都已知），MLE
+的求解通常是一个直接的优化问题。</p>
+<h3 id="核心流程四步走策略">核心流程：四步走策略</h3>
+<p>假设我们有一组独立同分布（i.i.d.）的数据 <span
+class="math display">\[$X = \{x_1, x_2, \dots,
+x_n\}\]</span>$，我们要估计模型参数 <span
+class="math inline">\(\theta\)</span>。</p>
+<h4 id="第一步构建似然函数-likelihood-function">第一步：构建似然函数
+(Likelihood Function)</h4>
+<p>似然函数 <span class="math inline">\(L(\theta)\)</span> 表示在参数
+<span class="math inline">\(\theta\)</span> 下，观测到整组数据 <span
+class="math inline">\(X\)</span>
+的联合概率。由于数据是独立的，联合概率等于各样本概率的乘积：</p>
+<p><span class="math display">\[L(\theta) = P(x_1, x_2, \dots, x_n |
+\theta) = \prod_{i=1}^{n} P(x_i | \theta)\]</span></p>
+<h4 id="第二步取对数似然-log-likelihood">第二步：取对数似然
+(Log-Likelihood)</h4>
+<p>由于连乘运算在求导时非常麻烦，且容易导致数值下溢（很多概率相乘会变得极小），我们通常对
+<span class="math inline">\(L(\theta)\)</span> 取自然对数。由于 <span
+class="math inline">\(\ln(x)\)</span> 是单调递增函数，使 <span
+class="math inline">\(\ln L(\theta)\)</span> 最大的 <span
+class="math inline">\(\theta\)</span> 同样会使 <span
+class="math inline">\(L(\theta)\)</span> 最大：</p>
+<p><span class="math display">\[\ell(\theta) = \ln L(\theta) =
+\sum_{i=1}^{n} \ln P(x_i | \theta)\]</span></p>
+<p>这样，<strong>乘法变加法</strong>，大大简化了计算。</p>
+<h4 id="第三步求导并令其为零">第三步：求导并令其为零</h4>
+<p>为了找到极值点，我们对参数 <span
+class="math inline">\(\theta\)</span> 求偏导（即计算梯度），并令导数为
+0：</p>
+<p><span class="math display">\[\frac{\partial \ell(\theta)}{\partial
+\theta} = 0\]</span></p>
+<h4 id="第四步求解参数">第四步：求解参数</h4>
+<p>解上述方程，得到的解 <span
+class="math inline">\(\hat{\theta}_{MLE}\)</span>
+即为极大似然估计值。</p>
+<hr />
+<h3 id="经典案例高斯分布的参数估计">2. 经典案例：高斯分布的参数估计</h3>
+<p>在机器人动作建模中，我们经常假设动作噪声服从高斯分布 <span
+class="math inline">\(N(\mu, \sigma^2)\)</span>。如果我们有 <span
+class="math inline">\(n\)</span> 个位置观测值，如何求均值 <span
+class="math inline">\(\mu\)</span>？</p>
+<ol type="1">
+<li><p><strong>写出单个样本的概率密度</strong>：<span
+class="math inline">\(P(x_i|\mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma}
+e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\)</span></p></li>
+<li><p><strong>写出对数似然</strong>：</p>
+<p><span class="math display">\[\ell(\mu, \sigma) = \sum_{i=1}^n \left(
+-\ln(\sqrt{2\pi}\sigma) - \frac{(x_i-\mu)^2}{2\sigma^2}
+\right)\]</span></p></li>
+<li><p><strong>对 <span class="math inline">\(\mu\)</span>
+求导</strong>：</p>
+<p><span class="math display">\[\frac{\partial \ell}{\partial \mu} =
+\sum_{i=1}^n \frac{x_i - \mu}{\sigma^2} = 0\]</span></p></li>
+<li><p><strong>得出结果</strong>：</p>
+<p><span class="math display">\[\hat{\mu} = \frac{1}{n} \sum_{i=1}^n
+x_i\]</span></p>
+<p>这证明了在正态分布假设下，<strong>算术平均值</strong>就是最科学的极大似然估计。</p></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/10/love-life/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/03/10/love-life/" class="post-title-link" itemprop="url">love-life</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-03-10 17:12:36" itemprop="dateCreated datePublished" datetime="2026-03-10T17:12:36+08:00">2026-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-03-11 20:14:57" itemprop="dateModified" datetime="2026-03-11T20:14:57+08:00">2026-03-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最糟糕的本能是低估自己所拥有的一切。永远不要低估自己，把一切都给一个不值得或还没证明自己值得的人。这就是为什么你必须保护自己的心，不让自己在真正了解某人之前就被幻想卷走。一开始，你看到的只是他们早期（而且通常是最好的）行为。别人早期让你感觉如何，并不反映他们的性格；它反映了他们的影响力。真正的性格是一致的；只能随着时间来衡量。</p>
+<p>对方让你体验如何，一切都是围绕自己的体验和感受来。不要被对方的光环吸引。</p>
+<p>我最大的恐惧应该是浪费生命在一个不会让我快乐的人身上，而不是吓跑别人。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/09/329p-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -170,10 +445,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-03-09 10:12:15 / Modified: 10:39:08" itemprop="dateCreated datePublished" datetime="2026-03-09T10:12:15+08:00">2026-03-09</time>
+              <time title="Created: 2026-03-09 10:12:15" itemprop="dateCreated datePublished" datetime="2026-03-09T10:12:15+08:00">2026-03-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-03-11 14:18:58" itemprop="dateModified" datetime="2026-03-11T14:18:58+08:00">2026-03-11</time>
+              </span>
 
           
 
@@ -186,7 +467,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="data">1-data</h3>
+          <h3 id="data-i">1-data I</h3>
 <p>lecture没有什么内容，推荐了两篇论文：</p>
 <p>补充材料：Challenges in Deploying Machine Learning: a Survey of Case
 Studies（https://arxiv.org/pdf/2011.09926）</p>
@@ -219,6 +500,7 @@ Studies（https://arxiv.org/pdf/2011.09926）</p>
 </ul>
 <p>https://arxiv.org/pdf/1811.03402 A Survey on Data Collection for
 Machine Learning 信息增益不大，略过。</p>
+<h3 id="data-ii">2.data-II</h3>
 
       
     </div>
@@ -829,581 +1111,10 @@ alt="img" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/22/vla-valuable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/01/22/vla-valuable/" class="post-title-link" itemprop="url">vla in robot鲁棒性探索</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-01-22 13:38:40 / Modified: 14:09:37" itemprop="dateCreated datePublished" datetime="2026-01-22T13:38:40+08:00">2026-01-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>下面是来自medium的一篇文章的几乎翻译</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>1.目前的vla本质还是数据采样模仿学习，因此环境条件、物体状态等一变准确率就急速下降；与此相对应的腕部相机表现强劲，因为腕部相机更能克服干扰。要提高泛化就得堆数据。</p>
-<p>2.lang
-token在其中几乎不起到语义理解作用，language变化和指令变化几乎不影响动作行为。vla没有语言和现实机器人操作对应起来的理解能力。</p>
-<p>https://www.alphaxiv.org/zh/overview/2510.03827</p>
-<p>https://www.alphaxiv.org/zh/overview/2510.13626</p>
-<p>3.要提高准确率都得微调。</p>
-</blockquote>
-<p>vla的几种方案：</p>
-<ul>
-<li><a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09246">自回归方法：将机器人动作离散化为标记，并在大规模演示（如Openvla</a>和<a
-target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/10900471/">Tinyvla）</a>上训练端到端策略；</li>
-<li>基于扩散的模型：通过生成式扩散专家（例如 pi
-序列）生成连续轨迹（https://www.pi.website/blog）</li>
-<li>强化学习方法：超越监督式微调，例如<a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.18719">Vla-rl</a>。</li>
-</ul>
-<p>然而，这些训练好的VLA模型仅在非常熟悉的场景和环境中展现出一定的性能，缺乏真正的泛化能力。VLA模型的迁移性非常低，同时我们也注意到，现有的基准测试缺乏对分布变化下模型性能的全面评估，这凸显了在多样化条件下进行系统、细粒度鲁棒性评估的必要性。</p>
-<p>最近，我偶然发现了一篇名为 LIBERO-plus
-的论文，它通过系统性的参数变化和各种扰动维度，对当前的 VLA
-模型进行了详细的脆弱性分析，深入剖析了模型在不同条件下的性能。如果您感兴趣，请访问<a
-target="_blank" rel="noopener" href="https://sylvestf.github.io/LIBERO-plus/">https://sylvestf.github.io/LIBERO-plus/查看更多详情。</a></p>
-<p>这项工作并非创建更多任务，而是主要集中于引入扰动因子，以研究不同的扰动因子如何影响
-VLA 的性能，并将其应用于测试案例/阶段：</p>
-<h2 id="扰动因子">扰动因子：</h2>
-<ul>
-<li><strong>对象布局</strong>：添加混淆对象（随机向任务场景中添加 n
-个额外的未见对象）和/或改变目标对象的位置（x、y、z）和方向（俯仰、偏航、滚动）。</li>
-<li><strong>背景纹理</strong>：改变环境的场景纹理（例如，从彩绘墙到砖墙），并随机改变工作表面的纹理（例如，桌面或地板）。</li>
-<li><strong>光照条件</strong>：改变光照强度、方向、颜色和阴影图案，以影响场景风格。</li>
-<li><strong>相机视角</strong>：改变第三人称相机的视角/姿态和视野——改变相机距离、球形位置和相机方向。</li>
-<li><strong>机器人初始状态</strong>：改变机械臂的初始关节位置（qpos）。</li>
-<li><strong>语言说明</strong>：重写任务说明，以增加语言的丰富性和复杂性，例如重写为更长、更口语化的形式，其中包含额外的但与任务无关的上下文线索，或涉及推理的复杂性。</li>
-<li><strong>传感器噪声：</strong>注入光度失真，以评估在输入质量下降的情况下的鲁棒性，包括运动模糊、高斯模糊、变焦模糊、玻璃模糊以及雾霾。</li>
-</ul>
-<p>上述扰动是通过修改场景 XML 定义文件或修改任务描述文件 (BDDL)
-来实现的。</p>
-<h2 id="已测试的vla模型概述">已测试的VLA模型概述</h2>
-<ul>
-<li><strong>OpenVLA（Kim 等，2024）和 OpenVLA-OFTs（Kim
-等，2025）</strong>：该系列 VLA 基于 Prismatic-7B VLM 构建——VLM 是一个由
-SigLIP 和 DINOv2 组成的视觉编码器，其输出与 Llama2-7B
-语言骨干的输入空间融合，该语言骨干通过交叉注意力机制整合视觉和文本输入。为了使
-VLM 骨干适应机器人控制，连续的机器人动作被离散化为每个维度 256
-个区间，并以标记的形式表示在 LLM 词汇表中。Llama 分词器中最不常用的 256
-个标记被替换为动作标记，训练过程采用应用于动作序列的标准下一个标记预测目标（因此训练损失为交叉熵）。OpenVLA
-在 Open X-Embodiment (OpenX) 数据集上进行了预训练。</li>
-<li><strong>π0（Black 等人）和 π0-fast（Pertsch
-等人，2025）</strong>：核心模型包含一个用于语义理解多模态输入（多张 RGB
-图像、语言指令和本体感觉状态）的 VLM
-基类（PaliGemma），并将动作标记投影并路由到一个更小的动作专家模型。该框架类似于
-Transfusion 框架，后者使用多个目标函数训练单个
-Transformer：连续输出标记使用流匹配损失，离散标记使用交叉熵损失。</li>
-<li><strong>Nora（Hung et al.,
-2025）</strong>：它采用Qwen-2.5-VL-3B多模态模型作为骨干网络，该模型具有强大的视觉语义理解能力。它使用FAST+分词器将连续的动作标记离散化，从而输出离散的动作序列。此外，它还在Open
-X-Embodiment数据集上进行了预训练。</li>
-<li><strong>WorldVLA（Cen等人，2025）：</strong>一种自回归动作-世界模型，它将视觉-语言-动作建模和世界建模统一到一个集成框架中。其核心思想是联合学习用于动作生成的策略模型和用于未来状态预测的世界模型，从而使这两个组件能够相互增强。该模型基于Chameleon初始化，Chameleon是一个统一的图像理解和生成模型。它采用了三个分词器：一个基于VQ-GAN的图像分词器、一个基于BPE的文本分词器，以及一个动作分词器，该动作分词器将连续机器人动作的每个维度离散化为256个区间。所有模态（文本、图像、动作）都被离散化为词元，并在统一的序列中进行自回归建模。在训练过程中，动作建模数据训练模型，使其能够根据语言指令和图像观测历史生成动作块，损失函数仅基于动作词元计算。世界建模数据用于训练模型，使其能够根据当前图像和动作预测下一帧图像，损失函数仅基于
-图像标记计算。这种联合训练策略鼓励学习共享表征：世界模型获取环境物理信息以辅助生成与任务相关的动作，而动作模型则增强视觉理解以支持准确的帧预测。</li>
-<li><strong>UniVLA（Li等人，2025）：</strong>该架构基于预训练的Prismatic-7B
-VLM模型构建。其关键创新在于扩展了LLM的词汇表，引入了特殊的动作标记来表示量化的潜在动作。该模型以视觉观察和语言指令作为输入，并自回归地预测一系列潜在动作标记。</li>
-<li><strong>RIPT-VLA（Brohan 等人，2022）：</strong>其基础模型为
-OpenVLA-OFT。这项工作通过添加一个轻量级的辅助头来增强模型，该辅助头用于预测动作分布的尺度参数
-σθ，使其与强化学习 (RL) 兼容。在标准的预训练和监督微调 (SFT)
-阶段之后，它引入了强化交互式后训练 (RIPT)
-的第三阶段。该策略的核心是动态采样留一法后训练优化 (LOOP)
-框架——一种动态拒绝机制，它过滤掉所有 K
-次展开都获得相同奖励（全部成功或全部失败）的上下文样本，从而确保训练批次包含有意义的学习信号。</li>
-</ul>
-<h2 id="基准建设">基准建设</h2>
-<p><a
-target="_blank" rel="noopener" href="https://libero-project.github.io/main.html">LIBERO</a>最初包含 40
-个评估任务，分为四个泛化子任务（空间、物体、目标、长距离）。这项工作为每个子任务生成了
-500 个实例，涵盖七个扰动维度，因此总共有 500 * 4 * 7 = 14,000
-个任务。之后，为了避免天花板效应，我们移除了所有模型或绝大多数模型都能解决的任务。然后，作者进一步平衡了剩余任务在各个增强子维度上的分布，以防止偏差。最终的测试基准数据集包含
-10,030 个任务，涵盖所有七个维度。</p>
-<p>按回车键或点击查看完整尺寸的图片</p>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*PBizSwIa2GxGOKh9C38s4A.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*eJcsziTFJlMEEWqqbxl3xQ.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h2 id="结果">结果</h2>
-<p>研究结果共同揭示了当前甚大阵列（VLA）泛化能力的显著缺陷。如图所示，即使是微小的扰动也会导致性能急剧下降。</p>
-<p>按回车键或点击查看完整尺寸的图片</p>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*PsC0_dkqtw_AYNnasuvx3Q.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ul>
-<li>发现
-1：在各种输入扰动下，性能会显著下降，尤其是在相机视角和机器人初始状态发生变化时。</li>
-<li>发现2：模型最容易受到相机视角和机器人初始状态变化的影响，这需要对空间几何和本体感觉有较高的理解水平。相比之下，模型对光照和背景变化表现出相对的适应能力，因为这些变化属于更表面、更低层次的视觉变化。</li>
-<li>发现
-3：语言扰动导致大多数模型的平均性能下降幅度第二小（-25.3），这表明模型可能比预期的更少依赖语言指令，并可能利用视觉环境中的任务线索。</li>
-<li>发现 4：与仅依赖第三人称视角的模型（例如
-OpenVLA-OFT_w）相比，采用第一人称腕部摄像头的模型（例如
-OpenVLA-OFT）展现出更优异的泛化能力，尤其是在应对摄像头视角变化时。此外，强调多样性和协同训练的训练策略（例如
-π0,π0-fast）能够持续产生在多种扰动类型下都更稳健的模型，这凸显了接触不同数据分布的重要性。</li>
-<li>发现
-5：虽然模型表现出能够忽略干扰物体的能力，但当目标物体发生位移时，它们却无法进行泛化，这表明它们依赖于记忆的位置线索，而不是学习不变的物体语义。</li>
-<li>发现
-6：在光照扰动下性能的相对稳定性主要归功于腕部摄像头的近距离视角，它提供了与光照无关的几何线索。缺乏腕部摄像头输入的模型对光照变化表现出显著更高的敏感性。</li>
-<li>发现7：VLA模型不具备强大的跨对象指令执行泛化能力。在目标被替换的任务中，模型的成功率几乎降至零。例如，原任务指令“<em>拿起字母汤”</em>被替换为<em>“拿起番茄酱”。</em></li>
-<li>发现 8：VLA
-模型似乎更依赖于固定的视觉-动作映射，而不是充分利用语言信号进行任务决策。</li>
-</ul>
-<p>另一篇论文也得出了同样的结论，即
-libero-pro，https://zxy-mllab.github.io/LIBERO-PRO-Webpage/</p>
-<p>以下是其研究结果，与上述内容类似：</p>
-<ul>
-<li>该模型能否推广到新对象？</li>
-</ul>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*Xv8KhRSINYgNNPuLsCh0hw.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>当用一个不相关的物品（例如，字母
-汤，第三行）替换沙拉酱时，模型仍然执行相同的动作轨迹，试图拿起这个与指令不符的新物品。此外，它在语义无关的物品上的失败
-也凸显了其无法正确地将语言指称与物品语义相匹配。</p>
-<ul>
-<li>该模型是否适用于各种指令？</li>
-</ul>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*yzWMERMGBRHWMB66ayyyVg.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>当指令被替换为无意义的输入（例如，“xxx”）时，模型仍然产生相同的动作序列，再次检索并执行将沙拉酱放入篮子的模式。因此，模型在释义指令和无意义指令下表现出的一致性，不应被视为成功泛化到语义扰动的结果，而应被视为其无法理解或解释指令的证据，表明其过度依赖于机械的模式执行。</p>
-<ul>
-<li>该模型对物体放置位置的敏感度如何？</li>
-</ul>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*kGUB7dCH1RNNANU9CLEn1g.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>该图显示了 VLA
-对物体初始位置的高度敏感性——将杯子放在稍微不同的位置可能会导致任务完全失败。</p>
-<p>总之，当我们看到这些令人印象深刻的指标时，我们应该停下来问问自己——它们真的那么有效吗？还是只是过度拟合死记硬背的结果？</p>
-<p>按回车键或点击查看完整尺寸的图片</p>
-<figure>
-<img src="/2026/01/22/vla-valuable/1*-baS0o5UJO-zm-Re7P-R_A.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>摘自论文：https://zxy-mllab.github.io/LIBERO-PRO-Webpage/</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/22/no-look-back/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/01/22/no-look-back/" class="post-title-link" itemprop="url">no-look-back</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-01-22 11:22:45 / Modified: 13:37:26" itemprop="dateCreated datePublished" datetime="2026-01-22T11:22:45+08:00">2026-01-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>想到姥姥去世的时候，我听到消息，都没有哭。</p>
-<p>我更加繁忙的工作和锻炼，不知道说着什么样的话，和什么样的人寒暄。</p>
-<p>我容易生出很多感情。</p>
-<p>一遇到分离，我就无法淡定和继续生活。</p>
-<p>我有了一套处理离别的方法，去和所有重要的分离与死亡做预演。</p>
-<p>那就是假装无事发生。</p>
-<p>继续起床、锻炼、吃饭、睡觉，假装不曾出现。</p>
-<p>我要足够坚强和冷漠。</p>
-<p>但是有时候我就忍不住盼望，春天什么时候到来</p>
-<p>这个冬天实在太漫长了</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/21/sam-family/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/01/21/sam-family/" class="post-title-link" itemprop="url">sam-family</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-01-21 16:52:07 / Modified: 16:53:39" itemprop="dateCreated datePublished" datetime="2026-01-21T16:52:07+08:00">2026-01-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="sam-family">sam-family</h3>
-<table>
-<colgroup>
-<col style="width: 35%" />
-<col style="width: 33%" />
-<col style="width: 14%" />
-<col style="width: 10%" />
-<col style="width: 5%" />
-</colgroup>
-<tbody>
-<tr>
-<td>sam</td>
-<td>针对图像的promptable分割模型</td>
-<td>prompt:点，框，MASK,文字</td>
-<td>搭配DINO/CLIP使用</td>
-<td></td>
-</tr>
-<tr>
-<td>SAM2对象选择和调整： SAM 2 扩展了 SAM
-基于提示的对象分割功能，使其也能用于跨视频帧的对象跟踪。对陌生视频的鲁棒分割：该模型具备零样本泛化能力。这意味着它可以分割训练过程中未见过的领域中的对象、图像和视频，从而在实际应用场景中具有很强的适应性。实时交互：SAM
-2 采用流式内存架构，一次处理一帧视频，从而实现实时交互式应用。</td>
-<td>针对图像和视频的PROMPTABLE分割模型，可用于实时的TRACKING</td>
-<td>同上，可以在任意一帧选取</td>
-<td></td>
-<td>SA-V数据集</td>
-</tr>
-<tr>
-<td>grounded sam(2024.1)</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Grounded sam2</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>sam3</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="一.sam-23年4月-meta"><strong>一.sam <Segment anything> (23年4月
-meta)</strong></h2>
-<p><strong>2023.4 META的AI研究部门</strong></p>
-<h3
-id="urlhttpswww.alphaxiv.orgzhoverview2304.02643v1"><strong>url:</strong>https://www.alphaxiv.org/zh/overview/2304.02643v1</h3>
-<p>官方DEMO：https://sam2.metademolab.com/demo</p>
-<h4 id="tldr"><strong>TL;DR</strong></h4>
-<p>Segment Anything
-项目引入了一个图像分割的基础模型，能够根据各种提示生成图像中任何对象的分割掩码。这项工作还提出了包含超过
-10 亿个掩码的 SA-1B 数据集，使 SAM
-能够在各种分割任务中进行零样本迁移并泛化到未见数据。</p>
-<h3 id="task-method"><strong>task &amp; method</strong></h3>
-<ul>
-<li><strong>TASK: 可提示分割任务</strong></li>
-</ul>
-<figure>
-<img
-src="/2026/01/21/sam-family/5eecdaf48460cde50b01b09d07620a014fd28e0d50a13f5d75b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf523a2ed422fd60fe6ab49563521b589d5a1a59a8a0c147ef57c63bba423c1a2e949354bde2c5591fc.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ul>
-<li><strong>METHOD:</strong></li>
-</ul>
-<p>图像用预训练的VIT,
-提示编码器分为稀疏的和密集的(mask),有不同的处理方法；mask decoder:
-一个Transformer模块，结合图像嵌入和提示嵌入来预测分割掩码。</p>
-<figure>
-<img
-src="/2026/01/21/sam-family/5eecdaf48460cde50b01b09d07620a014fd28e0d50a13f5d75b8339e1c4c24831f739168b2e59d878d68742cd653602a473a1bc8310192c0953517fc0aa2bc6752720836a6fef9839629f99cd45d9f5392887e963d4a1eaee421e8207ac6e15e.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ul>
-<li>数据飞轮</li>
-</ul>
-<p>迭代过程，模型不断帮助注释者创建分割掩码，产生的数据用于改进模型。这种方法产生了SA-1b数据集，其中包含来自1100万张图像10亿个掩码。</p>
-<figure>
-<img
-src="/2026/01/21/sam-family/5eecdaf48460cde50b01b09d07620a014fd28e0d50a13f5d75b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832ec99544b97b8571163685e8122a6c3bff7f10f34ca21351103acdf64b8ba5d6f088e560432a2bfe6f.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="results"><strong>RESULTS:</strong></h3>
-<figure>
-<img
-src="/2026/01/21/sam-family/5eecdaf48460cde50b01b09d07620a014fd28e0d50a13f5d75b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c80c36eb973c40a26a697fba25eac5d95fd8c909f6f565e2cb6a5bf0635fe81ee77013136ec04c284.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h1 id="二sam2-24年8月meta"><strong>二、sam2
-(24年8月，meta)</strong></h1>
-<p>Demo: <a
-target="_blank" rel="noopener" href="https://sam2.metademolab.com/">https://sam2.metademolab.com</a></p>
-<p>Code: https://github.com/facebookresearch/sam2</p>
-<p>Website: https://ai.meta.com/sam2</p>
-<h3 id="tldr-1"><strong>TL;DR</strong></h3>
-<p>SAM 2 通过将原始的 Segment Anything Model (SAM)
-的功能从静态图像扩展到动态视频内容，代表了视觉分割领域的一项重大进步。这项来自
-Meta FAIR
-的工作引入了一个统一的基础模型，该模型能够通过单一架构在图像和视频上执行可提示的视觉分割(图像看成MEMORY是空的视频分割)。</p>
-<p>这项研究解决了计算机视觉中的一个基本挑战：尽管原始 SAM
-在可提示图像分割方面表现出色，但视频的动态特性带来了额外的复杂性，包括物体运动、变形、遮挡和质量变化。SAM
-2 通过三项核心贡献来应对这些挑战：定义了一种新的可提示视觉分割 (PVS)
-任务，开发了一个同时处理图像和视频的统一模型架构，并通过创新的数据收集方法创建了迄今为止最大的视频分割数据集。</p>
-<h3 id="methods"><strong>METHODS:</strong></h3>
-<figure>
-<img
-src="/2026/01/21/sam-family/5eecdaf48460cde50b01b09d07620a014fd28e0d50a13f5d75b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b9c2b05c89e89719b6e08444384d16f27a23030e591b96b25304520958eda7793ff90a9d6a51a24108.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img
-src="/2026/01/21/sam-family/5eecdaf48460cde50b01b09d07620a014fd28e0d50a13f5d75b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e498ecb22001e57a1af349b5f5d9d1c629c5d3eebc18f2af9aa50c099d068e146dcaad8c64c9192c9.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ul>
-<li>图像编码器使用经过 MAE 预训练的
-Hiera（分层视觉变换器），处理每个视频帧以生成无条件特征嵌入。这种分层设计提供了多尺度特征，这对于详细的掩码解码至关重要，同时比原始
-SAM 编码器实现了 6 倍的速度提升。</li>
-<li>一种新颖的<strong>记忆注意力</strong>机制构成了 SAM 2
-视频处理能力的核心。该组件由堆叠的变换器块组成，通过对记忆库进行交叉注意力，将当前帧特征与来自过去帧和先前交互的信息进行条件化。记忆库存储了先前观察到的帧的表示，并维护着捕获被跟踪物体高级语义信息的“物体指针”。</li>
-<li>处理物体消失或者遮挡：掩码解码器在 SAM
-的设计基础上进行了关键增强以适应视频：来自分层图像编码器的高分辨率细节整合的跳跃连接，以及一个新的<strong>遮挡预测头</strong>，用于确定每个帧中物体的可见性</li>
-</ul>
-<h5 id="内存管理系统"><strong>内存管理系统：</strong></h5>
-<p>记忆编码器通过将预测的掩码与无条件的图像特征融合来生成记忆，并将它们存储在一个
-FIFO
-队列中，该队列维护固定容量的近期帧信息以及被提示的帧。时间位置编码嵌入到近期帧记忆中以建模短期运动模式，而物体指针则在更长的时间跨度上提供语义连续性。</p>
-<h5 id="数据集"><strong>数据集</strong></h5>
-<p>SAM 2
-的一项关键创新是开发了一个迭代数据引擎，解决了大规模、多样化视频分割数据集稀缺的问题。Segment
-Anything Video (SA-V) 数据集中的掩码数量比现有视频分割数据集增加了 53
-倍。</p>
-<h3 id="results-1"><strong>RESULTS:</strong></h3>
-<h3 id="交互式视频分割性能"><strong>交互式视频分割性能</strong></h3>
-<p>在 9 个密集标注的零样本视频数据集上进行的模拟交互设置中，SAM 2
-显著优于强基线（SAM+XMem++ 和
-SAM+Cutie），在实现更高分割精度的同时，用户交互次数减少了 3
-倍以上。所需点击次数的显著减少代表了交互式视频标注工作流程中用户体验的巨大提升。</p>
-<h3 id="半监督视频对象分割"><strong>半监督视频对象分割</strong></h3>
-<p>当仅使用首帧提示在常规半监督 VOS 基准上进行评估时，SAM 2 在 17
-个不同的视频数据集上实现了最先进的准确性。即使使用点击或框输入而不是真实掩码，该模型也始终优于
-XMem++ 和 Cutie 等专门的 VOS 方法。在最新引入的 SA-V
-验证和测试集上，性能提升尤为显著，展示了该模型在具有挑战性的开放世界场景中“分割任何事物”的能力。</p>
-<h3 id="增强的图像分割"><strong>增强的图像分割</strong></h3>
-<p>SAM 2 改进了原始 SAM 的图像分割性能，在 23 个 SA 评估数据集上，其 1
-次点击 mIoU 达到 58.9%，而 SAM 为 58.1%，并且运行速度快 6
-倍。在混合图像和视频数据上进行训练进一步将性能提升至 61.9%
-mIoU，尤其在被评估为视频的数据集上取得了显著的增益。</p>
-<h3 id="实时处理能力"><strong>实时处理能力</strong></h3>
-<p>该模型以实时速度运行，在单个 A100 GPU 上达到 43.8 FPS (Hiera-B+) 和
-30.2 FPS (Hiera-L)，使其适用于需要交互式视频处理的实际应用。</p>
-<h1 id="sam2.1"><strong>SAM2.1</strong></h1>
-<p>https://encord.com/blog/sam-2.1-explained/</p>
-<h3 id="tldr-2"><strong>TL;DR</strong></h3>
-<p>SAM
-2在图像分割模型领域已是强有力的竞争者，它能够“分割任何物体”，适用于各种图像类型和领域。然而，任何尖端技术都有其不足之处，SAM
-2
-也不例外。在处理视觉上相似的物体、小型物体以及遮挡（即物体部分被遮挡）的情况时，SAM
-2 会遇到一些挑战。</p>
-<p>SAM 2.1 最重要的更新之一是提高了分割 SAM 2 难以分割的对象的能力。</p>
-<ul>
-<li>处理视觉相似和小尺寸物体：SAM 2.1
-集成了额外的数据增强技术来模拟复杂环境。这些技术训练模型识别和区分外观相似或尺寸非常小的物体。实际上，这使得
-SAM 2.1
-在医学成像或自动驾驶车辆导航等对分割精度要求极高的实际任务中表现更加可靠。</li>
-<li>遮挡处理：遮挡（即物体部分被遮挡）一直是图像分割的一大挑战。SAM 2.1
-通过使用更长的帧序列进行训练来解决这个问题，从而为模型提供更多上下文信息，使其能够理解部分可见的物体。这项更新使得
-SAM 2.1 能够更好地重建和预测物体边界，即使物体的部分区域被遮挡。</li>
-<li>位置编码调整：为了提高对空间关系和物体指针的记忆能力，SAM 2.1 对其<a
-target="_blank" rel="noopener" href="https://www.sciencedirect.com/topics/computer-science/positional-encoding"><strong>位置编码系统</strong></a>进行了调整。这项改进有助于模型更有效地跨帧跟踪物体，尤其是在动态或杂乱的场景中。</li>
-</ul>
-<h1 id="grounded-sam2024.1"><strong>Grounded sam(2024.1)</strong></h1>
-<p>IDEA研究院Code &amp; Demo:
-https://github.com/IDEA-Research/Grounded-Segment-Anything</p>
-<h3 id="tldr-3"><strong>TL；DR</strong></h3>
-<p>由国际数字经济研究院（IDEA）研究人员开发的Grounded
-SAM，将用于开放集对象检测的Grounding
-DINO与用于可提示分割的SAM集成，从而能够根据自然语言输入检测和分割任意对象。这个组合系统在SGinW零样本基准测试中达到了48.7
-mAP，超越了之前的统一模型。</p>
-<h3 id="methods-1"><strong>METHODS:</strong></h3>
-<p>Grounded SAM 基于两个最近开发的基础模型：</p>
-<ol type="1">
-<li><strong>Grounding
-DINO</strong>：一种开放集对象检测器，可以根据自然语言描述在图像中定位对象。它将文本描述转换为视觉特征，以帮助识别图像中相应的区域。</li>
-<li><strong>Segment Anything Model
-(SAM)</strong>：一种可提示分割模型，在大型 SAM-1B
-数据集上训练，能够在提供点或边界框等提示时，为任何对象生成精确的掩码注释。</li>
-</ol>
-<p>Grounded SAM
-的关键创新在于有效地结合这些模型，以利用它们的互补优势。Grounding DINO
-擅长查找文本描述的对象，而 SAM 擅长为这些对象生成精确的分割掩码。</p>
-<h3 id="results-2"><strong>RESULTS:</strong></h3>
-<h2 id="开放词汇分割的性能"><strong>开放词汇分割的性能</strong></h2>
-<p>Grounded SAM 在先前的统一开放集分割模型上表现出显着的性能提升。在
-Segmentation in the Wild (SGinW) 零样本基准上评估时，Grounded SAM
-实现了最先进的结果。</p>
-<p>研究人员测试了 Grounded SAM 的多种配置，结合了不同版本的 Grounding
-DINO（B 代表 Base，L 代表 Large）和 SAM（B 代表 Base，H 代表
-Huge）。他们表现最佳的模型 Grounded SAM (B+H) 达到了 48.7 的平均精度均值
-(mAP)，优于之前的模型，如 UNINEXT 和 OpenSeeD。</p>
-<p>这一性能表明，专门模型的组合可以有效地解决开放集分割的挑战，超越了尝试用单个统一模型解决问题的方法。</p>
-<h2 id="与其他模型的集成"><strong>与其他模型的集成</strong></h2>
-<p>Grounded SAM
-的主要优势之一是它能够与其他开放世界模型集成，以完成更复杂的视觉任务。该论文展示了几个成功的集成案例：</p>
-<ol type="1">
-<li><strong>RAM-Grounded-SAM</strong>：将 Recognize Anything Model (RAM)
-与 Grounded SAM 集成，以实现自动图像标注。RAM 生成图像标签，然后将其用作
-Grounded SAM 的文本提示，以分割相应的对象。</li>
-<li><strong>Grounded-SAM-SD</strong>：将 Grounded SAM 与 Stable
-Diffusion 结合，以实现可控的图像编辑。Grounded SAM
-根据文本提示识别和分割区域，而 Stable Diffusion
-根据其他指令修改这些区域。</li>
-<li><strong>Grounded-SAM-OSX</strong>：将 Grounded SAM 与 OSX（一种 3D
-人体重建模型）集成，以进行可提示的人体运动分析。Grounded SAM
-根据文本描述检测特定的人，而 OSX 估计这些人的 3D 身体姿势和形状。</li>
-</ol>
-<p>这些集成证明了 Grounded SAM
-作为更复杂的视觉理解系统基础的多功能性。通过组合专门的模型，生成的管道继承并扩展了各个组件的功能。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1469,12 +1180,12 @@ Diffusion 结合，以实现可控的图像编辑。Grounded SAM
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
