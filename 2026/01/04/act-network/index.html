@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="act network的整体结构  [!NOTE] lerobot&#x2F;src&#x2F;lerobot&#x2F;policies&#x2F;act&#x2F;modeling_act.py  act的整体结构   s   vae encoder inputs:  action: (Batch, chunk_size&#x3D;100, action_dim) Robot_state(Batch, state_dim)  Transformer e">
@@ -217,7 +217,7 @@
 </blockquote>
 <h3 id="act的整体结构">act的整体结构</h3>
 <figure>
-<img src="/2026/01/04/act-network/Pasted%20image%2020260104104655.png"
+<img data-src="/2026/01/04/act-network/Pasted%20image%2020260104104655.png"
 alt="s" />
 <figcaption aria-hidden="true">s</figcaption>
 </figure>
@@ -263,7 +263,7 @@ padding.</li>
 <li>Vae
 encoder由多个ACTEncoderLayer组成，每个ACTEncoderLayer是由nn.MultiHeadAttention+dropout+Linear层组成</li>
 <li><figure>
-<img src="/2026/01/04/act-network/image-20260120152238278.png"
+<img data-src="/2026/01/04/act-network/image-20260120152238278.png"
 alt="image-20260120152238278" />
 <figcaption aria-hidden="true">image-20260120152238278</figcaption>
 </figure></li>
@@ -288,7 +288,7 @@ class="math display">\[
 <li><p>根据重参数化的采样技巧：</p>
 <ul>
 <li><figure>
-<img src="/2026/01/04/act-network/image-20260120152310177.png"
+<img data-src="/2026/01/04/act-network/image-20260120152310177.png"
 alt="image-20260120152310177" />
 <figcaption aria-hidden="true">image-20260120152310177</figcaption>
 </figure></li>
@@ -396,7 +396,7 @@ ground_truth_action=b,s,d)</p></li>
 均值和方差的维度是(batch, latent_dim=32)</p></li>
 <li><p>上面的损失函数就是vae的损失，其来源来自于：</p>
 <figure>
-<img src="/2026/01/04/act-network/image-20260120152331170.png"
+<img data-src="/2026/01/04/act-network/image-20260120152331170.png"
 alt="image-20260120152331170" />
 <figcaption aria-hidden="true">image-20260120152331170</figcaption>
 </figure></li>
@@ -574,6 +574,7 @@ decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

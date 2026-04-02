@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="vae是什么 VAE由三部分组成，VAE encoder, latent space, vae decoder vae encoder将原始的数据信息X进行编码映射到latent space空间中，latent space是代表训练数据的一个隐式空间，从中进行采样得到采样数据Z&#39;，最终通过VAE DECODER的解码过程可以把数据恢复X&#39; 贝叶斯框架下的因果推断   image-202601201">
@@ -208,13 +208,13 @@ space是代表训练数据的一个隐式空间，从中进行采样得到采样
 DECODER的解码过程可以把数据恢复X'</p>
 <h3 id="贝叶斯框架下的因果推断">贝叶斯框架下的因果推断</h3>
 <figure>
-<img src="/2026/01/20/vae/image-20260120163052283.png"
+<img data-src="/2026/01/20/vae/image-20260120163052283.png"
 alt="image-20260120163052283" />
 <figcaption aria-hidden="true">image-20260120163052283</figcaption>
 </figure>
 <h3 id="重参数化技巧">重参数化技巧</h3>
 <figure>
-<img src="/2026/01/20/vae/image-20260120163204904.png"
+<img data-src="/2026/01/20/vae/image-20260120163204904.png"
 alt="image-20260120163204904" />
 <figcaption aria-hidden="true">image-20260120163204904</figcaption>
 </figure>
@@ -370,6 +370,7 @@ alt="image-20260120163204904" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="1.Hugging face登录方式 huggingface废弃用户名和密码的登录方式，用token wget --header&#x3D;&quot;Authorization: Bearer hf_xxx&quot;  https:&#x2F;&#x2F;huggingface.co&#x2F;runwayml&#x2F;stable-diffusion-inpainting&#x2F;resolve&#x2F;main&#x2F;sd-v1-5-inpainting.ckpt 2.可以下载">
@@ -220,7 +220,7 @@ forbidden</h3>
 <ol type="1">
 <li>403 forbidden（将token权限增加write,我全打开了）</li>
 <li><figure>
-<img src="/2025/01/03/hugging-download/image-20250103194111502.png"
+<img data-src="/2025/01/03/hugging-download/image-20250103194111502.png"
 alt="image-20250103194111502" />
 <figcaption aria-hidden="true">image-20250103194111502</figcaption>
 </figure></li>
@@ -230,7 +230,7 @@ alt="image-20250103194111502" />
 id="国内机器访问huggingface网络不好无法下载">3.国内机器访问huggingface网络不好，无法下载</h3>
 <p>用镜像网站hf-mirror.com</p>
 <figure>
-<img src="/2025/01/03/hugging-download/image-20250103194152062.png"
+<img data-src="/2025/01/03/hugging-download/image-20250103194152062.png"
 alt="image-20250103194152062" />
 <figcaption aria-hidden="true">image-20250103194152062</figcaption>
 </figure>
@@ -251,13 +251,13 @@ high-resolution文件里有两种文件类型，crc是parquet的校验文件，�
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export WANDB_MODE=offline</span><br><span class="line"></span><br><span class="line">img2dataset --url_list laion-high-resolution --input_format &quot;parquet&quot;\</span><br><span class="line"></span><br><span class="line">​     --url_col &quot;URL&quot; --caption_col &quot;TEXT&quot; --output_format webdataset\</span><br><span class="line"></span><br><span class="line">​      --output_folder laion-high-resolution-output --processes_count 16 --thread_count 64 --image_size 1024\</span><br><span class="line"></span><br><span class="line">​      --resize_only_if_bigger=True --resize_mode=&quot;keep_ratio&quot; --skip_reencode=True \</span><br><span class="line"></span><br><span class="line">​       --save_additional_columns &#x27;[&quot;similarity&quot;,&quot;hash&quot;,&quot;punsafe&quot;,&quot;pwatermark&quot;,&quot;LANGUAGE&quot;]&#x27; --enable_wandb True</span><br></pre></td></tr></table></figure>
 <p>应该已经开始下载了</p>
 <figure>
-<img src="/2025/01/03/hugging-download/image-20250104221538386.png"
+<img data-src="/2025/01/03/hugging-download/image-20250104221538386.png"
 alt="image-20250104221538386" />
 <figcaption aria-hidden="true">image-20250104221538386</figcaption>
 </figure>
 <h2 id="下载数据集结果">下载数据集结果</h2>
 <figure>
-<img src="/2025/01/03/hugging-download/image-20250104221607364.png"
+<img data-src="/2025/01/03/hugging-download/image-20250104221607364.png"
 alt="image-20250104221607364" />
 <figcaption aria-hidden="true">image-20250104221607364</figcaption>
 </figure>
@@ -415,6 +415,7 @@ forbidden</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

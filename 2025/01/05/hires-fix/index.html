@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="https:&#x2F;&#x2F;medium.com&#x2F;rendernet&#x2F;using-hires-fix-to-upscale-your-stable-diffusion-images-8d8e2826593e https:&#x2F;&#x2F;medium.com&#x2F;@realfabianw&#x2F;taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-o">
@@ -217,12 +217,12 @@ data-cites="realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-auto
 <h3 id="upscaler">Upscaler</h3>
 <p>Latent, R-ESRGAN 4x+ and R-ESRGAN 4x+ Anime6B都可以尝试一下。</p>
 <figure>
-<img src="/2025/01/05/hires-fix/image-20250105235616276.png"
+<img data-src="/2025/01/05/hires-fix/image-20250105235616276.png"
 alt="image-20250105235616276" />
 <figcaption aria-hidden="true">image-20250105235616276</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/05/hires-fix/image-20250105235627073.png"
+<img data-src="/2025/01/05/hires-fix/image-20250105235627073.png"
 alt="image-20250105235627073" />
 <figcaption aria-hidden="true">image-20250105235627073</figcaption>
 </figure>
@@ -231,7 +231,7 @@ alt="image-20250105235627073" />
 steps在初试采样后refine图片质量，他们发生在每一步采样步之后的上采样过程，总的steps是sampling
 steps + Hires steps.</p>
 <figure>
-<img src="/2025/01/05/hires-fix/image-20250106001527600.png"
+<img data-src="/2025/01/05/hires-fix/image-20250106001527600.png"
 alt="image-20250106001527600" />
 <figcaption aria-hidden="true">image-20250106001527600</figcaption>
 </figure>
@@ -244,13 +244,13 @@ steps可以设置为sampling steps的一半。</p>
 <p>设置为0对图片没有影响，设置成1会很大改变图片内容。</p>
 <p>webui设置的默认值是0.7，但是在大多数case里这个设置都太强了，初始建议设置到0.3到0.5然后从上往下调整。</p>
 <figure>
-<img src="/2025/01/05/hires-fix/image-20250106001856856.png"
+<img data-src="/2025/01/05/hires-fix/image-20250106001856856.png"
 alt="image-20250106001856856" />
 <figcaption aria-hidden="true">image-20250106001856856</figcaption>
 </figure>
 <p>用webui的xyz工具进行测试选出合适的scaler</p>
 <figure>
-<img src="/2025/01/05/hires-fix/image-20250106001935542.png"
+<img data-src="/2025/01/05/hires-fix/image-20250106001935542.png"
 alt="image-20250106001935542" />
 <figcaption aria-hidden="true">image-20250106001935542</figcaption>
 </figure>
@@ -406,6 +406,7 @@ alt="image-20250106001935542" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

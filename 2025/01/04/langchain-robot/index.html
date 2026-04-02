@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="什么是langchin   image-20250104233619635  langchain是一个支持大语言模型相关应用开发的框架。 使得建设与ai相关的应用会更容易。  集成：将外部数据，比如文件、api、应用集成进来 代理：和环境集成  组件 - LangChain 使得更换必要的抽象和组件以使用语言模型变得轻而易举。 自定义链 - LangChain 提供现成的支持来使用和自定义“链”—">
@@ -207,7 +207,7 @@
       
         <h3 id="什么是langchin">什么是langchin</h3>
 <figure>
-<img src="/2025/01/04/langchain-robot/image-20250104233619635.png"
+<img data-src="/2025/01/04/langchain-robot/image-20250104233619635.png"
 alt="image-20250104233619635" />
 <figcaption aria-hidden="true">image-20250104233619635</figcaption>
 </figure>
@@ -229,7 +229,7 @@ alt="image-20250104233619635" />
 <li>开源模型：开源、灵活性、可能缺乏大公司的支持和资源</li>
 </ul>
 <figure>
-<img src="/2025/01/04/langchain-robot/image-20250104233744531.png"
+<img data-src="/2025/01/04/langchain-robot/image-20250104233744531.png"
 alt="image-20250104233744531" />
 <figcaption aria-hidden="true">image-20250104233744531</figcaption>
 </figure>
@@ -249,7 +249,7 @@ learn more about which models can be used with each operation here:</p>
 <h3
 id="先来考虑一个关于小说内容的chatrobot">先来考虑一个关于小说内容的chatRobot:</h3>
 <figure>
-<img src="/2025/01/04/langchain-robot/image-20250104234107482.png"
+<img data-src="/2025/01/04/langchain-robot/image-20250104234107482.png"
 alt="image-20250104234107482" />
 <figcaption aria-hidden="true">image-20250104234107482</figcaption>
 </figure>
@@ -273,7 +273,7 @@ window会是limit</h5>
 O</strong></p>
 <p><strong>utput Sequence Length</strong></p>
 <figure>
-<img src="/2025/01/04/langchain-robot/image-20250104234423043.png"
+<img data-src="/2025/01/04/langchain-robot/image-20250104234423043.png"
 alt="image-20250104234423043" />
 <figcaption aria-hidden="true">image-20250104234423043</figcaption>
 </figure>
@@ -287,7 +287,7 @@ tokens是4096，大概对应3000多个词。对于这个问题有两种解决方
 window的LLMs;第二种方法是化整为零，将长文本分成很多个短文本，分别送进模型处理然后合并，或者选择最相关的部分然后送进去分析。</p>
 </blockquote>
 <figure>
-<img src="/2025/01/04/langchain-robot/image-20250104234750149.png"
+<img data-src="/2025/01/04/langchain-robot/image-20250104234750149.png"
 alt="image-20250104234750149" />
 <figcaption aria-hidden="true">image-20250104234750149</figcaption>
 </figure>
@@ -304,7 +304,7 @@ alt="image-20250104234750149" />
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from langchain.document_loaders import NotionDirectoryLoader</span><br><span class="line">from langchain.text_splitter import MarkdownHeaderTextSplitter</span><br><span class="line"></span><br><span class="line">markdown_document = &quot;&quot;&quot;# Title\n\n \</span><br><span class="line">## Chapter 1\n\n \</span><br><span class="line">Hi this is Jim\n\n Hi this is Joe\n\n \</span><br><span class="line">### Section \n\n \</span><br><span class="line">Hi this is Lance \n\n </span><br><span class="line">## Chapter 2\n\n \</span><br><span class="line">Hi this is Molly&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">headers_to_split_on = [</span><br><span class="line">    (&quot;#&quot;, &quot;Header 1&quot;),</span><br><span class="line">    (&quot;##&quot;, &quot;Header 2&quot;),</span><br><span class="line">    (&quot;###&quot;, &quot;Header 3&quot;),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">markdown_splitter = MarkdownHeaderTextSplitter(</span><br><span class="line">    headers_to_split_on=headers_to_split_on</span><br><span class="line">)</span><br><span class="line">md_header_splits = markdown_splitter.split_text(markdown_document)</span><br></pre></td></tr></table></figure>
 <h3 id="rag搜索增强">RAG搜索增强</h3>
 <figure>
-<img src="/2025/01/04/langchain-robot/image-20250104235342635.png"
+<img data-src="/2025/01/04/langchain-robot/image-20250104235342635.png"
 alt="image-20250104235342635" />
 <figcaption aria-hidden="true">image-20250104235342635</figcaption>
 </figure>
@@ -484,6 +484,7 @@ window会是limit</span></a></li></ol></li></ol></li><li class="nav-item nav-lev
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

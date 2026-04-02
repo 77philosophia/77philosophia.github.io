@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="image-20250107004758199  1. 准备lora-scripts环境 https:&#x2F;&#x2F;github.com&#x2F;Akegarasu&#x2F;lora-scripts  [!CAUTION] 需要用python3.9，按照仓库代码指示进行安装，安装成功可以启动ui页面。    image-20250107104846559  2. 准备数据集  lora训练脚本图片默认大小是1024x1">
@@ -209,7 +209,7 @@
 
       
         <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107004758199.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107004758199.png"
 alt="image-20250107004758199" />
 <figcaption aria-hidden="true">image-20250107004758199</figcaption>
 </figure>
@@ -220,7 +220,7 @@ alt="image-20250107004758199" />
 <p>需要用python3.9，按照仓库代码指示进行安装，安装成功可以启动ui页面。</p>
 </blockquote>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107104846559.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107104846559.png"
 alt="image-20250107104846559" />
 <figcaption aria-hidden="true">image-20250107104846559</figcaption>
 </figure>
@@ -229,7 +229,7 @@ alt="image-20250107104846559" />
 <li>lora训练脚本图片默认大小是1024x1024,如果训练图片大小不够，可以对图片进行高清放大：</li>
 </ol>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105006386.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105006386.png"
 alt="image-20250107105006386" />
 <figcaption aria-hidden="true">image-20250107105006386</figcaption>
 </figure>
@@ -250,7 +250,7 @@ gray hair, brown hair -&gt; brown hair</li>
 </ol>
 </blockquote>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105300989.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105300989.png"
 alt="image-20250107105300989" />
 <figcaption aria-hidden="true">image-20250107105300989</figcaption>
 </figure>
@@ -258,7 +258,7 @@ alt="image-20250107105300989" />
 <ol type="1">
 <li><p>底膜设置、数据集文件夹、输出文件设置</p>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105409825.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105409825.png"
 alt="image-20250107105409825" />
 <figcaption aria-hidden="true">image-20250107105409825</figcaption>
 </figure></li>
@@ -268,7 +268,7 @@ alt="image-20250107105409825" />
 20</strong>次<strong>,</strong>我的数据集文件夹命名就是<strong>20_xxxStyle</strong></p></li>
 </ol>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105459729.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105459729.png"
 alt="image-20250107105459729" />
 <figcaption aria-hidden="true">image-20250107105459729</figcaption>
 </figure>
@@ -283,18 +283,18 @@ alt="image-20250107105459729" />
 <h4 id="测试">5. 测试</h4>
 <p>在输出文件夹会有一些模型文件，可以选择一轮的模型复制到<strong>webui</strong>的<strong>models/LoRA</strong>目录下（或者comfyui相应的目录下面），刷新加载选中之后用提示词<strong>+lora</strong>模型就可以出图了。注意<strong>lora</strong>训练一般都会过拟合，一般<strong>10</strong>～<strong>20</strong>个<strong>epoch</strong>就可以，之后的<strong>epoch</strong>虽然还会损失下降，但是已经过拟合了。</p>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105655243.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105655243.png"
 alt="image-20250107105655243" />
 <figcaption aria-hidden="true">image-20250107105655243</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105706660.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105706660.png"
 alt="image-20250107105706660" />
 <figcaption aria-hidden="true">image-20250107105706660</figcaption>
 </figure>
 <p>测试图可以勾选Hires.fix高清放大和ADetailer面部修复得到更好的出图效果。如我在训练动漫数据用到的参数如下：</p>
 <figure>
-<img src="/2025/01/07/lora-scripts/image-20250107105804953.png"
+<img data-src="/2025/01/07/lora-scripts/image-20250107105804953.png"
 alt="image-20250107105804953" />
 <figcaption aria-hidden="true">image-20250107105804953</figcaption>
 </figure>
@@ -450,6 +450,7 @@ alt="image-20250107105804953" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
@@ -1063,20 +1063,20 @@ variables,但是不要用vec(n,k)</p>
 <h3 id="lec7-streams">Lec7: Streams</h3>
 <p>Streams: input/output的抽象，把data和data的string表示进行转化。</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250119002648265.png"
+<img data-src="/2025/01/17/C-Notes/image-20250119002648265.png"
 alt="image-20250119002648265" />
 <figcaption aria-hidden="true">image-20250119002648265</figcaption>
 </figure>
 <p>output streams</p>
 <p>类型是std::ostream</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250119231100562.png"
+<img data-src="/2025/01/17/C-Notes/image-20250119231100562.png"
 alt="image-20250119231100562" />
 <figcaption aria-hidden="true">image-20250119231100562</figcaption>
 </figure>
 <p>output file streams</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250119231150353.png"
+<img data-src="/2025/01/17/C-Notes/image-20250119231150353.png"
 alt="image-20250119231150353" />
 <figcaption aria-hidden="true">image-20250119231150353</figcaption>
 </figure>
@@ -1089,35 +1089,35 @@ alt="image-20250119231150353" />
 <p>类型是std::istream</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x;</span><br><span class="line">std::cin &gt;&gt; x;</span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250119231451766.png"
+<img data-src="/2025/01/17/C-Notes/image-20250119231451766.png"
 alt="image-20250119231451766" />
 <figcaption aria-hidden="true">image-20250119231451766</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250119231638276.png"
+<img data-src="/2025/01/17/C-Notes/image-20250119231638276.png"
 alt="image-20250119231638276" />
 <figcaption aria-hidden="true">image-20250119231638276</figcaption>
 </figure>
 <p>Std::istream可以看出一个character的sequence，在遇到空格、tab、换行符的时候就会将buffer的值赋给变量。</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250120140203477.png"
+<img data-src="/2025/01/17/C-Notes/image-20250120140203477.png"
 alt="image-20250120140203477" />
 <figcaption aria-hidden="true">image-20250120140203477</figcaption>
 </figure>
 <p>input streams输入类型错误的时候，继续读入的东西就无效了</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250120140418147.png"
+<img data-src="/2025/01/17/C-Notes/image-20250120140418147.png"
 alt="image-20250120140418147" />
 <figcaption aria-hidden="true">image-20250120140418147</figcaption>
 </figure>
 <p>Std::get line()</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250120140526819.png"
+<img data-src="/2025/01/17/C-Notes/image-20250120140526819.png"
 alt="image-20250120140526819" />
 <figcaption aria-hidden="true">image-20250120140526819</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250120140621449.png"
+<img data-src="/2025/01/17/C-Notes/image-20250120140621449.png"
 alt="image-20250120140621449" />
 <figcaption aria-hidden="true">image-20250120140621449</figcaption>
 </figure>
@@ -1157,17 +1157,17 @@ line)的参数都是传引用。</p>
 <h2 id="containers">Containers</h2>
 <p>容器种类：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250121165106294.png"
+<img data-src="/2025/01/17/C-Notes/image-20250121165106294.png"
 alt="image-20250121165106294" />
 <figcaption aria-hidden="true">image-20250121165106294</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250121165136897.png"
+<img data-src="/2025/01/17/C-Notes/image-20250121165136897.png"
 alt="image-20250121165136897" />
 <figcaption aria-hidden="true">image-20250121165136897</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250121170648848.png"
+<img data-src="/2025/01/17/C-Notes/image-20250121170648848.png"
 alt="image-20250121170648848" />
 <figcaption aria-hidden="true">image-20250121170648848</figcaption>
 </figure>
@@ -1175,7 +1175,7 @@ alt="image-20250121170648848" />
 容器适配器</h5>
 <h2 id="lec6-iterators-and-pointers">Lec6: iterators and pointers</h2>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250122191923467.png"
+<img data-src="/2025/01/17/C-Notes/image-20250122191923467.png"
 alt="image-20250122191923467" />
 <figcaption aria-hidden="true">image-20250122191923467</figcaption>
 </figure>
@@ -1183,13 +1183,13 @@ alt="image-20250122191923467" />
 <p>class相关的略</p>
 <h3 id="template">template</h3>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123163820237.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123163820237.png"
 alt="image-20250123163820237" />
 <figcaption aria-hidden="true">image-20250123163820237</figcaption>
 </figure>
 <p>模版类：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123164006679.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123164006679.png"
 alt="image-20250123164006679" />
 <figcaption aria-hidden="true">image-20250123164006679</figcaption>
 </figure>
@@ -1201,30 +1201,30 @@ alt="image-20250123164006679" />
 <p>Templates不会产生代码直到实例化，因此要将.cpp文件包含在.h文件里。</p>
 </blockquote>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123170609616.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123170609616.png"
 alt="image-20250123170609616" />
 <figcaption aria-hidden="true">image-20250123170609616</figcaption>
 </figure>
 <p>理解c++编译器对于非模版类做了什么</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123170737511.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123170737511.png"
 alt="image-20250123170737511" />
 <figcaption aria-hidden="true">image-20250123170737511</figcaption>
 </figure>
 <p>理解c++编译器对于模版类做了什么</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123170841268.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123170841268.png"
 alt="image-20250123170841268" />
 <figcaption aria-hidden="true">image-20250123170841268</figcaption>
 </figure>
 <p>修复：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123171745108.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123171745108.png"
 alt="image-20250123171745108" />
 <figcaption aria-hidden="true">image-20250123171745108</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250123171805421.png"
+<img data-src="/2025/01/17/C-Notes/image-20250123171805421.png"
 alt="image-20250123171805421" />
 <figcaption aria-hidden="true">image-20250123171805421</figcaption>
 </figure>
@@ -1238,13 +1238,13 @@ alt="image-20250123171805421" />
 <p>a.要声明类的成员函数是模版函数</p>
 <p>b.要注意模版类的命名空间不是MyPair而是MyPair&lt;First, Second&gt;</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126171712040.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126171712040.png"
 alt="image-20250126171712040" />
 <figcaption aria-hidden="true">image-20250126171712040</figcaption>
 </figure>
 <p>模版类的成员类型：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126171841419.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126171841419.png"
 alt="image-20250126171841419" />
 <figcaption aria-hidden="true">image-20250126171841419</figcaption>
 </figure>
@@ -1257,7 +1257,7 @@ type定义了一个嵌套的类型，就如同vector<T>::iterator</p>
 </blockquote>
 <p>总结：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126172439971.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126172439971.png"
 alt="image-20250126172439971" />
 <figcaption aria-hidden="true">image-20250126172439971</figcaption>
 </figure>
@@ -1268,14 +1268,14 @@ ClassName只能使用const-interface</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="function">std::string <span class="title">stringify</span><span class="params">(<span class="type">const</span> Student&amp; s)</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> s.<span class="built_in">getName</span>() + <span class="string">&quot; is &quot;</span> + std::<span class="built_in">to_string</span>(s.<span class="built_in">getAge</span>()) +</span><br><span class="line"><span class="string">&quot; years old.&quot;</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// With our new const-interface, this will work :)</span></span><br></pre></td></tr></table></figure>
 <p>类StrVector的at可以标记为const吗</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126182231645.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126182231645.png"
 alt="image-20250126182231645" />
 <figcaption aria-hidden="true">image-20250126182231645</figcaption>
 </figure>
 <p>返回的是引用，依然可以修改。从语义上来说不能标记为const</p>
 <p>需要新建立一个关于at的const版本的函数</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126182354489.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126182354489.png"
 alt="image-20250126182354489" />
 <figcaption aria-hidden="true">image-20250126182354489</figcaption>
 </figure>
@@ -1285,25 +1285,25 @@ alt="image-20250126182354489" />
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string&amp; <span class="title">StrVector::at</span><span class="params">(<span class="type">size_t</span> index)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (index &gt;= <span class="built_in">size</span>()) &#123;</span><br><span class="line">		<span class="keyword">throw</span> std::<span class="built_in">out_of_range</span>(<span class="string">&quot;Index out of range in at.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">operator</span>[](index); <span class="comment">// operator[] = return *(begin() + index)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> std::string&amp; <span class="title">StrVector::at</span><span class="params">(<span class="type">size_t</span> index)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">static_cast</span>&lt;<span class="type">const</span> std::string&amp;&gt;(<span class="built_in">const_cast</span>&lt;StrVecotr*&gt;(<span class="keyword">this</span>)-&gt;<span class="built_in">at</span>(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126182750157.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126182750157.png"
 alt="image-20250126182750157" />
 <figcaption aria-hidden="true">image-20250126182750157</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126182800510.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126182800510.png"
 alt="image-20250126182800510" />
 <figcaption aria-hidden="true">image-20250126182800510</figcaption>
 </figure>
 <p>关于类的begin()和end()类似于at，也需要一个const版本的逻辑</p>
 <p>解决方法：const_iterator</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126182947080.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126182947080.png"
 alt="image-20250126182947080" />
 <figcaption aria-hidden="true">image-20250126182947080</figcaption>
 </figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StrVector</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">using</span> iterator = std::string*;</span><br><span class="line"><span class="keyword">using</span> const_ iterator = <span class="type">const</span> std::string*;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line"><span class="function"><span class="type">size_t</span> <span class="title">size</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">push_back</span><span class="params">(<span class="type">const</span> std::string&amp; elem)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> std::string&amp; <span class="title">at</span><span class="params">(<span class="type">size_t</span> indx)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">begin</span><span class="params">()</span><span class="type">const</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">end</span><span class="params">()</span><span class="type">const</span></span>;</span><br><span class="line"><span class="comment">/*...*</span></span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250126183014764.png"
+<img data-src="/2025/01/17/C-Notes/image-20250126183014764.png"
 alt="image-20250126183014764" />
 <figcaption aria-hidden="true">image-20250126183014764</figcaption>
 </figure>
@@ -1323,7 +1323,7 @@ alt="image-20250126183014764" />
 <h4 id="predicate-functions">predicate Functions</h4>
 <p>返回true或者false的函数</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250127173135145.png"
+<img data-src="/2025/01/17/C-Notes/image-20250127173135145.png"
 alt="image-20250127173135145" />
 <figcaption aria-hidden="true">image-20250127173135145</figcaption>
 </figure>
@@ -1337,17 +1337,17 @@ alt="image-20250127173135145" />
 </ul>
 <p>有个问题，泛化性比较差</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250128235600102.png"
+<img data-src="/2025/01/17/C-Notes/image-20250128235600102.png"
 alt="image-20250128235600102" />
 <figcaption aria-hidden="true">image-20250128235600102</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250128235614504.png"
+<img data-src="/2025/01/17/C-Notes/image-20250128235614504.png"
 alt="image-20250128235614504" />
 <figcaption aria-hidden="true">image-20250128235614504</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250128235627468.png"
+<img data-src="/2025/01/17/C-Notes/image-20250128235627468.png"
 alt="image-20250128235627468" />
 <figcaption aria-hidden="true">image-20250128235627468</figcaption>
 </figure>
@@ -1357,24 +1357,24 @@ alt="image-20250128235627468" />
 <h4 id="lambdas">lambdas</h4>
 <p>Inline,匿名函数</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250128235902715.png"
+<img data-src="/2025/01/17/C-Notes/image-20250128235902715.png"
 alt="image-20250128235902715" />
 <figcaption aria-hidden="true">image-20250128235902715</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250128235916833.png"
+<img data-src="/2025/01/17/C-Notes/image-20250128235916833.png"
 alt="image-20250128235916833" />
 <figcaption aria-hidden="true">image-20250128235916833</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250128235932720.png"
+<img data-src="/2025/01/17/C-Notes/image-20250128235932720.png"
 alt="image-20250128235932720" />
 <figcaption aria-hidden="true">image-20250128235932720</figcaption>
 </figure>
 <p>= 通过value捕获</p>
 <p>&amp;通过引用捕获</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250129000033376.png"
+<img data-src="/2025/01/17/C-Notes/image-20250129000033376.png"
 alt="image-20250129000033376" />
 <figcaption aria-hidden="true">image-20250129000033376</figcaption>
 </figure>
@@ -1392,7 +1392,7 @@ alt="image-20250129000033376" />
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">functor</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="type">int</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="type">int</span> arg)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> num + arg;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">auto</span> lambda = [&amp;num](<span class="type">int</span> arg)&#123;num += arg;&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203121340540.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203121340540.png"
 alt="image-20250203121340540" />
 <figcaption aria-hidden="true">image-20250203121340540</figcaption>
 </figure>
@@ -1402,7 +1402,7 @@ alt="image-20250203121340540" />
 <p>如果我们传递一个dog对象：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(Animal* animal)</span> </span>&#123; animal-&gt;<span class="built_in">speak</span>();</span><br><span class="line"><span class="comment">// can take in any animal and make it speak!</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">Animal* myAnimal = <span class="keyword">new</span> Animal;</span><br><span class="line">Dog* myDog = <span class="keyword">new</span> Dog;</span><br><span class="line"><span class="built_in">func</span>(myAnimal);</span><br><span class="line">fun</span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203182923379.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203182923379.png"
 alt="image-20250203182923379" />
 <figcaption aria-hidden="true">image-20250203182923379</figcaption>
 </figure>
@@ -1413,7 +1413,7 @@ alt="image-20250203182923379" />
 </blockquote>
 <p>解决方法：将夫类被overriden的方法声明为virtual</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203183111810.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203183111810.png"
 alt="image-20250203183111810" />
 <figcaption aria-hidden="true">image-20250203183111810</figcaption>
 </figure>
@@ -1421,48 +1421,48 @@ alt="image-20250203183111810" />
 overload</h2>
 <p>可以overload的operator:</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203212741087.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203212741087.png"
 alt="image-20250203212741087" />
 <figcaption aria-hidden="true">image-20250203212741087</figcaption>
 </figure>
 <p>不能重载的运算符：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203212810612.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203212810612.png"
 alt="image-20250203212810612" />
 <figcaption aria-hidden="true">image-20250203212810612</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203212856249.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203212856249.png"
 alt="image-20250203212856249" />
 <figcaption aria-hidden="true">image-20250203212856249</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203212905125.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203212905125.png"
 alt="image-20250203212905125" />
 <figcaption aria-hidden="true">image-20250203212905125</figcaption>
 </figure>
 <p>有两种重载运算符的方法：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203213204584.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203213204584.png"
 alt="image-20250203213204584" />
 <figcaption aria-hidden="true">image-20250203213204584</figcaption>
 </figure>
 <p>非成员函数的重载更被stl所接纳：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203213525137.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203213525137.png"
 alt="image-20250203213525137" />
 <figcaption aria-hidden="true">image-20250203213525137</figcaption>
 </figure>
 <p>成员函数的重载可以访问this-&gt;和私有变量</p>
 <p>对于非成员函数的重载需要通过friend访问</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203213844189.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203213844189.png"
 alt="image-20250203213844189" />
 <figcaption aria-hidden="true">image-20250203213844189</figcaption>
 </figure>
 <p>注意new和delete的非成员函数重载，由于不针对特定类型的输入，会影响全局。</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203214025479.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203214025479.png"
 alt="image-20250203214025479" />
 <figcaption aria-hidden="true">image-20250203214025479</figcaption>
 </figure>
@@ -1479,14 +1479,14 @@ alt="image-20250203214025479" />
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Widget</span>(); <span class="comment">// default constructor</span></span><br><span class="line">  <span class="built_in">Widget</span>(<span class="type">const</span> Widget&amp; w); <span class="comment">//copy constructor 创建了一个新的对象</span></span><br><span class="line">  Widget&amp; <span class="keyword">operator</span> = (<span class="type">const</span> Widget&amp; w); <span class="comment">//拷贝赋值运算符 copy assignment operator 将一个已经存在的对象赋值给另一个</span></span><br><span class="line">  ～<span class="built_in">Widget</span>(); <span class="comment">// destructor</span></span><br><span class="line">  <span class="built_in">Widget</span>(Widget&amp;&amp; rhs); <span class="comment">//move constructor</span></span><br><span class="line">  Widget&amp; <span class="keyword">operator</span> = (Widget&amp;&amp; rhs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>为什么需要override</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203224111121.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203224111121.png"
 alt="image-20250203224111121" />
 <figcaption aria-hidden="true">image-20250203224111121</figcaption>
 </figure>
 <h3 id="default-delete">default &amp; delete</h3>
 <p>想要禁止拷贝</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203224234915.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203224234915.png"
 alt="image-20250203224234915" />
 <figcaption aria-hidden="true">image-20250203224234915</figcaption>
 </figure>
@@ -1506,157 +1506,157 @@ operator，这三个都应该被重定义</li>
 <h3 id="move">move</h3>
 <p>总是拷贝开销会很大；</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203225320261.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203225320261.png"
 alt="image-20250203225320261" />
 <figcaption aria-hidden="true">image-20250203225320261</figcaption>
 </figure>
 <h2 id="lect14-c里的move语义">Lect14 C++里的move语义</h2>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203225430293.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203225430293.png"
 alt="image-20250203225430293" />
 <figcaption aria-hidden="true">image-20250203225430293</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203225438211.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203225438211.png"
 alt="image-20250203225438211" />
 <figcaption aria-hidden="true">image-20250203225438211</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203225520653.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203225520653.png"
 alt="image-20250203225520653" />
 <figcaption aria-hidden="true">image-20250203225520653</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203225547927.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203225547927.png"
 alt="image-20250203225547927" />
 <figcaption aria-hidden="true">image-20250203225547927</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203231122204.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203231122204.png"
 alt="image-20250203231122204" />
 <figcaption aria-hidden="true">image-20250203231122204</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203233445459.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203233445459.png"
 alt="image-20250203233445459" />
 <figcaption aria-hidden="true">image-20250203233445459</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203233620968.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203233620968.png"
 alt="image-20250203233620968" />
 <figcaption aria-hidden="true">image-20250203233620968</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203233632186.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203233632186.png"
 alt="image-20250203233632186" />
 <figcaption aria-hidden="true">image-20250203233632186</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203233809478.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203233809478.png"
 alt="image-20250203233809478" />
 <figcaption aria-hidden="true">image-20250203233809478</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203233858206.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203233858206.png"
 alt="image-20250203233858206" />
 <figcaption aria-hidden="true">image-20250203233858206</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203233912300.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203233912300.png"
 alt="image-20250203233912300" />
 <figcaption aria-hidden="true">image-20250203233912300</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234104709.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234104709.png"
 alt="image-20250203234104709" />
 <figcaption aria-hidden="true">image-20250203234104709</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234159789.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234159789.png"
 alt="image-20250203234159789" />
 <figcaption aria-hidden="true">image-20250203234159789</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234259860.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234259860.png"
 alt="image-20250203234259860" />
 <figcaption aria-hidden="true">image-20250203234259860</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234308018.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234308018.png"
 alt="image-20250203234308018" />
 <figcaption aria-hidden="true">image-20250203234308018</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234428066.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234428066.png"
 alt="image-20250203234428066" />
 <figcaption aria-hidden="true">image-20250203234428066</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234444525.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234444525.png"
 alt="image-20250203234444525" />
 <figcaption aria-hidden="true">image-20250203234444525</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234501070.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234501070.png"
 alt="image-20250203234501070" />
 <figcaption aria-hidden="true">image-20250203234501070</figcaption>
 </figure>
 <h3 id="heck">heck &amp;&amp;</h3>
 <p>区分拷贝赋值和移动赋值</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234545870.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234545870.png"
 alt="image-20250203234545870" />
 <figcaption aria-hidden="true">image-20250203234545870</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234750833.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234750833.png"
 alt="image-20250203234750833" />
 <figcaption aria-hidden="true">image-20250203234750833</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234805928.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234805928.png"
 alt="image-20250203234805928" />
 <figcaption aria-hidden="true">image-20250203234805928</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234828322.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234828322.png"
 alt="image-20250203234828322" />
 <figcaption aria-hidden="true">image-20250203234828322</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234916234.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234916234.png"
 alt="image-20250203234916234" />
 <figcaption aria-hidden="true">image-20250203234916234</figcaption>
 </figure>
 <p>使用std::move</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234931990.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234931990.png"
 alt="image-20250203234931990" />
 <figcaption aria-hidden="true">image-20250203234931990</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203234943875.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203234943875.png"
 alt="image-20250203234943875" />
 <figcaption aria-hidden="true">image-20250203234943875</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203235220492.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203235220492.png"
 alt="image-20250203235220492" />
 <figcaption aria-hidden="true">image-20250203235220492</figcaption>
 </figure>
 <p>SMFs使用规则：</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203235250464.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203235250464.png"
 alt="image-20250203235250464" />
 <figcaption aria-hidden="true">image-20250203235250464</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203235338280.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203235338280.png"
 alt="image-20250203235338280" />
 <figcaption aria-hidden="true">image-20250203235338280</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203235348312.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203235348312.png"
 alt="image-20250203235348312" />
 <figcaption aria-hidden="true">image-20250203235348312</figcaption>
 </figure>
@@ -1664,49 +1664,49 @@ alt="image-20250203235348312" />
 std::optional</h2>
 <p>类型检查需要检查数组是否为空和是否越界，否则会返回未定义的行为。</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250203235855513.png"
+<img data-src="/2025/01/17/C-Notes/image-20250203235855513.png"
 alt="image-20250203235855513" />
 <figcaption aria-hidden="true">image-20250203235855513</figcaption>
 </figure>
 <p>通过std::pair返回返回状态和返回值</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000001279.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000001279.png"
 alt="image-20250204000001279" />
 <figcaption aria-hidden="true">image-20250204000001279</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000011320.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000011320.png"
 alt="image-20250204000011320" />
 <figcaption aria-hidden="true">image-20250204000011320</figcaption>
 </figure>
 <p>用std::optinal<T>返回false时候的值。</p>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000101966.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000101966.png"
 alt="image-20250204000101966" />
 <figcaption aria-hidden="true">image-20250204000101966</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000140494.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000140494.png"
 alt="image-20250204000140494" />
 <figcaption aria-hidden="true">image-20250204000140494</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000150587.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000150587.png"
 alt="image-20250204000150587" />
 <figcaption aria-hidden="true">image-20250204000150587</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000301227.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000301227.png"
 alt="image-20250204000301227" />
 <figcaption aria-hidden="true">image-20250204000301227</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000549867.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000549867.png"
 alt="image-20250204000549867" />
 <figcaption aria-hidden="true">image-20250204000549867</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/17/C-Notes/image-20250204000606798.png"
+<img data-src="/2025/01/17/C-Notes/image-20250204000606798.png"
 alt="image-20250204000606798" />
 <figcaption aria-hidden="true">image-20250204000606798</figcaption>
 </figure>
@@ -1770,12 +1770,12 @@ alt="image-20250204000606798" />
       
           <h3 id="背景知识">背景知识</h3>
 <figure>
-<img src="/2025/01/07/python-multi/image-20250107192244341.png"
+<img data-src="/2025/01/07/python-multi/image-20250107192244341.png"
 alt="image-20250107192244341" />
 <figcaption aria-hidden="true">image-20250107192244341</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/07/python-multi/image-20250107192257067.png"
+<img data-src="/2025/01/07/python-multi/image-20250107192257067.png"
 alt="image-20250107192257067" />
 <figcaption aria-hidden="true">image-20250107192257067</figcaption>
 </figure>
@@ -1841,7 +1841,7 @@ alt="image-20250107192257067" />
 <ol type="1">
 <li><p>import torchaudio的时候报错“undefined symbol”</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191646057.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191646057.png"
 alt="image-20250107191646057" />
 <figcaption aria-hidden="true">image-20250107191646057</figcaption>
 </figure></li>
@@ -1853,14 +1853,14 @@ alt="image-20250107191646057" />
 <p><strong>https://blog.csdn.net/qq_45599476/article/details/140207176</strong></p>
 <p>再次启动就好了</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191710761.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191710761.png"
 alt="image-20250107191710761" />
 <figcaption aria-hidden="true">image-20250107191710761</figcaption>
 </figure>
 <ol start="2" type="1">
 <li><p>在点击Queue Prompt出图的时候报错</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191754873.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191754873.png"
 alt="image-20250107191754873" />
 <figcaption aria-hidden="true">image-20250107191754873</figcaption>
 </figure></li>
@@ -1884,24 +1884,24 @@ pull</strong></p>
 <p>*<strong>0.0.28.post1*</strong></p>
 <p>成功出图</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191854078.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191854078.png"
 alt="image-20250107191854078" />
 <figcaption aria-hidden="true">image-20250107191854078</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191903222.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191903222.png"
 alt="image-20250107191903222" />
 <figcaption aria-hidden="true">image-20250107191903222</figcaption>
 </figure>
 <h3 id="测试">测试：</h3>
 <p>安装和sd跑同一个prompt</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191927650.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191927650.png"
 alt="image-20250107191927650" />
 <figcaption aria-hidden="true">image-20250107191927650</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191936508.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191936508.png"
 alt="image-20250107191936508" />
 <figcaption aria-hidden="true">image-20250107191936508</figcaption>
 </figure>
@@ -1965,14 +1965,14 @@ alt="image-20250107191936508" />
       
           <h3 id="用官方提供的推理">1. 用官方提供的推理</h3>
 <figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191054805.png"
+<img data-src="/2025/01/07/B-Lora-reproduce/image-20250107191054805.png"
 alt="image-20250107191054805" />
 <figcaption aria-hidden="true">image-20250107191054805</figcaption>
 </figure>
 <h3 id="训练出现nan">2. 训练出现nan</h3>
 <p>需要调节学习率<strong>heckpoint=1100, lr=5e-6</strong></p>
 <figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191222548.png"
+<img data-src="/2025/01/07/B-Lora-reproduce/image-20250107191222548.png"
 alt="image-20250107191222548" />
 <figcaption aria-hidden="true">image-20250107191222548</figcaption>
 </figure>
@@ -1987,7 +1987,7 @@ form:</strong></p>
 <p>找到一个<strong>issue</strong>
 <strong>https://github.com/bitsandbytes-foundation/bitsandbytes/issues/168</strong></p>
 <figure>
-<img src="/2025/01/07/B-Lora-reproduce/image-20250107191329941.png"
+<img data-src="/2025/01/07/B-Lora-reproduce/image-20250107191329941.png"
 alt="image-20250107191329941" />
 <figcaption aria-hidden="true">image-20250107191329941</figcaption>
 </figure>
@@ -2133,6 +2133,7 @@ alt="image-20250107191329941" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。 1.item名词 nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。">
@@ -283,7 +283,7 @@ sensor相机的外参是相对车体给出的。</li>
 <h3 id="scene">3. Scene</h3>
 <p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
 <p><code>nusc.scene</code> 返回列表，可以根据下标去索引具体的scene.</p>
-<p><img src="/2020/08/18/nuscenes/图片1.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片1.png" /></p>
 <h3 id="sample">4.Sample</h3>
 <p>在scenes中，每半秒（2
 HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
@@ -292,7 +292,7 @@ timestamp. A keyframe is a frame where the time-stamps of data from all
 the sensors should be very close to the time-stamp of the sample it
 points to.</p>
 <p><code>my_sample = nusc.get('sample',first_sample)</code></p>
-<p><img src="/2020/08/18/nuscenes/图片2.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片2.png" /></p>
 <p><code>nusc.list_scene</code> 列举出所有的场景</p>
 <p><code>nusc.list_sample(my_sample_token["token"])</code> 列举出related
 sample_data keyframes and sample_annotation associated with a sample</p>
@@ -300,47 +300,47 @@ sample_data keyframes and sample_annotation associated with a sample</p>
 <p>从一个sample中具体取出哪路相机数据。</p>
 <p><code>my_sample['data']</code> 列举出12个token,分别是6 camera 5 radar
 1 lidar</p>
-<p><img src="/2020/08/18/nuscenes/图片3.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片3.png" /></p>
 <p>具体取出某个sensor的数据：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sensor = &#x27;CAM_FRONT&#x27;</span><br><span class="line">Cam_front_data = nusc.get(&#x27;sample_data&#x27;,my_sample[&#x27;data&#x27;][sensor])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片4.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片4.png" /></p>
 <p>根据sample_data的token取出路径、annotationh和相机内参的接口，检测任务的dataloader很好用.这个函数tutorial没有给，源代码有。传入的第二个可见性的参数是关于bbox的，具体可看源代码。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_path,box_list,cam_intrinsic = nusc.get_sample_data(token,visibility)</span><br></pre></td></tr></table></figure>
 <p>可视化某一个sample_data:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nusc.render_sample_data(cam_front_data[&#x27;token&#x27;])</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/08/18/nuscenes/图片6.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片6.png" /></p>
 <h3 id="sample_annotation">6. Sample_annotation</h3>
 <p>sample_annotation refers to any bounding box defining the position of
 an object seen in a sample. All location data is given with respect to
 the global coordinate
 system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
-<p><img src="nuscenes/图片5.png" style="zoom:75%;" /></p>
+<p><img data-src="nuscenes/图片5.png" style="zoom:75%;" /></p>
 <p>可视化sample_annotation:</p>
-<p><img src="/2020/08/18/nuscenes/图片12.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片12.png" /></p>
 <h3 id="instance">7.instance</h3>
 <p>Object instance are instances that need to be detected or tracked by
 an AV.</p>
 <p><code>nusc.instance</code> 返回instance的列表，可以通过下标索引。</p>
 <h3 id="category">8. category</h3>
 <p><code>nusc.list_categories()</code></p>
-<p><img src="/2020/08/18/nuscenes/图片8.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片8.png" /></p>
 <h3 id="attribute">9. attribute</h3>
 <p>An attribute is a property of an instance that may change throughout
 different parts of a scene while the category remains the same.</p>
-<p><img src="/2020/08/18/nuscenes/图片9.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片9.png" /></p>
 <h3 id="visibility">10. visibility</h3>
 <p>visibility可视化及描述：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">anntoken=<span class="string">&#x27;a7d0722bce164f88adf03ada491ea0ba&#x27;</span></span><br><span class="line">visibility_token = nusc.get(<span class="string">&#x27;sample_annotation&#x27;</span>,anntoken)[<span class="string">&#x27;visibility_token&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Visibility:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(nusc.get(<span class="string">&#x27;visibility&#x27;</span>,visibility_token)))</span><br><span class="line">nusc.render_annotation(anntoken)</span><br></pre></td></tr></table></figure>
 <p>Visibility: {'description': 'visibility of whole object is between 80
 and 100%', 'token': '4', 'level': 'v80-100'}</p>
-<p><img src="/2020/08/18/nuscenes/图片10.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片10.png" /></p>
 <h3 id="sensor">11. sensor</h3>
 <p>1 lidar, 5 radar, 6 cameras</p>
 <h3 id="calibrated_sensor">12. Calibrated_sensor</h3>
 <p>calibrated_sensor consists of the definition of a particular sensor
 (lidar/radar/camera) as calibrated on a particular vehicle.
 注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
-<p><img src="/2020/08/18/nuscenes/图片14.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片14.png" /></p>
 <p>3D bounding box坐标：X points forward, Y to the left, Z up</p>
 <p>理解“with respect to ego vehicle body
 frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
@@ -349,7 +349,7 @@ y_{ego}\\\\ z_{ego} \end{array} \right] = R\left[ \begin{array}{l}
 x_{camera}\\\\ y_{camera}\\\\ z_{camera} \end{array} \right] +
 T)\]</span></p>
 <p>相应的把ego vehicle坐标系下的bbox转换到sensor coord system就是：</p>
-<p><img src="/2020/08/18/nuscenes/图片15.png" /></p>
+<p><img data-src="/2020/08/18/nuscenes/图片15.png" /></p>
 <h3 id="ego_pose">13. Ego_pose</h3>
 <p>go_pose contains information about the location (encoded in
 translation) and the orientation (encoded in rotation) of the ego
@@ -558,6 +558,7 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

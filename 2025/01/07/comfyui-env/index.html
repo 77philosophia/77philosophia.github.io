@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="环境安装  import torchaudio的时候报错“undefined symbol”   image-20250107191646057   推测还是版本不兼容，按照下面这个博客的版本进行安装 pip install torch&#x3D;&#x3D;2.1.0 pip install torchvision&#x3D;&#x3D;0.16.0 pip install torchaudio&#x3D;&#x3D;2.1.0 https:&#x2F;&#x2F;blog">
@@ -210,7 +210,7 @@
 <ol type="1">
 <li><p>import torchaudio的时候报错“undefined symbol”</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191646057.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191646057.png"
 alt="image-20250107191646057" />
 <figcaption aria-hidden="true">image-20250107191646057</figcaption>
 </figure></li>
@@ -222,14 +222,14 @@ alt="image-20250107191646057" />
 <p><strong>https://blog.csdn.net/qq_45599476/article/details/140207176</strong></p>
 <p>再次启动就好了</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191710761.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191710761.png"
 alt="image-20250107191710761" />
 <figcaption aria-hidden="true">image-20250107191710761</figcaption>
 </figure>
 <ol start="2" type="1">
 <li><p>在点击Queue Prompt出图的时候报错</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191754873.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191754873.png"
 alt="image-20250107191754873" />
 <figcaption aria-hidden="true">image-20250107191754873</figcaption>
 </figure></li>
@@ -253,24 +253,24 @@ pull</strong></p>
 <p>*<strong>0.0.28.post1*</strong></p>
 <p>成功出图</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191854078.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191854078.png"
 alt="image-20250107191854078" />
 <figcaption aria-hidden="true">image-20250107191854078</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191903222.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191903222.png"
 alt="image-20250107191903222" />
 <figcaption aria-hidden="true">image-20250107191903222</figcaption>
 </figure>
 <h3 id="测试">测试：</h3>
 <p>安装和sd跑同一个prompt</p>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191927650.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191927650.png"
 alt="image-20250107191927650" />
 <figcaption aria-hidden="true">image-20250107191927650</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/07/comfyui-env/image-20250107191936508.png"
+<img data-src="/2025/01/07/comfyui-env/image-20250107191936508.png"
 alt="image-20250107191936508" />
 <figcaption aria-hidden="true">image-20250107191936508</figcaption>
 </figure>
@@ -426,6 +426,7 @@ alt="image-20250107191936508" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

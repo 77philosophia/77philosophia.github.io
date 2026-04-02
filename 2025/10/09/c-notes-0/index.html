@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="参考：https:&#x2F;&#x2F;courses.grainger.illinois.edu&#x2F;cs225&#x2F;fa2025&#x2F;pages&#x2F;lectures.html week 1 c++ review 内存管理： 12345&#x2F;&#x2F; Stack: 局部变量存储int x &#x3D; 5;&#x2F;&#x2F; Heap:动态存储int* x &#x3D; new int[5] 传参数有三种情况：value传递、pointer to value传递、ref">
@@ -234,7 +234,7 @@
 <p>堆上通过new和free管理。</p>
 <p>内存管理中的owership: 通过资源的创建和销毁来判断谁是对象的ower</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251009162725641.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251009162725641.png"
 alt="image-20251009162725641" />
 <figcaption aria-hidden="true">image-20251009162725641</figcaption>
 </figure>
@@ -251,7 +251,7 @@ alt="image-20251009162725641" />
 <p>声明了自定义析构函数、拷贝/移动构造函数或拷贝/移动赋值运算符的类应当专门处理所有权问题。其他类则不应声明自定义析构函数、拷贝/移动构造函数或拷贝/移动赋值运算符。</p>
 <p>总结：https://courses.grainger.illinois.edu/cs225/fa2025/assets/lectures/notes/Lecture_2.pdf</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251009164748928.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251009164748928.png"
 alt="image-20251009164748928" />
 <figcaption aria-hidden="true">image-20251009164748928</figcaption>
 </figure>
@@ -275,7 +275,7 @@ empty list)</p></li>
 <li><p>实现</p>
 <ul>
 <li><p>ArrayList或者Linked List</p>
-<p><img src="c-notes-0/image-20251009172938063.png" alt="image-20251009172938063" style="zoom:50%;" /></p>
+<p><img data-src="c-notes-0/image-20251009172938063.png" alt="image-20251009172938063" style="zoom:50%;" /></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// List.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">List</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">/*...*/</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">insertAtFront</span><span class="params">(<span class="type">const</span> T&amp; t)</span></span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	<span class="keyword">class</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">      T &amp; data;</span><br><span class="line">      ListNode* next;</span><br><span class="line">      <span class="built_in">ListNode</span>(T &amp; data):</span><br><span class="line">      	<span class="built_in">data</span>(data), <span class="built_in">next</span>(<span class="literal">NULL</span>) &#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  </span><br><span class="line">  	ListNode *head_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// List.hpp</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;List.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> List&lt;T&gt;::<span class="built_in">insertAtFront</span>(T &amp; t) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> List&lt;T&gt;::ListNode *&amp; List&lt;T&gt;::_index(<span class="type">unsigned</span> index) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>涉及的考虑：</p>
@@ -333,51 +333,51 @@ ListNode(T&amp; data): data(data), next(NULL) {} };
 <p>KD-tree:
 一种多维欧几里得空间组织点数据的二叉树结构，为了高效处理多维值搜索问题。最常见的是最近邻搜索和范围搜索。</p>
 <h6 id="lambda-functions">Lambda Functions</h6>
-<p><img src="c-notes-0/image-20251024171333728.png" alt="image-20251024171333728" style="zoom:50%;" /></p>
-<p><img src="c-notes-0/image-20251024171353578.png" alt="image-20251024171353578" style="zoom:50%;" /></p>
+<p><img data-src="c-notes-0/image-20251024171333728.png" alt="image-20251024171333728" style="zoom:50%;" /></p>
+<p><img data-src="c-notes-0/image-20251024171353578.png" alt="image-20251024171353578" style="zoom:50%;" /></p>
 <h3 id="week6">week6:</h3>
 <h6 id="kd-tree">kd-tree</h6>
 <ol type="1">
 <li><p>先看ranged-based search</p>
-<p><img src="c-notes-0/image-20251025135615031.png" alt="image-20251025135615031" style="zoom:50%;" /></p></li>
+<p><img data-src="c-notes-0/image-20251025135615031.png" alt="image-20251025135615031" style="zoom:50%;" /></p></li>
 </ol>
-<p><img src="c-notes-0/image-20251025135640514.png" alt="image-20251025135640514" style="zoom:50%;" /></p>
+<p><img data-src="c-notes-0/image-20251025135640514.png" alt="image-20251025135640514" style="zoom:50%;" /></p>
 <p>k-d tree的最近邻搜索</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025141204535.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025141204535.png"
 alt="image-20251025141204535" />
 <figcaption aria-hidden="true">image-20251025141204535</figcaption>
 </figure>
 <p>Kd树最开始的搜索过程类似于BST,如果没有找到合适的就要进行backward搜索找最近邻，在此过程中不断更细腻最优值。</p>
 <p>BST的搜索速度和树的高度有关，结合元素个数来看，就是和平衡程度有关，给个数学上的量化就是：</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025141828589.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025141828589.png"
 alt="image-20251025141828589" />
 <figcaption aria-hidden="true">image-20251025141828589</figcaption>
 </figure>
 <p>AVL: 具有自我平衡能力的二叉树（通过BST rotation来实现）</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025141919241.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025141919241.png"
 alt="image-20251025141919241" />
 <figcaption aria-hidden="true">image-20251025141919241</figcaption>
 </figure>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025142118651.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025142118651.png"
 alt="image-20251025142118651" />
 <figcaption aria-hidden="true">image-20251025142118651</figcaption>
 </figure>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025142201533.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025142201533.png"
 alt="image-20251025142201533" />
 <figcaption aria-hidden="true">image-20251025142201533</figcaption>
 </figure>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025142707864.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025142707864.png"
 alt="image-20251025142707864" />
 <figcaption aria-hidden="true">image-20251025142707864</figcaption>
 </figure>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251025143030887.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251025143030887.png"
 alt="image-20251025143030887" />
 <figcaption aria-hidden="true">image-20251025143030887</figcaption>
 </figure>
@@ -403,7 +403,7 @@ alt="img" />
 <figcaption aria-hidden="true">img</figcaption>
 </figure>
 <h4 id="b-tree">B tree</h4>
-<p><img src="c-notes-0/image-20251030205819871.png" alt="image-20251030205819871" style="zoom:50%;" /></p>
+<p><img data-src="c-notes-0/image-20251030205819871.png" alt="image-20251030205819871" style="zoom:50%;" /></p>
 <h3 id="week8-heap">week8: heap</h3>
 <p>常规队列：first In first out</p>
 <p>优先队列：每个数据插入的时候有个priority,
@@ -413,13 +413,13 @@ remove的时候按照这个priority remove</p>
 <p>一种树形结构，用来实现优先队列。</p>
 <p>注意，和堆内存是两个概念，没有直接联系。</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251031102421808.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251031102421808.png"
 alt="image-20251031102421808" />
 <figcaption aria-hidden="true">image-20251031102421808</figcaption>
 </figure>
 <p>构建一个堆：</p>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251031104255094.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251031104255094.png"
 alt="image-20251031104255094" />
 <figcaption aria-hidden="true">image-20251031104255094</figcaption>
 </figure>
@@ -427,7 +427,7 @@ alt="image-20251031104255094" />
 <p>https://courses.grainger.illinois.edu/cs225/fa2025/assets/lectures/handouts/cs225fa25-21-heapsanalysis-handout.pdf</p>
 <h4 id="disjoint-set-并查集">disjoint set 并查集</h4>
 <figure>
-<img src="/2025/10/09/c-notes-0/image-20251031112656403.png"
+<img data-src="/2025/10/09/c-notes-0/image-20251031112656403.png"
 alt="image-20251031112656403" />
 <figcaption aria-hidden="true">image-20251031112656403</figcaption>
 </figure>
@@ -585,6 +585,7 @@ alt="image-20251031112656403" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

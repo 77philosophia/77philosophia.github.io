@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="《Digging into Self-Supervised Monocular Depth Estimation》论文阅读 目标： self-supervised monoculr depth estimation 摘要： 1、一个最小重投影损失，解决遮挡问题。 2、一个全分辨率多尺度取样方法，减少视觉误差。 3、一个自动遮挡损失，忽视违反相机运动假设的像素，不让其训练。 损失函数 1、重投影损失">
@@ -239,7 +239,7 @@ class="math inline">\(d^{*}_{t}=d_{t}/\bar{d_{t}}\)</span> ,
 <h6
 id="a在目标frame和source-frame选择误差小的像素匹配这是为了拒绝被遮挡像素带来的误差增大的训练">a、在目标frame和source
 frame选择误差小的像素匹配，这是为了拒绝被遮挡像素带来的误差增大的训练。</h6>
-<p><img src="/2019/12/06/paper-diggingInto/appearance-loss.png" /></p>
+<p><img data-src="/2019/12/06/paper-diggingInto/appearance-loss.png" /></p>
 <p>所以：$ L_{p}=min,pe(I_{t},I_{t^{'}t})$</p>
 <h6 id="bauto-masking-stationary-pixels">b、Auto-Masking Stationary
 Pixels</h6>
@@ -431,6 +431,7 @@ Pixels</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href=
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

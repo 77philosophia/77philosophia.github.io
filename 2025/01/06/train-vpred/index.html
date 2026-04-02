@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="1. comfyui工作流加载 需要增加节点，直接使用官方提供的工作流即可。   image-20250106231614399  2.webui运行 根据https:&#x2F;&#x2F;huggingface.co&#x2F;Laxhar&#x2F;noob_sdxl_v_pred_test（一个月以前的说明文档），无法在webui里运行。 根据https:&#x2F;&#x2F;huggingface.co&#x2F;Laxhar&#x2F;noobai-XL-Vpr">
@@ -206,7 +206,7 @@
         <h2 id="comfyui工作流加载">1. comfyui工作流加载</h2>
 <p>需要增加节点，直接使用官方提供的工作流即可。</p>
 <figure>
-<img src="/2025/01/06/train-vpred/image-20250106231614399.png"
+<img data-src="/2025/01/06/train-vpred/image-20250106231614399.png"
 alt="image-20250106231614399" />
 <figcaption aria-hidden="true">image-20250106231614399</figcaption>
 </figure>
@@ -214,17 +214,17 @@ alt="image-20250106231614399" />
 <p>根据https://huggingface.co/Laxhar/noob_sdxl_v_pred_test（一个月以前的说明文档），无法在webui里运行。</p>
 <p>根据https://huggingface.co/Laxhar/noobai-XL-Vpred-0.65s?not-for-all-audiences=true</p>
 <figure>
-<img src="/2025/01/06/train-vpred/image-20250106231748876.png"
+<img data-src="/2025/01/06/train-vpred/image-20250106231748876.png"
 alt="image-20250106231748876" />
 <figcaption aria-hidden="true">image-20250106231748876</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/06/train-vpred/image-20250106231801221.png"
+<img data-src="/2025/01/06/train-vpred/image-20250106231801221.png"
 alt="image-20250106231801221" />
 <figcaption aria-hidden="true">image-20250106231801221</figcaption>
 </figure>
 <figure>
-<img src="/2025/01/06/train-vpred/image-20250106231816557.png"
+<img data-src="/2025/01/06/train-vpred/image-20250106231816557.png"
 alt="image-20250106231816557" />
 <figcaption aria-hidden="true">image-20250106231816557</figcaption>
 </figure>
@@ -386,6 +386,7 @@ alt="image-20250106231816557" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

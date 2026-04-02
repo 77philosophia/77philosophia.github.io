@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="linux开发环境配置 1.安装ubuntu 2.安装Nvidia driver 3.zerotier用于远程连接(同时安装向日葵以防万一) 4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chencarl&#x2F;p&#x2F;16824387.html 为了展示 Agnoster 主">
@@ -220,7 +220,7 @@
 <p>5.tmux进行管理</p>
 <p>6.安装miniconda并把路径加入到zshrc的配置文件里。</p>
 <figure>
-<img src="/2025/04/29/linux-settings/image-20250429143912288.png"
+<img data-src="/2025/04/29/linux-settings/image-20250429143912288.png"
 alt="image-20250429143912288" />
 <figcaption aria-hidden="true">image-20250429143912288</figcaption>
 </figure>
@@ -228,13 +228,13 @@ alt="image-20250429143912288" />
 <p>完了要执行conda init，简单的让conda配置在zshrc的方法（有时候conda
 init默认更新了bashrc，不用拷贝设置到zshrc）</p>
 <figure>
-<img src="/2025/04/29/linux-settings/image-20250429145219288.png"
+<img data-src="/2025/04/29/linux-settings/image-20250429145219288.png"
 alt="image-20250429145219288" />
 <figcaption aria-hidden="true">image-20250429145219288</figcaption>
 </figure>
 <p>Conda init zsh即可(因为我已经执行过了，所以是no change)</p>
 <figure>
-<img src="/2025/04/29/linux-settings/image-20250429145236438.png"
+<img data-src="/2025/04/29/linux-settings/image-20250429145236438.png"
 alt="image-20250429145236438" />
 <figcaption aria-hidden="true">image-20250429145236438</figcaption>
 </figure>
@@ -400,6 +400,7 @@ alt="image-20250429145236438" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

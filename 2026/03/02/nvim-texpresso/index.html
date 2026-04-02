@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="源头 一家国外的机器人创业公司创始人之一写的《Foundations of Robotics》，笔记非常漂亮，如图所示。用的笔记框架是latex+neovim+texpresso。想借鉴学习。  什么是neovim 是vim的升级版，可以自己在~&#x2F;.config&#x2F;下管理自己的配置和插件，类似于item2+oh_my-zsh的配置。也类似于obsidian的这种插件式服务的配置。 过程： 1.安装n">
@@ -210,7 +210,7 @@
         <h3 id="源头">源头</h3>
 <p>一家国外的机器人创业公司创始人之一写的《Foundations of
 Robotics》，笔记非常漂亮，如图所示。用的笔记框架是latex+neovim+texpresso。想借鉴学习。
-<img src="/2026/03/02/nvim-texpresso/image-20260402104449108.png"
+<img data-src="/2026/03/02/nvim-texpresso/image-20260402104449108.png"
 alt="image-20260402104449108" /></p>
 <h3 id="什么是neovim">什么是neovim</h3>
 <p>是vim的升级版，可以自己在~/.config/下管理自己的配置和插件，类似于item2+oh_my-zsh的配置。也类似于obsidian的这种插件式服务的配置。</p>
@@ -231,7 +231,7 @@ textpresso的预览窗口依赖x11协议。macos需要安装xquartz. 2.2
 2.3 编译texpresso引擎</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">git clone --recurse-submodules https://github.com/let-def/texpresso.git</span><br><span class="line"></span><br><span class="line">（其中子模块安装可能中断**网络连接不稳定** 或 **子模块仓库体积过大**，导致 Git 在下载过程中超时或被服务器主动断开连接。尤其是 `harfbuzz` 这种历史记录密集的仓库，很容易触发 `early EOF`）</span><br><span class="line">https://gemini.google.com/app/72089ff2b67a3d12</span><br><span class="line"></span><br><span class="line">cd texpresso</span><br><span class="line">git submodule update --init --recursive --depth 1</span><br><span class="line"></span><br><span class="line">然后在texpresso目录下make</span><br><span class="line">失败</span><br><span class="line">提示缺包之后问gemini</span><br><span class="line">brew install jpeg-turbo libpng zlib mupdf harfbuzz freetype</span><br><span class="line"></span><br><span class="line">再次make成功</span><br><span class="line"></span><br><span class="line">执行验证：</span><br><span class="line">build/texpresso test/simple.tex</span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/2026/03/02/nvim-texpresso/image-20260402104514830.png"
+<img data-src="/2026/03/02/nvim-texpresso/image-20260402104514830.png"
 alt="image-20260402104514830" />
 <figcaption aria-hidden="true">image-20260402104514830</figcaption>
 </figure>
@@ -391,6 +391,7 @@ alt="image-20260402104514830" />
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
