@@ -20,15 +20,20 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="nvim+texpresso">
+  <meta name="description" content="源头 一家国外的机器人创业公司创始人之一写的《Foundations of Robotics》，笔记非常漂亮，如图所示。用的笔记框架是latex+neovim+texpresso。想借鉴学习。  什么是neovim 是vim的升级版，可以自己在~&#x2F;.config&#x2F;下管理自己的配置和插件，类似于item2+oh_my-zsh的配置。也类似于obsidian的这种插件式服务的配置。 过程： 1.安装n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用latex+nvim+texpresso构建笔记框架">
 <meta property="og:url" content="http://77philosophia.github.io/2026/03/02/nvim-texpresso/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="源头 一家国外的机器人创业公司创始人之一写的《Foundations of Robotics》，笔记非常漂亮，如图所示。用的笔记框架是latex+neovim+texpresso。想借鉴学习。  什么是neovim 是vim的升级版，可以自己在~&#x2F;.config&#x2F;下管理自己的配置和插件，类似于item2+oh_my-zsh的配置。也类似于obsidian的这种插件式服务的配置。 过程： 1.安装n">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/03/02/nvim-texpresso/image-20260402104449108.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/03/02/nvim-texpresso/image-20260402104514830.png">
 <meta property="article:published_time" content="2026-03-02T02:29:57.000Z">
-<meta property="article:modified_time" content="2026-03-02T02:29:57.583Z">
+<meta property="article:modified_time" content="2026-04-02T02:45:18.723Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/03/02/nvim-texpresso/image-20260402104449108.png">
 
 <link rel="canonical" href="http://77philosophia.github.io/2026/03/02/nvim-texpresso/">
 
@@ -43,7 +48,7 @@
   };
 </script>
 
-  <title>nvim+texpresso | Garfield's blog</title>
+  <title>用latex+nvim+texpresso构建笔记框架 | Garfield's blog</title>
   
 
 
@@ -161,7 +166,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          nvim+texpresso
+          用latex+nvim+texpresso构建笔记框架
         </h1>
 
         <div class="post-meta">
@@ -173,6 +178,13 @@
 
               <time title="Created: 2026-03-02 10:29:57" itemprop="dateCreated datePublished" datetime="2026-03-02T10:29:57+08:00">2026-03-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-02 10:45:18" itemprop="dateModified" datetime="2026-04-02T10:45:18+08:00">2026-04-02</time>
+              </span>
 
           
 
@@ -185,7 +197,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h3 id="源头">源头</h3>
+<p>一家国外的机器人创业公司创始人之一写的《Foundations of
+Robotics》，笔记非常漂亮，如图所示。用的笔记框架是latex+neovim+texpresso。想借鉴学习。
+<img src="/2026/03/02/nvim-texpresso/image-20260402104449108.png"
+alt="image-20260402104449108" /></p>
+<h3 id="什么是neovim">什么是neovim</h3>
+<p>是vim的升级版，可以自己在~/.config/下管理自己的配置和插件，类似于item2+oh_my-zsh的配置。也类似于obsidian的这种插件式服务的配置。</p>
+<h3 id="过程">过程：</h3>
+<h5
+id="安装nvim以及进行配置lazyvim和插件安装">1.安装nvim以及进行配置lazyvim和插件安装</h5>
+<p>[<a href="#fn-1">1]</a> lazyvim是什么？插件管理器</p>
+<p>1.1安装:brew install nvim 1.2配置：mkdir -p ~/.config/nvim.
+编辑该文件夹下面的init.lua可以设置行号等配置。这里我们用现成的配置框架lazyvim
+安装lazy-starter(https://github.com/LazyVim/LazyVim?tab=readme-ov-file)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/LazyVim/starter ~/.config/nvim</span><br><span class="line"></span><br><span class="line">rm -rf ~/.config/nvim/.git</span><br><span class="line"></span><br><span class="line">nvim命令自动下载插件</span><br></pre></td></tr></table></figure>
+<h4
+id="texpresso在macos安装httpsgemini.google.comappfbdd4d43c011a453">2.texpresso在macos安装(https://gemini.google.com/app/fbdd4d43c011a453)</h4>
+<p>2.1 安装Xquartz
+textpresso的预览窗口依赖x11协议。macos需要安装xquartz. 2.2
+安装ocaml和依赖</p>
+<p>从下面开始我开始走官方github流程（https://github.com/let-def/texpresso/blob/main/INSTALL.md）
+2.3 编译texpresso引擎</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">git clone --recurse-submodules https://github.com/let-def/texpresso.git</span><br><span class="line"></span><br><span class="line">（其中子模块安装可能中断**网络连接不稳定** 或 **子模块仓库体积过大**，导致 Git 在下载过程中超时或被服务器主动断开连接。尤其是 `harfbuzz` 这种历史记录密集的仓库，很容易触发 `early EOF`）</span><br><span class="line">https://gemini.google.com/app/72089ff2b67a3d12</span><br><span class="line"></span><br><span class="line">cd texpresso</span><br><span class="line">git submodule update --init --recursive --depth 1</span><br><span class="line"></span><br><span class="line">然后在texpresso目录下make</span><br><span class="line">失败</span><br><span class="line">提示缺包之后问gemini</span><br><span class="line">brew install jpeg-turbo libpng zlib mupdf harfbuzz freetype</span><br><span class="line"></span><br><span class="line">再次make成功</span><br><span class="line"></span><br><span class="line">执行验证：</span><br><span class="line">build/texpresso test/simple.tex</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2026/03/02/nvim-texpresso/image-20260402104514830.png"
+alt="image-20260402104514830" />
+<figcaption aria-hidden="true">image-20260402104514830</figcaption>
+</figure>
+<hr />
+<ol type="1">
+<li>lazyvim是什么：插件管理器<a href="#fnref-1">↩︎</a></li>
+</ol>
 
     </div>
 
@@ -266,6 +309,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E5%A4%B4"><span class="nav-number">1.</span> <span class="nav-text">源头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFneovim"><span class="nav-number">2.</span> <span class="nav-text">什么是neovim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nvim%E4%BB%A5%E5%8F%8A%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AElazyvim%E5%92%8C%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.安装nvim以及进行配置lazyvim和插件安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#texpresso%E5%9C%A8macos%E5%AE%89%E8%A3%85httpsgemini.google.comappfbdd4d43c011a453"><span class="nav-number">3.1.</span> <span class="nav-text">2.texpresso在macos安装(https:&#x2F;&#x2F;gemini.google.com&#x2F;app&#x2F;fbdd4d43c011a453)</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -279,7 +323,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
