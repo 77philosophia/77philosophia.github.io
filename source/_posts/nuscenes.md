@@ -1,5 +1,7 @@
 ---
 title: nuscenes
+categories:
+  - 专业笔记
 date: 2020-08-18 12:19:50
 Tags:
 mathjax: 

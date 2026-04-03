@@ -1,5 +1,7 @@
 ---
 title: paper-diggingInto
+categories:
+  - 专业笔记
 date: 2019-12-06 22:36:37
 tags:
 mathjax: 

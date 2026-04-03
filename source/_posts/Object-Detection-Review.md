@@ -1,5 +1,7 @@
 ---
 title: Object-Detection-Review
+categories:
+  - 专业笔记
 date: 2019-12-17 22:35:15
 tags:
 ---

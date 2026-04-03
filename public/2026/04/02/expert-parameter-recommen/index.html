@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、定义：解决一个专家参数推荐的问题 ​ 每个行业都有自己的一些行业经验，比如工业有工艺库，医学，金融等都有一些经验参数由业内有经验的人士把握。现在可以用人工智能的方法把这部分数据利用起来。以前可以用机器学习回归的方法做一些可定义参数方面的统计回归，相似推荐；在llm出现以后一些非结构化数据也可以利用rag等技术集成进去。（比如知道某工件在某电流参数下烧穿了，以前只有参数统计，现在可以让llm根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="expert-parameter-recommen">
+<meta property="og:url" content="http://77philosophia.github.io/2026/04/02/expert-parameter-recommen/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="一、定义：解决一个专家参数推荐的问题 ​ 每个行业都有自己的一些行业经验，比如工业有工艺库，医学，金融等都有一些经验参数由业内有经验的人士把握。现在可以用人工智能的方法把这部分数据利用起来。以前可以用机器学习回归的方法做一些可定义参数方面的统计回归，相似推荐；在llm出现以后一些非结构化数据也可以利用rag等技术集成进去。（比如知道某工件在某电流参数下烧穿了，以前只有参数统计，现在可以让llm根据">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-04-02T01:46:01.000Z">
+<meta property="article:modified_time" content="2026-04-03T08:08:03.649Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/04/02/expert-parameter-recommen/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>expert-parameter-recommen | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/02/expert-parameter-recommen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          expert-parameter-recommen
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-02 09:46:01" itemprop="dateCreated datePublished" datetime="2026-04-02T09:46:01+08:00">2026-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3
+id="一定义解决一个专家参数推荐的问题">一、定义：解决一个专家参数推荐的问题</h3>
+<p>​
+每个行业都有自己的一些行业经验，比如工业有工艺库，医学，金融等都有一些经验参数由业内有经验的人士把握。现在可以用人工智能的方法把这部分数据利用起来。以前可以用机器学习回归的方法做一些可定义参数方面的统计回归，相似推荐；在llm出现以后一些非结构化数据也可以利用rag等技术集成进去。（比如知道某工件在某电流参数下烧穿了，以前只有参数统计，现在可以让llm根据常识去推断，类似的根据物理知识电流电压值如何变化）。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>想通过这篇确定一个通用的用机器学习解决各行各业问题的方案模版，with ai
+agent。ai让我们可以有更多精力在大的思路框架上，而不是局限于以前的细节经验本身。</p>
+</blockquote>
+<h3 id="二根据问题本身定义算法类型">二、根据问题本身定义算法类型</h3>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-03%2011.24.56.excalidraw.svg"
+alt="机器学习算法调研 2026-03-03 11.24.56.excalidraw" />
+<figcaption aria-hidden="true">机器学习算法调研 2026-03-03
+11.24.56.excalidraw</figcaption>
+</figure>
+<h3
+id="三根据数据量定算法类型法则从完成到完善">三、根据数据量定算法类型（法则：从完成到完善）</h3>
+<p>主要看业务场景和业务规模。公司做这个项目的体量。</p>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-03%2013.34.38.excalidraw.svg"
+alt="机器学习算法调研 2026-03-03 13.34.38.excalidraw" />
+<figcaption aria-hidden="true">机器学习算法调研 2026-03-03
+13.34.38.excalidraw</figcaption>
+</figure>
+<h3
+id="四了解数据驱动和规则驱动数据采集的方式和场景影响构建算法的差异">四、了解数据驱动和规则驱动：数据采集的方式和场景影响构建算法的差异</h3>
+<p>数据驱动也就是拿已有经验的数据去做推荐，回归，分析；这个过程中需要积累好数据和差数据。（差的数据对于神经网络的学习有非常重要的作用）。有时候我们的数据构建方式是存储最好的经验。如果基于这种数据的构建方式，只能用“规则驱动”而不是数据驱动的方法。</p>
+<p>1.混合系统，用专家系统定边界，再用optuna或者贝叶斯寻找最好的值。</p>
+<p>2.可以用知识图谱neo4j存储规则，那样是可解释性的。在工业里面因为对安全度的重视，可解释性实际上是非常重要的。</p>
+<h3 id="五work-process">五、work process:</h3>
+<p>建库-&gt;前端收集数据-&gt;后端跑模型</p>
+<p>1.建立数据库supabase+vue
+supabase是一个把后端数据库做了高度集成的开源项目，避免我自己去建立数据库进行增删改查；</p>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E5%BB%BA%E7%AB%8B%E6%95%B0%E6%8D%AE%E5%BA%93%202026-02-27%2010.24.22.excalidraw.svg"
+alt="建立数据库 2026-02-27 10.24.22.excalidraw" />
+<figcaption aria-hidden="true">建立数据库 2026-02-27
+10.24.22.excalidraw</figcaption>
+</figure>
+<p>2.用现有的框架跑机器学习各种算法先得到一个初步结果：autoGluon/pycaret</p>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-11%2013.44.31.excalidraw.svg"
+alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
+<figcaption aria-hidden="true">机器学习算法调研 2026-03-11
+13.44.31.excalidraw</figcaption>
+</figure>
+<h3 id="六做一个ml系统-关键是要有system的思维">六：做一个ML系统:
+关键是要有system的思维</h3>
+<p>可能要考虑监控，异常处理，ci/cd，从系统的角度思考一个机器学习的系统。可以参考：</p>
+<p>https://github.com/harvard-edge/cs249r_book</p>
+<p>https://pooyanjamshidi.github.io/mls/</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/03/31/rl-line/" rel="prev" title="rl-outline">
+      <i class="fa fa-chevron-left"></i> rl-outline
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/04/02/translate-tool/" rel="next" title="translate-tool">
+      translate-tool <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%AE%9A%E4%B9%89%E8%A7%A3%E5%86%B3%E4%B8%80%E4%B8%AA%E4%B8%93%E5%AE%B6%E5%8F%82%E6%95%B0%E6%8E%A8%E8%8D%90%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">一、定义：解决一个专家参数推荐的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E6%A0%B9%E6%8D%AE%E9%97%AE%E9%A2%98%E6%9C%AC%E8%BA%AB%E5%AE%9A%E4%B9%89%E7%AE%97%E6%B3%95%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">二、根据问题本身定义算法类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E6%A0%B9%E6%8D%AE%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AE%9A%E7%AE%97%E6%B3%95%E7%B1%BB%E5%9E%8B%E6%B3%95%E5%88%99%E4%BB%8E%E5%AE%8C%E6%88%90%E5%88%B0%E5%AE%8C%E5%96%84"><span class="nav-number">3.</span> <span class="nav-text">三、根据数据量定算法类型（法则：从完成到完善）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E4%BA%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%92%8C%E8%A7%84%E5%88%99%E9%A9%B1%E5%8A%A8%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E7%9A%84%E6%96%B9%E5%BC%8F%E5%92%8C%E5%9C%BA%E6%99%AF%E5%BD%B1%E5%93%8D%E6%9E%84%E5%BB%BA%E7%AE%97%E6%B3%95%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">4.</span> <span class="nav-text">四、了解数据驱动和规则驱动：数据采集的方式和场景影响构建算法的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94work-process"><span class="nav-number">5.</span> <span class="nav-text">五、work process:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E5%81%9A%E4%B8%80%E4%B8%AAml%E7%B3%BB%E7%BB%9F-%E5%85%B3%E9%94%AE%E6%98%AF%E8%A6%81%E6%9C%89system%E7%9A%84%E6%80%9D%E7%BB%B4"><span class="nav-number">6.</span> <span class="nav-text">六：做一个ML系统:
+关键是要有system的思维</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

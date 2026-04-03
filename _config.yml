@@ -5,7 +5,7 @@
 # Site
 title: Garfield's blog
 subtitle: ''
-description: ''
+description: '我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理'
 keywords:
 author: philosophia
 language: en
@@ -105,5 +105,7 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/77philosophia/77philosophia.github.io
+  # 访问网址：https://77philosophia.github.io/
+  # repo: https://github.com/77philosophia/77philosophia.github.io
+  repo: git@github.com:77philosophia/77philosophia.github.io.git
   branch: master

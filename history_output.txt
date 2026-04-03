@@ -1,0 +1,371 @@
+    1  brew install git
+    2  sudo systemsetup -settimezone Asia/Shanghai
+    3  brew install git
+    4  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    5  xcode-select --install
+    6  brew install git
+    7  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    8  brew install git
+    9  brew install git
+   10  which brew
+   11  cd /opt
+   12  ls
+   13  echo $SHELL
+   14  vim ~/.zshrc
+   15  source ~/.zshrc
+   16  which brew
+   17  brew install git
+   18  ls
+   19  echo $SHELL
+   20  # curl 安装方式\nsh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   21  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"\n
+   22  sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+   23  # curl 安装方式\nsh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   24  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   25  sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"\n
+   26  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   27  brew install wget
+   28  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+   29  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+   30  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   31  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   32  sh -c "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"\n
+   33  cd ~/desktop
+   34  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+   35  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+   36  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+   37  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+   38  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+   39  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+   40  echo $http_proxy\necho $https_proxy\n
+   41  echo $http_proxy
+   42  wget --spider https://github.com\n
+   43  netstat -tuln\n
+   44  git config --global http.proxy http://127.0.0.1:1087
+   45  git config --global https.proxy http://127.0.0.1:1087
+   46  curl -I https://github.com\n
+   47  echo $http_proxy\necho $https_proxy\n
+   48  git config --global --get http.proxy
+   49  git config --global --list
+   50  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   51  sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+   52  \tsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   53  brew install switchhosts\n
+   54  \tsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   55  ping 185.199.108.133
+   56  ping 185.199.108.133
+   57  \tsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   58  vim /etc/hosts
+   59  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   60  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   61  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   62  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   63  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   64  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   65  echo $http_proxy\necho $https_proxy\necho $HTTPS_PROXY\necho $HTTP_PROXY
+   66  echo $http_proxy
+   67  git config --global --unset https.proxy
+   68  git config --global --unset http.proxy
+   69  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   70  git config --global --list
+   71  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   72  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   73  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   74  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   75  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   76  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   77  brew list
+   78  cd /etc
+   79  ls
+   80  vim hosts
+   81  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   82  ping github.com
+   83  git config --global http.proxy 127.0.0.1:4780
+   84  git config --global https.proxy 127.0.0.1:4780
+   85  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   86  git config --global -l
+   87  ipconfig/flushdns
+   88  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   89  cat /etc/shells
+   90  echo $(which zsh)
+   91  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+   92  cd ~/desktop
+   93  ls
+   94  brew -v
+   95  mkdir tool
+   96  cd tool
+   97  ls
+   98  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+   99  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  100  chsh -s $(which zsh)
+  101  vim ~/.zshrc
+  102  source ~/.zshrc
+  103  pip install powerline-status --user
+  104  sudo easy_install pip
+  105  pipx install powerline-status --user
+  106  sudo easy_install pipx
+  107* brew install git
+  108* sudo systemsetup -settimezone Asia/Shanghai
+  109* brew install git
+  110* /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  111* xcode-select --install
+  112* brew install git
+  113* /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  114* brew install git
+  115* which brew
+  116* cd /opt
+  117* ls
+  118* echo $SHELL
+  119* vim ~/.zshrc
+  120* source ~/.zshrc
+  121* which brew
+  122* brew install git
+  123* ls
+  124* echo $SHELL
+  125* # curl 安装方式\nsh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  126* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"\n
+  127* sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+  128* # curl 安装方式\nsh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  129* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  130* sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"\n
+  131* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  132* brew install wget
+  133* sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+  134* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  135* sh -c "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"\n
+  136* cd ~/desktop
+  137* git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh\n
+  138* echo $http_proxy\necho $https_proxy\n
+  139* echo $http_proxy
+  140* wget --spider https://github.com\n
+  141* netstat -tuln\n
+  142* git config --global http.proxy http://127.0.0.1:1087
+  143* git config --global https.proxy http://127.0.0.1:1087
+  144* curl -I https://github.com\n
+  145* echo $http_proxy\necho $https_proxy\n
+  146* git config --global --get http.proxy
+  147* git config --global --list
+  148* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  149* sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+  150* \tsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  151* brew install switchhosts\n
+  152* \tsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  153* ping 185.199.108.133
+  154* \tsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  155* vim /etc/hosts
+  156* sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  157* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  158* echo $http_proxy\necho $https_proxy\necho $HTTPS_PROXY\necho $HTTP_PROXY
+  159* echo $http_proxy
+  160* git config --global --unset https.proxy
+  161* git config --global --unset http.proxy
+  162* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  163* git config --global --list
+  164* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  165* brew list
+  166* cd /etc
+  167* ls
+  168* vim hosts
+  169* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  170* ping github.com
+  171* git config --global http.proxy 127.0.0.1:4780
+  172* git config --global https.proxy 127.0.0.1:4780
+  173* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  174* git config --global -l
+  175* ipconfig/flushdns
+  176* sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  177* cat /etc/shells
+  178* echo $(which zsh)
+  179* git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+  180* cd ~/desktop
+  181* ls
+  182* brew -v
+  183* mkdir tool
+  184* cd tool
+  185* ls
+  186* git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+  187* cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  188* chsh -s $(which zsh)
+  189* vim ~/.zshrc
+  190* source ~/.zshrc
+  191* pip install powerline-status --user
+  192* sudo easy_install pip
+  193* pipx install powerline-status --user
+  194* sudo easy_install pipx
+  195  ls
+  196  cd ~/Desktop
+  197  ls
+  198  cd tool
+  199  ls
+  200  git clone https://github.com/powerline/fonts.git --depth=1
+  201  cd fonts
+  202  ./install.sh
+  203  git clone https://github.com/altercation/solarized\n
+  204  cd solarized/iterm2-colors-solarized
+  205  open .
+  206  git clone https://github.com/fcamblor/oh-my-zsh-agnoster-fcamblor.git
+  207  cd oh-my-zsh-agnoster-fcamblor/
+  208  ./install
+  209  source ~/.zshrc
+  210  cd ~/.oh-my-zsh/custom/plugins/
+  211  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+  212  vim ~/.zshrc
+  213  source ~/.zshrc
+  214  cd ~/.oh-my-zsh/custom/plugins/
+  215  git clone https://github.com/zsh-users/zsh-autosuggestions
+  216  vi ~/.zshrc
+  217  source ~/.zshrc
+  218  pip install powerline-status
+  219  python -v
+  220  git config --global user.name "77philosophia"
+  221  git config --global user.email "13720630528@163.com"
+  222  ssh-keygen -t ed25519 -C "13720630528@163.com"
+  223  ssh-keygen -t rsa -C "13720630528@163.com"
+  224  cat ~/.ssh/id_rsa.pub
+  225  ssh -T git@github.com\n
+  226  git clone git@github.com:77philosophia/77philosophia.github.io.git
+  227  git clone https://github.com/77philosophia/77philosophia.github.io.git
+  228  ls
+  229  rm -rf 77philosophia.github.io
+  230  ls
+  231  cd ~/Desktop
+  232  ls
+  233  mkdir Blog
+  234  cd Blog
+  235  ls
+  236  node -v
+  237  npm -v
+  238  Git --version
+  239  npm install -g hexo-cli
+  240  npm config get proxy
+  241  npm config set registry http://registry.npmjs.org/
+  242  npm install -g hexo-cli
+  243  curl www.google.com
+  244  npm install -g hexo-cli
+  245  npm config set proxy null
+  246  npm cache clean --force
+  247  npm install -g hexo-cli
+  248  export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+  249  npm install -g hexo-cli
+  250  curl google.com
+  251  unset http_proxy
+  252  unset https_proxy
+  253  export http_proxy=http://localhost:4780
+  254  export https_proxy=http://localhost:4780
+  255  curl google.com
+  256  npm install -g hexo-cli
+  257  sudo npm install -g hexo-cli
+  258  npm install -g hexo-cli
+  259  npm config set registry https://registry.npmmirror.com
+  260  sudo npm install -g hexo-cli
+  261  npm fund
+  262  hexo -v
+  263  ls
+  264  git clone https://github.com/77philosophia/77philosophia.github.io.git
+  265  ls
+  266  cd 77philosophia.github.io
+  267  ls
+  268  npm install
+  269  hexo g
+  270  sudo npm install -g hexo
+  271  hexo g
+  272  hexo -g
+  273  hexo -v
+  274  cd ..
+  275  ls
+  276  cd Blog
+  277  ls
+  278  hexo g
+  279  hexo s
+  280  hexo clean
+  281  hexo g
+  282  hexo clean
+  283  hexo g
+  284  ls
+  285  rm -rf node_modules
+  286  npm install
+  287  sudo chown -R 501:20 "/Users/wangxin/.npm"
+  288  npm install
+  289  npm install hexo-deployer-git --save
+  290  hexo clean
+  291  hexo g
+  292  hexo s
+  293  hexo d
+  294  ssh -T git@github.com
+  295  npm install hexo-deployer-git --save
+  296  hexo d
+  297  hexo new "新电脑配置"
+  298  hexo g
+  299  hexo s
+  300  hexo g
+  301  hexo s
+  302  hexo g
+  303  hexo s
+  304  hexo g
+  305  hexo s
+  306  hexo g
+  307  hexo s
+  308  npm install hexo-image-link --save
+  309  hexo g
+  310  hexo s
+  311  npm uninstall hexo-image-link --save
+  312  hexo clean
+  313  hexo g
+  314  hexo s
+  315  hexo g
+  316  hexo s
+  317  hexo g
+  318  hexo s
+  319  hexo g
+  320  hexo s
+  321  hexo g
+  322  hexo s
+  323  hexo g
+  324  hexo s
+  325  npm install https://github.com/xcodebuild/hexo-asset-image.git
+  326  hexo g
+  327  hexo s
+  328  hexo g
+  329  hexo s
+  330  hexo new "stable-diffusion-history"
+  331  hexo g
+  332  hexo s
+  333  hexo new "hugging-download"
+  334  hexo g
+  335  hexo s
+  336  hexo new -s "laion-dataset"
+  337  hexo new "laion-dataset"
+  338  hexo g
+  339  hexo s
+  340  hexo new "aigc-paper-share"
+  341  hexo new "langchain-robot"
+  342  hexo g
+  343  hexo s
+  344  hexo new "ai-scaler"
+  345  hexo new "webui-api"
+  346  hexo new "Blip-2"
+  347  hexo d
+  348  hexo new "prompt-engineering"
+  349  hexo new "improve-rag"
+  350  hexo new "hires-fix"
+  351  hexo new "style-transfer-paper"
+  352  hexo new "from-transformer-to-llm"
+  353  hexo g
+  354  hexo s
+  355  hexo new "train-vpred"
+  356  hexo new "lora-training-background"
+  357  hexo new "lora-scripts"
+  358  hexo g
+  359  hexo s
+  360  hexo new "B-Lora-reproduce"
+  361  hexo new "comfyui-env"
+  362  hexo new "python-multi"
+  363  hexo g
+  364  hexo s
+  365  hexo g
+  366  hexo s
+  367  hexo d
+  368  hexo new "C++_Notes"
+  369  hexo g
+  370  hexo s
+  371  history

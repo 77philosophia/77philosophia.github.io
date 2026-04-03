@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="linux开发环境配置 1.安装ubuntu 2.安装Nvidia driver 3.zerotier用于远程连接(同时安装向日葵以防万一) 4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chencarl&#x2F;p&#x2F;16824387.html 为了展示 Agnoster 主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux-settings">
+<meta property="og:url" content="http://77philosophia.github.io/2025/04/29/linux-settings/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="linux开发环境配置 1.安装ubuntu 2.安装Nvidia driver 3.zerotier用于远程连接(同时安装向日葵以防万一) 4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chencarl&#x2F;p&#x2F;16824387.html 为了展示 Agnoster 主">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429143912288.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429145219288.png">
+<meta property="og:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429145236438.png">
+<meta property="article:published_time" content="2025-04-29T02:16:52.000Z">
+<meta property="article:modified_time" content="2026-04-03T08:08:03.653Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2025/04/29/linux-settings/image-20250429143912288.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>linux-settings | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux-settings
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-29 10:16:52" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="linux开发环境配置">linux开发环境配置</h1>
+<p>1.安装ubuntu</p>
+<p>2.安装Nvidia driver</p>
+<p>3.zerotier用于远程连接(同时安装向日葵以防万一)</p>
+<p>4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster;</p>
+<p>https://www.cnblogs.com/chencarl/p/16824387.html</p>
+<p>为了展示 <strong>Agnoster</strong> 主题提示符里的三角形，需要
+<strong>Powerline</strong> 字体库的支持。</p>
+<p>https://zhuanlan.zhihu.com/p/62419420</p>
+<p>5.tmux进行管理</p>
+<p>6.安装miniconda并把路径加入到zshrc的配置文件里。</p>
+<figure>
+<img data-src="/2025/04/29/linux-settings/image-20250429143912288.png"
+alt="image-20250429143912288" />
+<figcaption aria-hidden="true">image-20250429143912288</figcaption>
+</figure>
+<p>https://www.cnblogs.com/xingnie/p/16269190.html</p>
+<p>完了要执行conda init，简单的让conda配置在zshrc的方法（有时候conda
+init默认更新了bashrc，不用拷贝设置到zshrc）</p>
+<figure>
+<img data-src="/2025/04/29/linux-settings/image-20250429145219288.png"
+alt="image-20250429145219288" />
+<figcaption aria-hidden="true">image-20250429145219288</figcaption>
+</figure>
+<p>Conda init zsh即可(因为我已经执行过了，所以是no change)</p>
+<figure>
+<img data-src="/2025/04/29/linux-settings/image-20250429145236438.png"
+alt="image-20250429145236438" />
+<figcaption aria-hidden="true">image-20250429145236438</figcaption>
+</figure>
+<p>7.远程服务器免密码连接：</p>
+<p>7.1 复制本地公钥文件到远程服务器</p>
+<p>先看.ssh文件夹下面是否有生成好的密钥文件</p>
+<p>ssh-copy-id -i ~/.ssh/id_ed25519.pub username@ip</p>
+<p>此时可以通过ssh username@ip直接登陆不需要输入密码。</p>
+<p>7.2 通过<strong><code>~/.ssh/config</code></strong> 简化连接</p>
+<p>nano ~/.ssh/config</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host server1</span><br><span class="line">    HostName 192.168.1.100</span><br><span class="line">    User root</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line"></span><br><span class="line">Host server2</span><br><span class="line">    HostName example.com</span><br><span class="line">    User admin</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line">    Port 2222  # 如果SSH端口不是默认的22</span><br></pre></td></tr></table></figure>
+<p>之后就可以直接用别名登录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh server1  # 代替 ssh root@192.168.1.100</span><br><span class="line">ssh server2  # 代替 ssh -p 2222 admin@example.com</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/28/macos-install-zerotier-cannot-launch/" rel="prev" title="macos-install-zerotier-cannot-launch">
+      <i class="fa fa-chevron-left"></i> macos-install-zerotier-cannot-launch
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/05/06/http-proxy/" rel="next" title="http_proxy">
+      http_proxy <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">linux开发环境配置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

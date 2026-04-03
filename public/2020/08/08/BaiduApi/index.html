@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="matlab调用百度API获取两地运输距离 1、 首先你要去百度地图API注册一个ak,相当于钥匙，你在程序里会有个地方写这个ak，相当于钥匙，有这个ak百度地图才会跟你返回消息。 2、 获取距离的函数用python写的，python版本获取距离。我把它封装成了一个python类方便你从matlab里面传入参数。类输入就是两地的经度纬度。（注意先纬度再经度），注意19行ak要改为你自己申请的ak.">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/python.png">
 <meta property="og:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/distance.png">
 <meta property="article:published_time" content="2020-08-08T14:21:10.000Z">
-<meta property="article:modified_time" content="2024-05-20T15:24:34.462Z">
+<meta property="article:modified_time" content="2026-04-03T08:08:03.641Z">
 <meta property="article:author" content="philosophia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://77philosophia.github.io/2020/08/08/BaiduApi/pyversion.png">
@@ -122,6 +122,31 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
@@ -158,9 +183,9 @@
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/08/BaiduApi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -185,8 +210,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-20 23:24:34" itemprop="dateModified" datetime="2024-05-20T23:24:34+08:00">2024-05-20</time>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
 
           
 
@@ -208,13 +242,13 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40450867/artic
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiduDistanceClass():</span><br><span class="line">    def __init__ (self,s1,s2,t1,t2):</span><br><span class="line">        self.s1 = str(s1)</span><br><span class="line">        self.s2 = str(s2)</span><br><span class="line">        self.t1 = str(t1)</span><br><span class="line">        self.t2 = str(t2)</span><br><span class="line">        </span><br><span class="line">    def getDistance(self):</span><br><span class="line">        a1=r&quot;http://api.map.baidu.com/routematrix/v2/driving?output=json&quot;</span><br><span class="line">        a2=r&quot;&amp;origins=&quot;+self.s1+&quot;,&quot;+self.s2</span><br><span class="line">        a3=r&quot;&amp;destinations=&quot;+self.t1+&quot;,&quot;+self.t2</span><br><span class="line">        a4=r&quot;&amp;coord_type=wgs84&quot;</span><br><span class="line">        a5=r&quot;&amp;tactics=11&quot;</span><br><span class="line">        a6=r&quot;&amp;ak=your_key&quot;</span><br><span class="line">        url=a1+a2+a3+a4+a5+a6</span><br><span class="line">        </span><br><span class="line">        b = urlopen(url)</span><br><span class="line">        c=b.read()</span><br><span class="line">        result = json.loads(c)</span><br><span class="line">        return result[&quot;result&quot;][0][&quot;distance&quot;][&quot;value&quot;]/1000</span><br></pre></td></tr></table></figure>
 <p>3、总体思路用python获取结果然后在matlab获取python的返回结果。所以要电脑要同时有matlab和python的环境。弄完后在matlab命令行输入pyversion可以看到python的信息，就可以用了。<a
 target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">相关配置参考链接</a>。</p>
-<p><img src="/2020/08/08/BaiduApi/pyversion.png" /></p>
+<p><img data-src="/2020/08/08/BaiduApi/pyversion.png" /></p>
 <p>4、把获取距离的python文件和matlab当前运行文件放在同一个目录下。比如下图中我的获取距离的python文件也放在这个"助教"目录下。</p>
-<p><img src="/2020/08/08/BaiduApi/目录.png" /></p>
+<p><img data-src="/2020/08/08/BaiduApi/目录.png" /></p>
 <p>接下来你就可以在matlab里面调用python函数了。创建一个python类：</p>
-<p><img src="/2020/08/08/BaiduApi/python.png" /></p>
+<p><img data-src="/2020/08/08/BaiduApi/python.png" /></p>
 <p>调用函数得到距离。这里s1,s2是源地点的纬度，经度；t1,t2是目标地点的纬度，经度。我这里测试用的上海和北京并在高德地图上面验证符合。</p>
-<p><img src="/2020/08/08/BaiduApi/distance.png" /></p>
+<p><img data-src="/2020/08/08/BaiduApi/distance.png" /></p>
 <p>注意这里得到的是公里，因为程序除了1000，API直接返回的是米，如果要以米为单位可以不除。</p>
 
     </div>
@@ -302,17 +336,29 @@ target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">philosophia</p>
-  <div class="site-description" itemprop="description"></div>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -338,7 +384,7 @@ target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -362,6 +408,7 @@ target="_blank" rel="noopener" href="https://www.ctolib.com/topics-125876.html">
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

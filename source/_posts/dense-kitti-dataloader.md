@@ -1,5 +1,7 @@
 ---
 title: dense-kitti-dataloader
+categories:
+  - 专业笔记
 date: 2019-08-06 23:17:10
 tags:
 ---

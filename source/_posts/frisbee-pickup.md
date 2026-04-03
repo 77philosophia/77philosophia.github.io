@@ -1,5 +1,7 @@
 ---
 title: frisbee-pickup
+categories:
+  - 专业笔记
 date: 2024-05-20 23:43:40
 tags:
 ---
