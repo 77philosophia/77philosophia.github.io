@@ -337,7 +337,7 @@ x_i\]</span></p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-07 10:45:29" itemprop="dateModified" datetime="2026-04-07T10:45:29+08:00">2026-04-07</time>
+                <time title="Modified: 2026-04-07 15:10:32" itemprop="dateModified" datetime="2026-04-07T15:10:32+08:00">2026-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,7 +360,166 @@ x_i\]</span></p>
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <p>这是一个根据提问和关键词展开rl领域的outline文档。</p>
+<h4 id="介绍">介绍</h4>
+<ul>
+<li>理解强化学习的两个关键概念：trial-and-error search 和 delayed
+reward</li>
+</ul>
+<h4 id="markov-decision-process">Markov Decision Process</h4>
+<ul>
+<li><p>五元祖的含义（S, A, P,R, y）</p></li>
+<li><p>Returns的公式： Gt= Rt+1 + Rt+2+...</p></li>
+<li><p>(state) Value function: 在state=s的时候Gt的期望值 V(s) <span
+class="math display">\[
+V^\pi(s)
+\]</span></p></li>
+<li><p>(State-action) value function: <span class="math display">\[
+Q^\pi(s,a)
+\]</span></p></li>
+<li><p>Bellman Equation: 此时的value function = 下一时刻所有的immediate
+reward和下一state的value和。</p></li>
+</ul>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>注意，<span class="math display">\[V^\pi(s)\]</span> 和<span
+class="math display">\[Q^\pi(s,a)\]</span>
+不是固定的，是不断优化的，所以上标有pi.</p>
+</blockquote>
+<h4 id="如何解决一个mdp问题">如何解决一个MDP问题：</h4>
+<h6 id="动态规划">1.动态规划</h6>
+<p>环境状态转移概率和reward
+function都已知，用动态规划算法即可。每一步选择最大的reward。</p>
+<h6 id="蒙特卡罗方法">2. 蒙特卡罗方法</h6>
+<p>不知道环境的状态(model-free);直接从experience学习，执行完一次实验后计算，no
+bootstrapping；因此是无偏的。</p>
+<h6 id="temporal-difference-learning">3.Temporal-Difference
+Learning</h6>
+<ul>
+<li>结合了动态规划和蒙特卡罗，基于当前状态进行估计更新；</li>
+<li>Model-free:不知道MDP转移概率和reward;</li>
+<li>可以从incomplete experience中学习：on-line, continual learning</li>
+<li>Sarsa: On-policy TD control, 每一次更新用实际的Q值去更新；</li>
+<li>Q-learning: off-policy TD
+control,每一次的Q值更新不用实际走的action，而是argmax去更新；因为不是用的真实的q，因此叫off-policy</li>
+</ul>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>在model-free情况下，一般估计Q(s,a), V(s)一般用于评估。</p>
+</blockquote>
+<h6 id="function-approximation">4. function approximation</h6>
+<ul>
+<li><p>如果state space too large,可以用线性函数去拟合得到value
+function.</p></li>
+<li><p>Deep Q-Network(DQN)：</p>
+<ul>
+<li><p>一句话：用神经网络估计Q(s,a)</p></li>
+<li><p>直接让神经网络去估计，存在一个问题，mdp的数据不是i.i.d.的，每一步和上一步相关；因此DQN引入eperience
+replay:存储experience然后mini-batch采样；</p></li>
+<li><p>网络“左脚踩右脚”的更新不稳定。用Fixed Q-target:
+两个Q网络解决网络震荡。</p></li>
+<li><p><span class="math display">\[
+update: L(\theta) = E_{s,a,r,s&#39;~U(D)}[(r+\gamma
+\max_{a}Q(s’,a‘,\theta^-)-Q(s,a;\theta)^2)]
+\\
+\theta^-是target network,固定一定步数之后再更新
+\]</span></p></li>
+</ul></li>
+</ul>
+<h6 id="policy-gradient-methods">5. Policy gradient Methods</h6>
+<ul>
+<li>直接学习policy，而不是先学value function再deriing the policy.</li>
+<li>一个核心思想：最大化reward,更新的gradient是：</li>
+<li>Natural Policy Gradient:
+<ul>
+<li>对策略的梯度乘以Fisher information matrix</li>
+</ul></li>
+</ul>
+<h6 id="actor-critic-methods">6.Actor-Critic Methods</h6>
+<ul>
+<li>policy-based方法高方差，value-based方法高bias。actor-critic方法利用这两种方法来更新。</li>
+<li>actor网络更新：</li>
+<li>value func更新：
+<ul>
+<li>网络估计的是v(s),而不是q(s,a)</li>
+<li>给policy更新的是A(s,a)=q-v</li>
+</ul></li>
+</ul>
+<h6 id="deterministic-policy-gradient">7. Deterministic Policy
+gradient</h6>
+<ul>
+<li><p>建模 <span class="math display">\[
+a = \mu_{\theta}(s)
+\]</span></p></li>
+<li><p>然后用链式求导法则进行更新</p></li>
+</ul>
+<h6 id="deep-deterministic-policy-gradient">8. Deep Deterministic Policy
+gradient</h6>
+<ul>
+<li><p>引入深度神经网络学习Q-function和 <span class="math display">\[
+\mu_(s)
+\]</span></p></li>
+<li><p>Experience replay</p></li>
+<li><p>更新公式</p></li>
+</ul>
+<h6 id="relative-entropy-policy-search">9. relative Entropy Policy
+Search</h6>
+<ul>
+<li>基于policy-based的优化前提（maxJ()）,避免策略前后差异过大（KL散度超过一个值）</li>
+<li>有约束的优化问题（朗格朗日乘子解决）</li>
+</ul>
+<h6 id="ppo">10.PPO</h6>
+<ul>
+<li>目的也是为了防止过大步子的更新</li>
+<li>计算策略前后的一阶比值</li>
+</ul>
+<h6 id="soft-actor-critic">11. Soft Actor-Critic</h6>
+<ul>
+<li>Off-policy actor-critic方法</li>
+<li>在最大化回报的基础上+系数*policy的熵，要求熵也最大化。</li>
+</ul>
+<blockquote>
+<p>[!NOTE]</p>
+<p>On-Policy: PPO</p>
+<p>Off-Policy: SAC/TD3</p>
+<p>一般仿真PPO + 真机SAC</p>
+</blockquote>
+<p>和ai聊天对我问题的答疑：</p>
+<p>https://gemini.google.com/app/2952c6d40943c4da</p>
+<h5 id="关于强化学习的on-policy-和off-policy">关于强化学习的On-policy
+和Off-policy</h5>
+<ul>
+<li>核心矛盾是探索exploration和利用exploitation的矛盾</li>
+<li>On-policy:在 On-policy 算法（如 SARSA, A2C, PPO）中，更新公式里的
+<span class="math inline">\(a\)</span>（当前动作）和 <span
+class="math inline">\(a&#39;\)</span>（下一时刻动作）全部来自于<strong>当前的
+<span class="math inline">\(\pi\)</span></strong>。
+<ul>
+<li>当你一边玩游戏一边改进策略时，你当前的每一个动作都在反映你当下的认知。</li>
+<li>更新非常平滑、稳定，因为它始终在优化“我此时此刻的行为”。</li>
+<li>一旦你的认知（策略）更新了一点点，你之前所有的游戏录像（经验）就<strong>作废</strong>了。因为那些旧动作不再代表你现在的水平，如果强行学习旧数据，你的认知会被带偏。</li>
+</ul></li>
+<li>Off-policy:我学习的是“理想策略”，但我执行的是“带有随机性的探索策略”。
+<ul>
+<li>在 Off-policy 算法（如 Q-Learning, DQN,
+SAC）中，我们通常有两个策略：
+<ol type="1">
+<li><strong>行为策略 (<span
+class="math inline">\(\mu\)</span>)</strong>：负责到处乱跑，采集数据，存入“经验回放池”。</li>
+<li><strong>目标策略 (<span
+class="math inline">\(\pi\)</span>)</strong>：负责从池子里的陈年旧账中总结规律，进化成最强形态。</li>
+</ol></li>
+<li><strong>它是怎么来的：</strong> 为了解决 On-policy
+浪费数据的问题，科学家引入了<strong>贝尔曼最优方程</strong>。它发现：<strong>环境的物理规律（Q值）是客观存在的</strong>。
+比如“在悬崖边往左跳会摔死”，这件事不论你是新手还是高手，不论你是今天跳还是昨天跳，结果都是一样的。</li>
+<li>容易不稳定。因为你是在拿“别人的/过去的”经验来指导“现在的”自己，如果处理不好（比如没有
+Target Network），容易产生数值爆炸。</li>
+<li>数据利用率极高，可以学习人类专家的录像，也可以学习自己半年前的黑历史。</li>
+</ul></li>
+<li>如果是在 Isaac Sim 这种<strong>仿真环境</strong>里，PPO (On-policy)
+通常是首选，因为采样不要钱且稳；但如果要上<strong>实机驱动</strong>，大家往往会选
+SAC (Off-policy)，因为实机跑一次的成本太高了。</li>
+</ul>
 
       
     </div>
