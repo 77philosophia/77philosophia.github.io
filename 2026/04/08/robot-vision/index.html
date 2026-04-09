@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="成像原理  小孔成像   image-20260408160033340  透视投影关系   image-20260408160412227   相机标定(calibration) 方法1: 3d objects求解上面的透视投影方程   image-20260408160620497   3d-2d correspndeces关系求解 \[ Q_{2n\times12}\cdot M_{12x1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="robot-vision">
+<meta property="og:url" content="http://77philosophia.github.io/2026/04/08/robot-vision/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="成像原理  小孔成像   image-20260408160033340  透视投影关系   image-20260408160412227   相机标定(calibration) 方法1: 3d objects求解上面的透视投影方程   image-20260408160620497   3d-2d correspndeces关系求解 \[ Q_{2n\times12}\cdot M_{12x1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260408160033340.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260408160412227.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260408160620497.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260408173916449.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260408195557965.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409135824379.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409135944766.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409140046348.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409140434993.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409141926675.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409143534426.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409144220690.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409152834173.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409154013110.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409160437742.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409160540007.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409162035692.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409163443996.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409163848894.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409170322869.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409170333382.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260409170932741.png">
+<meta property="article:published_time" content="2026-04-08T07:43:56.000Z">
+<meta property="article:modified_time" content="2026-04-09T09:15:00.691Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="computer vision">
+<meta property="article:tag" content="robot vision">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/04/08/robot-vision/image-20260408160033340.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/04/08/robot-vision/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>robot-vision | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/08/robot-vision/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          robot-vision
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-08 15:43:56" itemprop="dateCreated datePublished" datetime="2026-04-08T15:43:56+08:00">2026-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-09 17:15:00" itemprop="dateModified" datetime="2026-04-09T17:15:00+08:00">2026-04-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="成像原理">成像原理</h3>
+<ul>
+<li><p>小孔成像</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260408160033340.png"
+alt="image-20260408160033340" />
+<figcaption aria-hidden="true">image-20260408160033340</figcaption>
+</figure></li>
+<li><p>透视投影关系</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260408160412227.png"
+alt="image-20260408160412227" />
+<figcaption aria-hidden="true">image-20260408160412227</figcaption>
+</figure></li>
+</ul>
+<h3 id="相机标定calibration">相机标定(calibration)</h3>
+<h5 id="方法1-3d-objects求解上面的透视投影方程">方法1: 3d
+objects求解上面的透视投影方程</h5>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260408160620497.png"
+alt="image-20260408160620497" />
+<figcaption aria-hidden="true">image-20260408160620497</figcaption>
+</figure>
+<ul>
+<li><p>3d-2d correspndeces关系求解 <span class="math display">\[
+Q_{2n\times12}\cdot M_{12x1} = 0
+\]</span></p></li>
+<li><p>6points（一个点提供2个方程）, Q矩阵rank=11有唯一解</p></li>
+<li><p>Over-determined解： 用svd分解</p>
+<ul>
+<li>本质是最小二乘含义下，使得所有点产生的代数误差总和最小</li>
+</ul></li>
+<li><p>非线性calibration refinement:
+LM算法refine相机的参数，原理是最小化像素空间投影误差</p>
+<ul>
+<li>LM算法还可以把相机的畸变参数也考虑进去</li>
+</ul></li>
+</ul>
+<h5 id="张正友标定">2.张正友标定</h5>
+<ul>
+<li><p>上述的方法要求三个点不能共面，比较困难。张正友标定固定到一个平面Zw=0</p></li>
+<li><figure>
+<img data-src="/2026/04/08/robot-vision/image-20260408173916449.png"
+alt="image-20260408173916449" />
+<figcaption aria-hidden="true">image-20260408173916449</figcaption>
+</figure></li>
+<li><p>2D-2D correspondences <span class="math display">\[
+Q_{2n\times9\cdot H_{9\times1}} = 0
+\]</span></p></li>
+<li><p>最小解出来需要：4points, rank8</p></li>
+<li><p>求解出H之后，可以分解为K和【R|t]</p></li>
+<li><p>H: 单应矩阵</p></li>
+<li><p>过程：拍摄多张不同角度的标定板-&gt;svd分解求解得到相机内参K-&gt;还原每一张标定板拍摄时候的外参-&gt;LM调优</p>
+<ul>
+<li>svd分解最小化的是代数误差，得到初步的线性解K之后一定会通过非线性优化LM算法来refine所有参数</li>
+</ul></li>
+</ul>
+<h3 id="camera-localizationpnp">Camera Localization(PnP)</h3>
+<p>定义：给定3d的世界坐标点和相应的2d图像点求解一个标定过的camera的位姿</p>
+<h5 id="求解pnp问题">1.求解PnP问题</h5>
+<ul>
+<li>根据3d-2d投影方程入手</li>
+<li>多少个点可以用来确定一个camera的位置
+<ul>
+<li>三个点：解不唯一(P3P)（投影关系约束有个尺度因子，约束不完整）
+<ul>
+<li>四次方程在实数范围有4个根，这代表在空间中可能存在4个不同的相机位姿，使得这三个点在图像上的投影看起来完全一样。</li>
+</ul></li>
+<li>4个点不共线：可以得到唯一解
+<ul>
+<li>相比P3P用多一个点来消除歧义</li>
+</ul></li>
+<li>如果4点共面，退化成单应矩阵H,可以求出唯一解</li>
+<li>更多点，通过svd处理超定方程，通过冗余抵消噪声，可以获得更精准的值。</li>
+</ul></li>
+</ul>
+<h5 id="epnp算法">2.EPnP算法</h5>
+<ul>
+<li><p>算法过程：在空间确定三个主轴和一个质心，然后把所有3d点表示成其线性表示；这个线性表示可以迁移到像素空间，从而得到</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260408195557965.png"
+alt="image-20260408195557965" />
+<figcaption aria-hidden="true">image-20260408195557965</figcaption>
+</figure></li>
+<li><p>本质是找四个控制点在世界坐标系和相机坐标系下的三维坐标，然后解R｜T,就是一个简单的3D点云对齐的问题了。</p>
+<ul>
+<li>先定义世界坐标系的重心和三个主轴</li>
+<li>所有的世界坐标系的特征点都可以通过上面的控制点线性表示</li>
+<li>根据像素坐标=K*(特征点在相机坐标系下的三维坐标)是已知的
+<ul>
+<li>把特征点在相机坐标系下的三维坐标-》替换成特征点在控制点下的坐标*【控制点在相机坐标系下的三维坐标】
+<ul>
+<li>此时这个特征点在控制点下的坐标就是上面第二步的线性表示的参数
+<ul>
+<li>理由：重心不变性</li>
+</ul></li>
+<li>即可以求解出【控制点在相机坐标系下的三维坐标】</li>
+</ul></li>
+</ul></li>
+<li>已知四个控制点在世界坐标系和相机坐标系下的三维坐标，再求解一个点云对齐问题就可以了</li>
+</ul></li>
+<li><p>最后可以用重投影误差进行优化</p></li>
+</ul>
+<h3 id="image-filtering">Image Filtering</h3>
+<ul>
+<li>卷积：连续的，离散的，一维的，二维的</li>
+<li>Linear Filter:
+<ul>
+<li>Mean filter</li>
+<li>Gaussian Filter</li>
+<li>Sobel Filter: 单个方向梯度，边缘检测算子</li>
+<li>Laplacian Filter: 两个方向的边缘检测算子</li>
+</ul></li>
+<li>卷积具有可分离性：乘以二维卷积=乘以x和乘以y</li>
+<li>Non-linear Filter:
+<ul>
+<li>Median: 邻居代替中心</li>
+<li>Bilateral Filter: weighted neighbors代替center</li>
+</ul></li>
+<li>Canny边缘检测
+<ul>
+<li>对图像计算梯度：图像高斯平滑+x/y梯度&lt;-&gt;图像*高斯算子在两个方向的梯度</li>
+<li>计算梯度强度和方向</li>
+<li>梯度强度Thresholding:小于阈值置为0</li>
+<li>Thinning:根据梯度方向移除不是局部最大的像素</li>
+</ul></li>
+</ul>
+<h3 id="feature-detection">Feature Detection</h3>
+<ul>
+<li><p>Cross-correlation</p></li>
+<li><p>相似性度量</p>
+<ul>
+<li>ssd</li>
+<li>Acc（normalized了）</li>
+</ul></li>
+<li><p>Census Transform和Hamming Distance</p></li>
+<li><p>Moravec corner检测： corner是在任意方向图像强度都变化了的</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409135824379.png"
+alt="image-20260409135824379" />
+<figcaption aria-hidden="true">image-20260409135824379</figcaption>
+</figure></li>
+<li><p>Harris角点检测</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409135944766.png"
+alt="image-20260409135944766" />
+<figcaption aria-hidden="true">image-20260409135944766</figcaption>
+</figure></li>
+<li><p>sift</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409140046348.png"
+alt="image-20260409140046348" />
+<figcaption aria-hidden="true">image-20260409140046348</figcaption>
+</figure></li>
+</ul>
+<h3 id="multi-view-geometry">Multi-View Geometry</h3>
+<h4 id="depth-estimation">1.Depth estimation</h4>
+<h6 id="depth-from-stereosimple-case">1.1. Depth from stereo(simple
+case)</h6>
+<ul>
+<li><p>固定多目或者双目，外参已知且静态</p></li>
+<li><p>即时性和近距离高精度：比如机器人避障，工业视觉检测的很高的重复精度</p>
+<ul>
+<li>目标距离很远的时候视差几户为0，此时三角测量精度更高</li>
+</ul></li>
+<li><p>camera calibrated, baseline B已知</p></li>
+<li><p>同一场景拍两张图，估计深度</p>
+<ul>
+<li>如何确定视差：ssd,ncc之类的；工业上还会通过结构光（主动打光斑）来定位。</li>
+</ul></li>
+<li><figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409140434993.png"
+alt="image-20260409140434993" />
+<figcaption aria-hidden="true">image-20260409140434993</figcaption>
+</figure></li>
+</ul>
+<h6 id="depth-from-stereogeneral-case">1.2. Depth from Stereo(General
+Case):</h6>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409141926675.png"
+alt="image-20260409141926675" />
+<figcaption aria-hidden="true">image-20260409141926675</figcaption>
+</figure>
+<ul>
+<li>大规模三维重建sfm,
+单目slam，长距离测距，动态运动位置环境或者大范围场景</li>
+<li>通过已知的相机位姿（从不同位置拍摄）和对应的像素坐标确定空间点的三维位置
+<ul>
+<li>数学本质：求解两条或者多条射线在空间中的交点。由于有噪声，射线通常不相交，因此通常转换成最小二乘法或者对极几何约束下的重投影误差最小化问题。</li>
+<li>关键点：基线是变量（通常跟随相机移动变化），位姿通过sfm或者slam估计得出。</li>
+</ul></li>
+<li>非线性优化：通过最小化重投影误差refine深度估计。</li>
+</ul>
+<h6 id="epipolar-geometry">2.1 Epipolar Geometry</h6>
+<ul>
+<li><p>对极几何描述的是两台相机在不同位置拍摄同一空间点的时候，图像坐标存在的几何约束关系。</p></li>
+<li><p>一些概念定义：</p>
+<ul>
+<li>对极点：一个相机光心在我图像平面的投影（站在我的位置看另一个相机）</li>
+<li>对极线：对极平面和图像平面的交线</li>
+<li>对级约束：对于空间中一点x，左图对应的像素是xl,其在右图的匹配点一定落在相应的对极线xr上。</li>
+</ul>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409143534426.png"
+alt="image-20260409143534426" />
+<figcaption aria-hidden="true">image-20260409143534426</figcaption>
+</figure></li>
+<li><p>为什么要用对极几何：</p>
+<ul>
+<li>减少搜索空间；有了对极约束只用沿着对极线进行一维搜索</li>
+<li>极线矫正(rectification):
+通过算法对图像变换，使得对极线水平平行。这样匹配点y坐标一致，寻找匹配点就变成了简单的行扫描。
+<ul>
+<li><figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409144220690.png"
+alt="image-20260409144220690" />
+<figcaption aria-hidden="true">image-20260409144220690</figcaption>
+</figure></li>
+<li>实际工作的时候，算法会计算两个虚拟的成像平面，在数学上共面且平行。
+<ul>
+<li>原始图像中的每一个像素点，通过一个单应矩阵重新映射(wraping)到这两个虚拟平面上</li>
+<li>矫正之后左图(xl,y)，右图的匹配点一定是(xr,y)，即y坐标一定相等。后续根据视差和标定好的基线长度，就可以还原3d点云。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="structure-from-motionsfm">Structure from motion(sfm)</h3>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409152834173.png"
+alt="image-20260409152834173" />
+<figcaption aria-hidden="true">image-20260409152834173</figcaption>
+</figure>
+<h5 id="case1-标定后的相机k1k2已知">case1: 标定后的相机(k1,k2已知)</h5>
+<ul>
+<li><p>前后图像的4n个点知道，n个对应关系，像素坐标对像素坐标</p></li>
+<li><p>5+3n未知：3n是3d points的坐标， 5是3 rotation + 2 for
+translation</p>
+<ul>
+<li>为什么T少一个自由度：因为sfm没有绝对尺度，尺度需要结合其他确定性的尺度来确定
+<ul>
+<li>用手机拍一个手机模型和真的大楼，如果动作路径一样，照片里特征点运动轨迹也一样；sfm智能告诉你a到b的距离是b到c的两倍，不能告诉你确切的值；双目可以是因为双目相机的baseline是确定的尺度。</li>
+</ul></li>
+</ul></li>
+<li><p>对级约束：</p>
+<ul>
+<li><p>对极约束描述空间三维点在两张image之间的关系</p></li>
+<li><p>推导的核心思想就是“光心，图像匹配点，三维点，这三者构成的向量共面”</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409154013110.png"
+alt="image-20260409154013110" />
+<figcaption aria-hidden="true">image-20260409154013110</figcaption>
+</figure></li>
+<li><p>本质矩阵：</p>
+<ul>
+<li>就是上面的TxR：描述两个camera之间的相对位姿 <span
+class="math display">\[
+E = [T]_xR
+\]</span></li>
+</ul></li>
+<li><p>本质矩阵和基础矩阵的关系：</p>
+<ul>
+<li>本质矩阵是归一化的图像坐标（去掉了相机内参的影响后的方向），5自由度
+<ul>
+<li>基础矩阵直接作用于像素坐标，包含了位姿(R，T)和相机内参，7自由度</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>八点算法求解基础矩阵</p>
+<ul>
+<li><p>3x3矩阵9个参数未知，因为上面的方程有尺度不确定性（等式右边是0），只需要求解8个独立参数。因此八个点可以求解。</p></li>
+<li><p>有噪声的情况下，选取大于8个点，我们可以对矩阵进行svd分解，取最小奇异值作为f的解。</p></li>
+<li><p>奇异性约束：基础矩阵的秩是2，通过svd分解出来的一般是慢秩。对矩阵再次svd分解，强制最小奇异值为0</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409160437742.png"
+alt="image-20260409160437742" />
+<figcaption aria-hidden="true">image-20260409160437742</figcaption>
+</figure></li>
+<li><p>注：svd分解</p>
+<ul>
+<li><strong>零</strong>：齐次方程 Ax=0*A**x*=0 的零空间 →
+<strong>最小</strong>奇异值。
+<ul>
+<li><strong>主</strong>：主成分/低秩近似/最大方差 →
+<strong>最大</strong>奇异值。</li>
+</ul></li>
+</ul></li>
+<li><p>注：由于矩阵的病态特性，有时候需要在像素坐标计算以前做归一化</p></li>
+</ul></li>
+</ul>
+<h5 id="case2-没有标定的camera求解基础矩阵">case2:
+没有标定的camera求解基础矩阵</h5>
+<ul>
+<li><p>计算过程同上</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409160540007.png"
+alt="image-20260409160540007" />
+<figcaption aria-hidden="true">image-20260409160540007</figcaption>
+</figure></li>
+</ul>
+<h4 id="robust-sfm">robust sfm</h4>
+<ul>
+<li>ransac算法：sampling-&gt;model fitting-&gt;model evaluation
+-&gt;model refinement -&gt;model selection</li>
+<li>8-point ransac: 估计基础矩阵</li>
+<li>5-point ransac:估计本质矩阵</li>
+<li>2-point ransack: line fitting</li>
+</ul>
+<h4 id="bundle-adjustment">bundle adjustment</h4>
+<ul>
+<li><p>综合所有的参数做最后一步优化让重投影误差最小</p></li>
+<li><p>几何解释：</p>
+<ul>
+<li>每个相机对每个三维点定义一条<strong>光束</strong>（从光心到点的射线）</li>
+<li>理想情况：所有光束精确交会于三维点</li>
+<li>BA：调整所有光束的起点（相机位姿）和交点（三维点），让它们在<strong>图像平面上的投影</strong>与观测最匹配</li>
+</ul></li>
+<li><p>BA在sfm/slam中的角色：</p>
+<ul>
+<li><figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409162035692.png"
+alt="image-20260409162035692" />
+<figcaption aria-hidden="true">image-20260409162035692</figcaption>
+</figure></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">图像输入</span><br><span class="line">   ↓</span><br><span class="line">特征提取 (ORB, SIFT, SuperPoint)</span><br><span class="line">   ↓</span><br><span class="line">特征匹配 (暴力匹配/FLANN)</span><br><span class="line">   ↓</span><br><span class="line">几何验证 (RANSAC + 基础矩阵/本质矩阵)</span><br><span class="line">   ↓</span><br><span class="line">【初始重建】 (增量式/全局式 SFM)</span><br><span class="line">   ↓</span><br><span class="line">【Bundle Adjustment】 ← 优化所有相机和点</span><br><span class="line">   ↓</span><br><span class="line">【可选：回环检测 + 全局 BA】</span><br><span class="line">   ↓</span><br><span class="line">稠密重建 / 纹理贴图 / 导出模型</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="sequential-sfmvisual-odometry">Sequential SfM(Visual
+Odometry)</h3>
+<ul>
+<li><p>Sfm:
+多个相机拍摄恢复每次拍摄的外参和空间中的三维点，强调重建的准确度</p></li>
+<li><p>Slam:强调实时</p></li>
+<li><p>Sequential sfm:
+处理连续帧，纯视觉的slam前端，没有后端优化和回环检测；
+可以理解为sfm和slam的过渡</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409163443996.png"
+alt="image-20260409163443996" />
+<figcaption aria-hidden="true">image-20260409163443996</figcaption>
+</figure></li>
+<li><p>KLT tracking</p>
+<ul>
+<li>计算机视觉中一个经典且高效的特征点追踪算法。</li>
+<li><strong>它不是在每一帧中重新检测角点，而是在视频序列中，快速、稳定地“跟随”那些已经在上一帧中选定的特征点，找到它们在下一帧中的精确位置。</strong></li>
+<li>它回答了SLAM/SFM前端的一个核心问题：“<strong>上一帧我看到这个角点在位置
+(u,v)(*u*,*v*)，下一帧它跑到哪里去了？</strong>”</li>
+<li>基于光流法的稀疏追踪</li>
+</ul></li>
+</ul>
+<h3 id="dense-3d-reconstruction">Dense 3D reconstruction</h3>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409163848894.png"
+alt="image-20260409163848894" />
+<figcaption aria-hidden="true">image-20260409163848894</figcaption>
+</figure>
+<ul>
+<li>定义：给定n张images,估计scene的3d结构和相机位置。</li>
+<li>聚合光度误差 (Aggregated Photometric Error)
+<ul>
+<li><strong>光度一致性假设（Photometric
+Consistency）</strong>：即同一个空间点在不同视角下的像素亮度（或颜色）应该是接近的。</li>
+<li><strong>两幅图像间的误差</strong>：把两张图对齐后，对应像素值相减。</li>
+<li><strong>误差聚合</strong>：
+<ul>
+<li>为了提高鲁棒性，我们不只看两张图，而是将所有图像对 <span
+class="math inline">\((i, j)\)</span> 之间的误差累加起来：</li>
+</ul></li>
+</ul></li>
+<li>视差空间图像 (Disparity Space Image, DSI / Cost Volume)：
+<ul>
+<li><span class="math display">\[C(u, v, d) = \sum_{k} \rho(I_R(u, v) -
+I_k(u&#39;, v&#39;, d))\]</span></li>
+<li>假设一个深度，投影变换到别的帧，计算颜色差异得到的就是dsi</li>
+</ul></li>
+<li>深度图估计 (Depth Map Estimation)：
+<ul>
+<li>对于参考图像中的每一个像素 <span class="math inline">\((u,
+v)\)</span>，我们查看它在所有深度假设 <span
+class="math inline">\(d\)</span>
+下的误差，选择那个让误差最小的深度：</li>
+</ul></li>
+</ul>
+<h3 id="视觉惯性里程计-visual-inertial-odometry-vio">视觉惯性里程计
+(Visual Inertial Odometry, VIO)</h3>
+<ul>
+<li><p>IMU
+测量设备<strong>线性加速度</strong>和<strong>角速度</strong>的传感器。它通常由三轴加速度计和三轴陀螺仪组成。</p>
+<ul>
+<li>视觉给 IMU <strong>“指路”</strong>（消除漂移），IMU 给视觉
+<strong>“提速和补位”</strong>（提供高频和鲁棒性）。</li>
+</ul></li>
+<li><p>由于传感器存在物理缺陷，测得的原始数据 <span
+class="math inline">\(\hat{\omega}\)</span> 和 <span
+class="math inline">\(\hat{a}\)</span> 并非真实值</p>
+<ul>
+<li><h4 id="角速度模型-陀螺仪">角速度模型 (陀螺仪)</h4>
+<p><span class="math display">\[\hat{\omega}_B(t) = \omega_B(t) +
+b_\omega(t) + n_\omega(t)\]</span></p></li>
+<li><h4 id="线性加速度模型-加速度计">线性加速度模型 (加速度计)</h4>
+<p><span class="math display">\[\hat{a}_B(t) = R(t)(a_W(t) - g) + b_a(t)
++ n_a(t)\]</span></p></li>
+</ul></li>
+<li><p><strong>松耦合视觉惯性里程计 (Loosely-Coupled
+VIO)</strong></p></li>
+<li><figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409170322869.png"
+alt="image-20260409170322869" />
+<figcaption aria-hidden="true">image-20260409170322869</figcaption>
+</figure>
+<ul>
+<li>视觉模块和 IMU
+模块分别计算位姿，最后再通过一个融合层将结果合并。</li>
+</ul></li>
+<li><p><strong>紧耦合视觉惯性里程计 (Tightly-Coupled
+VIO)</strong></p></li>
+<li><figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409170333382.png"
+alt="image-20260409170333382" />
+<figcaption aria-hidden="true">image-20260409170333382</figcaption>
+</figure>
+<ul>
+<li>目前 SLAM
+和机器人定位领域中最主流、也是精度最高的一种融合方案。</li>
+<li>将<strong>视觉的原始观测特征</strong>和 <strong>IMU
+的原始测量数据</strong> 放在同一个数学框架下进行联合优化。</li>
+</ul></li>
+</ul>
+<h3 id="event-based-vision">event-based vision</h3>
+<ul>
+<li><p>不像普通相机那样按照固定频率（如
+30fps）拍摄整幅图像，而是模仿生物视网膜的工作原理，只记录光强<strong>发生变化</strong>的时刻。</p>
+<figure>
+<img data-src="/2026/04/08/robot-vision/image-20260409170932741.png"
+alt="image-20260409170932741" />
+<figcaption aria-hidden="true">image-20260409170932741</figcaption>
+</figure></li>
+<li><p>DAVIS 传感器：全能组合</p>
+<ul>
+<li>事件相机只记录“变化”，在完全静止的情况下它会“失明”。为了弥补这一缺陷，<strong>DAVIS
+(Dynamic and Active-pixel Vision Sensor)</strong> 传感器诞生了。</li>
+<li>它在一个芯片上集成了三种数据源：
+<ol type="1">
+<li><strong>Events
+(事件流)</strong>：负责捕捉高速运动和高动态细节。</li>
+<li><strong>Images
+(传统图像)</strong>：提供静止状态下的纹理和颜色信息。</li>
+<li><strong>IMU (惯性测量单元)</strong>：提供相机的运动信息。</li>
+</ol></li>
+</ul></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/computer-vision/" rel="tag"># computer vision</a>
+              <a href="/tags/robot-vision/" rel="tag"># robot vision</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/04/07/Next-Best-View/" rel="prev" title="Next-Best-View">
+      <i class="fa fa-chevron-left"></i> Next-Best-View
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%83%8F%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">成像原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9Acalibration"><span class="nav-number">2.</span> <span class="nav-text">相机标定(calibration)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%951-3d-objects%E6%B1%82%E8%A7%A3%E4%B8%8A%E9%9D%A2%E7%9A%84%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1%E6%96%B9%E7%A8%8B"><span class="nav-number">2.0.1.</span> <span class="nav-text">方法1: 3d
+objects求解上面的透视投影方程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%A0%E6%AD%A3%E5%8F%8B%E6%A0%87%E5%AE%9A"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.张正友标定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#camera-localizationpnp"><span class="nav-number">3.</span> <span class="nav-text">Camera Localization(PnP)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3pnp%E9%97%AE%E9%A2%98"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.求解PnP问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#epnp%E7%AE%97%E6%B3%95"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.EPnP算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#image-filtering"><span class="nav-number">4.</span> <span class="nav-text">Image Filtering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feature-detection"><span class="nav-number">5.</span> <span class="nav-text">Feature Detection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multi-view-geometry"><span class="nav-number">6.</span> <span class="nav-text">Multi-View Geometry</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#depth-estimation"><span class="nav-number">6.1.</span> <span class="nav-text">1.Depth estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#depth-from-stereosimple-case"><span class="nav-number">6.1.0.1.</span> <span class="nav-text">1.1. Depth from stereo(simple
+case)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#depth-from-stereogeneral-case"><span class="nav-number">6.1.0.2.</span> <span class="nav-text">1.2. Depth from Stereo(General
+Case):</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#epipolar-geometry"><span class="nav-number">6.1.0.3.</span> <span class="nav-text">2.1 Epipolar Geometry</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#structure-from-motionsfm"><span class="nav-number">7.</span> <span class="nav-text">Structure from motion(sfm)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#case1-%E6%A0%87%E5%AE%9A%E5%90%8E%E7%9A%84%E7%9B%B8%E6%9C%BAk1k2%E5%B7%B2%E7%9F%A5"><span class="nav-number">7.0.1.</span> <span class="nav-text">case1: 标定后的相机(k1,k2已知)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#case2-%E6%B2%A1%E6%9C%89%E6%A0%87%E5%AE%9A%E7%9A%84camera%E6%B1%82%E8%A7%A3%E5%9F%BA%E7%A1%80%E7%9F%A9%E9%98%B5"><span class="nav-number">7.0.2.</span> <span class="nav-text">case2:
+没有标定的camera求解基础矩阵</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#robust-sfm"><span class="nav-number">7.1.</span> <span class="nav-text">robust sfm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bundle-adjustment"><span class="nav-number">7.2.</span> <span class="nav-text">bundle adjustment</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential-sfmvisual-odometry"><span class="nav-number">8.</span> <span class="nav-text">Sequential SfM(Visual
+Odometry)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dense-3d-reconstruction"><span class="nav-number">9.</span> <span class="nav-text">Dense 3D reconstruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E8%A7%89%E6%83%AF%E6%80%A7%E9%87%8C%E7%A8%8B%E8%AE%A1-visual-inertial-odometry-vio"><span class="nav-number">10.</span> <span class="nav-text">视觉惯性里程计
+(Visual Inertial Odometry, VIO)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%92%E9%80%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B-%E9%99%80%E8%9E%BA%E4%BB%AA"><span class="nav-number">10.1.</span> <span class="nav-text">角速度模型 (陀螺仪)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8A%A0%E9%80%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B-%E5%8A%A0%E9%80%9F%E5%BA%A6%E8%AE%A1"><span class="nav-number">10.2.</span> <span class="nav-text">线性加速度模型 (加速度计)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#event-based-vision"><span class="nav-number">11.</span> <span class="nav-text">event-based vision</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

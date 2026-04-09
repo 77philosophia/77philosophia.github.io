@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这是一个根据提问和关键词展开rl领域的outline文档。 介绍  理解强化学习的两个关键概念：trial-and-error search 和 delayed reward  Markov Decision Process  五元祖的含义（S, A, P,R, y） Returns的公式： Gt&#x3D; Rt+1 + Rt+2+... (state) Value function: 在state&#x3D;s的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习算法概览">
+<meta property="og:url" content="http://77philosophia.github.io/2026/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E6%A6%82%E8%A7%88/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="这是一个根据提问和关键词展开rl领域的outline文档。 介绍  理解强化学习的两个关键概念：trial-and-error search 和 delayed reward  Markov Decision Process  五元祖的含义（S, A, P,R, y） Returns的公式： Gt&#x3D; Rt+1 + Rt+2+... (state) Value function: 在state&#x3D;s的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-21T06:02:45.000Z">
+<meta property="article:modified_time" content="2026-04-07T07:13:12.360Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E6%A6%82%E8%A7%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>强化学习算法概览 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E6%A6%82%E8%A7%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强化学习算法概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-03-21 14:02:45" itemprop="dateCreated datePublished" datetime="2026-03-21T14:02:45+08:00">2026-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-07 15:13:12" itemprop="dateModified" datetime="2026-04-07T15:13:12+08:00">2026-04-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这是一个根据提问和关键词展开rl领域的outline文档。</p>
+<h4 id="介绍">介绍</h4>
+<ul>
+<li>理解强化学习的两个关键概念：trial-and-error search 和 delayed
+reward</li>
+</ul>
+<h4 id="markov-decision-process">Markov Decision Process</h4>
+<ul>
+<li><p>五元祖的含义（S, A, P,R, y）</p></li>
+<li><p>Returns的公式： Gt= Rt+1 + Rt+2+...</p></li>
+<li><p>(state) Value function: 在state=s的时候Gt的期望值 V(s) <span
+class="math display">\[
+V^\pi(s)
+\]</span></p></li>
+<li><p>(State-action) value function: <span class="math display">\[
+Q^\pi(s,a)
+\]</span></p></li>
+<li><p>Bellman Equation: 此时的value function = 下一时刻所有的immediate
+reward和下一state的value和。</p></li>
+</ul>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>注意，<span class="math display">\[V^\pi(s)\]</span> 和<span
+class="math display">\[Q^\pi(s,a)\]</span>
+不是固定的，是不断优化的，所以上标有pi.</p>
+</blockquote>
+<h4 id="如何解决一个mdp问题">如何解决一个MDP问题：</h4>
+<h6 id="动态规划">1.动态规划</h6>
+<p>环境状态转移概率和reward
+function都已知，用动态规划算法即可。每一步选择最大的reward。</p>
+<h6 id="蒙特卡罗方法">2. 蒙特卡罗方法</h6>
+<p>不知道环境的状态(model-free);直接从experience学习，执行完一次实验后计算，no
+bootstrapping；因此是无偏的。</p>
+<h6 id="temporal-difference-learning">3.Temporal-Difference
+Learning</h6>
+<ul>
+<li>结合了动态规划和蒙特卡罗，基于当前状态进行估计更新；</li>
+<li>Model-free:不知道MDP转移概率和reward;</li>
+<li>可以从incomplete experience中学习：on-line, continual learning</li>
+<li>Sarsa: On-policy TD control, 每一次更新用实际的Q值去更新；</li>
+<li>Q-learning: off-policy TD
+control,每一次的Q值更新不用实际走的action，而是argmax去更新；因为不是用的真实的q，因此叫off-policy</li>
+</ul>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>在model-free情况下，一般估计Q(s,a), V(s)一般用于评估。</p>
+</blockquote>
+<h6 id="function-approximation">4. function approximation</h6>
+<ul>
+<li><p>如果state space too large,可以用线性函数去拟合得到value
+function.</p></li>
+<li><p>Deep Q-Network(DQN)：</p>
+<ul>
+<li><p>一句话：用神经网络估计Q(s,a)</p></li>
+<li><p>直接让神经网络去估计，存在一个问题，mdp的数据不是i.i.d.的，每一步和上一步相关；因此DQN引入eperience
+replay:存储experience然后mini-batch采样；</p></li>
+<li><p>网络“左脚踩右脚”的更新不稳定。用Fixed Q-target:
+两个Q网络解决网络震荡。</p></li>
+<li><p><span class="math display">\[
+update: L(\theta) = E_{s,a,r,s&#39;~U(D)}[(r+\gamma
+\max_{a}Q(s’,a‘,\theta^-)-Q(s,a;\theta)^2)]
+\\
+\theta^-是target network,固定一定步数之后再更新
+\]</span></p></li>
+</ul></li>
+</ul>
+<h6 id="policy-gradient-methods">5. Policy gradient Methods</h6>
+<ul>
+<li>直接学习policy，而不是先学value function再deriing the policy.</li>
+<li>一个核心思想：最大化reward,更新的gradient是：</li>
+<li>Natural Policy Gradient:
+<ul>
+<li>对策略的梯度乘以Fisher information matrix</li>
+</ul></li>
+</ul>
+<h6 id="actor-critic-methods">6.Actor-Critic Methods</h6>
+<ul>
+<li>policy-based方法高方差，value-based方法高bias。actor-critic方法利用这两种方法来更新。</li>
+<li>actor网络更新：</li>
+<li>value func更新：
+<ul>
+<li>网络估计的是v(s),而不是q(s,a)</li>
+<li>给policy更新的是A(s,a)=q-v</li>
+</ul></li>
+</ul>
+<h6 id="deterministic-policy-gradient">7. Deterministic Policy
+gradient</h6>
+<ul>
+<li><p>建模 <span class="math display">\[
+a = \mu_{\theta}(s)
+\]</span></p></li>
+<li><p>然后用链式求导法则进行更新</p></li>
+</ul>
+<h6 id="deep-deterministic-policy-gradient">8. Deep Deterministic Policy
+gradient</h6>
+<ul>
+<li><p>引入深度神经网络学习Q-function和 <span class="math display">\[
+\mu_(s)
+\]</span></p></li>
+<li><p>Experience replay</p></li>
+<li><p>更新公式</p></li>
+</ul>
+<h6 id="relative-entropy-policy-search">9. relative Entropy Policy
+Search</h6>
+<ul>
+<li>基于policy-based的优化前提（maxJ()）,避免策略前后差异过大（KL散度超过一个值）</li>
+<li>有约束的优化问题（朗格朗日乘子解决）</li>
+</ul>
+<h6 id="ppo">10.PPO</h6>
+<ul>
+<li>目的也是为了防止过大步子的更新</li>
+<li>计算策略前后的一阶比值</li>
+</ul>
+<h6 id="soft-actor-critic">11. Soft Actor-Critic</h6>
+<ul>
+<li>Off-policy actor-critic方法</li>
+<li>在最大化回报的基础上+系数*policy的熵，要求熵也最大化。</li>
+</ul>
+<blockquote>
+<p>[!NOTE]</p>
+<p>On-Policy: PPO</p>
+<p>Off-Policy: SAC/TD3</p>
+<p>一般仿真PPO + 真机SAC</p>
+</blockquote>
+<p>和ai聊天对我问题的答疑：</p>
+<p>https://gemini.google.com/app/2952c6d40943c4da</p>
+<h5 id="关于强化学习的on-policy-和off-policy">关于强化学习的On-policy
+和Off-policy</h5>
+<ul>
+<li>核心矛盾是探索exploration和利用exploitation的矛盾</li>
+<li>On-policy:在 On-policy 算法（如 SARSA, A2C, PPO）中，更新公式里的
+<span class="math inline">\(a\)</span>（当前动作）和 <span
+class="math inline">\(a&#39;\)</span>（下一时刻动作）全部来自于<strong>当前的
+<span class="math inline">\(\pi\)</span></strong>。
+<ul>
+<li>当你一边玩游戏一边改进策略时，你当前的每一个动作都在反映你当下的认知。</li>
+<li>更新非常平滑、稳定，因为它始终在优化“我此时此刻的行为”。</li>
+<li>一旦你的认知（策略）更新了一点点，你之前所有的游戏录像（经验）就<strong>作废</strong>了。因为那些旧动作不再代表你现在的水平，如果强行学习旧数据，你的认知会被带偏。</li>
+</ul></li>
+<li>Off-policy:我学习的是“理想策略”，但我执行的是“带有随机性的探索策略”。
+<ul>
+<li>在 Off-policy 算法（如 Q-Learning, DQN,
+SAC）中，我们通常有两个策略：
+<ol type="1">
+<li><strong>行为策略 (<span
+class="math inline">\(\mu\)</span>)</strong>：负责到处乱跑，采集数据，存入“经验回放池”。</li>
+<li><strong>目标策略 (<span
+class="math inline">\(\pi\)</span>)</strong>：负责从池子里的陈年旧账中总结规律，进化成最强形态。</li>
+</ol></li>
+<li><strong>它是怎么来的：</strong> 为了解决 On-policy
+浪费数据的问题，科学家引入了<strong>贝尔曼最优方程</strong>。它发现：<strong>环境的物理规律（Q值）是客观存在的</strong>。
+比如“在悬崖边往左跳会摔死”，这件事不论你是新手还是高手，不论你是今天跳还是昨天跳，结果都是一样的。</li>
+<li>容易不稳定。因为你是在拿“别人的/过去的”经验来指导“现在的”自己，如果处理不好（比如没有
+Target Network），容易产生数值爆炸。</li>
+<li>数据利用率极高，可以学习人类专家的录像，也可以学习自己半年前的黑历史。</li>
+</ul></li>
+<li>如果是在 Isaac Sim 这种<strong>仿真环境</strong>里，PPO (On-policy)
+通常是首选，因为采样不要钱且稳；但如果要上<strong>实机驱动</strong>，大家往往会选
+SAC (Off-policy)，因为实机跑一次的成本太高了。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/03/09/329p-notes/" rel="prev" title="329p-notes">
+      <i class="fa fa-chevron-left"></i> 329p-notes
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/03/21/mle/" rel="next" title="mle">
+      mle <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">2.</span> <span class="nav-text">Markov Decision Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E4%B8%80%E4%B8%AAmdp%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">如何解决一个MDP问题：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.动态规划</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%96%B9%E6%B3%95"><span class="nav-number">3.0.2.</span> <span class="nav-text">2. 蒙特卡罗方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#temporal-difference-learning"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.Temporal-Difference
+Learning</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#function-approximation"><span class="nav-number">3.0.4.</span> <span class="nav-text">4. function approximation</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#policy-gradient-methods"><span class="nav-number">3.0.5.</span> <span class="nav-text">5. Policy gradient Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#actor-critic-methods"><span class="nav-number">3.0.6.</span> <span class="nav-text">6.Actor-Critic Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#deterministic-policy-gradient"><span class="nav-number">3.0.7.</span> <span class="nav-text">7. Deterministic Policy
+gradient</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#deep-deterministic-policy-gradient"><span class="nav-number">3.0.8.</span> <span class="nav-text">8. Deep Deterministic Policy
+gradient</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#relative-entropy-policy-search"><span class="nav-number">3.0.9.</span> <span class="nav-text">9. relative Entropy Policy
+Search</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ppo"><span class="nav-number">3.0.10.</span> <span class="nav-text">10.PPO</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#soft-actor-critic"><span class="nav-number">3.0.11.</span> <span class="nav-text">11. Soft Actor-Critic</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84on-policy-%E5%92%8Coff-policy"><span class="nav-number">3.1.</span> <span class="nav-text">关于强化学习的On-policy
+和Off-policy</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

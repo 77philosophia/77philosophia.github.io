@@ -172,6 +172,239 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/02/expert-parameter-recommen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/02/expert-parameter-recommen/" class="post-title-link" itemprop="url">expert-parameter-recommen</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-02 09:46:01" itemprop="dateCreated datePublished" datetime="2026-04-02T09:46:01+08:00">2026-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3
+id="一定义解决一个专家参数推荐的问题">一、定义：解决一个专家参数推荐的问题</h3>
+<p>​
+每个行业都有自己的一些行业经验，比如工业有工艺库，医学，金融等都有一些经验参数由业内有经验的人士把握。现在可以用人工智能的方法把这部分数据利用起来。以前可以用机器学习回归的方法做一些可定义参数方面的统计回归，相似推荐；在llm出现以后一些非结构化数据也可以利用rag等技术集成进去。（比如知道某工件在某电流参数下烧穿了，以前只有参数统计，现在可以让llm根据常识去推断，类似的根据物理知识电流电压值如何变化）。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>想通过这篇确定一个通用的用机器学习解决各行各业问题的方案模版，with ai
+agent。ai让我们可以有更多精力在大的思路框架上，而不是局限于以前的细节经验本身。</p>
+</blockquote>
+<h3 id="二根据问题本身定义算法类型">二、根据问题本身定义算法类型</h3>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-03%2011.24.56.excalidraw.svg"
+alt="机器学习算法调研 2026-03-03 11.24.56.excalidraw" />
+<figcaption aria-hidden="true">机器学习算法调研 2026-03-03
+11.24.56.excalidraw</figcaption>
+</figure>
+<h3
+id="三根据数据量定算法类型法则从完成到完善">三、根据数据量定算法类型（法则：从完成到完善）</h3>
+<p>主要看业务场景和业务规模。公司做这个项目的体量。</p>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-03%2013.34.38.excalidraw.svg"
+alt="机器学习算法调研 2026-03-03 13.34.38.excalidraw" />
+<figcaption aria-hidden="true">机器学习算法调研 2026-03-03
+13.34.38.excalidraw</figcaption>
+</figure>
+<h3
+id="四了解数据驱动和规则驱动数据采集的方式和场景影响构建算法的差异">四、了解数据驱动和规则驱动：数据采集的方式和场景影响构建算法的差异</h3>
+<p>数据驱动也就是拿已有经验的数据去做推荐，回归，分析；这个过程中需要积累好数据和差数据。（差的数据对于神经网络的学习有非常重要的作用）。有时候我们的数据构建方式是存储最好的经验。如果基于这种数据的构建方式，只能用“规则驱动”而不是数据驱动的方法。</p>
+<p>1.混合系统，用专家系统定边界，再用optuna或者贝叶斯寻找最好的值。</p>
+<p>2.可以用知识图谱neo4j存储规则，那样是可解释性的。在工业里面因为对安全度的重视，可解释性实际上是非常重要的。</p>
+<h3 id="五work-process">五、work process:</h3>
+<p>建库-&gt;前端收集数据-&gt;后端跑模型</p>
+<p>1.建立数据库supabase+vue
+supabase是一个把后端数据库做了高度集成的开源项目，避免我自己去建立数据库进行增删改查；</p>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E5%BB%BA%E7%AB%8B%E6%95%B0%E6%8D%AE%E5%BA%93%202026-02-27%2010.24.22.excalidraw.svg"
+alt="建立数据库 2026-02-27 10.24.22.excalidraw" />
+<figcaption aria-hidden="true">建立数据库 2026-02-27
+10.24.22.excalidraw</figcaption>
+</figure>
+<p>2.用现有的框架跑机器学习各种算法先得到一个初步结果：autoGluon/pycaret</p>
+<figure>
+<img
+src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-11%2013.44.31.excalidraw.svg"
+alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
+<figcaption aria-hidden="true">机器学习算法调研 2026-03-11
+13.44.31.excalidraw</figcaption>
+</figure>
+<h3 id="六做一个ml系统-关键是要有system的思维">六：做一个ML系统:
+关键是要有system的思维</h3>
+<p>可能要考虑监控，异常处理，ci/cd，从系统的角度思考一个机器学习的系统。可以参考：</p>
+<p>https://github.com/harvard-edge/cs249r_book</p>
+<p>https://pooyanjamshidi.github.io/mls/</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/31/rl-line/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/03/31/rl-line/" class="post-title-link" itemprop="url">rl-outline</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-03-31 10:17:21" itemprop="dateCreated datePublished" datetime="2026-03-31T10:17:21+08:00">2026-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://gemini.google.com/app/e21ea8ed5b222650</p>
+<figure>
+<img data-src="/2026/03/31/rl-line/image-20260331160925725.png"
+alt="image-20260331160925725" />
+<figcaption aria-hidden="true">image-20260331160925725</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/03/31/rl-line/image-20260331160938967.png"
+alt="image-20260331160938967" />
+<figcaption aria-hidden="true">image-20260331160938967</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/03/31/rl-line/image-20260331160947753.png"
+alt="image-20260331160947753" />
+<figcaption aria-hidden="true">image-20260331160947753</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/03/31/rl-line/image-20260331161001373.png"
+alt="image-20260331161001373" />
+<figcaption aria-hidden="true">image-20260331161001373</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/03/31/rl-line/image-20260331161010583.png"
+alt="image-20260331161010583" />
+<figcaption aria-hidden="true">image-20260331161010583</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/03/31/rl-line/image-20260331161018888.png"
+alt="image-20260331161018888" />
+<figcaption aria-hidden="true">image-20260331161018888</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/21/mle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -306,7 +539,7 @@ x_i\]</span></p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/21/rl-notes/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E6%A6%82%E8%A7%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -320,7 +553,7 @@ x_i\]</span></p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/03/21/rl-notes/" class="post-title-link" itemprop="url">rl-notes</a>
+            <a href="/2026/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E6%A6%82%E8%A7%88/" class="post-title-link" itemprop="url">强化学习算法概览</a>
         </h2>
 
         <div class="post-meta">
@@ -337,7 +570,7 @@ x_i\]</span></p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-07 15:10:32" itemprop="dateModified" datetime="2026-04-07T15:10:32+08:00">2026-04-07</time>
+                <time title="Modified: 2026-04-07 15:13:12" itemprop="dateModified" datetime="2026-04-07T15:13:12+08:00">2026-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -677,7 +910,7 @@ Machine Learning 信息增益不大，略过。</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-04-07 15:26:09" itemprop="dateModified" datetime="2026-04-07T15:26:09+08:00">2026-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -685,7 +918,7 @@ Machine Learning 信息增益不大，略过。</p>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
                 </span>
             </span>
 
@@ -949,7 +1182,7 @@ agent的架构，这个工具给我的感觉就睡非常舒服。</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/30/vla-generanization/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/30/vla%E7%9C%9F%E7%9A%84%E6%9C%89%E6%B3%9B%E5%8C%96%E6%80%A7%E5%90%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -963,7 +1196,7 @@ agent的架构，这个工具给我的感觉就睡非常舒服。</p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/01/30/vla-generanization/" class="post-title-link" itemprop="url">vla模型是真的有泛化性，还是只是过拟合</a>
+            <a href="/2026/01/30/vla%E7%9C%9F%E7%9A%84%E6%9C%89%E6%B3%9B%E5%8C%96%E6%80%A7%E5%90%97/" class="post-title-link" itemprop="url">vla模型是真的有泛化性，还是只是过拟合</a>
         </h2>
 
         <div class="post-meta">
@@ -1105,477 +1338,6 @@ robot的也一波又一波。对ai学习能力的判断可以影响团队的技�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/23/vlm-generation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/01/23/vlm-generation/" class="post-title-link" itemprop="url">vlm是如何训练出来的</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-01-23 11:16:26" itemprop="dateCreated datePublished" datetime="2026-01-23T11:16:26+08:00">2026-01-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>https://medium.com/<span class="citation"
-data-cites="xiaxiami/how-vision-language-models-are-trained-a-deep-dive-into-the-vlm-training-process-1ba1d8704bb0">@xiaxiami/how-vision-language-models-are-trained-a-deep-dive-into-the-vlm-training-process-1ba1d8704bb0</span></p>
-<p>讨论类似gpt-4v,gemini,flamingo,minigpt-4等vlm模型是如何训练的，训练过程和纯语言模型或者视觉模型有什么不一样。本篇内容只讨论端到端的训练过程，包括：</p>
-<ul>
-<li>架构overview</li>
-<li>vision和lang编码选择</li>
-<li>数据准备</li>
-<li>预训练目标</li>
-<li>训练策略</li>
-<li>针对下游任务的微调</li>
-</ul>
-<h3 id="vlm-model定义">vlm model定义</h3>
-<p>同时处理图像（或视频）输入和文本输入，以学习跨模态特征。这些模型经过训练能协调处理视觉和文本模态从而处理以下任务：</p>
-<ul>
-<li>Image captioning</li>
-<li>visual question answering</li>
-<li>referring expression comprehension</li>
-<li>Image-text retrieval</li>
-<li>multimodal dialogue</li>
-</ul>
-<h3 id="vlm架构总览">vlm架构总览</h3>
-<p>大多数vlm架构师two-tower结构或者fusion架构，包括：</p>
-<ol type="1">
-<li><p>vision encoder:把 images转换成embeddings</p>
-<ul>
-<li>经常的backbones:
-<ul>
-<li>viT</li>
-<li>clip vit</li>
-<li>convNext</li>
-<li>Swin transformer</li>
-</ul></li>
-<li>举例:
-<ul>
-<li>input images-&gt;patch embedding-&gt;vit layers-&gt;visual
-tokens</li>
-</ul></li>
-</ul></li>
-<li><p>llm的text encoder: 处理输入文本或者产生文本</p>
-<ul>
-<li>经常的选择：
-<ul>
-<li>Bert, Roberta(for non-generative models)</li>
-<li>GPT-2/3,LLaMA,OPT(for generative models)</li>
-</ul></li>
-<li>举例子：
-<ul>
-<li>Text-&gt;tokenizer-&gt;embeddings-&gt;Transformer decoder</li>
-</ul></li>
-</ul></li>
-<li><p>Cross-modal fusion module: 联系两种模态</p>
-<ul>
-<li>选择：
-<ul>
-<li>Cross-attention layers</li>
-<li>concatenation + joint transformer</li>
-<li>adapters 或者projection layers for aligning dimensions</li>
-</ul></li>
-</ul>
-<h3 id="数据准备">数据准备</h3>
-<ol type="1">
-<li>Image-text pairs
-<ul>
-<li>LAION-400M/5B</li>
-<li>Conceptual Captions(CC3M, CC12M)</li>
-<li>COCO Captions</li>
-<li>RedCaps</li>
-<li>YFCC-100M</li>
-</ul></li>
-<li>Visual instruction data
-<ul>
-<li>在指令调优的VLMs中使用</li>
-<li>比如LLaVA-style conversations(image + prompt -&gt;response)</li>
-<li>MiniGPT-4 prompts</li>
-<li>Self-instruct data for images</li>
-</ul></li>
-<li>合成渲染数据
-<ul>
-<li>生成标题，基于ocr的描述或者图表</li>
-<li>帮助模型学习视觉推理</li>
-</ul></li>
-</ol>
-<h3 id="预训练目标-pretrainning-objectives">预训练目标 pretrainning
-objectives</h3>
-<p>预训练目标取决于vlm的种类。</p>
-<ol type="1">
-<li><p>对比学习Contrastive Learning(CLIP-style)</p>
-<ul>
-<li><p>最大化image和text对的相似度</p></li>
-<li><p>Clip, align, blip(as a stage)</p>
-<figure>
-<img data-src="/2026/01/23/vlm-generation/1*zHsQXHxTBeHW7KQ6qoT0Ag.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure></li>
-</ul></li>
-<li><p>Image-Conditioned Language Modeling 图像条件的语言建模</p>
-<ul>
-<li>训练text deoder根据图像特征产生captions或者问题答案</li>
-<li>举例子
-<ul>
-<li>BLIP-2</li>
-<li>LLaVA</li>
-<li>MiniGPT-4</li>
-</ul></li>
-</ul></li>
-<li><p>Masked Modeling(Multimodal MLM)。 盖住输入并进行预测</p>
-<ul>
-<li>Masked language modeling(MLM)</li>
-<li>Masked image modeling(MIM)</li>
-<li>比如：
-<ul>
-<li>ALBEF</li>
-<li>UNITER</li>
-</ul></li>
-</ul></li>
-<li><p>下一句话预测/匹配</p>
-<ul>
-<li>二分类器是否匹配</li>
-<li>这个caption描述这张图像了吗</li>
-</ul></li>
-</ol>
-<h3 id="vlm-training-pipeline">vlm training pipeline</h3>
-<ol type="1">
-<li>初始化vision encoder
-<ul>
-<li>Vit( from clip或者dino)</li>
-<li>根据数据和算力决定Freeze/finetune</li>
-</ul></li>
-<li>对齐模态
-<ul>
-<li>增加投影层将image/text投影到同一个维度</li>
-<li>应用对齐损失（constative or matching）</li>
-</ul></li>
-<li>增加cross-attention
-<ul>
-<li>插入cross-attention从文本到语言token</li>
-<li>这使得诸如vqa之类的任务能够尽早融合</li>
-</ul></li>
-<li>在大规模pairs进行预训练
-<ul>
-<li>在大规模图像对上训练</li>
-<li>数十万步</li>
-<li>使用fp16/bf16和梯度检查点来减少内存占用</li>
-</ul></li>
-<li>指导性的调整(optional)
-<ul>
-<li>将图像和prompt喂到模型中</li>
-<li>训练产生合适的文本response</li>
-</ul></li>
-</ol>
-<h3 id="关键实现细节">关键实现细节</h3>
-<h5 id="positional-embeddings">positional embeddings</h5>
-<ul>
-<li>为image patches 和text tokens分别使用学习性/sinusoidal位置编码</li>
-<li>相对位置编码提高了灵活性</li>
-</ul>
-<h5 id="image-tokenization">image tokenization</h5>
-<ul>
-<li>图像被分割成图像块（vit）或者tokens（vq-vae）</li>
-<li>另一种方法：使用object detector的区域特征（比如visualBERT）</li>
-</ul>
-<h3 id="training-tricks">training tricks</h3>
-<ul>
-<li>课程学习Easy-&gt;to-&gt;hard，先学简单的再学复杂的</li>
-<li>混合数据集和特定任务损失权重，不同数据集权重不同</li>
-<li>标题质量过滤</li>
-</ul></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/22/vla-valuable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/01/22/vla-valuable/" class="post-title-link" itemprop="url">vla in robot鲁棒性探索</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-01-22 13:38:40" itemprop="dateCreated datePublished" datetime="2026-01-22T13:38:40+08:00">2026-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>下面是来自medium的一篇文章的几乎翻译</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>1.目前的vla本质还是数据采样模仿学习，因此环境条件、物体状态等一变准确率就急速下降；与此相对应的腕部相机表现强劲，因为腕部相机更能克服干扰。要提高泛化就得堆数据。</p>
-<p>2.lang
-token在其中几乎不起到语义理解作用，language变化和指令变化几乎不影响动作行为。vla没有语言和现实机器人操作对应起来的理解能力。</p>
-<p>https://www.alphaxiv.org/zh/overview/2510.03827</p>
-<p>https://www.alphaxiv.org/zh/overview/2510.13626</p>
-<p>3.要提高准确率都得微调。</p>
-</blockquote>
-<p>vla的几种方案：</p>
-<ul>
-<li><a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09246">自回归方法：将机器人动作离散化为标记，并在大规模演示（如Openvla</a>和<a
-target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/10900471/">Tinyvla）</a>上训练端到端策略；</li>
-<li>基于扩散的模型：通过生成式扩散专家（例如 pi
-序列）生成连续轨迹（https://www.pi.website/blog）</li>
-<li>强化学习方法：超越监督式微调，例如<a
-target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.18719">Vla-rl</a>。</li>
-</ul>
-<p>然而，这些训练好的VLA模型仅在非常熟悉的场景和环境中展现出一定的性能，缺乏真正的泛化能力。VLA模型的迁移性非常低，同时我们也注意到，现有的基准测试缺乏对分布变化下模型性能的全面评估，这凸显了在多样化条件下进行系统、细粒度鲁棒性评估的必要性。</p>
-<p>最近，我偶然发现了一篇名为 LIBERO-plus
-的论文，它通过系统性的参数变化和各种扰动维度，对当前的 VLA
-模型进行了详细的脆弱性分析，深入剖析了模型在不同条件下的性能。如果您感兴趣，请访问<a
-target="_blank" rel="noopener" href="https://sylvestf.github.io/LIBERO-plus/">https://sylvestf.github.io/LIBERO-plus/查看更多详情。</a></p>
-<p>这项工作并非创建更多任务，而是主要集中于引入扰动因子，以研究不同的扰动因子如何影响
-VLA 的性能，并将其应用于测试案例/阶段：</p>
-<h2 id="扰动因子">扰动因子：</h2>
-<ul>
-<li><strong>对象布局</strong>：添加混淆对象（随机向任务场景中添加 n
-个额外的未见对象）和/或改变目标对象的位置（x、y、z）和方向（俯仰、偏航、滚动）。</li>
-<li><strong>背景纹理</strong>：改变环境的场景纹理（例如，从彩绘墙到砖墙），并随机改变工作表面的纹理（例如，桌面或地板）。</li>
-<li><strong>光照条件</strong>：改变光照强度、方向、颜色和阴影图案，以影响场景风格。</li>
-<li><strong>相机视角</strong>：改变第三人称相机的视角/姿态和视野——改变相机距离、球形位置和相机方向。</li>
-<li><strong>机器人初始状态</strong>：改变机械臂的初始关节位置（qpos）。</li>
-<li><strong>语言说明</strong>：重写任务说明，以增加语言的丰富性和复杂性，例如重写为更长、更口语化的形式，其中包含额外的但与任务无关的上下文线索，或涉及推理的复杂性。</li>
-<li><strong>传感器噪声：</strong>注入光度失真，以评估在输入质量下降的情况下的鲁棒性，包括运动模糊、高斯模糊、变焦模糊、玻璃模糊以及雾霾。</li>
-</ul>
-<p>上述扰动是通过修改场景 XML 定义文件或修改任务描述文件 (BDDL)
-来实现的。</p>
-<h2 id="已测试的vla模型概述">已测试的VLA模型概述</h2>
-<ul>
-<li><strong>OpenVLA（Kim 等，2024）和 OpenVLA-OFTs（Kim
-等，2025）</strong>：该系列 VLA 基于 Prismatic-7B VLM 构建——VLM 是一个由
-SigLIP 和 DINOv2 组成的视觉编码器，其输出与 Llama2-7B
-语言骨干的输入空间融合，该语言骨干通过交叉注意力机制整合视觉和文本输入。为了使
-VLM 骨干适应机器人控制，连续的机器人动作被离散化为每个维度 256
-个区间，并以标记的形式表示在 LLM 词汇表中。Llama 分词器中最不常用的 256
-个标记被替换为动作标记，训练过程采用应用于动作序列的标准下一个标记预测目标（因此训练损失为交叉熵）。OpenVLA
-在 Open X-Embodiment (OpenX) 数据集上进行了预训练。</li>
-<li><strong>π0（Black 等人）和 π0-fast（Pertsch
-等人，2025）</strong>：核心模型包含一个用于语义理解多模态输入（多张 RGB
-图像、语言指令和本体感觉状态）的 VLM
-基类（PaliGemma），并将动作标记投影并路由到一个更小的动作专家模型。该框架类似于
-Transfusion 框架，后者使用多个目标函数训练单个
-Transformer：连续输出标记使用流匹配损失，离散标记使用交叉熵损失。</li>
-<li><strong>Nora（Hung et al.,
-2025）</strong>：它采用Qwen-2.5-VL-3B多模态模型作为骨干网络，该模型具有强大的视觉语义理解能力。它使用FAST+分词器将连续的动作标记离散化，从而输出离散的动作序列。此外，它还在Open
-X-Embodiment数据集上进行了预训练。</li>
-<li><strong>WorldVLA（Cen等人，2025）：</strong>一种自回归动作-世界模型，它将视觉-语言-动作建模和世界建模统一到一个集成框架中。其核心思想是联合学习用于动作生成的策略模型和用于未来状态预测的世界模型，从而使这两个组件能够相互增强。该模型基于Chameleon初始化，Chameleon是一个统一的图像理解和生成模型。它采用了三个分词器：一个基于VQ-GAN的图像分词器、一个基于BPE的文本分词器，以及一个动作分词器，该动作分词器将连续机器人动作的每个维度离散化为256个区间。所有模态（文本、图像、动作）都被离散化为词元，并在统一的序列中进行自回归建模。在训练过程中，动作建模数据训练模型，使其能够根据语言指令和图像观测历史生成动作块，损失函数仅基于动作词元计算。世界建模数据用于训练模型，使其能够根据当前图像和动作预测下一帧图像，损失函数仅基于
-图像标记计算。这种联合训练策略鼓励学习共享表征：世界模型获取环境物理信息以辅助生成与任务相关的动作，而动作模型则增强视觉理解以支持准确的帧预测。</li>
-<li><strong>UniVLA（Li等人，2025）：</strong>该架构基于预训练的Prismatic-7B
-VLM模型构建。其关键创新在于扩展了LLM的词汇表，引入了特殊的动作标记来表示量化的潜在动作。该模型以视觉观察和语言指令作为输入，并自回归地预测一系列潜在动作标记。</li>
-<li><strong>RIPT-VLA（Brohan 等人，2022）：</strong>其基础模型为
-OpenVLA-OFT。这项工作通过添加一个轻量级的辅助头来增强模型，该辅助头用于预测动作分布的尺度参数
-σθ，使其与强化学习 (RL) 兼容。在标准的预训练和监督微调 (SFT)
-阶段之后，它引入了强化交互式后训练 (RIPT)
-的第三阶段。该策略的核心是动态采样留一法后训练优化 (LOOP)
-框架——一种动态拒绝机制，它过滤掉所有 K
-次展开都获得相同奖励（全部成功或全部失败）的上下文样本，从而确保训练批次包含有意义的学习信号。</li>
-</ul>
-<h2 id="基准建设">基准建设</h2>
-<p><a
-target="_blank" rel="noopener" href="https://libero-project.github.io/main.html">LIBERO</a>最初包含 40
-个评估任务，分为四个泛化子任务（空间、物体、目标、长距离）。这项工作为每个子任务生成了
-500 个实例，涵盖七个扰动维度，因此总共有 500 * 4 * 7 = 14,000
-个任务。之后，为了避免天花板效应，我们移除了所有模型或绝大多数模型都能解决的任务。然后，作者进一步平衡了剩余任务在各个增强子维度上的分布，以防止偏差。最终的测试基准数据集包含
-10,030 个任务，涵盖所有七个维度。</p>
-<p>按回车键或点击查看完整尺寸的图片</p>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*PBizSwIa2GxGOKh9C38s4A.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*eJcsziTFJlMEEWqqbxl3xQ.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h2 id="结果">结果</h2>
-<p>研究结果共同揭示了当前甚大阵列（VLA）泛化能力的显著缺陷。如图所示，即使是微小的扰动也会导致性能急剧下降。</p>
-<p>按回车键或点击查看完整尺寸的图片</p>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*PsC0_dkqtw_AYNnasuvx3Q.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ul>
-<li>发现
-1：在各种输入扰动下，性能会显著下降，尤其是在相机视角和机器人初始状态发生变化时。</li>
-<li>发现2：模型最容易受到相机视角和机器人初始状态变化的影响，这需要对空间几何和本体感觉有较高的理解水平。相比之下，模型对光照和背景变化表现出相对的适应能力，因为这些变化属于更表面、更低层次的视觉变化。</li>
-<li>发现
-3：语言扰动导致大多数模型的平均性能下降幅度第二小（-25.3），这表明模型可能比预期的更少依赖语言指令，并可能利用视觉环境中的任务线索。</li>
-<li>发现 4：与仅依赖第三人称视角的模型（例如
-OpenVLA-OFT_w）相比，采用第一人称腕部摄像头的模型（例如
-OpenVLA-OFT）展现出更优异的泛化能力，尤其是在应对摄像头视角变化时。此外，强调多样性和协同训练的训练策略（例如
-π0,π0-fast）能够持续产生在多种扰动类型下都更稳健的模型，这凸显了接触不同数据分布的重要性。</li>
-<li>发现
-5：虽然模型表现出能够忽略干扰物体的能力，但当目标物体发生位移时，它们却无法进行泛化，这表明它们依赖于记忆的位置线索，而不是学习不变的物体语义。</li>
-<li>发现
-6：在光照扰动下性能的相对稳定性主要归功于腕部摄像头的近距离视角，它提供了与光照无关的几何线索。缺乏腕部摄像头输入的模型对光照变化表现出显著更高的敏感性。</li>
-<li>发现7：VLA模型不具备强大的跨对象指令执行泛化能力。在目标被替换的任务中，模型的成功率几乎降至零。例如，原任务指令“<em>拿起字母汤”</em>被替换为<em>“拿起番茄酱”。</em></li>
-<li>发现 8：VLA
-模型似乎更依赖于固定的视觉-动作映射，而不是充分利用语言信号进行任务决策。</li>
-</ul>
-<p>另一篇论文也得出了同样的结论，即
-libero-pro，https://zxy-mllab.github.io/LIBERO-PRO-Webpage/</p>
-<p>以下是其研究结果，与上述内容类似：</p>
-<ul>
-<li>该模型能否推广到新对象？</li>
-</ul>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*Xv8KhRSINYgNNPuLsCh0hw.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>当用一个不相关的物品（例如，字母
-汤，第三行）替换沙拉酱时，模型仍然执行相同的动作轨迹，试图拿起这个与指令不符的新物品。此外，它在语义无关的物品上的失败
-也凸显了其无法正确地将语言指称与物品语义相匹配。</p>
-<ul>
-<li>该模型是否适用于各种指令？</li>
-</ul>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*yzWMERMGBRHWMB66ayyyVg.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>当指令被替换为无意义的输入（例如，“xxx”）时，模型仍然产生相同的动作序列，再次检索并执行将沙拉酱放入篮子的模式。因此，模型在释义指令和无意义指令下表现出的一致性，不应被视为成功泛化到语义扰动的结果，而应被视为其无法理解或解释指令的证据，表明其过度依赖于机械的模式执行。</p>
-<ul>
-<li>该模型对物体放置位置的敏感度如何？</li>
-</ul>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*kGUB7dCH1RNNANU9CLEn1g.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>该图显示了 VLA
-对物体初始位置的高度敏感性——将杯子放在稍微不同的位置可能会导致任务完全失败。</p>
-<p>总之，当我们看到这些令人印象深刻的指标时，我们应该停下来问问自己——它们真的那么有效吗？还是只是过度拟合死记硬背的结果？</p>
-<p>按回车键或点击查看完整尺寸的图片</p>
-<figure>
-<img data-src="/2026/01/22/vla-valuable/1*-baS0o5UJO-zm-Re7P-R_A.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>摘自论文：https://zxy-mllab.github.io/LIBERO-PRO-Webpage/</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1647,7 +1409,7 @@ alt="img" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1658,7 +1420,7 @@ alt="img" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
