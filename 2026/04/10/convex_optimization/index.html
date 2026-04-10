@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="convex opitimization 在convex set寻找convex function的最小值。 convex sets   image-20260410101405442   定义：线性组合仍然在set里。 代表例子：  空集是convex hyperplane halfspace euclidean ball and ellipsoids norm balls&#x2F;norm cones">
+<meta property="og:type" content="article">
+<meta property="og:title" content="凸优化">
+<meta property="og:url" content="http://77philosophia.github.io/2026/04/10/convex_optimization/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="convex opitimization 在convex set寻找convex function的最小值。 convex sets   image-20260410101405442   定义：线性组合仍然在set里。 代表例子：  空集是convex hyperplane halfspace euclidean ball and ellipsoids norm balls&#x2F;norm cones">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410101405442.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410101418399.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410105516808.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410105540188.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410105553047.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410112111439.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410112128486.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410114002143.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/image-20260410115111228.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/image-20260410123836669.png">
+<meta property="article:published_time" content="2026-04-10T01:46:37.000Z">
+<meta property="article:modified_time" content="2026-04-10T04:42:22.642Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="convex optimization">
+<meta property="article:tag" content="math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/04/10/convex_optimization/%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410101405442.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/04/10/convex_optimization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>凸优化 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/10/convex_optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          凸优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-10 09:46:37 / Modified: 12:42:22" itemprop="dateCreated datePublished" datetime="2026-04-10T09:46:37+08:00">2026-04-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="convex-opitimization">convex opitimization</h3>
+<p>在convex set寻找convex function的最小值。</p>
+<h3 id="convex-sets">convex sets</h3>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410101405442.png"
+alt="image-20260410101405442" />
+<figcaption aria-hidden="true">image-20260410101405442</figcaption>
+</figure>
+<ol type="1">
+<li>定义：线性组合仍然在set里。</li>
+<li>代表例子：
+<ol type="1">
+<li>空集是convex</li>
+<li>hyperplane</li>
+<li>halfspace</li>
+<li>euclidean ball and ellipsoids</li>
+<li>norm balls/norm cones</li>
+<li>Polyhedra</li>
+<li>正定锥：所有特征值非负的对称矩阵组成</li>
+</ol></li>
+<li>保凸算子：
+<ol type="1">
+<li>交集</li>
+<li>仿射函数（旋转，平移，缩放）</li>
+<li>线性变换</li>
+<li>透视函数</li>
+</ol></li>
+</ol>
+<h3 id="convex-functions">convex functions</h3>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410101418399.png"
+alt="image-20260410101418399" />
+<figcaption aria-hidden="true">image-20260410101418399</figcaption>
+</figure>
+<ol type="1">
+<li>代表例子：
+<ol type="1">
+<li>仿射函数</li>
+<li>二次函数: 半正定的</li>
+<li>范数函数</li>
+<li>指数函数</li>
+<li>对数函数 -log(x)</li>
+<li>熵函数：xlog(x)</li>
+</ol></li>
+<li>jensen不等式——凸性精髓
+<ol type="1">
+<li>“函数的平均值大于等于 平均值的函数值”</li>
+</ol></li>
+<li>凸函数的判定
+<ol type="1">
+<li>方法一：一阶条件：凸函数的图像始终位于任何一点切线的上方</li>
+<li>方法二：
+<ol type="1">
+<li>二阶条件：海森矩阵半正定</li>
+</ol></li>
+</ol></li>
+<li>保凸算子
+<ol type="1">
+<li>非负加权和</li>
+<li>与仿射函数复合</li>
+<li>逐点最大值f(x) = max{f1(x), f2(x),...,}</li>
+</ol></li>
+</ol>
+<h3 id="凸优化问题">凸优化问题</h3>
+<ol type="1">
+<li><p>数学定义： <span class="math display">\[
+\min\limits_{x} f(x) \\
+s.t. g_{i}(x) \le 0 (不等式约束必须是凸函数) \\
+h_{i}(x) = 0 (等式约束必须是仿射函数，即Ax=b)
+\]</span></p></li>
+<li><p>特性：凸优化问题局部最优即全局最优，即：</p>
+<ol type="1">
+<li>神经网络不用尝试各种随机初始化方式，从哪儿算结果都一样</li>
+<li>凸优化说无解数学就是无解，机器人可以直接触发安全保护，不用怀疑算法问题。</li>
+</ol></li>
+</ol>
+<h4 id="局部最优的判定条件">局部最优的判定条件</h4>
+<ol type="1">
+<li>一阶最优：如果x是局部最优，梯度为0</li>
+<li>二阶最优条件：如果x局部最优，该点的海森矩阵半正定</li>
+</ol>
+<h4 id="lp线性规划问题">LP线性规划问题</h4>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410105516808.png"
+alt="image-20260410105516808" />
+<figcaption aria-hidden="true">image-20260410105516808</figcaption>
+</figure>
+<h4 id="qp二次规划问题">QP二次规划问题</h4>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410105540188.png"
+alt="image-20260410105540188" />
+<figcaption aria-hidden="true">image-20260410105540188</figcaption>
+</figure>
+<h4 id="几何规划问题gp">几何规划问题GP</h4>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410105553047.png"
+alt="image-20260410105553047" />
+<figcaption aria-hidden="true">image-20260410105553047</figcaption>
+</figure>
+<h3 id="duality-对偶性">duality 对偶性</h3>
+<p>对偶性是优化理论里非常深刻的一个概念。</p>
+<p>原问题关注如何在约束范围内找到最小的目标值</p>
+<p>对偶问题关注如何通过寻找目标值的“下界”来逼近最优解</p>
+<ol type="1">
+<li><p>标准形式： <span class="math display">\[
+\min\limits_{x} f_{0}(x) \\
+s.t. f_{i}(x) \le 0, i=1,...,m \\
+h_{i}(x)=0, i=1,...,p
+\]</span></p></li>
+<li><p>拉格朗日函数：核心思想是将硬约束（必须满足）转换为软惩罚（加到目标函数）</p>
+<ol type="1">
+<li><p>形式： <span class="math display">\[
+L(x,\lambda, \nu) = f(x) +
+\sum_{i=1}^{m}\lambda_{i}g_{i}(x)+\sum_{i=1}^{p}\lambda_{i}h_{i}(x)
+\]</span></p>
+<ol type="1">
+<li>前面的系数叫朗格朗日乘子</li>
+<li>你可以把“价格”或者“敏感度”，如果某个约束难以满足的时候.</li>
+</ol></li>
+<li><p>对偶函数定义为： <span class="math display">\[
+g(\lambda, \nu)=\inf_{x}L(x,\lambda,\nu) \\
+对偶函数是朗格朗日函数关于x的下确界 \\
+无论原问题是否凸，对偶函数永远是凹函数。意味着更好求解。\\
+下界属性：对于任何\lambda&gt;0,对偶函数的值永远不会超过原问题的最优值p^*，即g(\lambda,\mu)\le
+p^*
+\]</span> 对偶问题就是尝试找到哪个最好的下界： <span
+class="math display">\[
+\max g(\lambda,\nu)  \\s.t. \lambda &gt;= 0
+\]</span></p></li>
+<li><p>举例子：</p>
+<p>最小范数问题：</p>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410112111439.png"
+alt="image-20260410112111439" />
+<figcaption aria-hidden="true">image-20260410112111439</figcaption>
+</figure></li>
+<li><p>弱对偶和强对偶:</p>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410112128486.png"
+alt="image-20260410112128486" />
+<figcaption aria-hidden="true">image-20260410112128486</figcaption>
+</figure></li>
+</ol></li>
+</ol>
+<h4 id="kkt条件-最优解的充分判定标准">KKT条件: 最优解的充分判定标准</h4>
+<p>如果一个问题是凸优化问题，只要满足kkt条件，这个点就一定是全剧最优解。
+<span class="math display">\[
+1.定常性：\nabla f_0(x^*) + \sum_{i=1}^{m} \lambda_i^* \nabla f_i(x^*) +
+\sum_{j=1}^{p} \nu_j^* \nabla h_j(x^*) = 0 \\
+2.原问题可行性：f_i(x^*) \le 0, \quad i=1, \dots, m \\ h_j(x^*) = 0,
+\quad j=1, \dots, p \\
+3.对偶可行性：不等式约束的朗格朗日乘子非负：\\
+\lambda_i^* \ge 0, \quad i=1, \dots, m \\
+4.互补松弛性：\lambda_i^* f_i(x^*) = 0, \quad i=1, \dots, m\\
+最精华的一条：如果f_{i}(x)&lt;0,\lambda_{i}=0，已经满足了，没有贡献；如果\lambda_{i}&gt;0,
+\\这个约束在起作用，那么f_{i}(x)=0，最优解就在边界上。
+\]</span></p>
+<h4 id="数值线性代数">数值线性代数</h4>
+<p>将抽象的线性代数理论转化为计算机可执行算法的学科。在机器人算法（如位姿估计、动力学模拟）中，我们几乎从不直接求矩阵的逆
+<span
+class="math inline">\(A^{-1}\)</span>，而是通过<strong>矩阵分解（Matrix
+Factorization）</strong> 来高效、稳定地求解方程。</p>
+<figure>
+<img data-src="%E5%87%B8%E4%BC%98%E5%8C%96/image-20260410114002143.png"
+alt="image-20260410114002143" />
+<figcaption aria-hidden="true">image-20260410114002143</figcaption>
+</figure>
+<ol type="1">
+<li><p>LU分解</p>
+<ol type="1">
+<li><span class="math inline">\(A = LU\)</span></li>
+<li>将矩阵拆分为一个<strong>下三角矩阵 <span
+class="math inline">\(L\)</span></strong>（对角线下方有值）和一个<strong>上三角矩阵
+<span class="math inline">\(U\)</span></strong>（对角线上方有值）。</li>
+<li>需要解多次 <span class="math inline">\(Ax = b\)</span>（<span
+class="math inline">\(A\)</span> 不变，<span
+class="math inline">\(b\)</span> 在变），先做一次 LU
+分解会大幅节省计算量。</li>
+</ol></li>
+<li><p>QR 分解</p>
+<ol type="1">
+<li><span class="math inline">\(A = QR\)</span></li>
+<li><span class="math inline">\(Q\)</span>
+是<strong>正交矩阵</strong>（旋转/镜像），<span
+class="math inline">\(R\)</span> 是<strong>上三角矩阵</strong>。</li>
+<li>是处理<strong>最小二乘法</strong>的最稳健工具。</li>
+<li>在你的
+SfM（运动恢复结构）或点云配准中，当观测数据带噪声且方程组超定时，QR
+分解比直接用正规方程更不容易产生数值误差。</li>
+</ol></li>
+<li><p>Cholesky 分解</p>
+<ol type="1">
+<li><span class="math inline">\(A = LL^T\)</span></li>
+<li><span class="math inline">\(A\)</span>
+必须是<strong>对称正定矩阵</strong>。</li>
+<li>在 <strong>卡尔曼滤波 (EKF/UKF)</strong> 或 <strong>二次规划
+(QP)</strong> 中，协方差矩阵和 Hessian 矩阵通常是对称正定的，Cholesky
+是最优的选择。</li>
+</ol></li>
+<li><p>奇异值分解 (SVD - Singular Value Decomposition)</p>
+<ol type="1">
+<li><p><span class="math inline">\(A = U\Sigma V^T\)</span></p></li>
+<li><p>将矩阵看作一种线性变换，拆解为：<strong>旋转 (<span
+class="math inline">\(V^T\)</span>) <span
+class="math inline">\(\rightarrow\)</span> 拉伸 (<span
+class="math inline">\(\Sigma\)</span>) <span
+class="math inline">\(\rightarrow\)</span> 旋转 (<span
+class="math inline">\(U\)</span>)</strong>。</p></li>
+<li><p>是线性代数中的“瑞士军刀”。<span
+class="math inline">\(\Sigma\)</span>
+对角线上的<strong>奇异值</strong>告诉你矩阵在各个方向上的强度。</p></li>
+<li><p><strong>求解本质矩阵 <span class="math inline">\(E\)</span>
+和基础矩阵 <span class="math inline">\(F\)</span></strong>：你之前提到的
+8 点算法，核心步骤就是对矩阵进行 SVD 并将最小奇异值设为 0（强制 Rank-2
+约束）。</p>
+<p><strong>主成分分析 (PCA)</strong>：提取机器人视觉特征的主要特征。</p>
+<p><strong>求伪逆</strong>：处理病态矩阵（Condition number
+极差）时最可靠的方法。</p></li>
+</ol></li>
+</ol>
+<h3 id="unconstrained-optimization">unconstrained optimization</h3>
+<p>没有约束条件，只找函数本身最值。 <span class="math display">\[
+\min\limits_{x} f(x) \\
+我们假定f是convex function和二阶连续可微（即梯度和海森矩阵都存在且连续）
+\]</span></p>
+<ol type="1">
+<li><p>梯度下降法 <span class="math display">\[
+x^{(k+1)} = x^{(k)} - \alpha \nabla f(x^{(k)})
+\]</span></p></li>
+<li><p>牛顿法</p>
+<p>如果说梯度下降是“只看脚下”，那么牛顿法就是“利用地图建模”。</p>
+<p><strong>核心思想</strong>：在当前点 <span
+class="math inline">\(x\)</span>
+处，利用<strong>二阶泰勒展开</strong>对函数进行局部近似，将其看作一个二次函数（抛物面）。
+<span class="math display">\[
+f(x + \Delta x) \approx f(x) + \nabla f(x)^T \Delta x + \frac{1}{2}
+\Delta x^T \nabla^2 f(x) \Delta x
+\]</span></p></li>
+</ol>
+<p>​ <strong>更新公式</strong>： <span class="math display">\[
+\]</span>x^{(k+1)} = x^{(k)} - (^2 f(x<sup>{(k)}))</sup>{-1}
+f(x^{(k)})<span class="math display">\[
+\]</span></p>
+<p>​
+<strong>几何解释</strong>：牛顿法每一轮迭代实际上是跳到了这个局部二次近似函数的最低点。</p>
+<figure>
+<img data-src="/2026/04/10/convex_optimization/image-20260410115111228.png"
+alt="image-20260410115111228" />
+<figcaption aria-hidden="true">image-20260410115111228</figcaption>
+</figure>
+<h3
+id="等式约束优化equality-constrained-optimization">等式约束优化equality
+constrained optimization</h3>
+<p>问题定义： <span class="math display">\[
+\begin{aligned}
+\min_{x} \quad &amp; f(x) \\
+\text{s.t.} \quad &amp; Ax = b
+\end{aligned}  
+f(x) 是凸函数，而约束 Ax = b 是一组线性等式（在几何上代表一个超平面）。
+\]</span> KKT条件简化为： <span class="math display">\[
+1.梯度平衡\nabla f(x^*) + A^T \nu^* = 0 \\
+2.原问题可行性Ax^ = b
+\]</span></p>
+<h3
+id="不等式优化inequality-constrained-optimization">不等式优化inequality
+constrained optimization</h3>
+<p>问题定义：我们考虑内点法来解决不等式约束的凸优化问题 <span
+class="math display">\[
+\min\limits_{x} f(x) \\
+s.t. f_{i}(x) \le 0, i=1,...,m \\
+Ax=b
+\]</span> 注意：</p>
+<ul>
+<li>拉格朗日乘子怎么把约束塞进目标函数</li>
+<li>KKT怎么确定这个点就是最优解</li>
+<li>内点法：实际计算</li>
+</ul>
+<h4 id="法一障碍法">法一：障碍法</h4>
+<ul>
+<li><p>一种通过解无数个障碍子问题来逼近原优化问题的方法。</p>
+<ul>
+<li>它的本质是将一个“带不等式约束”的难题，通过数学变换，转化成一系列“只有等式约束”的易题来求解。</li>
+</ul></li>
+<li><p>Barrier 子问题定义为：</p>
+<ul>
+<li><span class="math display">\[
+\min \quad f_0(x) + \mu \phi(x) \quad \text{s.t. } Ax = b
+\]</span></li>
+</ul></li>
+</ul>
+<h4 id="法二内点法">法二：内点法</h4>
+<ul>
+<li>是现代优化算法的基石，尤其在处理大规模、复杂的凸优化问题时表现卓越。</li>
+<li>“与其在边界上跌跌撞撞，不如在内部平滑前行。”</li>
+</ul>
+<p>KKT 条件：内点法的“导航地图”</p>
+<p>内点法的目标就是找到一组 <span class="math inline">\((x, \lambda,
+\nu)\)</span>，使得这五个条件同时成立：</p>
+<figure>
+<img data-src="/2026/04/10/convex_optimization/image-20260410123836669.png"
+alt="image-20260410123836669" />
+<figcaption aria-hidden="true">image-20260410123836669</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/convex-optimization/" rel="tag"># convex optimization</a>
+              <a href="/tags/math/" rel="tag"># math</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/04/09/%E6%B8%85%E7%90%86%E5%B7%A5%E4%BD%9C%E7%AB%99%E5%B7%A5%E5%85%B7%E7%9A%84%E5%B7%A5%E5%85%B7-ncdu/" rel="prev" title="清理工作站工具的工具-ncdu">
+      <i class="fa fa-chevron-left"></i> 清理工作站工具的工具-ncdu
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#convex-opitimization"><span class="nav-number">1.</span> <span class="nav-text">convex opitimization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#convex-sets"><span class="nav-number">2.</span> <span class="nav-text">convex sets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#convex-functions"><span class="nav-number">3.</span> <span class="nav-text">convex functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">凸优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E6%9C%80%E4%BC%98%E7%9A%84%E5%88%A4%E5%AE%9A%E6%9D%A1%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">局部最优的判定条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lp%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98"><span class="nav-number">4.2.</span> <span class="nav-text">LP线性规划问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#qp%E4%BA%8C%E6%AC%A1%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98"><span class="nav-number">4.3.</span> <span class="nav-text">QP二次规划问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98gp"><span class="nav-number">4.4.</span> <span class="nav-text">几何规划问题GP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#duality-%E5%AF%B9%E5%81%B6%E6%80%A7"><span class="nav-number">5.</span> <span class="nav-text">duality 对偶性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#kkt%E6%9D%A1%E4%BB%B6-%E6%9C%80%E4%BC%98%E8%A7%A3%E7%9A%84%E5%85%85%E5%88%86%E5%88%A4%E5%AE%9A%E6%A0%87%E5%87%86"><span class="nav-number">5.1.</span> <span class="nav-text">KKT条件: 最优解的充分判定标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="nav-number">5.2.</span> <span class="nav-text">数值线性代数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unconstrained-optimization"><span class="nav-number">6.</span> <span class="nav-text">unconstrained optimization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E5%BC%8F%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96equality-constrained-optimization"><span class="nav-number">7.</span> <span class="nav-text">等式约束优化equality
+constrained optimization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96inequality-constrained-optimization"><span class="nav-number">8.</span> <span class="nav-text">不等式优化inequality
+constrained optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%E9%9A%9C%E7%A2%8D%E6%B3%95"><span class="nav-number">8.1.</span> <span class="nav-text">法一：障碍法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%E5%86%85%E7%82%B9%E6%B3%95"><span class="nav-number">8.2.</span> <span class="nav-text">法二：内点法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

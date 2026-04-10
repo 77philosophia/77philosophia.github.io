@@ -172,6 +172,624 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/28/ubuntu-nvidia-driver-noNetwork/" class="post-title-link" itemprop="url">ubuntu-nvidia-driver-noNetwork</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-28 17:56:37" itemprop="dateCreated datePublished" datetime="2025-04-28T17:56:37+08:00">2025-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡驱动之后没有network</h1>
+<p>https://blog.csdn.net/weixin_44286126/article/details/131455726</p>
+<p>排查思路：</p>
+<p>1.ubuntu会保留旧的镜像，可以在引导模式(出现图标esc)切换到旧镜像，保持网络连接。然后dpkg
+查看新旧镜像是否有安装包的差异。</p>
+<ol start="2" type="1">
+<li>原因是安装ubuntu显卡驱动的时候把内核部分包也升级了。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/VLM-VLA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/27/VLM-VLA/" class="post-title-link" itemprop="url">VLM-VLA</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-27 17:13:02" itemprop="dateCreated datePublished" datetime="2025-04-27T17:13:02+08:00">2025-04-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>大致回顾了一下VLM的concept和结构，大概就是对image和text进行向量空间表示，通过contrastive
+learning让同一个事物的二者特征在embedding空间里相近。</p>
+<p>just like 哲学就是哲学家的历史，从paper publication
+history看一下vla/vlm的区别和发展。don't be fooled by 高大上的名词。</p>
+<h1 id="vlm"><strong>VLM</strong></h1>
+<h1 id="vlm的定义"><strong>VLM的定义</strong></h1>
+<p>多模态模型处理一种类型以上的输入，比如vision+text
+models。下面说的大概是研究多模态的一种，比如vision language
+models.需要理解和处理image和text的信息。相关的任务比如image
+captioning(e.g.CLIP), visual question
+answering(GPT-4-vision)，text-to-image(e.g.DALL-E)，或者text-to-video
+generation(sora).</p>
+<h1 id="vlm的结构"><strong>VLM的结构</strong></h1>
+<p>VLM的结构在于如何融合视觉和文本模态，不同的架构会在早期阶段、中间阶段或者最后阶段进行信息的融合或者对齐。有很多种，可以看看几种最常见的：</p>
+<h2 id="llavalarge-language-and-vision-assistant"><strong>LLaVA(Large
+Language and Vision Assistant)</strong></h2>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a6d6e809e475597e6c83b7a5467cc1b9b1b1cf35b05de7367edf29a23485286baa512d4ecd6a23dc66c64adc2a3bc0c83.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>图像经过clip并投影到embedding
+vectors，文本通过文本模型产生相应的embedding
+vectors。处在相同的维度空间里，可以进一步无缝集成。</p>
+<p>在训练LLaVA模型中有两个阶段：</p>
+<p>1.pre-training for feature alignment.
+只有投影矩阵在数据集CC3M上进行更新。</p>
+<figure>
+<img
+src="https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e84d17910d9e7d63213bffcf9a87c1aab68c6fa978b73ce9d9bddef934264e90602517809c9a88bd1?tmpCode=b2bef226-f447-45ac-8fa7-2a6efc08cd77"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li>Fine-tuning End-to-End. 投影矩阵和LLM会在两个不同的场景进行更新：
+<ol type="1">
+<li>visual chat:LLaVA
+根据我们生成的多模式指令跟踪数据进行了微调，以适应日常面向用户的应用。</li>
+<li>Science QA:LLaVA 针对科学领域的多模态推理数据集进行了微调。</li>
+</ol></li>
+</ol>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c4ee39340545c1810032fdf6ec961d9b8280818ad1a39f1eb6c03bec04b3171c863a771ca118fcc80.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="llava-model的组成"><strong>LLaVA model的组成</strong></h3>
+<h4 id="vision-encoder"><strong>Vision Encoder</strong></h4>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a8169d9d9ddf3b83fb68af4e589ff4560e0af6934db815dd3d4873be65aacbe1f4f69c02138fa35209a0503d9106918e3.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>visual
+encoder将image划分为小的patches，比如16x16像素这样。每个patch被处理转换成数值形式，在送给image
+encoder;</p>
+<p>image
+enconder由多个blocks组成，主要目的是加强图像的视觉表示。包括feedforward
+layers,用来提取高层特征；attention layers关注图像的相关性.</p>
+<p>vision
+encoders的training目标是尽量减少images的向量表示和text描述的差异度。在训练期间，目标是开发一个模型，该模型能够将图像的嵌入转换为与文本紧密一致的表示。</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8968a78147832cebbe7366e02e12c7c3c233e5af64135f1de429bae9669baa2e10300bf43c4f2a3e7a4.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="embedding-models"><strong>Embedding Models</strong></h4>
+<p>Embeddings认为是tokens的密集数学表示(compact numerical
+representations).根源来自分布假设，相似位置的词语有相近的meanings.</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dfce406188c32a716b26e334a1b4675672c7cd1c938ecf5ad9e0005879e3da24024ad4d15891f4e49e.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="llava的推理"><strong>LLaVA的推理</strong></h3>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4af7ef46e557ff1e118f0fc5dee6617dc42b5443ede480f28923d2b3d49d7a1732db1f0c05db8c5a083.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>image和text都转换为embeddings之后，由attention决定关注哪一部分。</p>
+<h1 id="vla"><strong>VLA</strong></h1>
+<p>以RT-2为例</p>
+<h2 id="vla-model和vlm-model"><strong>VLA model和VLM model</strong></h2>
+<p>VLM模型是一种能处理visual和自然语言的机器学习模型，VLM
+是在互联网规模的图像和文本数据上进行训练的。比如RT-2中用到的base VLA
+model:PaLI-X PaLM-E</p>
+<p>RT-2提出了一种方法将预训练的VLA
+model用在机器人轨迹数据上，其中机器人轨迹数据用文本形式进行编码。</p>
+<h2 id="rt-2-model"><strong>RT-2 model</strong></h2>
+<p>将机器人的轨迹数据编码为text tokens，对vla模型进行fine tune.</p>
+<h2 id="效果"><strong>效果</strong></h2>
+<h3 id="泛化性"><strong>泛化性</strong></h3>
+<p>这项研究的一项重要发现是 RT-2
+模型令人印象深刻的泛化能力。该模型在处理新物体、背景和环境时展现出显著提升的性能。它可以解读机器人训练数据中未曾出现的命令，并根据用户指令进行基本的推理。这种推理能力源于底层语言模型运用思维链推理的能力。该模型的推理能力示例包括：判断哪个物体（石头）可以用来做临时锤子，或者哪种饮料最适合疲惫的人（能量饮料）。这种程度的泛化能力是机器人控制领域的一大进步。</p>
+<h3 id="新兴能力"><strong>新兴能力</strong></h3>
+<p>RT-2
+模型的另一个令人兴奋的方面是它展现出的涌现能力。通过利用从互联网规模预训练中获得的知识，该模型可以执行训练期间未明确传授的任务。例如，它可以重新利用已学技能，将物体放置在语义指示的位置附近，或解释物体之间的关系，以确定拾取哪个物体以及将其放置在何处。例如，诸如“捡起即将从桌子上掉下来的袋子”或“将香蕉移动到二加一的和”（均如图
+1
+所示）之类的命令——要求机器人对机器人数据中从未见过的物体或场景执行操作任务——需要从基于网络的数据中转化而来的知识才能运行。这些涌现能力展示了
+VLA
+模型在将知识从网络规模数据迁移到现实世界机器人控制方面的强大能力。</p>
+<figure>
+<img
+src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e3a45c6badaef44ca130f2aa95930983137950b62161dc0f419c48d2d743c40903620870ff0d76157.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="消融实验"><strong>消融实验</strong></h3>
+<p>该研究论文还将 RT-2
+模型的性能与多个基线模型进行了比较。结果表明，RT-2
+在泛化能力和涌现能力方面均优于基线模型。此外，论文还探讨了模型规模和训练策略对泛化性能的影响。结果发现，更大的模型以及与网络数据协同微调可以带来更好的泛化性能。</p>
+<h3 id="缺点"><strong>缺点</strong></h3>
+<p>虽然 RT-2 模型展现出巨大的潜力，但仍存在一些局限性。实时运行大型 VLA
+模型的计算成本很高，需要开展更多研究来优化其推理速度。此外，目前可用于微调的开源
+VLM 模型数量有限。未来的研究应侧重于开发实现更高频率控制的技术，并使更多
+VLM 模型可用于训练 VLA 模型。</p>
+<h1 id="参考文献"><strong>参考文献：</strong></h1>
+<p>https://medium.com/<span class="citation"
+data-cites="aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07">@aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07</span></p>
+<p>https://alinlab.kaist.ac.kr/ai602_2024_fall.html</p>
+<p>https://alinlab.kaist.ac.kr/ai602_2025_spring.html</p>
+<p>https://medium.com/black-coffee-robotics/vision-language-action-vla-models-llms-for-robots-f60ba0b79579</p>
+<p>https://medium.com/<span class="citation"
+data-cites="LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249">@LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/RL-Basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/27/RL-Basic/" class="post-title-link" itemprop="url">RL-Basic</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-27 11:35:41" itemprop="dateCreated datePublished" datetime="2025-04-27T11:35:41+08:00">2025-04-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Goal: 了解一下关于RL, VLA, VLM的basic concetps</p>
+</blockquote>
+<h1 id="什么是rl">什么是RL</h1>
+<blockquote>
+<p>[!NOTE]</p>
+<p>agent的终极目标是优化在环境中的行为。开始时刻，agent在环境中可能表现糟糕；随着时间推移，和环境交互试错可以不断的提高自己的表现。</p>
+<p>RL最大的美妙之处在于可以通过同一套算法让agent适应不同的未知的复杂环境。</p>
+</blockquote>
+<h3 id="应用场景"><strong>应用场景</strong></h3>
+<ul>
+<li>游戏：chess and go</li>
+<li>机器人:在家里移动、搬运、完成复杂的日常任务</li>
+<li>自动驾驶：自动驾驶汽车、控制直升机或无人机。</li>
+</ul>
+<blockquote>
+<p>[!WARNING]</p>
+<ul>
+<li>经典books:http://incompleteideas.net/book/RLbook2020.pdfrepo:https://github.com/LyWangPX/Reinforcement-Learning-2nd-Edition-by-Sutton-Exercise-Solutions</li>
+</ul>
+</blockquote>
+<h1 id="rl-framework"><strong>RL framework</strong></h1>
+<ul>
+<li><strong>Agent</strong>: 目标是学习策略来优化某个process</li>
+<li><strong>Environment</strong>:
+Agent所在的环境，由一系列状态组成。</li>
+<li>在每个时间步，agent选择一个action,会改变环境的state到新一个。agent因此会收到一个feedback评估这次choice的好坏。这个feedback叫做<strong>reward</strong>，会表示为数值形式。</li>
+<li>根据reward,agent随时间逐渐学习到优化的策略去最大化总的reward值。</li>
+</ul>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832ee62a2c00f2506431df37dcacffbf0d3f06ebb3f9035c60659af27edee83c29e87bf84bc12faa752b.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>当前环境的state和当前agent的action可能导致不同的prob让new
+state会有不同的reward,对应相应的概率。</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dfd9389e0fb3ccd3fdf8f7f83186eccbd32f5473c651d1e4afe7af616c5e1a828a868db6307fa1a316.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="reward种类"><strong>Reward种类</strong></h1>
+<p>为了定义一个长过程中总的reward(也叫做return),有几种形式。</p>
+<h2 id="简化版本"><strong>简化版本：</strong></h2>
+<p>Ri表示i时间戳agent收到的reward,</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832ea5a092a0869b9a49251f76a8d51566dc2517977dcc83dd7f5fa09420059731be2d8a6999f18e0eb0.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h2
+id="discounted累计reward"><strong>Discounted累计reward:</strong></h2>
+<p>大多数时候会在reward前面乘以一个削减系数（0～1）。</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8960fa2fb72871b3bf7d5de161273e1e25b88aa4a62aeff924909b53ed0480f68080407fa5ac0f59a0a.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>根本原因是agent的优化行为是更考虑短期的rewards。最终可以表示为一种递归的公式形式。</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e2752ec8e99bb261e3289026cdc391e0e12c49ec7a8e14847077fa8e1d7bd4e0e6c8dcf03add25814.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="任务的类型"><strong>任务的类型</strong></h1>
+<h2 id="episodic-tasks"><strong>episodic tasks</strong></h2>
+<p>agent和environment的交互可以包含一系列独立的episodes.这些偶然事件独立于其他并且起始状态从状态分布中采样。</p>
+<p>举个例子，我们想让agent玩一个游戏。为了达到那个目的，我们会让robot玩很多独立的游戏，或输或赢。收到的rewards会逐渐影响robot接下来在游戏中的策略。</p>
+<p>episodes也叫trials.</p>
+<h2 id="continuing-tasks"><strong>continuing tasks</strong></h2>
+<p>不是所有的tasks都是episodic，一些任务可以是连续性的，意味着没有一个最终的状态。比如（win
+or lose）。这种情况下，timestamp是无限的，因此计算cummulative
+return可能不可行。</p>
+<h1 id="策略policies和value-functions"><strong>策略(policies和value
+functions)</strong></h1>
+<p>在强化学习中，<strong>Policy（策略）</strong>和<strong>Value
+Function（价值函数）</strong>是两个最核心的概念，它们共同指导智能体的决策，但侧重点不同。它们的关系可以通过<strong>“导航”</strong>的类比直观理解：</p>
+<h2 id="policy"><strong>policy</strong></h2>
+<h3 id="policy策略-怎么做"><strong>Policy（策略）——
+‘怎么做’</strong></h3>
+<ul>
+<li><strong>直观理解</strong>：策略是智能体的<strong>行为准则</strong>，直接决定它在每个状态下应该采取什么动作。
+<ul>
+<li><strong>比如</strong>：
+<ul>
+<li>自动驾驶的Policy可能是：“看到红灯→刹车；绿灯→加速”。</li>
+<li>游戏AI的Policy可能是：“敌人靠近→攻击；血量低→逃跑”。</li>
+</ul></li>
+<li><strong>数学表示</strong>：
+<ul>
+<li><strong>确定性策略</strong>：π(s)=a<em>π</em>(<em>s</em>)=<em>a</em>
+（状态 s<em>s</em> 下固定选择动作 a<em>a</em>）。</li>
+<li><strong>随机性策略</strong>：π(a∣s)<em>π</em>(<em>a</em>∣<em>s</em>)
+（状态 s<em>s</em> 下选择动作 a<em>a</em> 的概率）。</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>策略π是从状态s ∈ S 采取各种可能的action到达概率p的mapping.</p>
+<p>如果一个agent遵从策略π，那么agent从状态s采取一个action的概率p(a|s)=π(s).</p>
+<p>任何policy可以表示成一个表大小为|s|x|A|</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f896986c6ef4fe897b0ad315db4181a814c9ef21b11a6c8d3bfbfaa770e7d0955ef5b53ca2eef1412a53.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>最简单的策略就是random:机器人走每一步的概率是一样的，对应上面右边的表格。</p>
+<p>展示的表格也可以是episode
+task的一个例子，到达终止状态后会收获一个reward。一个新独立的game可以被初始化。</p>
+<p>除了policy之外，也会用value
+functions描述agent从一个当前state采取某种action或者在给定的state的expected
+reward(选择的好坏).</p>
+<h2 id="value-function价值函数-有多好"><strong>Value
+Function（价值函数）—— ‘有多好’</strong></h2>
+<ul>
+<li><strong>直观理解</strong>：价值函数是<strong>对状态的长期收益评估</strong>，回答“当前状态/动作对未来有多有利”。
+<ul>
+<li><strong>比如</strong>：
+<ul>
+<li>下棋时，某个棋盘状态的价值函数值高，说明胜率大。</li>
+<li>股票市场中，当前持仓的价值函数值低，说明未来可能亏损。</li>
+</ul></li>
+<li><strong>两种类型</strong>：</li>
+</ul></li>
+</ul>
+<ol type="1">
+<li><strong>状态价值函数</strong> <strong>Vπ(s)Vπ(s)</strong>：
+<ul>
+<li>表示在状态 s<em>s</em> 下，<strong>遵循策略</strong>
+<strong>ππ</strong> 能获得的期望回报。
+<ul>
+<li>公式：Vπ(s)=Eπ[Gt∣St=s]*V**π<em>(</em>s<em>)=E</em>π*[<em>G<strong>t<em>∣</em>S</strong>t</em>=<em>s</em>]。</li>
+</ul></li>
+<li><strong>动作价值函数</strong> <strong>Qπ(s,a)Qπ(s,a)</strong>：
+<ul>
+<li>表示在状态 s<em>s</em> 下<strong>执行动作</strong>
+<strong>aa</strong>，之后遵循策略 π<em>π</em> 的期望回报。</li>
+<li>公式：Qπ(s,a)=Eπ[Gt∣St=s,At=a]*Q**π<em>(</em>s<em>,</em>a<em>)=E</em>π*[<em>G<strong>t<em>∣</em>S</strong>t</em>=<em>s</em>,*A**t<em>=</em>a*]。</li>
+</ul></li>
+</ul></li>
+</ol>
+<ul>
+<li><strong>Policy</strong>是“行动派”，<strong>Value
+Function</strong>是“预言家”。</li>
+<li>Policy告诉智能体“该做什么”，Value
+Function告诉它“这么做有多好”。</li>
+<li>两者协同工作：Value
+Function评估和改进Policy，而Policy的变动又会影响Value
+Function的估计。</li>
+<li>结合两者的方法（如Actor-Critic）通常能更高效地解决复杂问题。</li>
+</ul>
+<h3 id="state-value-function"><strong>state-value
+function:</strong></h3>
+<p>state-value function
+v(s)或者简单点说叫v-function建立了映射，从环境的某种state,根据agent采取的策略<em>π</em>，到预期会收到的累积的expected
+reward.</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e7a8d57df376b356d171e81b79de6e337372cb5694f27174e4dce4c500338c37bf95253e51abbc896.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>举个例子：</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e162b031b56b6a1724b18e3afdf1b55bd225aac08a1dc52adf33423bef2f6b67708c426ff155be740.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>终止状态的v-value是0.</p>
+<h3 id="action-value-function"><strong>action-value
+function</strong></h3>
+<p>与V-function类似，也考虑agent在某个policy下考虑某个可能的action.</p>
+<p>Action-value function
+q(s,a),或者可以说是Q-function是建立一种映射，从环境的一种状态s ∈ S
+和可能的action a ∈ A,遵循某种策略<em>π</em> 收到的expected reward.</p>
+<p>Q-function可以表示为|S|x|A|的表格。</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf540e224cfc1df371c8d39a8d332128710072622a09d4cf92d8988b562c3a960af81055eb0250cfadf.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e35c7986ae2f87dd0b9fc1b7de33af5df9f5bcb9b3feba58e6341dabe337268f2d87ed2ce7eecb005.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>state和action functions的不同点在于action-value
+function采用了在当前state agent要采用的action的信息，state
+function只考虑了当前的state并没有考虑到agent的下一步action.</p>
+<p>V-和Q-functions都是从agent经验中学到的。</p>
+<h4 id="v--and-q-的subtility之处"><strong>V- and
+Q-的subtility之处</strong></h4>
+<p>为什么q(s,a)不等于v(s')。i.e.为什么agent在state s采取了action
+a去到了下一个state s'的expected reward不等于agent在s'的expected
+reward?</p>
+<p>答案是虽然在一个当前状态s采取一个action a会确定性leads
+to一个新状态s',agent收到的reward是Q-function考虑的而不是V-function.q(s,a)计算是<em>Rₜ
++ αRₜ₊₁</em> … . ,v(s')是<em>Rₜ₊₁ + αRₜ₊₂ + …</em> .不包括Rt的。</p>
+<p>另外一个值得注意的是，在某些状态s采取行为a可能导致多个可能的下一个状态。比如迷宫游戏agent往右走可能有20%随机遇到障碍被自动移到别的位置。因此，agent收到的rewards即使是同样的action和state也可能不一样。这是另一个导致两者不对等的原因。</p>
+<h2 id="bellman-equation"><strong>Bellman equation</strong></h2>
+<p>Bellman
+equation是RL领域的一个基础equation.简单地来说，它递归建立起state/act
+ion的function values在当前和下个timestamp.</p>
+<h3 id="v-function"><strong>V-function</strong></h3>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c401725b5201f203435270a1f77f4a98be0ae5e992dfa74328a3abbe119771052b7e74677826d1bd8.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="q-function"><strong>Q-function</strong></h3>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a8169d9d9ddf3b83fcb03b239e3eceb242c9c971f5314e56e72c2fde54030076fabfad3ef98bc3edb99d190f84f42e1c0.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098cfe750a74b532a501f6cf218ac414754e2c700d28f0f271a505b79623335ef7e55c3d7f4a3444c437.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="optimal-policy"><strong>Optimal policy</strong></h1>
+<p>定义不同策略的比较</p>
+<p>π₁&gt;π2 当对于所有状态s ∈ S.π₁的reward都不小于π₂的reward</p>
+<p>policy π⁎是最优的，当不小于其他所有策略</p>
+<h2 id="bellman-optimality-equation"><strong>Bellman optimality
+equation</strong></h2>
+<p>解Bellman quations的优化问题，求max</p>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf55353e8fbce6a782389a0a7c7836bb44f878c060e95ba8434fcb00ab44b734ff3277216822a7d6743.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50df69045fd03b3ab51cef15cc3b2788fdda90cb3bc153f71cf66390746302e9a53c842d333d629689de.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>求解了V-* function或者Q<em>-function，最优策略</em>π⁎
+就可以很容易被计算。*</p>
+<p>实际运用时，states的数量非常庞大，因此数学求解这个问题非常困难。因此，RL
+learning要用计算量和memory更低的近似的策略替代。</p>
+<h1 id="参考文献"><strong>参考文献：</strong></h1>
+<p>https://readmedium.com/reinforcement-learning-introduction-and-main-concepts-48ea997c850c</p>
+<p>books and repo:</p>
+<p>http://incompleteideas.net/book/RLbook2020.pdf</p>
+<p>https://github.com/LyWangPX/Reinforcement-Learning-2nd-Edition-by-Sutton-Exercise-Solutions</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/17/C-Notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1768,619 +2386,10 @@ alt="image-20250106231816557" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/from-transformer-to-llm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/06/from-transformer-to-llm/" class="post-title-link" itemprop="url">从Transformer到LLM:Architecture,Training and Usage</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-06 22:11:16" itemprop="dateCreated datePublished" datetime="2025-01-06T22:11:16+08:00">2025-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="nlp-basic-concepts">NLP basic concepts</h3>
-<h4 id="两个nlp的主要问题">1. 两个NLP的主要问题</h4>
-<p>表示和建模：</p>
-<p>a.Representation:将语言表示为机器语言：如BERT,Openai embedding</p>
-<ol start="2" type="a">
-<li>Modeling:用统计方法建模，GPT, chatGPT</li>
-</ol>
-<ol type="1">
-<li><p>怎么表示words</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106225834152.png"
-alt="image-20250106225834152" />
-<figcaption aria-hidden="true">image-20250106225834152</figcaption>
-</figure></li>
-</ol>
-<p>将单词分散到向量空间：将token映射到向量空间，向量空间(vector space)
-是用来表示文本数据的一种高纬空间。在这个空间中，每个token或文本单元都被表示为一个向量。这些向量捕捉了文本单元的语义信息，并使得数学计算（如距离计算、相似度计算）成为可能。</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230157598.png"
-alt="image-20250106230157598" />
-<figcaption aria-hidden="true">image-20250106230157598</figcaption>
-</figure>
-<ol start="2" type="1">
-<li><p>建模</p>
-<p>语言模型LLM: 语言模型预测任何单词序列在给定语言语料库中的可能性</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230245416.png"
-alt="image-20250106230245416" />
-<figcaption aria-hidden="true">image-20250106230245416</figcaption>
-</figure></li>
-</ol>
-<ul>
-<li><p>怎么学习语言模型</p>
-<ul>
-<li><p>自回归模型Autogressive LM:</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230342821.png"
-alt="image-20250106230342821" />
-<figcaption aria-hidden="true">image-20250106230342821</figcaption>
-</figure></li>
-<li><p>Bi-gram/N-gram model:</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230354621.png"
-alt="image-20250106230354621" />
-<figcaption aria-hidden="true">image-20250106230354621</figcaption>
-</figure></li>
-<li><p>Marked LM:</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230523067.png"
-alt="image-20250106230523067" />
-<figcaption aria-hidden="true">image-20250106230523067</figcaption>
-</figure></li>
-<li><p>几种语言模型的学习方式</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230534541.png"
-alt="image-20250106230534541" />
-<figcaption aria-hidden="true">image-20250106230534541</figcaption>
-</figure></li>
-<li><p>为什么语言模型有比较好的表示</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230544997.png"
-alt="image-20250106230544997" />
-<figcaption aria-hidden="true">image-20250106230544997</figcaption>
-</figure></li>
-<li><p>总结</p>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230557957.png"
-alt="image-20250106230557957" />
-<figcaption aria-hidden="true">image-20250106230557957</figcaption>
-</figure></li>
-</ul></li>
-</ul>
-<h3 id="attention机制和transformer">attention机制和transformer</h3>
-<h4 id="attention来源翻译任务seq2seq">1.
-attention来源：翻译任务seq2seq</h4>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230706080.png"
-alt="image-20250106230706080" />
-<figcaption aria-hidden="true">image-20250106230706080</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230717889.png"
-alt="image-20250106230717889" />
-<figcaption aria-hidden="true">image-20250106230717889</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230732617.png"
-alt="image-20250106230732617" />
-<figcaption aria-hidden="true">image-20250106230732617</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230745379.png"
-alt="image-20250106230745379" />
-<figcaption aria-hidden="true">image-20250106230745379</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230757155.png"
-alt="image-20250106230757155" />
-<figcaption aria-hidden="true">image-20250106230757155</figcaption>
-</figure>
-<h4 id="结构">2. 结构</h4>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230817984.png"
-alt="image-20250106230817984" />
-<figcaption aria-hidden="true">image-20250106230817984</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/01/06/from-transformer-to-llm/image-20250106230830430.png"
-alt="image-20250106230830430" />
-<figcaption aria-hidden="true">image-20250106230830430</figcaption>
-</figure>
-<h3 id="训练lm">训练LM</h3>
-<h3 id="pretrained-model用法微调和prompt">Pretrained
-model用法（微调和prompt）</h3>
-<h3 id="transformer除语言外其他应用">transformer除语言外其他应用</h3>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/style-transfer-paper/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/06/style-transfer-paper/" class="post-title-link" itemprop="url">style-transfer-paper</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-06 00:21:27" itemprop="dateCreated datePublished" datetime="2025-01-06T00:21:27+08:00">2025-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="风格">风格</h1>
-<p>AIGC领域中的一项重要子任务就是对图像进行风格化处理，<strong>一般涉及到对图像视觉外观和纹理进行编辑（被视为风格信息），同时保留其底层对象、结构和概念不变（被视为是内容信息）</strong>。为了达到这种编辑效果，就需要实现对图像中风格和内容进行分离。现有的方法通常需要训练专门的分离模型或者需要进行大量的优化，使用成本较高。</p>
-<p>查看相关paper的网址：</p>
-<p>https://www.paperdigest.org/article/?id=style_transfer</p>
-<h3
-id="南京航空航天大学diffusestunleashing-the-capability-of-the-diffusion-model-for-style-transfer">2024/10/19南京航空航天大学《DiffuseST:Unleashing
-the Capability of the Diffusion Model for Style Transfer》</h3>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106101004946.png"
-alt="image-20250106101004946" />
-<figcaption aria-hidden="true">image-20250106101004946</figcaption>
-</figure>
-<p>提出了一种training-free的风格转移方法，balancing文本，图像style和图像content的特征结合起来。具体方法：</p>
-<p>对于一张内容图像Ic,和一张风格图像Is</p>
-<p>a.使用BLIP Diffusion中的BLIP-2的encoder产生Is的text-aligned
-embedding的表示。</p>
-<p>b.为了提取空间特征，在DDIM
-inverse的过程中content和style分支保留U-net的feature</p>
-<p>c.在diffusion模型的step-by-step过程中分离content和style的注入。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106101632557.png"
-alt="image-20250106101632557" />
-<figcaption aria-hidden="true">image-20250106101632557</figcaption>
-</figure>
-<h3 id="text-representation-extraction">Text representation
-extraction</h3>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106105738256.png"
-alt="image-20250106105738256" />
-<figcaption aria-hidden="true">image-20250106105738256</figcaption>
-</figure>
-<p>风格的特征很难用text描述，而image features又很少作为sd模型的condition
-input.</p>
-<p>因此，先采用Blip-diffusion里的blip-2 encoder将style
-image的特征表示为文本表示。此外，我们用clip的到content
-image的embedding信息。</p>
-<h3 id="spatial-representation-extraction">Spatial representation
-extraction</h3>
-<p>用DDIM算法提取图像特征。每一层u-net有一个残差块，一个self-attention模块去加强特征表示，一个cross-attention模块和text
-condition交互。关注前两个blocks，调查发现主要保持图像空间的语义和结构特征。</p>
-<h4 id="content和style的injection">content和style的injection</h4>
-<p>用相应注入层unet的两层参数替换到target branch.</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106110415815.png"
-alt="image-20250106110415815" />
-<figcaption aria-hidden="true">image-20250106110415815</figcaption>
-</figure>
-<h3 id="implicit-style-content-separation-using-b-lora">《Implicit
-Style-Content Separation using B-LoRA》</h3>
-<h4 id="主要工作">主要工作：</h4>
-<p>将LoRA(低秩适应)机制引入到图像编辑领域，提出了一种称为B-LoRA的框架，该框架可以隐式分离单个图像中的风格和内容组件，同时继承了LoRA的各种优势，包括轻量化训练和即插即用等功能。此外，作者通过深度分析现有流行扩散模型（Stable
-Diffusion XL,
-SDXL）的内部架构，发现仅需要联合设置两个B-LoRA块即可以实现图像内容和风格的分离，从而显著的提升各种下游图像风格化任务的性能和效果。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106112237612.png"
-alt="image-20250106112237612" />
-<figcaption aria-hidden="true">image-20250106112237612</figcaption>
-</figure>
-<p>提出了一种称为B-LoRA的风格转换框架，如上图所示，由于B-LoRA继承了原始LoRA的优势，具有高度的任务灵活性，同时不容易出现过拟合（仅优化模型注意层中新加入的低秩权重，预训练模型的参数保持冻结）。<strong>通过对SDXL内部结构进行分析，作者发现仅需要对两个特定的transformer层设置B-LoRA块就可以实现对图像内容和风格的分离</strong>。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106112514801.png"
-alt="image-20250106112514801" />
-<figcaption aria-hidden="true">image-20250106112514801</figcaption>
-</figure>
-<p>B-LoRA的另一个优点是即插即用的灵活性，它可以作为单独的组件应用到各种下游图像编辑任务中，而不需要任何额外的训练或微调。例如上图展示的风格迁移、文本引导的风格操作和条件图像生成等任务。</p>
-<h4 id="方法">方法：</h4>
-<h5 id="对sdxl结构分析">对sdxl结构分析</h5>
-<p>sdxl是一个基于扩散的文本到图像生成模型，其主干网络采用了一个大型unet架构，由70个注意力层组成，这些注意力层可以被分成11个transformer块，前两个和最后三个块分别包含4个和6个注意力层，中间6个块各包含10个注意力层，细节如下图所示。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106161123542.png"
-alt="image-20250106161123542" />
-<figcaption aria-hidden="true">image-20250106161123542</figcaption>
-</figure>
-<p>SDXL可以接受文本作为条件进行生成，具体来说，给定文本提示，首先使用OpenClip
-ViT-bigG和CLIP
-ViT-L两个模型对其进行编码，然后将两个编码拼接起来作为最终的文本条件，随后将通过交叉注意力层馈入到网络中。由于本文的目标是将输入图像的风格和内容解耦为单独的信号再进行处理，因而需要对sdxl每个层对生成图像的风格或内容的贡献进行判定。</p>
-<p>判定方法非常简单，即将不同的文本提示注入到每个sdxl
-transformer块的交叉注意力层中，随后计算这些提示与生成图像之间的语义相似度。当只改变第i个块对应的输入提示时，如果观察到生成图像的变化较为明显，则表明该块对图像质量变化占主导地位。在实际操作时，作者重点检查了sdxl的6个中间transformer块，并且定义了两组随机的文本提示content和style,其中前者通过修改对象类别来定义内容，后者通过修改颜色来定义风格，然后使用CLIP来计算生成图像的变化程度。对于一对提示px,p，作者通过将变化提示px的嵌入注入到i块中，同时将原始p的嵌入注入到其它层中来生成新图像。对6个transformer块均执行后可以得到6幅图像，可以计算得到每一对提示的变化相似度得分：</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106162626224.png"
-alt="image-20250106162626224" />
-<figcaption aria-hidden="true">image-20250106162626224</figcaption>
-</figure>
-<p>作者总共挑选了400对内容和风格提示进行了实验，实验结果表明sdxl模型中的第2，4个transformer块对生成内容的影响最大，而第5个块对生成风格的影响最大，如下图所示：</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106175938180.png"
-alt="image-20250106175938180" />
-<figcaption aria-hidden="true">image-20250106175938180</figcaption>
-</figure>
-<h4 id="基于lora的内容和风格分离">基于lora的内容和风格分离</h4>
-<p>基于上述发现，作者认为仅需要对第2，4和第5个块进行优化就可以实现隐层特征的解耦，而无需对整体模型微调。作者引入了Lora模块[1]来对这两部分进行单独优化，另w0表示预训练sdxl模型的冻结权重，令delta{w_i}表示每个块的低秩适应矩阵，优化过程主要分为两部分，第一部分优化delta{w_2}delta{w_5}，第二部分优化delta{w_4}delta{w_5}。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106180723828.png"
-alt="image-20250106180723828" />
-<figcaption aria-hidden="true">image-20250106180723828</figcaption>
-</figure>
-<p>优化过程和生成结果如上图所示，可以看出，delta{w_2}delta{w_4}更倾向于控制图像中内容信息，且delta{w_4}可以更好的捕捉到图像中的细节信息。作者将这种解耦方式称为B-LoRA,因为其只对两个Transformer块进行了Lora微调，这样可以节省70%的显存占用。</p>
-<h4 id="b-lora的风格化操作">B-lora的风格化操作</h4>
-<p>在实验图像内容和风格的解耦后，作者重点对delta{w_4}和delta{w_5}两层进行微调，其中delta{w_4}捕获内容，delta{w_5}捕获风格，通过微调他们的参数来实现图像的风格化操作，整体过程如下图所示：</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106190120481.png"
-alt="image-20250106190120481" />
-<figcaption aria-hidden="true">image-20250106190120481</figcaption>
-</figure>
-<p>给定一个内容图像Ic和一个风格图像Is,分别学习它们对应的B-LoRA权重delta{w_4}和delta{w_5}.然后将这两个B-LoRA权重组合到预训练的sdxl模型中，就可以将Ic的内容与Is的风格进行融合，来生成一个新的风格化图像（如上图1所示）。为了实现文本为条件的图像风格化效果（如上图2所示），只要使用内容图像Ic对应的B-LoRA权重delta{w_4},将其与用户输入的文本提示进行融合就可以实现对图像风格的编辑，这样可以很好的保留Ic的内容特征。此外还可以通过排除delta{w_4}仅使用delta{w_5}的方式来调整模型仅关注图像Is中的特定风格，这样允许用户通过输入不同的文本来单独控制生成内容（如上图3所示）。</p>
-<h4 id="效果">效果：</h4>
-<p>（1）图像风格迁移：给定一个内容图像和一个风格图像，通过组合两个B-LoRA的权重实现风格迁移。</p>
-<p>（2）基于文本的图像风格编辑：仅使用内容图像的B-LoRA权重，加上文本提示实现对图像风格的编辑。</p>
-<p>（3）一致的风格生成：使用风格图像的B-LoRA权重，生成具有相同风格的新图像。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106200150033.png"
-alt="image-20250106200150033" />
-<figcaption aria-hidden="true">image-20250106200150033</figcaption>
-</figure>
-<p>其中前两行展示了图像风格迁移的效果，即要求模型迁移style图像中的风格，同时保留content图像中的内容。可以看到，本文的方法相比其他方法更加稳定。此外，第三行图像展示了基于文本的图像风格编辑的效果，可以看到本文方法对输入对象的内容进行了良好的保留。</p>
-<h4 id="限制">限制：</h4>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106200410031.png"
-alt="image-20250106200410031" />
-<figcaption aria-hidden="true">image-20250106200410031</figcaption>
-</figure>
-<p>对一些风格和内容紧密结合的图像来说，风格信息对目标身份起到了决定性作用，因此当对这种图像中的内容进行风格化处理时，很容易丢失目标的身份信息，如上图(a)(b)所示。此外，B-LoRA在面对一些复杂场景时也会出现难以准确捕获场景结构的情况，如上图(c)所示。作者表明这些局限性可以通过进一步探索LoRA解耦的属性来解决，例如在解耦时考虑更加细粒度的结构、形状、颜色、纹理等属性。</p>
-<h3
-id="harnessing-the-latent-diffusion-model-for-training-free-image-style-transfer">《Harnessing
-the latent Diffusion Model for Training-Free Image Style Transfer》</h3>
-<p>先看一下效果：</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106200730275.png"
-alt="image-20250106200730275" />
-<figcaption aria-hidden="true">image-20250106200730275</figcaption>
-</figure>
-<p>在unet做风格迁移时代，方法是finetune模型，计算量很大；作者借鉴了当时做style
-transfer的一种方法，AdaIn;但是直接用到现在的diffusion
-model里面受限于channels的数量而不能有很好的效果。作者提出了一种STRDP的算法，变化了LDM的去噪过程，将AdaIN用一种不同的方式重复应用到lantent
-diffusion
-model的unet结构里。这个算法是training-free的，而且可以保留原图的颜色。</p>
-<h4 id="related-work">Related work</h4>
-<ul>
-<li>Direct Image Optimization:基于vgg
-features设计style和content的loss,优化像素值。</li>
-<li>Image Feature
-Transformation:将一个content图像和一个image图像提取特征，然后在content
-features里面添加style feature最后做个decode
-AdaIN的方法。主要就是将风格数据转移到图像特征当中。也提出了一种网络结构，将图像特征的均值和方差替换掉content特征的均值和方差。</li>
-<li>Diffusion Models:
-<ul>
-<li>重点是可控制性</li>
-<li>Guidance:guided
-diffusion得到一个提供的梯度作为去噪过程中的指导。需要附加的模型和额外的训练。</li>
-<li>Additive control:Controlnet包含了一份克隆的diffusion
-model和新的finuetune的参数。用额外的输入比如line
-arts,depth去finetune这些新参数。</li>
-<li>Tuning.通过fine-tune提供预训练LDM的可控制性。比如有的方法优化text
-embedding包含style信息。</li>
-</ul></li>
-</ul>
-<h3 id="背景知识">背景知识</h3>
-<ul>
-<li>Diffusion
-Models:将数据x加噪到高斯，去噪过程让网络预测噪声从而恢复数据x</li>
-<li>Latent Diffusion Models:LDM将数据x映射到latent
-space中对应z，从而降低计算量。这种表示方法也有一个问题，传统的给diffusion
-model加控制的方法，如果不经过额外的训练，无法直接用到LDM中。</li>
-<li>Adaptive Instance Normalization:</li>
-<li><figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106202947906.png"
-alt="image-20250106202947906" />
-<figcaption aria-hidden="true">image-20250106202947906</figcaption>
-</figure></li>
-</ul>
-<p>仿照之前的AdaIn的方法，在提取过程中用风格的均值和方差替换content
-feature的均值和方差，按照上面的公式，这个框架的缺陷就是要重新训练一个decoder去将输出转换为image.</p>
-<h4 id="我们的方法">我们的方法</h4>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106204716157.png"
-alt="image-20250106204716157" />
-<figcaption aria-hidden="true">image-20250106204716157</figcaption>
-</figure>
-<p>方法：</p>
-<p>首先style image和content image都会被转换到latent
-space,然后都会经过前向的diffusion process,通过加噪产生一系列的noisy
-latent
-representations.再反向的diffusion过程中，不断运用AdaIN集成style和content的隐变量。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106212104981.png"
-alt="image-20250106212104981" />
-<figcaption aria-hidden="true">image-20250106212104981</figcaption>
-</figure>
-<p>对降噪过程中u-net的参数执行AdaIn算法。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>均值和方差可以很大程度的影响风格转换效果，那么我想改变一张图片的风格，如果先对其进行去风格化，再进行风格嵌入，效果是不是会出奇的好呢？</p>
-</blockquote>
-<p>AdaIN全称为Adaptive Instance
-Normalization,是一种图像处理技术，用于实现风格迁移。它的计算公式如下：</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106212330208.png"
-alt="image-20250106212330208" />
-<figcaption aria-hidden="true">image-20250106212330208</figcaption>
-</figure>
-<h4 id="对比效果">对比效果</h4>
-<p>保留了原图的颜色</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106212355074.png"
-alt="image-20250106212355074" />
-<figcaption aria-hidden="true">image-20250106212355074</figcaption>
-</figure>
-<h5 id="参数控制">参数控制：</h5>
-<p>S参数来控制在应用style
-transfer之前我们对原始的content和noise加多少噪声。如果S=1，原图像加噪成高斯噪声，是无法重构出原图的。因此我们要控制好s的值。</p>
-<figure>
-<img data-src="/2025/01/06/style-transfer-paper/image-20250106212530108.png"
-alt="image-20250106212530108" />
-<figcaption aria-hidden="true">image-20250106212530108</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/hires-fix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/05/hires-fix/" class="post-title-link" itemprop="url">hires-fix</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-05 23:53:34" itemprop="dateCreated datePublished" datetime="2025-01-05T23:53:34+08:00">2025-01-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>https://medium.com/rendernet/using-hires-fix-to-upscale-your-stable-diffusion-images-8d8e2826593e</p>
-<p>https://medium.com/<span class="citation"
-data-cites="realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-optimize-image-quality-d9bbf369e3f">@realfabianw/taking-a-closer-look-at-the-highres-fix-function-of-automatic1111-to-optimize-image-quality-d9bbf369e3f</span></p>
-<p>放大图片除了使用A1111's的图生图/extras选项，还可以使用Hires.Fix。后者可以在generate过程中增大分辨率，得到更好的效果。</p>
-<h3 id="upscaler">Upscaler</h3>
-<p>Latent, R-ESRGAN 4x+ and R-ESRGAN 4x+ Anime6B都可以尝试一下。</p>
-<figure>
-<img data-src="/2025/01/05/hires-fix/image-20250105235616276.png"
-alt="image-20250105235616276" />
-<figcaption aria-hidden="true">image-20250105235616276</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/05/hires-fix/image-20250105235627073.png"
-alt="image-20250105235627073" />
-<figcaption aria-hidden="true">image-20250105235627073</figcaption>
-</figure>
-<h3 id="hires-steps">Hires steps:</h3>
-<p>Hires
-steps在初试采样后refine图片质量，他们发生在每一步采样步之后的上采样过程，总的steps是sampling
-steps + Hires steps.</p>
-<figure>
-<img data-src="/2025/01/05/hires-fix/image-20250106001527600.png"
-alt="image-20250106001527600" />
-<figcaption aria-hidden="true">image-20250106001527600</figcaption>
-</figure>
-<p>Hires steps的值是0-150，0的时候Hires steps = sampling
-steps.所以如果你的sampling steps是20，hires
-steps是0，那么总步数是40.选择合适的数值很重要，过低或者过高都会使得图片质量变差。一般10-15根据经验会得到更好的选择。但是如果采样步数大于50，hires
-steps可以设置为sampling steps的一半。</p>
-<h3 id="denoising-strength">Denoising strength</h3>
-<p>对图片质量有很大的影响，也会改变图片内容。</p>
-<p>设置为0对图片没有影响，设置成1会很大改变图片内容。</p>
-<p>webui设置的默认值是0.7，但是在大多数case里这个设置都太强了，初始建议设置到0.3到0.5然后从上往下调整。</p>
-<figure>
-<img data-src="/2025/01/05/hires-fix/image-20250106001856856.png"
-alt="image-20250106001856856" />
-<figcaption aria-hidden="true">image-20250106001856856</figcaption>
-</figure>
-<p>用webui的xyz工具进行测试选出合适的scaler</p>
-<figure>
-<img data-src="/2025/01/05/hires-fix/image-20250106001935542.png"
-alt="image-20250106001935542" />
-<figcaption aria-hidden="true">image-20250106001935542</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2448,7 +2457,7 @@ alt="image-20250106001935542" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2459,7 +2468,7 @@ alt="image-20250106001935542" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
