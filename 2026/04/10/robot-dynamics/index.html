@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍 机器人动力学关注的是作用在机器人上的力与其所产生的加速度之间的关系。 两种：  Fixed-base Floating-base   image-20260410144119505  Kinematics 运动学只关心“怎样运动”（位置、速度、加速度、旋转角度等几何和时间上的描述），而不关心“为什么运动”（即不关心产生运动的力、质量、扭矩等）。 position 笛卡尔坐标系、柱坐标系、球坐">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器人动力学 robot dynamics">
+<meta property="og:url" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="介绍 机器人动力学关注的是作用在机器人上的力与其所产生的加速度之间的关系。 两种：  Fixed-base Floating-base   image-20260410144119505  Kinematics 运动学只关心“怎样运动”（位置、速度、加速度、旋转角度等几何和时间上的描述），而不关心“为什么运动”（即不关心产生运动的力、质量、扭矩等）。 position 笛卡尔坐标系、柱坐标系、球坐">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410144119505.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410152543347.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260413101837937.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410152707409.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410170716046.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410170857930.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410171057090.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410171153860.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410171207973.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410172023572.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410173309741.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410174447397.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260413141752041.png">
+<meta property="article:published_time" content="2026-04-10T06:34:59.000Z">
+<meta property="article:modified_time" content="2026-04-14T01:44:23.524Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="robot dynamics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/04/10/robot-dynamics/image-20260410144119505.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/04/10/robot-dynamics/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>机器人动力学 robot dynamics | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/10/robot-dynamics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器人动力学 robot dynamics
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-10 14:34:59" itemprop="dateCreated datePublished" datetime="2026-04-10T14:34:59+08:00">2026-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-14 09:44:23" itemprop="dateModified" datetime="2026-04-14T09:44:23+08:00">2026-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="介绍">介绍</h3>
+<p>机器人动力学关注的是作用在机器人上的力与其所产生的加速度之间的关系。</p>
+<p>两种：</p>
+<ul>
+<li><p>Fixed-base</p></li>
+<li><p>Floating-base</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410144119505.png"
+alt="image-20260410144119505" />
+<figcaption aria-hidden="true">image-20260410144119505</figcaption>
+</figure>
+<h3 id="kinematics">Kinematics</h3>
+<p>运动学只关心“怎样运动”（位置、速度、加速度、旋转角度等几何和时间上的描述），而<strong>不关心</strong>“为什么运动”（即不关心产生运动的力、质量、扭矩等）。</p>
+<h5 id="position">position</h5>
+<p>笛卡尔坐标系、柱坐标系、球坐标系</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410152543347.png"
+alt="image-20260410152543347" />
+<figcaption aria-hidden="true">image-20260410152543347</figcaption>
+</figure></li>
+</ul>
+<h5 id="velocity">velocity:</h5>
+<p>position相对时间的梯度。</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260413101837937.png"
+alt="image-20260413101837937" />
+<figcaption aria-hidden="true">image-20260413101837937</figcaption>
+</figure>
+<h5 id="rotation">rotation</h5>
+<p>欧拉角，旋转矩阵，或者四元数</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410152707409.png"
+alt="image-20260410152707409" />
+<figcaption aria-hidden="true">image-20260410152707409</figcaption>
+</figure>
+<h5
+id="举例子向量绕轴的旋转可以转换为四元数的乘法">举例子：向量绕轴的旋转可以转换为四元数的乘法</h5>
+<h5 id="角速度">角速度：</h5>
+<ul>
+<li><p>角速度和线速度的关系：</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410170716046.png"
+alt="image-20260410170716046" />
+<figcaption aria-hidden="true">image-20260410170716046</figcaption>
+</figure></li>
+<li><p>角速度和姿态四元数的关系</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410170857930.png"
+alt="image-20260410170857930" />
+<figcaption aria-hidden="true">image-20260410170857930</figcaption>
+</figure></li>
+</ul>
+<h5 id="transformation">Transformation</h5>
+<ul>
+<li><p>坐标系之间的转换：点P在坐标系A下的坐标=坐标系平移+坐标系旋转*点P在B坐标系下的坐标</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410171057090.png"
+alt="image-20260410171057090" />
+<figcaption aria-hidden="true">image-20260410171057090</figcaption>
+</figure></li>
+<li><p>坐标系之间的R和T可以通过齐次坐标整合到一个矩阵里</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410171153860.png"
+alt="image-20260410171153860" />
+<figcaption aria-hidden="true">image-20260410171153860</figcaption>
+</figure></li>
+<li><p>刚性body的速度变换</p></li>
+</ul>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410171207973.png"
+alt="image-20260410171207973" />
+<figcaption aria-hidden="true">image-20260410171207973</figcaption>
+</figure>
+<h3
+id="多体系统运动学kinematics-of-systems-of-bodies">多体系统运动学Kinematics
+of Systems of Bodies</h3>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410172023572.png"
+alt="image-20260410172023572" />
+<figcaption aria-hidden="true">image-20260410172023572</figcaption>
+</figure>
+<ul>
+<li><p>广义坐标Generalized Coordinates) q</p>
+<ul>
+<li>描述系统配置的一组最小独立变量。</li>
+<li>对于一个机器人臂：
+<ul>
+<li><span class="math inline">\(q = [q_1, q_2, \dots,
+q_n]^T\)</span>。</li>
+<li>通常对应于旋转关节的<strong>角度</strong> (<span
+class="math inline">\(\theta\)</span>) 或移动关节的<strong>位移</strong>
+(<span class="math inline">\(d\)</span>)。</li>
+<li><strong>关节空间</strong>：所有可能的 <span
+class="math inline">\(q\)</span> 构成的向量空间。</li>
+</ul></li>
+</ul></li>
+<li><p>自由度</p></li>
+<li><p>任务空间坐标</p>
+<ul>
+<li><p>机器人末端执行器（End-effector）工作的物理空间。</p></li>
+<li><p><strong>组成</strong>： <span class="math display">\[
+x_e = [r_e, \phi_e]^T
+\]</span></p>
+<ul>
+<li><span class="math inline">\(r_e \in
+\mathbb{R}^3\)</span>：末端执行器在基坐标系下的<strong>位置</strong>（x,
+y, z）。</li>
+<li><span class="math inline">\(\phi_e \in
+SO(3)\)</span>：末端执行器的<strong>姿态</strong>（通常用旋转矩阵、欧拉角或四元数表示）。</li>
+</ul></li>
+<li><p><strong>映射关系</strong>：</p>
+<ul>
+<li><strong>正运动学 (Forward
+Kinematics)</strong>：从关节空间推导任务空间位姿，<span
+class="math inline">\(x_e = f(q)\)</span>。</li>
+<li><strong>逆运动学 (Inverse
+Kinematics)</strong>：已知目标位姿求关节角度，<span
+class="math inline">\(q = f^{-1}(x_e)\)</span>。</li>
+</ul></li>
+</ul></li>
+<li><p>操作空间坐标</p>
+<ul>
+<li>任务空间的一个<strong>最小化子集</strong>，仅包含完成特定任务所需的参数。
+<ul>
+<li>任务空间可能描述完整的 6
+维位姿（位置+姿态），但某些任务（如平面点焊）可能只需要 3 个参数（x, y
+坐标和偏航角）。</li>
+</ul></li>
+</ul></li>
+<li><p>举例子：4自由度的scara机器人</p>
+<ul>
+<li><p>拥有 4 个自由度（通常是 RRPR
+构型，即两个平行旋转副、一个平移副、一个旋转副）。</p></li>
+<li><p>广义坐标</p></li>
+<li><p>自由度:4</p></li>
+<li><p>操作空间坐标</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410173309741.png"
+alt="image-20260410173309741" />
+<figcaption aria-hidden="true">image-20260410173309741</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<p>​</p>
+<h4 id="正运动学">正运动学</h4>
+<ul>
+<li><p>正运动学解决的是“<strong>如果我知道每个关节转了多少，那么机械臂末端在哪里？</strong>”的问题。</p></li>
+<li><p><span class="math display">\[
+\chi_e = \chi_e(q) \\
+q 是关节向量，\chi_e 是末端执行器在笛卡尔空间（或操作空间）中的位姿。
+\]</span></p></li>
+</ul>
+<h4 id="微分运动学differential-kinematics">微分运动学Differential
+Kinematics</h4>
+<ul>
+<li><p>微分运动学研究的是<strong>速度</strong>之间的映射，即“<strong>如果关节以某种速度运动，末端执行器的线速度和角速度是多少？</strong>”。</p></li>
+<li><p><span class="math display">\[
+\dot{\chi}_e = J_{eA}(q) \dot{q} \\
+\dot{\dot{q}} 是关节速度向量，\dot{\chi}_e 是末端速度向量。
+\]</span></p></li>
+<li><p><strong>线性映射</strong>：与正运动学的非线性不同，在给定的位形
+<span class="math inline">\(q\)</span>
+下，末端速度与关节速度之间是<strong>线性映射</strong>关系，这个映射矩阵就是
+<strong>雅可比矩阵 (Jacobian Matrix)</strong>。</p></li>
+<li><p>雅可比矩阵 <span class="math inline">\(J_{eA}(q)\)</span>
+的维度是 <span class="math inline">\(m \times n\)</span>（<span
+class="math inline">\(m\)</span> 为任务空间维数，<span
+class="math inline">\(n\)</span>
+为关节数）。其每一个元素代表了<strong>第 <span
+class="math inline">\(j\)</span> 个关节的变化对末端第 <span
+class="math inline">\(i\)</span> 个坐标分量的偏导数</strong>： <span
+class="math display">\[
+J_{eA}(q) = \frac{\partial \chi_e}{\partial q}
+\]</span></p></li>
+<li><p>通常将雅可比矩阵拆分为<strong>线性部分（位置）*<em>和*</em>旋转部分（姿态）</strong>：
+<span class="math display">\[
+J_{eA} = \begin{bmatrix} J_{eA}^P \\ J_{eA}^R \end{bmatrix} \\
+J_{eA}^P$ (Position Jacobian) :对应末端执行器的线速度 v_e = J_{eA}^P
+\dot{q}\\
+J_{eA}^R$ (Orientation Jacobian)：对应末端执行器的角速度  \omega_e =
+J_{eA}^R \dot{q}
+\]</span></p></li>
+</ul>
+<h4 id="几何雅可比基础雅可比">几何雅可比/基础雅可比</h4>
+<ul>
+<li><p>几何雅可比矩阵 <span class="math inline">\(J_{e0}(q)\)</span>
+直接将关节速度 <span class="math inline">\(\dot{q}\)</span>
+映射到末端执行器在三维空间中的<strong>物理速度</strong> <span
+class="math inline">\(w_e\)</span>（即线速度 <span
+class="math inline">\(v_e\)</span> 和角速度 <span
+class="math inline">\(\omega_e\)</span>）</p>
+<figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260410174447397.png"
+alt="image-20260410174447397" />
+<figcaption aria-hidden="true">image-20260410174447397</figcaption>
+</figure></li>
+<li><p>几何雅可比和分析雅可比的关系</p>
+<ul>
+<li><strong>线速度部分：</strong> 通常情况下，解析雅可比的位置部分 <span
+class="math inline">\(J_{eAP}\)</span> 和几何雅可比的线速度部分 <span
+class="math inline">\(v_e\)</span> 是一致的，即 <span
+class="math inline">\(v_e = \dot{\chi}_{eP}\)</span>。</li>
+<li><strong>旋转部分（差异所在）：</strong> *
+<strong>解析雅可比</strong>使用的是姿态表示（如欧拉角）的时间变化率
+<span class="math inline">\(\dot{\alpha}\)</span>。
+<ul>
+<li><strong>几何雅可比</strong>使用的是物理角速度 <span
+class="math inline">\(\omega_e\)</span>。</li>
+</ul></li>
+</ul></li>
+<li><p>欧拉角变化率和物理角速度不一样https://gemini.google.com/app/1ba1cfb7602fe1fa?is_sa=1&amp;is_sa=1&amp;android-min-version=301356232&amp;ios-min-version=322.0&amp;campaign_id=bkws&amp;utm_source=sem&amp;utm_medium=paid-media&amp;utm_campaign=bkws&amp;pt=9008&amp;mt=8&amp;ct=p-growth-sem-bkws&amp;gclsrc=aw.ds&amp;gad_source=1&amp;gad_campaignid=20357620797&amp;gbraid=0AAAAApk5BhmrfxN96eyL6B8sj__yCdR2J&amp;gclid=CjwKCAjwhe3OBhABEiwA6392zOVa895zqphQ4PnODjDKyLYhYxDXBT0RUd_d982tnMBw4vHrsYmLiRoCEcwQAvD_BwE</p></li>
+<li><figure>
+<img data-src="/2026/04/10/robot-dynamics/image-20260413141752041.png"
+alt="image-20260413141752041" />
+<figcaption aria-hidden="true">image-20260413141752041</figcaption>
+</figure></li>
+</ul>
+<h3 id="运动控制方法">运动控制方法</h3>
+<h4 id="逆微分运动学">逆微分运动学</h4>
+<p>在机器人运行过程中，我们通常给末端设定一个期望速度 <span
+class="math inline">\(\dot{w}_e\)</span>。</p>
+<ul>
+<li><strong>正向微分运动学：</strong> <span
+class="math inline">\(\dot{w}_e = J
+\dot{q}\)</span>（已知关节动多快，算末端多快）。</li>
+<li><strong>逆微分运动学：</strong> <span class="math inline">\(\dot{q}
+= J^{+} \dot{w}_e\)</span>（已知末端要多快，反推关节给多少速度）。</li>
+</ul>
+<p>这里使用的是<strong>伪逆（Pseudo-inverse）</strong> <span
+class="math inline">\(J^{+}\)</span>，因为雅可比矩阵通常不是方阵。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/robot-dynamics/" rel="tag"># robot dynamics</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/04/10/convex_optimization/" rel="prev" title="凸优化">
+      <i class="fa fa-chevron-left"></i> 凸优化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/04/14/talk-with-frank/" rel="next" title="和Frank的谈话">
+      和Frank的谈话 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kinematics"><span class="nav-number">2.</span> <span class="nav-text">Kinematics</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#position"><span class="nav-number">2.0.1.</span> <span class="nav-text">position</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#velocity"><span class="nav-number">2.0.2.</span> <span class="nav-text">velocity:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rotation"><span class="nav-number">2.0.3.</span> <span class="nav-text">rotation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E5%AD%90%E5%90%91%E9%87%8F%E7%BB%95%E8%BD%B4%E7%9A%84%E6%97%8B%E8%BD%AC%E5%8F%AF%E4%BB%A5%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%9B%9B%E5%85%83%E6%95%B0%E7%9A%84%E4%B9%98%E6%B3%95"><span class="nav-number">2.0.4.</span> <span class="nav-text">举例子：向量绕轴的旋转可以转换为四元数的乘法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%92%E9%80%9F%E5%BA%A6"><span class="nav-number">2.0.5.</span> <span class="nav-text">角速度：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#transformation"><span class="nav-number">2.0.6.</span> <span class="nav-text">Transformation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E4%BD%93%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E5%AD%A6kinematics-of-systems-of-bodies"><span class="nav-number">3.</span> <span class="nav-text">多体系统运动学Kinematics
+of Systems of Bodies</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E8%BF%90%E5%8A%A8%E5%AD%A6"><span class="nav-number">3.1.</span> <span class="nav-text">正运动学</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E8%BF%90%E5%8A%A8%E5%AD%A6differential-kinematics"><span class="nav-number">3.2.</span> <span class="nav-text">微分运动学Differential
+Kinematics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E9%9B%85%E5%8F%AF%E6%AF%94%E5%9F%BA%E7%A1%80%E9%9B%85%E5%8F%AF%E6%AF%94"><span class="nav-number">3.3.</span> <span class="nav-text">几何雅可比&#x2F;基础雅可比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">运动控制方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%86%E5%BE%AE%E5%88%86%E8%BF%90%E5%8A%A8%E5%AD%A6"><span class="nav-number">4.1.</span> <span class="nav-text">逆微分运动学</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
