@@ -172,6 +172,504 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/%E6%8F%90%E9%AB%98rag%E7%9A%84%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/%E6%8F%90%E9%AB%98rag%E7%9A%84%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">提高rag的技巧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-05 23:48:54" itemprop="dateCreated datePublished" datetime="2025-01-05T23:48:54+08:00">2025-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://readmedium.com/these-are-the-3-langchain-functions-i-used-to-improve-my-rag-00413ccb7094</p>
+<ol type="1">
+<li>Multi Query Retriever</li>
+<li>Long Context Recorder</li>
+<li>Contextual Compression</li>
+</ol>
+<figure>
+<img data-src="improve-rag/image-20250105235015001.png"
+alt="image-20250105235015001" />
+<figcaption aria-hidden="true">image-20250105235015001</figcaption>
+</figure>
+<h3 id="long-context-reorder">Long-Context Reorder</h3>
+<p>https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/long_context_reorder/</p>
+<p>无论你的模型架构如何，当包含超过 <strong>10</strong>
+个检索到的文档时，性能都会显著下降。简而言之：当模型必须在长上下文中访问相关信息时，它们往往会忽略提供的文档。</p>
+<p>策略：</p>
+<p>将不太相关的文档放在列表的中间，而更相关的文档放在开头和结尾。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/prompt-engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/prompt-engineering/" class="post-title-link" itemprop="url">Prompt Design and Engineering</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-05 23:12:42" itemprop="dateCreated datePublished" datetime="2025-01-05T23:12:42+08:00">2025-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>[!TIP]</p>
+<p>Prompt engineering:指令+questions+input+example</p>
+</blockquote>
+<h3 id="llms的limitations">LLMs的limitations</h3>
+<ul>
+<li>短暂记忆</li>
+<li>输出不一致性</li>
+<li>过期信息</li>
+<li>内容捏造</li>
+<li>领域专业性</li>
+</ul>
+<h3 id="一些建议和技巧">一些建议和技巧</h3>
+<ul>
+<li>CoT prompting</li>
+<li>让模型通过其他方式输出真实的东西</li>
+<li>直接结束prompt</li>
+<li>强势的态度</li>
+<li>让ai自我纠正</li>
+<li>产生不同的观点</li>
+<li>保持状态+角色扮演（gpt的web端维护了一个session，api没有实现）</li>
+<li>教算法</li>
+<li><strong>LLMs的本质是往前读并补全文本，因此examples的顺序和prompt的顺序很重要。</strong></li>
+<li>Affordances:达到一定条件触发的函数</li>
+</ul>
+<h3 id="高级建议和技巧">高级建议和技巧</h3>
+<ul>
+<li>CoT
+<ul>
+<li>Zero-shot: lets think step by step...</li>
+<li>Manual-Cot:</li>
+</ul></li>
+<li>ToT(Tree of thought)</li>
+</ul>
+<h3 id="工具">工具：</h3>
+<ul>
+<li>ART</li>
+<li>通过自一致性增强依赖性</li>
+<li>反思</li>
+<li>专家prompt：prompt chainer</li>
+<li>Streamlining Complex Tasks with Chains</li>
+<li>引导性的输出with rails</li>
+<li>流水线的Prompt设计with自动的prompt engineering</li>
+</ul>
+<h3 id="argmenting-llms-through-external-knowledge--rag">Argmenting LLMs
+through External Knowledge -RAG</h3>
+<ul>
+<li>RAG-aware Prompting Techniques</li>
+</ul>
+<h3 id="llm-agents">LLM Agents</h3>
+<h4 id="agents">Agents</h4>
+<ul>
+<li>Reasoning without Observation</li>
+<li>Reason And Act</li>
+<li>Dialog-Enabled Resolving Agents</li>
+</ul>
+<h3 id="工具和框架">工具和框架</h3>
+<ul>
+<li>Langchain</li>
+<li>Semantic Kernel</li>
+<li>The Guidance</li>
+<li>Nemo Guardrails</li>
+<li>LlamaIndex</li>
+<li>FastRAG</li>
+<li>Auto-GPT</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/Blip-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/Blip-2/" class="post-title-link" itemprop="url">Blip-2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-05 16:31:01" itemprop="dateCreated datePublished" datetime="2025-01-05T16:31:01+08:00">2025-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="背景">背景：</h3>
+<p><strong>Vision-language
+pre-training,</strong>将视觉和语言的只是结合起来。但是模型通常高<strong>cost</strong>，因为需要端到端训练<strong>vison</strong>和<strong>language</strong>模型<strong>(</strong>通常用<strong>transformers)</strong>。因此需要一种更不复杂的<strong>vision-language</strong>模型，不需要端到端的训练，于是<strong>BLIP-2</strong>就产生了。</p>
+<h3
+id="blip-2-bootstrapping-language-image-pre-training-with-frozen-image-encoders-and-large-language-models"><strong>BLIP-2:
+Bootstrapping Language-Image Pre-training with Frozen Image Encoders and
+Large Language Models</strong></h3>
+<p>作者采用了一个轻量级的<strong>querying
+transfomer</strong>结构作为<strong>frozen image</strong>和<strong>text
+encoders</strong>的<strong>bottleneck.</strong>首先用<strong>image
+encoder</strong>提取图像特征，然后送给语言模型去理解。但是语言模型没有在<strong>image</strong>上面训练过，因此它无法直接理解这些视觉表示。为了解决这个问题，<strong>Q-Former</strong>采用一些可学习的<strong>querying
+vectors</strong>，在两个阶段进行预训练；</p>
+<p>（1）vision-language representation learning with a frozen image
+encoder</p>
+<ol start="2" type="1">
+<li>vision-to-language generative learning stage with a frozen text
+encoder</li>
+</ol>
+<figure>
+<img data-src="/2025/01/05/Blip-2/image-20250105163736925.png"
+alt="image-20250105163736925" />
+<figcaption aria-hidden="true">image-20250105163736925</figcaption>
+</figure>
+<p>Q-Former包括两个子模块：</p>
+<p>a.一个image transformer和frozen image encoder交互。</p>
+<p>b.一个</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/webui%E7%94%A8api%E8%B7%91%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/webui%E7%94%A8api%E8%B7%91%E5%9B%BE/" class="post-title-link" itemprop="url">webui用api跑图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-05 16:28:26" itemprop="dateCreated datePublished" datetime="2025-01-05T16:28:26+08:00">2025-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="官方教程">官方教程：</h3>
+<p>https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API</p>
+<h3 id="步骤">步骤：</h3>
+<ol type="1">
+<li><p>在启动界面，需要指定api启动。如python launch.py --api</p></li>
+<li><p>打开http://localhost:7860/docs可以看到接口文档。</p>
+<figure>
+<img data-src="webui-api/image-20250105163022602.png"
+alt="image-20250105163022602" />
+<figcaption aria-hidden="true">image-20250105163022602</figcaption>
+</figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/05/sd%E9%87%8C%E9%9D%A2%E7%9A%84ai-scaler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/05/sd%E9%87%8C%E9%9D%A2%E7%9A%84ai-scaler/" class="post-title-link" itemprop="url">sd里面的ai-scaler</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-05 16:23:35" itemprop="dateCreated datePublished" datetime="2025-01-05T16:23:35+08:00">2025-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-07 15:22:40" itemprop="dateModified" datetime="2026-04-07T15:22:40+08:00">2026-04-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="为什么需要ai-upscaler">为什么需要ai upscaler</h2>
+<p>为了展现图片在屏幕上，图片一般需要被放大，从而看起来质量就会很低。</p>
+<h2 id="为什么不用传统的upscaler">为什么不用传统的upscaler</h2>
+<p>传统的resize的算法，比如最近邻插值或者Lanczos插值，只用到了图像的像素。图像容易corrupted或者扭曲。没有很好的算法能准确弥补这些缺失的信息。</p>
+<h2 id="ai-upscaler怎么工作">AI upscaler怎么工作</h2>
+<p>AI
+upscaler是神经网络训练了大量数据得到的，在图像放大时可以填充细节信息。</p>
+<figure>
+<img data-src="ai-scaler/image-20250105162728273.png"
+alt="image-20250105162728273" />
+<figcaption aria-hidden="true">image-20250105162728273</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/04/langchain-robot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1299,830 +1797,6 @@ data-cites="vasco-dev/history-and-literature-on-latent-stable-diffusion-dbca69fd
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/12/31/new_laptop_settings/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/31/new_laptop_settings/" class="post-title-link" itemprop="url">新电脑配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-12-31 17:41:52" itemprop="dateCreated datePublished" datetime="2024-12-31T17:41:52+08:00">2024-12-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="对象">对象</h2>
-<p>Mac pro m4</p>
-<h3 id="终端配置iterm2oh-my-zsh">1.
-终端配置<strong>iterm2+oh-my-zsh</strong></h3>
-<p>要自己安装<strong>command line
-tools</strong>和home-brew(https://www.jianshu.com/p/e0471aa6672d)</p>
-<p>https://github.com/sirius1024/iterm2-with-oh-my-zsh</p>
-<h3 id="termius">2. Termius</h3>
-<p>https://termius.com/download/macos</p>
-<h3 id="typora">3.typora</h3>
-<p><strong>https://github.com/shuhongfan/TyporaCrack</strong></p>
-<h3 id="vpn">4. vpn</h3>
-<p>可乐云：https://my.coke1.link/</p>
-<p>另一个：https://apk.okzapp.app/index.php#/register?code=QIFC23KC
-（朋友说用了三年多了没有跑路）</p>
-<p>我之前用的是DuangCloud，2024下半年华丽嘎了</p>
-<h3 id="其他问题">5. 其他问题</h3>
-<h4 id="vpn开启全局代理之后终端无法安装包">5.1
-vpn开启全局代理之后终端无法安装包</h4>
-<p>设置：</p>
-<figure>
-<img data-src="/2024/12/31/new_laptop_settings/image-20250102095721650.png"
-alt="image-20250102095721650.png" />
-<figcaption aria-hidden="true">image-20250102095721650.png</figcaption>
-</figure>
-<p>现象：终端无法访问国外资源</p>
-<figure>
-<img data-src="/2024/12/31/new_laptop_settings/image-20250102103106455.png"
-alt="image-20250102103106455.png" />
-<figcaption aria-hidden="true">image-20250102103106455.png</figcaption>
-</figure>
-<p>解决方法：查看vpn代理端口并配置终端的代理端口：</p>
-<figure>
-<img data-src="/2024/12/31/new_laptop_settings/image-20250102103359294.png"
-alt="image-20250102103359294.png" />
-<figcaption aria-hidden="true">image-20250102103359294.png</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/12/31/new_laptop_settings/image-20250102103235915.png"
-alt="image-20250102103235915" />
-<figcaption aria-hidden="true">image-20250102103235915</figcaption>
-</figure>
-<p>以上参考链接：https://blog.csdn.net/silence_xz/article/details/136669658?spm=1001.2101.3001.6650.5&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-136669658-blog-133763842.235%5Ev43%5Epc_blog_bottom_relevance_base1&amp;utm_relevant_index=10</p>
-<h4 id="npm安装不动">5.2 npm安装不动</h4>
-<p>现象：</p>
-<figure>
-<img data-src="/2024/12/31/new_laptop_settings/image-20250102103717638.png"
-alt="image-20250102103717638" />
-<figcaption aria-hidden="true">image-20250102103717638</figcaption>
-</figure>
-<p>解决方法：换源</p>
-<p><code>npm config set registry http://registry.npmmirror.com</code></p>
-<p>参考链接：http://liuw.tech/2022/11/05/hexo-%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2hexo/</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/27/database/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/27/database/" class="post-title-link" itemprop="url">database</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-27 12:30:55" itemprop="dateCreated datePublished" datetime="2024-05-27T12:30:55+08:00">2024-05-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h5
-id="course-httpswww.coursera.orglearnintroduction-to-relational-databasesungradedwidgetp0c8phands-on-lab-relational-model-concepts">course
-https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/p0C8P/hands-on-lab-relational-model-concepts</h5>
-<h3 id="关系模型的基本概念">关系模型的基本概念</h3>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvTGFiJTIwLSUyMFJlbGF0aW9uYWwlMjBNb2RlbCUyMENvbmNlcHRzL2luc3RydWN0aW9uYWwtbGFicy5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE2Mzg2ODN9.WVq3A1Cs9GKG5RgO8AaYx3S3ZI3iAmLe899AkdPantM">Hands-on
-Lab: Relational Model Concepts</a></p>
-<figure>
-<img data-src="/2024/05/27/database/image-20240527123715098.png"
-alt="image-20240527123715098" />
-<figcaption aria-hidden="true">image-20240527123715098</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://labs.cognitiveclass.ai/v2/tools/datasette?ulid=ulid-5cc4e56aa12f13251ff5e1bdda1219009104b784">load
-data</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://www.coursera.org/learn/introduction-to-relational-databases/ungradedWidget/Yuntk/course-glossary">整体复习</a></p>
-<p>https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTS1EQjAxMTBFTi1Ta2lsbHNOZXR3b3JrL2xhYnMvZ2xvc3NhcnkvbTRfY291cnNlX2dsb3NzYXJ5Lm1kIiwidG9vbF90eXBlIjoiaW5zdHJ1Y3Rpb25hbC1sYWIiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNTQ3NX0.o7HjxQ6FDaJx6wmdINArHesmkZFTbPxDdIgSbawnP5c</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/23/backend/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/23/backend/" class="post-title-link" itemprop="url">backend</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-23 14:00:15" itemprop="dateCreated datePublished" datetime="2024-05-23T14:00:15+08:00">2024-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="week-1">Week 1</h1>
-<h4 id="node-js">1. Node js</h4>
-<p>Node js是javascript在服务器端的编程框架， express是其开发框架。</p>
-<p>server大概有三种：database server / web server(http) / application
-server</p>
-<p>js的特点：Event-driven, 异步asynchronous, 非阻塞，<a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9TZXJ2ZXJTaWRlSmF2YXNjcmlwdC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MTZ9.6yLbDHSnA7Ffyp8kq9u1jq8zNAs1QiwSi8fIG0quUxg">js了解</a></p>
-<h5 id="js-module">js module</h5>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523143047893.png"
-alt="image-20240523143047893" />
-<figcaption aria-hidden="true">image-20240523143047893</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523143135653.png"
-alt="image-20240523143135653" />
-<figcaption aria-hidden="true">image-20240523143135653</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523143215979.png"
-alt="image-20240523143215979" />
-<figcaption aria-hidden="true">image-20240523143215979</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523143324541.png"
-alt="image-20240523143324541" />
-<figcaption aria-hidden="true">image-20240523143324541</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523143354049.png"
-alt="image-20240523143354049" />
-<figcaption aria-hidden="true">image-20240523143354049</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523144020865.png"
-alt="image-20240523144020865" />
-<figcaption aria-hidden="true">image-20240523144020865</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523144848936.png"
-alt="image-20240523144848936" />
-<figcaption aria-hidden="true">image-20240523144848936</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523145015691.png"
-alt="image-20240523145015691" />
-<figcaption aria-hidden="true">image-20240523145015691</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523145042861.png"
-alt="image-20240523145042861" />
-<figcaption aria-hidden="true">image-20240523145042861</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9BZHZhbmNlZF9Ob2RlLmpzX21vZHVsZXMubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTUzfQ.oUQg6uIJbbEgp0GByD36iHMr_gMmReyJYVykaSrHGbA">高级js模块</a></p>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523145912229.png"
-alt="image-20240523145912229" />
-<figcaption aria-hidden="true">image-20240523145912229</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMV9JbnRyb2R1Y3Rpb25Ub1NlcnZlclNpZGVKYXZhU2NyaXB0JTJGSGFuZHNPbl9MYWJfRmlyc3RTZXJ2ZXJTaWRlU2NyaXB0Lm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyNH0.4cNsJQ7n8QzVT8x1BO0QhMW5jb7Kp_aXW3VILCc2h9Y">lab:使用nodejs创建服务端程序</a></p>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523152832502.png"
-alt="image-20240523152832502" />
-<figcaption aria-hidden="true">image-20240523152832502</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9HbG9zc2FyeS8yMDAzODkuMTFfTTFfR2xvc3NhcnkubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTQ0fQ.TuD3KX8yEEewo2CIDv2AyjGmWI1EMdClt8Tdw1m5MKY">一些概念</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTFfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MzV9.4M92HAb93JO5_DdTXT_jL2vJa-pfHrJ3Cxw2C_HASVE">服务器端js简介</a></p>
-<h1 id="week-2">Week 2</h1>
-<p>nodejs通过非阻塞的方式调用所有io</p>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523154546786.png"
-alt="image-20240523154546786" />
-<figcaption aria-hidden="true">image-20240523154546786</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523154705545.png"
-alt="image-20240523154705545" />
-<figcaption aria-hidden="true">image-20240523154705545</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240523185448246.png"
-alt="image-20240523185448246" />
-<figcaption aria-hidden="true">image-20240523185448246</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb25Ub0FzeW5jQXdhaXQubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU3fQ.QLu1ThZK6P3pv6Q24iyROVj8RZZnSPyZzOIx3e7Kuz0">async/await</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlMl9Bc3luY19DYWxsYmFjayUyRkhhbmRzT25fTGFiX0FzeW5jX0NhbGxiYWNrLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUzMX0.qV1jLSpoScLWvGOZKXv95pbhkyzEOctJ9yOy5CscDQ4">异步回调编程</a></p>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240524112320066.png"
-alt="image-20240524112320066" />
-<figcaption aria-hidden="true">image-20240524112320066</figcaption>
-</figure>
-<p><a href="">术语表 - 使用回调编程的异步 I/O</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9DaGVhdHNoZWV0cy8yMDAzODkuMjVfTTJfQ2hlYXRTaGVldC5tZCIsInRvb2xfdHlwZSI6Imluc3RydWN0aW9uYWwtbGFiIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1Mzh9.JPvmEnhXrPQHLGLyZDW-7kzx2espu7krfqxdFJp9Ao0">Asynchronous
-I/O with Callback Program</a></p>
-<h1 id="express网络框架">Express网络框架</h1>
-<p>node js不是一个运行框架，是一个runtime
-environment用于在server上面运行js code</p>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240524115011622.png"
-alt="image-20240524115011622" />
-<figcaption aria-hidden="true">image-20240524115011622</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240524115044107.png"
-alt="image-20240524115044107" />
-<figcaption aria-hidden="true">image-20240524115044107</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240524115606544.png"
-alt="image-20240524115606544" />
-<figcaption aria-hidden="true">image-20240524115606544</figcaption>
-</figure>
-<h4 id="中间件和路由器">中间件和路由器</h4>
-<p>本文将讨论<em>中间件</em> 和<em>路由</em>这两个术语。</p>
-<p>中间件是位于应用程序、数据库或服务之间的软件，允许这些不同的技术进行通信。它在分布式系统中为终端用户创建无缝交互。</p>
-<p>Express
-是一个消息传递框架，用于处理路由和编写中间件。应用程序的前端使用 Express
-来促进后端组件之间的通信，而前端和后端服务无需使用相同的语言。前端与中间件通信，而不是直接与后端通信。</p>
-<p>像 Express 这样的消息框架通常包含 JSON、REST API
-和网络服务。旧的消息框架可能包含可扩展标记语言（XML）和简单对象访问协议（SOAP），而不是
-JSON 和 REST
-API。消息传递框架提供了一种处理不同应用间数据传输的标准化方法。</p>
-<p>网络服务器是连接网站和数据库的中间件的一个例子。网络服务器处理业务逻辑，并根据请求从数据库路由数据。<em>路由</em>
-是将 GET、POST 或 DELETE 等 HTTP 请求与 URL 以及处理该 URL
-的函数相关联的代码部分。路由在网络开发中用于根据浏览器 URL
-确定的规则分割应用程序的用户界面。</p>
-<p>路由器功能统称为 "中间件"。中间件负责响应 HTTP
-请求或调用中间件链中的其他函数。Express 通过 Router 类处理路由器函数，如
-Router.get()。顾名思义，Router.get() 负责处理 HTTP GET
-请求。其他路由器函数包括 Router.post()、Router.put() 和
-Router.delete()，使用方法基本相同。这些方法需要两个参数，一个 URL
-路径和一个回调函数。</p>
-<p>除了路由之外，中间件还负责通过加密和解密数据来提供服务间的安全连接，通过将流量分配到不同的服务器来管理应用程序负载，以及在数据返回客户端之前对数据进行排序或过滤。</p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9SZWFkaW5ncy9JbnRyb2R1Y3Rpb24tdG8tQXV0aGVudGljYXRpb24ubWQiLCJ0b29sX3R5cGUiOiJpbnN0cnVjdGlvbmFsLWxhYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzExNDI2NTU1fQ.iKf3HQ4FD9ESfd0H1cH8R1eONRumBzDQAQYVyD3SO34">身份验证和授权</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://d3c33hcgiwev3.cloudfront.net/L1T_uyeHSHGyROFLyqZRxQ_2ee09d6aa6ba4736920c2f6a31faa6f1_Writing-RESTful-APIs-Reading.docx.pdf?Expires=1716681600&amp;Signature=IJLmbTFs~gRZ3Ij9yrXrNVeNbu5kADjvREy0SkQt7eovyMZNnOX6YaZFa7Cs2fOVg4Fg4JOsSBxmsgho3a~kMxWsDVQGpDO79Ai2NjvK1Jv5~pe0z7FlTvajvO62pgLJFpBaegWY12EM5mjzVwzMHDILZrSNF7luz~2R3gb8-3s_&amp;Key-Pair-Id=APKAJLTNE6QMUY6HBC5A">http
-method/rest api</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGTW9kdWxlM19FeHByZXNzSlMlMkZIYW5kcy1vbl9MYWJfQ1JVRC5tZCIsInRvb2xfdHlwZSI6InRoZWlhIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3MTE0MjY1MjZ9.30Vfc7qrnD9jo_XAW4oiq9zJ1ax_0swsPwmRIL34JLk">lab:crud
-with nodejs</a></p>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240524174736995.png"
-alt="image-20240524174736995" />
-<figcaption aria-hidden="true">image-20240524174736995</figcaption>
-</figure>
-<figure>
-<img data-src="/2024/05/23/backend/image-20240524174805639.png"
-alt="image-20240524174805639" />
-<figcaption aria-hidden="true">image-20240524174805639</figcaption>
-</figure>
-<p><a
-target="_blank" rel="noopener" href="https://www.coursera.org/learn/developing-backend-apps-with-nodejs-and-express/ungradedWidget/IO1Oa/glossary-express-web-application-framework">express
-web术语</a></p>
-<p>test-project/ node_modules/ config/ db.js //Database connection and
-configuration credentials.js //Passwords/API keys for external services
-used by your app models/ //For mongoose schemas items.js prices.js
-routes/ //All routes for different entities in different files items.js
-prices.js app.js routes.js //Require all routes in this and then require
-this file in package.json</p>
-<p><a
-target="_blank" rel="noopener" href="https://author-ide.skills.network/render?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZF9pbnN0cnVjdGlvbnNfdXJsIjoiaHR0cHM6Ly9jZi1jb3Vyc2VzLWRhdGEuczMudXMuY2xvdWQtb2JqZWN0LXN0b3JhZ2UuYXBwZG9tYWluLmNsb3VkL0lCTURldmVsb3BlclNraWxsc05ldHdvcmstQ0QwMjIwRU4tU2tpbGxzTmV0d29yay9sYWJzJTJGUHJhY3RpY2VQcm9qZWN0X0ZyaWVuZHNMaXN0X1dpdGhBdXRoJTJGaW5zdHJ1Y3Rpb25zLm1kIiwidG9vbF90eXBlIjoidGhlaWEiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTcxMTQyNjUyM30.0Rshfz3KAokqUCOpGERC0zmSL26a7aKKCtJLaZIUsKc">practice
-lab</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2024/05/20/frisbee-pickup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/20/frisbee-pickup/" class="post-title-link" itemprop="url">frisbee-pickup</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-20 23:43:40" itemprop="dateCreated datePublished" datetime="2024-05-20T23:43:40+08:00">2024-05-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-07 10:42:47" itemprop="dateModified" datetime="2026-04-07T10:42:47+08:00">2026-04-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="当参加飞盘的比赛">当参加飞盘的比赛</h2>
-<p>​
-距离接触飞盘已经两年了，中间受伤的一年没有如何运动，我几乎踩中了很多不利的因素：</p>
-<ul>
-<li>错过最好的学校的大段时间训练和有场地、伙伴练习的机会，我玩飞盘已经是研究生快毕业的时候</li>
-<li>北漂互联网，在北京参加飞盘活动路上时间花费很多</li>
-<li>几乎没什么体育底子</li>
-</ul>
-<p>​ 为什么还要玩</p>
-<ul>
-<li>上手容易，以及飞盘的规则是no touch，真的很不喜欢人碰我</li>
-<li>锻炼身体的动力</li>
-</ul>
-<p>​
-我不是很厉害的选手，所以没有长期训练的队伍，很多时候都在打皮卡。花了很多时间，当了很多次炮灰得到的感悟：</p>
-<ul>
-<li>在皮卡的小比赛要珍惜每一次拿盘的机会，要去捡盘，一定要克服被打击而畏缩的惯性。我真的看到太多太多次，在皮卡，男生让女生不要捡盘，“让我捡”、“你不要碰”，而很多女生甚至视之为理所当然，“因为自己没有能力”，“会让队伍失分”，所以我们只能寄希望于好的队伍好的团体氛围。
-<ul>
-<li>1.皮卡的目的是自己的进步，如果用一个优化函数定义自己的目标，那就是在短短的场上几十分钟的时间内，将自己暴露在尽可能多的尝试和失败当中。这个游戏规则其实很简单，练习越多，进步越快。在皮卡中队伍的输赢本不应该成为一个阻碍，考虑也只是均衡双方力量让比赛尽可能有竞争力的进行下去。</li>
-<li>2.能力不应该成为不控盘的理由。我多么希望自己能在早期就明白这个道理，在男生让我只是传dump给他的时候，在我即使捡盘也有近处一个男生让我直接给他的时候，在初次进入一个领域知道并坚持自己享有和其他人同等竞争的机会和权利，不要轻易放弃。</li>
-</ul></li>
-<li>参加一个比赛，跟着一个队伍“容易成为炮灰”，这种情况很多时候表示为：
-<ul>
-<li>喊你的时候对方理由一般是缺人，但是后面喊的人越来越多，越多的人数分摊有限的上场机会。尤其是认识的人，往往不好“问的太多”显得很难对付。</li>
-<li>如果去参加一个皮卡的队伍，应该约定好你们准备招募多少个人，可以保证多少分的上场机会。（我在这方面当炮灰太多次了，因为没有队伍，因为处于弱势，所以我一度觉得这是我不得不接受的规则。直到后来我开始怀疑这个想法，如果我不接受这件事情就不会发生。我宁愿不参加比赛也不接受不平等的忽视和上场机会。不比赛依旧有很多方法可以去训练，依然可以进步。</li>
-</ul></li>
-<li>国内的很多比赛都是34
-43ABBA的赛制轮回，但是实际比赛我却发现真正执行到底的比赛不多。很多时候都是：“我们女生不够”让对方队伍不好拒绝，<strong>其实这种情况的解决方案本应该是女生不够的队伍可以认输</strong>，事实上每一次妥协都是在牺牲女性盘友的上场机会。因为对“人数不够”的场景的默认，虽然有这样的规则，女盘手的缺失不成为一个问题。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2020/08/18/nuscenes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/18/nuscenes/" class="post-title-link" itemprop="url">nuscenes</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-18 12:19:50" itemprop="dateCreated datePublished" datetime="2020-08-18T12:19:50+08:00">2020-08-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>学习建议官方的devkit，由于nuscenes按照token索引数据，不建议自己读取jason文件，而是根据官方函数使用其接口。探索数据集用Mini数据集很方便。</p>
-<h3 id="item名词">1.item名词</h3>
-<p>nuscenes数据集把各个类型的数据分别组织成了一个table.比如scene车移动场景、sample关键帧、instance实例、category类别等等。对于每一个数据都有一个唯一的token来索引到这个数据。所以我们得到数据的过程就是根据官方提供的接口和函数找接口取数据的过程。具体的栏目有：</p>
-<table>
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 77%" />
-</colgroup>
-<thead>
-<tr>
-<th>Item</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Scene</td>
-<td>整个数据集一共1000个场景，Mini的有10个。每20s是一个场景</td>
-</tr>
-<tr>
-<td>sample</td>
-<td>An annotated snapshot of a scene at a particular timestamp</td>
-</tr>
-<tr>
-<td>Sample_data</td>
-<td>Data collected from a particular sensor.</td>
-</tr>
-<tr>
-<td>Instance</td>
-<td>Enumeration of all object instance we observed</td>
-</tr>
-<tr>
-<td>Category</td>
-<td>Taxonomy of object categories (e.g. vehicle, human).</td>
-</tr>
-<tr>
-<td>Attribute</td>
-<td>Property of an instance that can change while the category remains
-the same.</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td>可见性</td>
-</tr>
-<tr>
-<td>Sensor</td>
-<td>nuscenes有6个camera,1个lidar,5个radar.我们主要做的detection任务只涉及到camera.所以接下来只会涉及到camera.</td>
-</tr>
-<tr>
-<td>Calibrated sensor</td>
-<td>Definition of a particular sensor as calibrated on a particular
-vehicle.进行坐标转换的时候主要用到的数据，上面的sensor其实只有一些基本信息，没有坐标转换参数。所以要进行坐标转换工作主要使用这类数据</td>
-</tr>
-</tbody>
-</table>
-<h3 id="nuscenes涉及的几个坐标系">2. Nuscenes涉及的几个坐标系</h3>
-<ul>
-<li>global坐标系：一般的bbox，ego
-pose都是在全局坐标系下给出的，可以理解为人为设定的一个坐标系，具体也不知道在哪儿。</li>
-<li>ego坐标系：车体坐标系，注意calibrated
-sensor相机的外参是相对车体给出的。</li>
-<li>摄像机坐标系</li>
-</ul>
-<h3 id="scene">3. Scene</h3>
-<p><code>nusc.list_scenes()</code> 方法列举出所有的scene。</p>
-<p><code>nusc.scene</code> 返回列表，可以根据下标去索引具体的scene.</p>
-<p><img data-src="/2020/08/18/nuscenes/图片1.png" /></p>
-<h3 id="sample">4.Sample</h3>
-<p>在scenes中，每半秒（2
-HZ）标注一次数据就是sample。所以sample就是那些有标注的帧。附官方定义：各个传感器有自己的时间线，一致对上的就是关键帧。</p>
-<p>•We define sample as an annotated keyframe of a scene at a given
-timestamp. A keyframe is a frame where the time-stamps of data from all
-the sensors should be very close to the time-stamp of the sample it
-points to.</p>
-<p><code>my_sample = nusc.get('sample',first_sample)</code></p>
-<p><img data-src="/2020/08/18/nuscenes/图片2.png" /></p>
-<p><code>nusc.list_scene</code> 列举出所有的场景</p>
-<p><code>nusc.list_sample(my_sample_token["token"])</code> 列举出related
-sample_data keyframes and sample_annotation associated with a sample</p>
-<h3 id="sample_data">5. Sample_data</h3>
-<p>从一个sample中具体取出哪路相机数据。</p>
-<p><code>my_sample['data']</code> 列举出12个token,分别是6 camera 5 radar
-1 lidar</p>
-<p><img data-src="/2020/08/18/nuscenes/图片3.png" /></p>
-<p>具体取出某个sensor的数据：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sensor = &#x27;CAM_FRONT&#x27;</span><br><span class="line">Cam_front_data = nusc.get(&#x27;sample_data&#x27;,my_sample[&#x27;data&#x27;][sensor])</span><br></pre></td></tr></table></figure>
-<p><img data-src="/2020/08/18/nuscenes/图片4.png" /></p>
-<p>根据sample_data的token取出路径、annotationh和相机内参的接口，检测任务的dataloader很好用.这个函数tutorial没有给，源代码有。传入的第二个可见性的参数是关于bbox的，具体可看源代码。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_path,box_list,cam_intrinsic = nusc.get_sample_data(token,visibility)</span><br></pre></td></tr></table></figure>
-<p>可视化某一个sample_data:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nusc.render_sample_data(cam_front_data[&#x27;token&#x27;])</span><br></pre></td></tr></table></figure>
-<p><img data-src="/2020/08/18/nuscenes/图片6.png" /></p>
-<h3 id="sample_annotation">6. Sample_annotation</h3>
-<p>sample_annotation refers to any bounding box defining the position of
-an object seen in a sample. All location data is given with respect to
-the global coordinate
-system.注意注释数据的位置信息都是相对于全局坐标系给出的。</p>
-<p><img data-src="nuscenes/图片5.png" style="zoom:75%;" /></p>
-<p>可视化sample_annotation:</p>
-<p><img data-src="/2020/08/18/nuscenes/图片12.png" /></p>
-<h3 id="instance">7.instance</h3>
-<p>Object instance are instances that need to be detected or tracked by
-an AV.</p>
-<p><code>nusc.instance</code> 返回instance的列表，可以通过下标索引。</p>
-<h3 id="category">8. category</h3>
-<p><code>nusc.list_categories()</code></p>
-<p><img data-src="/2020/08/18/nuscenes/图片8.png" /></p>
-<h3 id="attribute">9. attribute</h3>
-<p>An attribute is a property of an instance that may change throughout
-different parts of a scene while the category remains the same.</p>
-<p><img data-src="/2020/08/18/nuscenes/图片9.png" /></p>
-<h3 id="visibility">10. visibility</h3>
-<p>visibility可视化及描述：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">anntoken=<span class="string">&#x27;a7d0722bce164f88adf03ada491ea0ba&#x27;</span></span><br><span class="line">visibility_token = nusc.get(<span class="string">&#x27;sample_annotation&#x27;</span>,anntoken)[<span class="string">&#x27;visibility_token&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Visibility:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(nusc.get(<span class="string">&#x27;visibility&#x27;</span>,visibility_token)))</span><br><span class="line">nusc.render_annotation(anntoken)</span><br></pre></td></tr></table></figure>
-<p>Visibility: {'description': 'visibility of whole object is between 80
-and 100%', 'token': '4', 'level': 'v80-100'}</p>
-<p><img data-src="/2020/08/18/nuscenes/图片10.png" /></p>
-<h3 id="sensor">11. sensor</h3>
-<p>1 lidar, 5 radar, 6 cameras</p>
-<h3 id="calibrated_sensor">12. Calibrated_sensor</h3>
-<p>calibrated_sensor consists of the definition of a particular sensor
-(lidar/radar/camera) as calibrated on a particular vehicle.
-注意外参是相对<strong>ego vehicle body frame</strong>得到的。</p>
-<p><img data-src="/2020/08/18/nuscenes/图片14.png" /></p>
-<p>3D bounding box坐标：X points forward, Y to the left, Z up</p>
-<p>理解“with respect to ego vehicle body
-frame”，就是说我相机坐标系中的坐标转换到ego vehicle，就是</p>
-<p><span class="math display">\[(\left[ \begin{array}{l} x_{ego}\\\\
-y_{ego}\\\\ z_{ego} \end{array} \right] = R\left[ \begin{array}{l}
-x_{camera}\\\\ y_{camera}\\\\ z_{camera} \end{array} \right] +
-T)\]</span></p>
-<p>相应的把ego vehicle坐标系下的bbox转换到sensor coord system就是：</p>
-<p><img data-src="/2020/08/18/nuscenes/图片15.png" /></p>
-<h3 id="ego_pose">13. Ego_pose</h3>
-<p>go_pose contains information about the location (encoded in
-translation) and the orientation (encoded in rotation) of the ego
-vehicle, with respect to the <strong>global coordinate
-system</strong>.</p>
-<p>ego_pose的数量和sample_data是一样的，这两者是一一对应的关系。<u>其实我有点不懂为什么每一个sample_data对应有一个ego_pose，六路相机也就是一个sample不应该对应一个ego
-pose吗</u></p>
-<p>•描述的是车体自己（x forward,y left,z
-up）相对于全局坐标系的旋转R和平移T。这个R通过四元数给出。</p>
-<p>•理解ego pose的R和T都是相对于（with respect
-to）全局坐标系这句话;也就是ego坐标系中的一个坐标要变换到全局坐标系中就是</p>
-<p><span class="math inline">\(\left[ \begin{array}{l} x_{global}\\\\
-y_{global}\\\\ z_{global} \end{array} \right] = R\left[ \begin{array}{l}
-x_{ego}\\\\ y_{ego}\\\\ z_{ego} \end{array} \right] + T\)</span></p>
-<p>其中公式左边是全局坐标系中的坐标。</p>
-<h3
-id="nuscenes评测只涉及detection方面">14.nuscenes评测（只涉及detection方面）</h3>
-<p>•Nuscenes的评测程序可以在devkit中的eval找到。</p>
-<p>•README中规定了相应的sample_result的格式。prediction的结果要按照规定格式组织jason文件。sample_result的表和sample_annotation的表设计为一样的，所以完全可以用sample_annotation的工具和接口去操作sample_result.同时注意生成的结果即使没有识别出框，必须存在相应的token.</p>
-<p>•虽然nuscenes训练有23类，但是评测处理similar和rare的类别，考虑到每一类的frequency,最终只归纳了10类，并且每一类有个detection
-range(meters)。超过这个距离识别出来的框忽略。</p>
-<p><a
-target="_blank" rel="noopener" href="https://www.nuscenes.org/nuscenes#data-annotation">这个链接可以看到数据集各个类别的频率</a></p>
-<h5 id="预处理">1.预处理</h5>
-<p>GT和predition bboxes:</p>
-<p>•超过距离的移除；</p>
-<p>•Bikes和motorcycle在bike-rack里面的没有被注释也忽略</p>
-<p>GT bboxes:</p>
-<p>•没有Lidar和radar点的被移除，不能确保在当前frame是可见的</p>
-<h5 id="评测矩阵">2.评测矩阵</h5>
-<p>mAP:
-一般的物体检测选择IOU来做匹配标准和评价阈值，Nuscenes选取的是xy平面bbox距离ego的距离（也就是深度距离）来作为标准，选择最小的距离匹配。选取{0.5,1,2,4}作为距离阈值（相当于原来的IOU@0.3,0.5,0.7），计算AP的时候只选取precision和recall&gt;0.1的点进行计算，当然由于没有计算&lt;0.1的部分会做一个归一化的操作。</p>
-<p>TP metircs：其他因素的误差矩阵。Average of translation, velocity,
-scale, orientation and attribute errors.</p>
-<p>NDS(nuscenes detection score): the weighted sum of the
-above。评价总分，mAP占50%，TP中的五类误差各占权重10%。其中TP
-metrics统计的是误差值，到衡量得分存在一个转化关系：<code>TP score = max(1-TP_error,0.0)</code></p>
-<h5 id="true-positive-metrics">3.True Positive metrics</h5>
-<p>•TP衡量translation/scale/orientation/velocity/attribute errors</p>
-<p>•所以TP矩阵计算匹配时都要满足center distance在2m之类</p>
-<p>•最终计算平均在recall&gt;10%，达不到这个阈值某类的TP
-errors所有都会被设置为1.</p>
-<p>•Average Translation
-error(ATE):bbox的中心到ego原点的L2范数(meters)。即公式</p>
-<p><span class="math inline">\(\sqrt{ {(x1 - x2)^2} + {(y1 - y2)^2} +
-{(z1 - z2)^2} }\)</span></p>
-<p>. 区分于上面计算mAP作为阈值的distance:<span
-class="math inline">\(\sqrt{(z1-z2)^2}\)</span></p>
-<p>•Average Scale Error(ASE): 对齐中心和朝向之后计算1-IOU</p>
-<p>•Average Orientation Error(AOE):最小的yaw
-angle差异（radians）.一般类都是360度衡量，barriers在180度衡量，cones忽略这个指标。</p>
-<p>•Average Velocity Error(AVE):absolute velocity error in
-m/s.barrier和cone忽略这个指标。</p>
-<p>•Average Attribute
-Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标</p>
-<p>•TP矩阵每个类分别计算，对于所有类别取均值得到Map,mASE,mAOE,mAVE,mAAE.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2194,7 +1868,7 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2205,7 +1879,7 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -2292,59 +1966,6 @@ Error(AAE):1-acc.acc是属性分类正确率。Barrier和cone忽略这个指标<
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
