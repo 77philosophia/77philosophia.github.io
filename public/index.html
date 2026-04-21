@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -172,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/03/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/20/David-Ha-World-models/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -186,7 +186,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/03/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2026/04/20/David-Ha-World-models/" class="post-title-link" itemprop="url">David Ha<World models></a>
         </h2>
 
         <div class="post-meta">
@@ -195,243 +195,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2026-04-03 16:07:31" itemprop="dateCreated datePublished" datetime="2026-04-03T16:07:31+08:00">2026-04-03</time>
+              <time title="Created: 2026-04-20 16:20:43 / Modified: 16:36:50" itemprop="dateCreated datePublished" datetime="2026-04-20T16:20:43+08:00">2026-04-20</time>
             </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="f智能问答">F智能问答</h1>
-<p>数据库的优缺点、异同：</p>
-<p>Es,mysql,redis</p>
-<p>bm25</p>
-<p>TF-IDF</p>
-<p>milvus向量数据库</p>
-<p>Ginas.ai</p>
-<h1 id="lightrag">lightRAG</h1>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/03/stable-diffusion-history/problem%201/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/03/stable-diffusion-history/problem%201/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-03 16:07:31" itemprop="dateCreated datePublished" datetime="2026-04-03T16:07:31+08:00">2026-04-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="problem-1">problem 1</h1>
-<p>array max sum连续子数组 return max sum</p>
-<p>Ex: [-2,1,-3,4,-1,2,1,-5,4] -&gt;6</p>
-<p>定义：s[i]以index i为结尾的最长子数组的max sum</p>
-<p>s[i] = if s[i-1] &gt; 0 s[i-1]+s[i]. Or s[i]</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">maxLianXuSum</span><span class="params">(<span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; array)</span> </span>&#123;</span><br><span class="line">  std::vector&lt;<span class="type">int</span>&gt; array_s;</span><br><span class="line">  <span class="type">int</span> max_sum = <span class="number">-9999</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; array.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp;s[i<span class="number">-1</span>] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      array_s[i] = array[i] + array_s[i<span class="number">-1</span>];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      array_s[i] = array[i]</span><br><span class="line">    &#125;</span><br><span class="line">    max_sum = <span class="built_in">max</span>(max_sum, array_s[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> max_sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Pro 2:</p>
-<p>活动start end</p>
-<p>Max number activities no overlap -&gt; retun num</p>
-<p>[1,3] 2.5 4,7. 6,8. -&gt; 2</p>
-<p>1,3 -&gt; &gt;3 -&gt; 4,7and 6.8 -&gt; add 4,7
--&gt;找到的就是以1,3开头尽可能多的活动</p>
-<p>2,5 -&gt; 5-&gt; 6,8 -&gt; add 6,8 ....2,5</p>
-<p>4,7 没有必要因为1,3的尽可能多的会包括4,7</p>
-<p>6,8 开头 -&gt;add 6,8 -&gt; 1</p>
-<p>4,7 -&gt; 4,7 -&gt;1</p>
-<p>2,5 -&gt; add 6, 8. Ans[2,5] = ans[6,8]+1 1, 3 -&gt;</p>
-<p>6,8 -&gt; 2,5</p>
-<p>4,7 -&gt;1,3</p>
-<p>2,5 -&gt;</p>
-<p>1,3</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Activity</span> &#123;</span><br><span class="line">  <span class="type">int</span> start_time;</span><br><span class="line">  <span class="type">int</span> end_time;</span><br><span class="line">  ...</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">findMaxNumActivities</span><span class="params">(<span class="type">const</span> std::vector&lt;Activity&gt;&amp; act)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> n = act.<span class="built_in">size</span>();</span><br><span class="line">  <span class="comment">// 1. 按照start time排序</span></span><br><span class="line">  std::vector&lt;Activity&gt; act_by_start_time;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> j = act.<span class="built_in">size</span>()<span class="number">-1</span>; j &gt; <span class="number">0</span>; --j) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i&lt; j; ++i) &#123;</span><br><span class="line">    	<span class="keyword">if</span>(act[i].start_time&lt;act[i<span class="number">-1</span>].start_time) <span class="built_in">swap</span>(act, i, i<span class="number">-1</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 2.数组ans的定义：记录以活动i开头的max num act</span></span><br><span class="line">  std::vector&lt;<span class="type">int</span>&gt; ans;</span><br><span class="line">  <span class="type">int</span> has_compared_min_end_time;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = n; i &gt; <span class="number">0</span>; --i) &#123;</span><br><span class="line">		ans[i] = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 找start time大于当前的end time的活动</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = i+<span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span>(act[j].start_time &gt; <span class="type">end_t</span>) &#123;</span><br><span class="line">        ans[i] = <span class="built_in">max</span>(ans[i], ans[j] +<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;        </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 3. return max element in ans as return num</span></span><br><span class="line">  <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; ans.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    res = <span class="built_in">max</span>(res, ans[i]);</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Pro 3:</p>
-<p>Array longest递增子序列的长度</p>
-<p>10,9,2,5,3,7,101,18 -&gt; 4</p>
-<p>定义ans_array: index i表示以array[i]结束的子序列的最长的长度</p>
-<p>Ans[0] =1;</p>
-<p>Ans[i] = max(ans[i-k]...)+1 which array[i-k] &lt; array[i]</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">findLongestSequence</span><span class="params">(<span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; array)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(array.<span class="built_in">size</span>() &lt; <span class="number">2</span>) <span class="keyword">return</span> array.<span class="built_in">size</span>();</span><br><span class="line">  std::vector&lt;<span class="type">int</span>&gt; ans;</span><br><span class="line">  ans[<span class="number">0</span>] = array[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; array.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    ans[i] = <span class="number">1</span>;</span><br><span class="line"> 		<span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span>(array[j] &lt; array[i]) ans[i] = <span class="built_in">max</span>(ans[i], ans[j]+<span class="number">1</span>);</span><br><span class="line">      </span><br><span class="line">    &#125;   </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// find max element in ans</span></span><br><span class="line">  <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; ans.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    res = <span class="built_in">max</span>(res, ans[i]);</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>n堆硬币 正整数</p>
-<p>任意一堆硬币的顶部取一个硬币</p>
-<p>取k个硬币硬币面值和的最大值</p>
-<p>Ex1: 1,100,3. 7,8,9. k=2 101</p>
-<p>Ex2:</p>
-<p>100</p>
-<p>100</p>
-<p>100</p>
-<p>100</p>
-<p>100</p>
-<p>100</p>
-<p>1，1，1，1，1，1，700</p>
-<p>k=7</p>
-<p>706</p>
-<p>Ans:列数是n（硬币的堆数），行数 max_coin_num = 7</p>
-<p>Ans: 每一列从上到下1，101， 104.。。</p>
-<p>k = 1, vector = 100,100, ... ,1</p>
-<p>k=2,</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/03/stable-diffusion-history/x##%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84class%20TreeNode%20{%20%20T%20val;%20%20TreeNode%20left;%20%20TreeNode%20right;}void%20printTraverse(TreeNode%20input)%20{%20%20stdvec/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/03/stable-diffusion-history/x##%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84class%20TreeNode%20%7B%20%20T%20val;%20%20TreeNode%20left;%20%20TreeNode%20right;%7Dvoid%20printTraverse(TreeNode%20input)%20%7B%20%20stdvec/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-03 16:07:31" itemprop="dateCreated datePublished" datetime="2026-04-03T16:07:31+08:00">2026-04-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">## 二叉树的数据结构</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line">	T val;</span><br><span class="line">	TreeNode* left;</span><br><span class="line">	TreeNode* right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printTraverse</span><span class="params">(TreeNode* input)</span> </span>&#123;</span><br><span class="line">	std::vector&lt;T&gt; res;</span><br><span class="line">	TreeNode* curr_node = input;</span><br><span class="line">	<span class="type">bool</span> fromLeftToRight = <span class="literal">true</span>; <span class="comment">//记录从左往右打印还是从右往左打印</span></span><br><span class="line">	<span class="keyword">if</span>(input == nullprt) &#123;</span><br><span class="line">		std::cout &lt;&lt; ...</span><br><span class="line">	&#125;</span><br><span class="line">	std::queue&lt;TreeNode*&gt; curr_queue;</span><br><span class="line">  curr_queue.<span class="built_in">push_back</span>(input);</span><br><span class="line">	<span class="keyword">while</span>(!curr_queue.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">		<span class="type">int</span> capacity = curr_queue.<span class="built_in">size</span>(); <span class="comment">// 因为拿出来的时候还在往后放</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; capacity; ++i) &#123;</span><br><span class="line">				TreeNode* curr = curr_queue.<span class="built_in">pop</span>()</span><br><span class="line">				<span class="keyword">if</span>(fromLeftToRight)&#123;</span><br><span class="line">					res.<span class="built_in">push_back</span>(curr-&gt;val);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					res.<span class="built_in">insert</span>(res.<span class="built_in">size</span>()-i, curr-&gt;val);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(curr_node-&gt;left!=<span class="literal">nullptr</span>) &#123;</span><br><span class="line">					curr_queue.<span class="built_in">push_back</span>(curr_node-&gt;left);		</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(curr_node-&gt;right!=<span class="literal">nullptr</span>) &#123;</span><br><span class="line">					curr_queue.<span class="built_in">push_back</span>(curr_node-&gt;right);		</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		fromLeftToRight = !fromLeftToRight</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/02/attention-blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/02/attention-blog/" class="post-title-link" itemprop="url">attention-blog</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-02 10:55:32" itemprop="dateCreated datePublished" datetime="2026-04-02T10:55:32+08:00">2026-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -453,170 +220,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>importance from top to low</p>
-<p><strong>Gilbert Strang写的Introduction to Linear Algebra</strong></p>
-<p><strong>3Blue1Brown线性代数</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/02/point-cloud/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/02/point-cloud/" class="post-title-link" itemprop="url">point-cloud</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-02 10:53:01" itemprop="dateCreated datePublished" datetime="2026-04-02T10:53:01+08:00">2026-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
+          <p>这篇论文是第一篇关于世界模型的畅想。发表于NIPs2018,由David
+Ha和人工智能四大奠基人之一的Jürgen Schmidhuber 共同撰写。</p>
+<h3 id="problem">problem</h3>
+<p>是否能构建一个智能体学习了环境的压缩信息，然后让训练在“梦境”中学习而不是在现实中学习。这篇论文给出了一个肯定的答案。</p>
+<h3 id="motivation">motivation</h3>
+<p>人预测一个球的运动轨迹从而进行成功的拦截。</p>
+<h3 id="methods">methods</h3>
+<figure>
 <img
-src="/2026/04/02/point-cloud/%E7%82%B9%E4%BA%91%E6%95%B0%E6%8D%AE%202026-03-03%2016.04.49.excalidraw.svg"
-alt="点云数据 2026-03-03 16.04.49.excalidraw" />
-<figcaption aria-hidden="true">点云数据 2026-03-03
-16.04.49.excalidraw</figcaption>
+src="/2026/04/20/David-Ha-World-models/1*nWEquJW0aSaZPqMVg7FIMQ.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
 </figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/02/translate-tool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/02/translate-tool/" class="post-title-link" itemprop="url">translate-tool</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-02 10:46:36" itemprop="dateCreated datePublished" datetime="2026-04-02T10:46:36+08:00">2026-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="要求">要求</h3>
-<p>好用，免费</p>
-<h3 id="总结">总结：</h3>
 <ul>
-<li>google浏览器插件/app：immersive translate</li>
-<li>可以翻译epub书籍，从英文到中文：
-https://app.immersivetranslate.com/?utm_source=googlesem&amp;utm_medium=searchengine_pc&amp;utm_campaign=googlekeywords_pdf_translate_zh-Hans&amp;gad_source=1&amp;gad_campaignid=21884821867&amp;gbraid=0AAAAA9n6rH7UbRojzOE2I1JPEjAcvd8Rf&amp;gclid=Cj0KCQiA2bTNBhDjARIsAK89wlF_4jJRdumptAUqnLSmfGnznbIDMs3ZpbaGotkriPyuBHh4p6zx2mQaAladEALw_wcB</li>
+<li><strong>Visual “V” Model (VAE) 视觉“V”模型（VAE）</strong></li>
+<li><strong>内存“M”模型（MDN-RNN）</strong></li>
+<li><strong>Controller “C” Model (Linear Model)</strong>:
+论文中是一个线性模型</li>
 </ul>
+<h3 id="limits">limits</h3>
+<p>1.<strong>无监督学习可能会编码无关信息。VAE</strong>
+不知道哪些信息与任务相关</p>
+<p>2.灾难性遗忘</p>
+<p>3.没有层级规划，在当前时间点预测未来。</p>
+<h3 id="关于神经科学的一些问题">关于神经科学的一些问题</h3>
+<p>1.最直接的神经科学联系是<strong>预测编码理论</strong>
+，该理论认为大脑不是被动地接收感觉信息，而是主动地预测感觉信息，并且只处理预测与现实之间的<em>误差</em>
+。体现在论文里就是世界模型给出预测，vae捕获实际信息。根据差值激活神经元。</p>
+<p>2.快速反应动作。control并不显式的plan，而是直接从rnn的隐藏状态中查询。（此时已经对未来做了预测）</p>
+<p>​ 有点类似于kv cache,真的有memory吗？其实只是推理加速。</p>
+<p>3.海马体重放</p>
+<p>在世界模型架构中，我们可以看到类似的机制：回放缓冲区相当于快速情景记忆存储；训练好的
+MDN-RNN 权重相当于缓慢统计记忆存储。</p>
+<p>4.任务相关特征的学习</p>
+<p>真实的生物感觉系统通过奖赏门控可塑性来避免这种情况：多巴胺信号（以及相关的调节系统）选择性地增强感觉区域中与奖赏结果相关的突触。</p>
+<p>​ 类似于MOE</p>
 
       
     </div>
@@ -636,7 +275,7 @@ https://app.immersivetranslate.com/?utm_source=googlesem&amp;utm_medium=searchen
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/02/expert-parameter-recommen/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/20/nvidia-cosmos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -650,7 +289,75 @@ https://app.immersivetranslate.com/?utm_source=googlesem&amp;utm_medium=searchen
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/02/expert-parameter-recommen/" class="post-title-link" itemprop="url">expert-parameter-recommen</a>
+            <a href="/2026/04/20/nvidia-cosmos/" class="post-title-link" itemprop="url">nvidia-cosmos</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-20 14:49:26 / Modified: 14:49:51" itemprop="dateCreated datePublished" datetime="2026-04-20T14:49:26+08:00">2026-04-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/programming-tools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/programming-tools/" class="post-title-link" itemprop="url">vibe coding工具:claude/geminic li+cursor+copilot</a>
         </h2>
 
         <div class="post-meta">
@@ -660,14 +367,14 @@ https://app.immersivetranslate.com/?utm_source=googlesem&amp;utm_medium=searchen
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2026-04-02 09:46:01" itemprop="dateCreated datePublished" datetime="2026-04-02T09:46:01+08:00">2026-04-02</time>
+              <time title="Created: 2026-04-18 17:11:31" itemprop="dateCreated datePublished" datetime="2026-04-18T17:11:31+08:00">2026-04-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-04-21 10:26:23" itemprop="dateModified" datetime="2026-04-21T10:26:23+08:00">2026-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -690,62 +397,31 @@ https://app.immersivetranslate.com/?utm_source=googlesem&amp;utm_medium=searchen
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3
-id="一定义解决一个专家参数推荐的问题">一、定义：解决一个专家参数推荐的问题</h3>
-<p>​
-每个行业都有自己的一些行业经验，比如工业有工艺库，医学，金融等都有一些经验参数由业内有经验的人士把握。现在可以用人工智能的方法把这部分数据利用起来。以前可以用机器学习回归的方法做一些可定义参数方面的统计回归，相似推荐；在llm出现以后一些非结构化数据也可以利用rag等技术集成进去。（比如知道某工件在某电流参数下烧穿了，以前只有参数统计，现在可以让llm根据常识去推断，类似的根据物理知识电流电压值如何变化）。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>想通过这篇确定一个通用的用机器学习解决各行各业问题的方案模版，with ai
-agent。ai让我们可以有更多精力在大的思路框架上，而不是局限于以前的细节经验本身。</p>
-</blockquote>
-<h3 id="二根据问题本身定义算法类型">二、根据问题本身定义算法类型</h3>
-<figure>
-<img
-src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-03%2011.24.56.excalidraw.svg"
-alt="机器学习算法调研 2026-03-03 11.24.56.excalidraw" />
-<figcaption aria-hidden="true">机器学习算法调研 2026-03-03
-11.24.56.excalidraw</figcaption>
-</figure>
-<h3
-id="三根据数据量定算法类型法则从完成到完善">三、根据数据量定算法类型（法则：从完成到完善）</h3>
-<p>主要看业务场景和业务规模。公司做这个项目的体量。</p>
-<figure>
-<img
-src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-03%2013.34.38.excalidraw.svg"
-alt="机器学习算法调研 2026-03-03 13.34.38.excalidraw" />
-<figcaption aria-hidden="true">机器学习算法调研 2026-03-03
-13.34.38.excalidraw</figcaption>
-</figure>
-<h3
-id="四了解数据驱动和规则驱动数据采集的方式和场景影响构建算法的差异">四、了解数据驱动和规则驱动：数据采集的方式和场景影响构建算法的差异</h3>
-<p>数据驱动也就是拿已有经验的数据去做推荐，回归，分析；这个过程中需要积累好数据和差数据。（差的数据对于神经网络的学习有非常重要的作用）。有时候我们的数据构建方式是存储最好的经验。如果基于这种数据的构建方式，只能用“规则驱动”而不是数据驱动的方法。</p>
-<p>1.混合系统，用专家系统定边界，再用optuna或者贝叶斯寻找最好的值。</p>
-<p>2.可以用知识图谱neo4j存储规则，那样是可解释性的。在工业里面因为对安全度的重视，可解释性实际上是非常重要的。</p>
-<h3 id="五work-process">五、work process:</h3>
-<p>建库-&gt;前端收集数据-&gt;后端跑模型</p>
-<p>1.建立数据库supabase+vue
-supabase是一个把后端数据库做了高度集成的开源项目，避免我自己去建立数据库进行增删改查；</p>
-<figure>
-<img
-src="/2026/04/02/expert-parameter-recommen/%E5%BB%BA%E7%AB%8B%E6%95%B0%E6%8D%AE%E5%BA%93%202026-02-27%2010.24.22.excalidraw.svg"
-alt="建立数据库 2026-02-27 10.24.22.excalidraw" />
-<figcaption aria-hidden="true">建立数据库 2026-02-27
-10.24.22.excalidraw</figcaption>
-</figure>
-<p>2.用现有的框架跑机器学习各种算法先得到一个初步结果：autoGluon/pycaret</p>
-<figure>
-<img
-src="/2026/04/02/expert-parameter-recommen/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94%202026-03-11%2013.44.31.excalidraw.svg"
-alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
-<figcaption aria-hidden="true">机器学习算法调研 2026-03-11
-13.44.31.excalidraw</figcaption>
-</figure>
-<h3 id="六做一个ml系统-关键是要有system的思维">六：做一个ML系统:
-关键是要有system的思维</h3>
-<p>可能要考虑监控，异常处理，ci/cd，从系统的角度思考一个机器学习的系统。可以参考：</p>
-<p>https://github.com/harvard-edge/cs249r_book</p>
-<p>https://pooyanjamshidi.github.io/mls/</p>
+          <h3 id="claudefee">claude（fee）</h3>
+<h4 id="安装linuxmacos">1.安装（linux/macOS）</h4>
+<p>总的通过npm安装比较方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//https://zhuanlan.zhihu.com/p/1930212605588412104 linux安装</span><br><span class="line">// 安装最新node --version 24</span><br><span class="line">// 终端claude验证安装成功</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//在macos安装多次各种各样的失败 要么没安装二进制文件要么npm没有权限，后来vpn切换到日本一次安装成功</span><br><span class="line">//https://zhuanlan.zhihu.com/p/1937543043256386586</span><br><span class="line">// claude --version</span><br></pre></td></tr></table></figure>
+<h4 id="无法访问claude原因网络限制">2. 无法访问Claude:原因网络限制</h4>
+<ul>
+<li>代理global</li>
+<li>可能是浏览器能上网，但是终端没有设置代理。export https_proxy和export
+http_proxy-&gt;一般是这个原因，验证成功。</li>
+</ul>
+<h4 id="个人用手机号注册">3.个人用手机号注册</h4>
+<p>https://juejin.cn/post/7613209888123027510</p>
+<p>Hero-SMS实卡接码，买的英国区</p>
+<p>https://hero-sms.com/purchases/numbers</p>
+<h4 id="api访问">4. api访问</h4>
+<h3 id="cursorfee">cursor(fee)</h3>
+<p>和claude构建cot的思路可能不一样，作为第二种选择。准备用claude不适应的时候来</p>
+<h3 id="copilot">copilot</h3>
+<p>代码补全的时候切换用</p>
+<h3 id="gemini-clifree">gemini cli（free）</h3>
+<p>跟claude
+在终端的控制方式有点像，关键是免费！claude用不了的时候果断切换。</p>
+<h3 id="阅读github-repodeepwiki">阅读github repo:deepwiki</h3>
+<p>阅读github repo</p>
+<h3 id="section"></h3>
 
       
     </div>
@@ -765,7 +441,7 @@ alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/31/rl-line/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/todo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -779,7 +455,7 @@ alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/03/31/rl-line/" class="post-title-link" itemprop="url">rl-outline</a>
+            <a href="/2026/04/18/todo/" class="post-title-link" itemprop="url">todo</a>
         </h2>
 
         <div class="post-meta">
@@ -788,24 +464,9 @@ alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2026-03-31 10:17:21" itemprop="dateCreated datePublished" datetime="2026-03-31T10:17:21+08:00">2026-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
+              <time title="Created: 2026-04-18 12:41:45 / Modified: 13:39:53" itemprop="dateCreated datePublished" datetime="2026-04-18T12:41:45+08:00">2026-04-18</time>
             </span>
 
           
@@ -819,170 +480,11 @@ alt="机器学习算法调研 2026-03-11 13.44.31.excalidraw" />
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>https://gemini.google.com/app/e21ea8ed5b222650</p>
-<figure>
-<img data-src="/2026/03/31/rl-line/image-20260331160925725.png"
-alt="image-20260331160925725" />
-<figcaption aria-hidden="true">image-20260331160925725</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/03/31/rl-line/image-20260331160938967.png"
-alt="image-20260331160938967" />
-<figcaption aria-hidden="true">image-20260331160938967</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/03/31/rl-line/image-20260331160947753.png"
-alt="image-20260331160947753" />
-<figcaption aria-hidden="true">image-20260331160947753</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/03/31/rl-line/image-20260331161001373.png"
-alt="image-20260331161001373" />
-<figcaption aria-hidden="true">image-20260331161001373</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/03/31/rl-line/image-20260331161010583.png"
-alt="image-20260331161010583" />
-<figcaption aria-hidden="true">image-20260331161010583</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/03/31/rl-line/image-20260331161018888.png"
-alt="image-20260331161018888" />
-<figcaption aria-hidden="true">image-20260331161018888</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/21/mle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/03/21/mle/" class="post-title-link" itemprop="url">mle</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-03-21 14:43:21" itemprop="dateCreated datePublished" datetime="2026-03-21T14:43:21+08:00">2026-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="极大似然估计mle">极大似然估计(MLE)</h4>
-<p>寻找一组参数，使得这组参数下观测到当前数据的概率最大。</p>
-<p>如果数据是完整的即没有隐藏变量，所有特征和标签都已知），MLE
-的求解通常是一个直接的优化问题。</p>
-<h3 id="核心流程四步走策略">核心流程：四步走策略</h3>
-<p>假设我们有一组独立同分布（i.i.d.）的数据 <span
-class="math display">\[$X = \{x_1, x_2, \dots,
-x_n\}\]</span>$，我们要估计模型参数 <span
-class="math inline">\(\theta\)</span>。</p>
-<h4 id="第一步构建似然函数-likelihood-function">第一步：构建似然函数
-(Likelihood Function)</h4>
-<p>似然函数 <span class="math inline">\(L(\theta)\)</span> 表示在参数
-<span class="math inline">\(\theta\)</span> 下，观测到整组数据 <span
-class="math inline">\(X\)</span>
-的联合概率。由于数据是独立的，联合概率等于各样本概率的乘积：</p>
-<p><span class="math display">\[L(\theta) = P(x_1, x_2, \dots, x_n |
-\theta) = \prod_{i=1}^{n} P(x_i | \theta)\]</span></p>
-<h4 id="第二步取对数似然-log-likelihood">第二步：取对数似然
-(Log-Likelihood)</h4>
-<p>由于连乘运算在求导时非常麻烦，且容易导致数值下溢（很多概率相乘会变得极小），我们通常对
-<span class="math inline">\(L(\theta)\)</span> 取自然对数。由于 <span
-class="math inline">\(\ln(x)\)</span> 是单调递增函数，使 <span
-class="math inline">\(\ln L(\theta)\)</span> 最大的 <span
-class="math inline">\(\theta\)</span> 同样会使 <span
-class="math inline">\(L(\theta)\)</span> 最大：</p>
-<p><span class="math display">\[\ell(\theta) = \ln L(\theta) =
-\sum_{i=1}^{n} \ln P(x_i | \theta)\]</span></p>
-<p>这样，<strong>乘法变加法</strong>，大大简化了计算。</p>
-<h4 id="第三步求导并令其为零">第三步：求导并令其为零</h4>
-<p>为了找到极值点，我们对参数 <span
-class="math inline">\(\theta\)</span> 求偏导（即计算梯度），并令导数为
-0：</p>
-<p><span class="math display">\[\frac{\partial \ell(\theta)}{\partial
-\theta} = 0\]</span></p>
-<h4 id="第四步求解参数">第四步：求解参数</h4>
-<p>解上述方程，得到的解 <span
-class="math inline">\(\hat{\theta}_{MLE}\)</span>
-即为极大似然估计值。</p>
-<hr />
-<h3 id="经典案例高斯分布的参数估计">2. 经典案例：高斯分布的参数估计</h3>
-<p>在机器人动作建模中，我们经常假设动作噪声服从高斯分布 <span
-class="math inline">\(N(\mu, \sigma^2)\)</span>。如果我们有 <span
-class="math inline">\(n\)</span> 个位置观测值，如何求均值 <span
-class="math inline">\(\mu\)</span>？</p>
-<ol type="1">
-<li><p><strong>写出单个样本的概率密度</strong>：<span
-class="math inline">\(P(x_i|\mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma}
-e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\)</span></p></li>
-<li><p><strong>写出对数似然</strong>：</p>
-<p><span class="math display">\[\ell(\mu, \sigma) = \sum_{i=1}^n \left(
--\ln(\sqrt{2\pi}\sigma) - \frac{(x_i-\mu)^2}{2\sigma^2}
-\right)\]</span></p></li>
-<li><p><strong>对 <span class="math inline">\(\mu\)</span>
-求导</strong>：</p>
-<p><span class="math display">\[\frac{\partial \ell}{\partial \mu} =
-\sum_{i=1}^n \frac{x_i - \mu}{\sigma^2} = 0\]</span></p></li>
-<li><p><strong>得出结果</strong>：</p>
-<p><span class="math display">\[\hat{\mu} = \frac{1}{n} \sum_{i=1}^n
-x_i\]</span></p>
-<p>这证明了在正态分布假设下，<strong>算术平均值</strong>就是最科学的极大似然估计。</p></li>
+          <p>1.做心灵捕手的剧本版和电影版对照_能力锻炼</p>
+<p>2.看电影《她》：https://www.zhihu.com/question/58291543/answer/1967552114474594565</p>
+<p>3.调研Lululemon</p>
+<ol start="4" type="1">
+<li>bu</li>
 </ol>
 
       
@@ -1003,7 +505,7 @@ x_i\]</span></p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/03/10/love-life/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/post-feminists/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1017,7 +519,7 @@ x_i\]</span></p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/03/10/love-life/" class="post-title-link" itemprop="url">love-life</a>
+            <a href="/2026/04/18/post-feminists/" class="post-title-link" itemprop="url">后女权主义者</a>
         </h2>
 
         <div class="post-meta">
@@ -1026,16 +528,158 @@ x_i\]</span></p>
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2026-03-10 17:12:36" itemprop="dateCreated datePublished" datetime="2026-03-10T17:12:36+08:00">2026-03-10</time>
+              <time title="Created: 2026-04-18 12:38:14 / Modified: 12:59:45" itemprop="dateCreated datePublished" datetime="2026-04-18T12:38:14+08:00">2026-04-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​
+我对于现在社交媒体的趋势和现在性别对立的趋势深感忧虑。因为对某一件事情失望，从而走向对立的另一面。西方民粹政治，极端主义分子等这是政客和鼓吹者们惯用的手段，通过对立似乎能让我们的愤怒一下子找到宣泄的出口。我不喜欢这种趋势，即使从一定程度来说我也很长时期处于蒙昧和客体的阶段而不自知，处于长期的自卑和不如男性自我压抑而不知。但是我仍然觉得这个问题的解不应该这样子。</p>
+<p>​
+就像“希望中国真的支持女足，而不是因为为了嘲讽男足才让女足走到大众眼下”。</p>
+<p>知乎：https://www.zhihu.com/question/58291543/answer/1967552114474594565</p>
+<figure>
+<img
+src="/2026/04/18/post-feminists/v2-6004811864d4a982ad9888a1d6ff02a5_r.jpg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5 id="值得学习的电影作品">值得学习的电影作品</h5>
+<p>《她》《坠落的审判》</p>
+<figure>
+<img
+src="/2026/04/18/post-feminists/v2-a06c0c1dca38d1c492d4c7e8f94e2ef4_1440w.webp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="some-words">some words</h4>
+<p><strong>于佩尔的那句话：“我演的所有女人，都是直面命运的。她们必须从现状的泥潭中走出，跨越到彼岸。”</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/paper-tool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/paper-tool/" class="post-title-link" itemprop="url">论文阅读tool</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-18 12:03:56 / Modified: 12:40:49" itemprop="dateCreated datePublished" datetime="2026-04-18T12:03:56+08:00">2026-04-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="alphaxiv">alphaxiv</h5>
+<h5 id="scholarcy">scholarcy</h5>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/robot-bigModel-paper-line/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/robot-bigModel-paper-line/" class="post-title-link" itemprop="url">大模型时代机器人模型发展的history line</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-18 11:47:35 / Modified: 12:08:17" itemprop="dateCreated datePublished" datetime="2026-04-18T11:47:35+08:00">2026-04-18</time>
+            </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1057,9 +701,262 @@ x_i\]</span></p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>最糟糕的本能是低估自己所拥有的一切。永远不要低估自己，把一切都给一个不值得或还没证明自己值得的人。这就是为什么你必须保护自己的心，不让自己在真正了解某人之前就被幻想卷走。一开始，你看到的只是他们早期（而且通常是最好的）行为。别人早期让你感觉如何，并不反映他们的性格；它反映了他们的影响力。真正的性格是一致的；只能随着时间来衡量。</p>
-<p>对方让你体验如何，一切都是围绕自己的体验和感受来。不要被对方的光环吸引。</p>
-<p>我最大的恐惧应该是浪费生命在一个不会让我快乐的人身上，而不是吓跑别人。</p>
+          <h3 id="rt-2-2023年8月google-mind">RT-2 (2023年8月,google mind)</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力。</p>
+</blockquote>
+<h4 id="url">URL：</h4>
+<p>官方project url: https://robotics-transformer2.github.io/</p>
+<p>Alphaxiv: https://www.alphaxiv.org/overview/2307.15818</p>
+<p>Scholarly: https://library.scholarcy.com/try</p>
+<figure>
+<img data-src="/2026/04/18/robot-bigModel-paper-line/img-0.jpeg"
+alt="RT-2 概述" />
+<figcaption aria-hidden="true">RT-2 概述</figcaption>
+</figure>
+<h4 id="methods">methods:</h4>
+<ul>
+<li>预训练的vlm + finetune:互联网规模数据(图像-文本对)+机器人演示数据
+<ul>
+<li>为什么有了vlm还要用视觉问答损失？防止忘记通用知识</li>
+</ul></li>
+<li>直接把机器人动作映射为language的同等地位的token，因此架构基本还是vlm的结构。</li>
+<li>推理频率： 1-3Hz,更小的vlm模型5hz</li>
+</ul>
+<blockquote>
+<p>[!NOTE]</p>
+<p>1.推理频率比较低</p>
+<p>2.展示的demo背景还是很干净的，实际操作估计要翻车。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/work-with-cailei/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/17/work-with-cailei/" class="post-title-link" itemprop="url">work-with-cailei</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-17 16:44:08" itemprop="dateCreated datePublished" datetime="2026-04-17T16:44:08+08:00">2026-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/PI-series/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/17/PI-series/" class="post-title-link" itemprop="url">PI系列论文</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-17 15:54:44 / Modified: 16:36:08" itemprop="dateCreated datePublished" datetime="2026-04-17T15:54:44+08:00">2026-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="pi07-具有涌现能力的可控模型">pi07: 具有涌现能力的可控模型</h3>
+<h5 id="url">URL:</h5>
+<p>https://www.pi.website/blog/pi07</p>
+<p>量子位总结：https://mp.weixin.qq.com/s/Z7JpjZbEk59wqAKCLLbKtg</p>
+<h5 id="架构">架构：</h5>
+<p>π0.7把prompt展开成四层：任务指令（清理厨房）+子任务指令（打开冰箱）+子目标图像（下一秒画面应该长什么样）+episode元数据（这条数据质量几分、有没有出错、速度多快）。</p>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417163157372.png"
+alt="image-20260417163157372" />
+<figcaption aria-hidden="true">image-20260417163157372</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417162259422.png"
+alt="image-20260417162259422" />
+<figcaption aria-hidden="true">image-20260417162259422</figcaption>
+</figure>
+<h5 id="几个重点发现">几个重点发现</h5>
+<ul>
+<li><p>开箱即用no
+finetune:π0.7没做任何专项训练，就能在<strong>做咖啡、叠衣服、装箱</strong>三个复杂任务上，追平π0.6经过微调的的专家模型。</p>
+<ul>
+<li>vla开始展现出组合泛化的能力，不一定强于world model？</li>
+</ul></li>
+<li><p>Cross-embodiment：让UR5e双臂完成没有采集过的叠衣服任务</p></li>
+<li><p>通过metadata告诉“数据好坏”可以提升模型效果</p>
+<ul>
+<li>这点和机器学习很像，在判别模型里我们的“坏数据”可能有比好数据更高的价值</li>
+</ul>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417163027237.png"
+alt="image-20260417163027237" />
+<figcaption aria-hidden="true">image-20260417163027237</figcaption>
+</figure></li>
+<li><p>pi07的世界模型只预测<strong>把任务指令翻译成成功那一帧应该长啥样</strong>。不预测动作后果，不模拟物理，不参与决策链路。</p></li>
+</ul>
+<h5 id="技术实现vlm-action-expert-flow-matching">技术实现：vlm + action
+expert + flow matching</h5>
+<p><strong>π0.7是一个5B参数的模型，分三块。</strong></p>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417163501417.png"
+alt="image-20260417163501417" />
+<figcaption aria-hidden="true">image-20260417163501417</figcaption>
+</figure>
+<ul>
+<li>VLM骨干：4B参数的Gemma3，负责理解视觉和语言。</li>
+<li>Action expert：860M参数的transformer，用flow
+matching生成连续动作chunk，50Hz高频控制。</li>
+<li>World
+model：从14B的BAGEL图像生成模型初始化，负责给π0.7画出未来几秒应该是什么样子。</li>
+</ul>
+<p>在推理中，<strong>模型输入</strong>包括：4路摄像头（前视+两个腕部+可选后视）、每路6帧历史画面、机器人关节状态、再加上任务指令、子任务指令、元数据、以及world
+model实时画出的次目标图像。</p>
+<p><strong>输出</strong>是一段50步的action
+chunk，实际执行15到25步，然后再推下一段。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/robot-news/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/17/robot-news/" class="post-title-link" itemprop="url">robot-news</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-17 15:31:24" itemprop="dateCreated datePublished" datetime="2026-04-17T15:31:24+08:00">2026-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
 
       
     </div>
@@ -1078,7 +975,7 @@ x_i\]</span></p>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1146,18 +1043,18 @@ x_i\]</span></p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
