@@ -1,0 +1,42 @@
+name: Render and Deploy Resume
+
+on:
+  push:
+    paths:
+      - 'resume_src/**' # 只有当你修改简历源码时才触发
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install RenderCV
+        run: |
+          pip install rendercv
+
+      - name: Render Resume
+        run: |
+          # 渲染中文版和英文版
+          rendercv render resume_src/wangxin_zh.yaml
+          rendercv render resume_src/wangxin_en.yaml
+
+      - name: Move PDF to Hexo Source
+        run: |
+          # 将生成的 PDF 移动到 Hexo 的静态资源文件夹
+          mkdir -p source/downloads/
+          cp rendercv_output/Wang_Xin_ZH.pdf source/downloads/resume_zh.pdf
+          cp rendercv_output/Wang_Xin_EN.pdf source/downloads/resume_en.pdf
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add source/downloads/*.pdf
+          git commit -m "Automated resume update" || exit 0
+          git push

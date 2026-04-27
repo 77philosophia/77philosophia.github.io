@@ -6,8 +6,6 @@ category:
   - 专业笔记
 ---
 
-
-
 ### claude（fee）
 
 官方中文教程参考https://code.claude.com/docs/zh-CN/best-practices
@@ -36,7 +34,7 @@ category:
 
 
 
-#### 3.个人用手机号注册
+#### 3.（for China）购买获取：个人用手机号注册
 
 https://juejin.cn/post/7613209888123027510
 
@@ -44,9 +42,31 @@ Hero-SMS实卡接码，买的英国区
 
 https://hero-sms.com/purchases/numbers
 
+没有尝试上面的方法。目前手里有一个api key.通过编辑环境里的api key解决了这个问题。
 
+Api key访问：
 
-#### 4. api访问
+https://zhuanlan.zhihu.com/p/1937543043256386586
+
+```json
+## vim ~/.claude/settings.json
+
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "",
+    "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
+    "API_TIMEOUT_MS": "3000000",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": 1,
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "GLM-4.5-air",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "GLM-5.1",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "GLM-5.1"
+  },
+  "permissions": {
+    "allow": [],
+    "deny": []
+  }
+
+```
 
 
 
