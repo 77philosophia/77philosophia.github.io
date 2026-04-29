@@ -140,6 +140,11 @@
     <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
 
   </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
@@ -178,6 +183,713 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/20/nvidia-cosmos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/20/nvidia-cosmos/" class="post-title-link" itemprop="url">nvidia-cosmos</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-20 14:49:26 / Modified: 14:49:51" itemprop="dateCreated datePublished" datetime="2026-04-20T14:49:26+08:00">2026-04-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/programming-tools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/programming-tools/" class="post-title-link" itemprop="url">vibe coding工具:claude/geminic li+cursor+copilot</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-18 17:11:31" itemprop="dateCreated datePublished" datetime="2026-04-18T17:11:31+08:00">2026-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-24 17:53:44" itemprop="dateModified" datetime="2026-04-24T17:53:44+08:00">2026-04-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="claudefee">claude（fee）</h3>
+<p>官方中文教程参考https://code.claude.com/docs/zh-CN/best-practices</p>
+<h4 id="安装linuxmacos">1.安装（linux/macOS）</h4>
+<p>总的通过npm安装比较方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//https://zhuanlan.zhihu.com/p/1930212605588412104 linux安装</span><br><span class="line">// 安装最新node --version 24</span><br><span class="line">// 终端claude验证安装成功</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//在macos安装多次各种各样的失败 要么没安装二进制文件要么npm没有权限，后来vpn切换到日本一次安装成功</span><br><span class="line">//https://zhuanlan.zhihu.com/p/1937543043256386586</span><br><span class="line">// claude --version</span><br></pre></td></tr></table></figure>
+<h4 id="无法访问claude原因网络限制">2. 无法访问Claude:原因网络限制</h4>
+<ul>
+<li>代理global</li>
+<li>可能是浏览器能上网，但是终端没有设置代理。export https_proxy和export
+http_proxy-&gt;一般是这个原因，验证成功。</li>
+</ul>
+<h4 id="for-china购买获取个人用手机号注册">3.（for
+China）购买获取：个人用手机号注册</h4>
+<p>https://juejin.cn/post/7613209888123027510</p>
+<p>Hero-SMS实卡接码，买的英国区</p>
+<p>https://hero-sms.com/purchases/numbers</p>
+<p>没有尝试上面的方法。目前手里有一个api key.通过编辑环境里的api
+key解决了这个问题。</p>
+<p>Api key访问：</p>
+<p>https://zhuanlan.zhihu.com/p/1937543043256386586</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">## vim ~/.claude/settings.json</span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;env&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_AUTH_TOKEN&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_BASE_URL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://open.bigmodel.cn/api/anthropic&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;API_TIMEOUT_MS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3000000&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GLM-4.5-air&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GLM-5.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GLM-5.1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deny&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="cursorfee">cursor(fee)</h3>
+<p>和claude构建cot的思路可能不一样，作为第二种选择。准备用claude不适应的时候来</p>
+<h3 id="copilot">copilot</h3>
+<p>代码补全的时候切换用</p>
+<h3 id="gemini-clifree">gemini cli（free）</h3>
+<p>跟claude
+在终端的控制方式有点像，关键是免费！claude用不了的时候果断切换。</p>
+<h3 id="阅读github-repodeepwiki">阅读github repo:deepwiki</h3>
+<p>阅读github repo</p>
+<h3 id="section"></h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/todo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/todo/" class="post-title-link" itemprop="url">todo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-18 12:41:45 / Modified: 13:39:53" itemprop="dateCreated datePublished" datetime="2026-04-18T12:41:45+08:00">2026-04-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>1.做心灵捕手的剧本版和电影版对照_能力锻炼</p>
+<p>2.看电影《她》：https://www.zhihu.com/question/58291543/answer/1967552114474594565</p>
+<p>3.调研Lululemon</p>
+<ol start="4" type="1">
+<li>bu</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/post-feminists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/post-feminists/" class="post-title-link" itemprop="url">后女权主义者</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-18 12:38:14 / Modified: 12:59:45" itemprop="dateCreated datePublished" datetime="2026-04-18T12:38:14+08:00">2026-04-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​
+我对于现在社交媒体的趋势和现在性别对立的趋势深感忧虑。因为对某一件事情失望，从而走向对立的另一面。西方民粹政治，极端主义分子等这是政客和鼓吹者们惯用的手段，通过对立似乎能让我们的愤怒一下子找到宣泄的出口。我不喜欢这种趋势，即使从一定程度来说我也很长时期处于蒙昧和客体的阶段而不自知，处于长期的自卑和不如男性自我压抑而不知。但是我仍然觉得这个问题的解不应该这样子。</p>
+<p>​
+就像“希望中国真的支持女足，而不是因为为了嘲讽男足才让女足走到大众眼下”。</p>
+<p>知乎：https://www.zhihu.com/question/58291543/answer/1967552114474594565</p>
+<figure>
+<img
+src="/2026/04/18/post-feminists/v2-6004811864d4a982ad9888a1d6ff02a5_r.jpg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5 id="值得学习的电影作品">值得学习的电影作品</h5>
+<p>《她》《坠落的审判》</p>
+<figure>
+<img
+src="/2026/04/18/post-feminists/v2-a06c0c1dca38d1c492d4c7e8f94e2ef4_1440w.webp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="some-words">some words</h4>
+<p><strong>于佩尔的那句话：“我演的所有女人，都是直面命运的。她们必须从现状的泥潭中走出，跨越到彼岸。”</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/paper-tool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/paper-tool/" class="post-title-link" itemprop="url">论文阅读tool</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-18 12:03:56 / Modified: 12:40:49" itemprop="dateCreated datePublished" datetime="2026-04-18T12:03:56+08:00">2026-04-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="alphaxiv">alphaxiv</h5>
+<h5 id="scholarcy">scholarcy</h5>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/robot-bigModel-paper-line/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/18/robot-bigModel-paper-line/" class="post-title-link" itemprop="url">大模型时代机器人模型发展的history line</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-18 11:47:35 / Modified: 12:08:17" itemprop="dateCreated datePublished" datetime="2026-04-18T11:47:35+08:00">2026-04-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="rt-2-2023年8月google-mind">RT-2 (2023年8月,google mind)</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力。</p>
+</blockquote>
+<h4 id="url">URL：</h4>
+<p>官方project url: https://robotics-transformer2.github.io/</p>
+<p>Alphaxiv: https://www.alphaxiv.org/overview/2307.15818</p>
+<p>Scholarly: https://library.scholarcy.com/try</p>
+<figure>
+<img data-src="/2026/04/18/robot-bigModel-paper-line/img-0.jpeg"
+alt="RT-2 概述" />
+<figcaption aria-hidden="true">RT-2 概述</figcaption>
+</figure>
+<h4 id="methods">methods:</h4>
+<ul>
+<li>预训练的vlm + finetune:互联网规模数据(图像-文本对)+机器人演示数据
+<ul>
+<li>为什么有了vlm还要用视觉问答损失？防止忘记通用知识</li>
+</ul></li>
+<li>直接把机器人动作映射为language的同等地位的token，因此架构基本还是vlm的结构。</li>
+<li>推理频率： 1-3Hz,更小的vlm模型5hz</li>
+</ul>
+<blockquote>
+<p>[!NOTE]</p>
+<p>1.推理频率比较低</p>
+<p>2.展示的demo背景还是很干净的，实际操作估计要翻车。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/work-with-cailei/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/17/work-with-cailei/" class="post-title-link" itemprop="url">work-with-cailei</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-17 16:44:08" itemprop="dateCreated datePublished" datetime="2026-04-17T16:44:08+08:00">2026-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/PI-series/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/17/PI-series/" class="post-title-link" itemprop="url">PI系列论文</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-17 15:54:44 / Modified: 16:36:08" itemprop="dateCreated datePublished" datetime="2026-04-17T15:54:44+08:00">2026-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="pi07-具有涌现能力的可控模型">pi07: 具有涌现能力的可控模型</h3>
+<h5 id="url">URL:</h5>
+<p>https://www.pi.website/blog/pi07</p>
+<p>量子位总结：https://mp.weixin.qq.com/s/Z7JpjZbEk59wqAKCLLbKtg</p>
+<h5 id="架构">架构：</h5>
+<p>π0.7把prompt展开成四层：任务指令（清理厨房）+子任务指令（打开冰箱）+子目标图像（下一秒画面应该长什么样）+episode元数据（这条数据质量几分、有没有出错、速度多快）。</p>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417163157372.png"
+alt="image-20260417163157372" />
+<figcaption aria-hidden="true">image-20260417163157372</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417162259422.png"
+alt="image-20260417162259422" />
+<figcaption aria-hidden="true">image-20260417162259422</figcaption>
+</figure>
+<h5 id="几个重点发现">几个重点发现</h5>
+<ul>
+<li><p>开箱即用no
+finetune:π0.7没做任何专项训练，就能在<strong>做咖啡、叠衣服、装箱</strong>三个复杂任务上，追平π0.6经过微调的的专家模型。</p>
+<ul>
+<li>vla开始展现出组合泛化的能力，不一定强于world model？</li>
+</ul></li>
+<li><p>Cross-embodiment：让UR5e双臂完成没有采集过的叠衣服任务</p></li>
+<li><p>通过metadata告诉“数据好坏”可以提升模型效果</p>
+<ul>
+<li>这点和机器学习很像，在判别模型里我们的“坏数据”可能有比好数据更高的价值</li>
+</ul>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417163027237.png"
+alt="image-20260417163027237" />
+<figcaption aria-hidden="true">image-20260417163027237</figcaption>
+</figure></li>
+<li><p>pi07的世界模型只预测<strong>把任务指令翻译成成功那一帧应该长啥样</strong>。不预测动作后果，不模拟物理，不参与决策链路。</p></li>
+</ul>
+<h5 id="技术实现vlm-action-expert-flow-matching">技术实现：vlm + action
+expert + flow matching</h5>
+<p><strong>π0.7是一个5B参数的模型，分三块。</strong></p>
+<figure>
+<img data-src="/2026/04/17/PI-series/image-20260417163501417.png"
+alt="image-20260417163501417" />
+<figcaption aria-hidden="true">image-20260417163501417</figcaption>
+</figure>
+<ul>
+<li>VLM骨干：4B参数的Gemma3，负责理解视觉和语言。</li>
+<li>Action expert：860M参数的transformer，用flow
+matching生成连续动作chunk，50Hz高频控制。</li>
+<li>World
+model：从14B的BAGEL图像生成模型初始化，负责给π0.7画出未来几秒应该是什么样子。</li>
+</ul>
+<p>在推理中，<strong>模型输入</strong>包括：4路摄像头（前视+两个腕部+可选后视）、每路6帧历史画面、机器人关节状态、再加上任务指令、子任务指令、元数据、以及world
+model实时画出的次目标图像。</p>
+<p><strong>输出</strong>是一段50步的action
+chunk，实际执行15到25步，然后再推下一段。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/robot-news/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/17/robot-news/" class="post-title-link" itemprop="url">robot-news</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-17 15:31:24" itemprop="dateCreated datePublished" datetime="2026-04-17T15:31:24+08:00">2026-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -296,911 +1008,10 @@ Rate）和效率上优于纯几何重建的 NBV。</li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/16/generalist-ai/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/16/generalist-ai/" class="post-title-link" itemprop="url">generalist-ai</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-16 15:38:44 / Modified: 15:48:50" itemprop="dateCreated datePublished" datetime="2026-04-16T15:38:44+08:00">2026-04-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="gen-0">Gen-0</h3>
-<h3 id="url">URL:</h3>
-<p>​ https://generalistai.com/blog/nov-04-2025-GEN-0</p>
-<h3 id="关键点">关键点：</h3>
-<ul>
-<li><p>Scaling Laws: 7B数据开始发生相变，10B+开始适应新任务。</p></li>
-<li><p>动作100HZ: 高频控制</p></li>
-<li><p>Harmonic Reasoning:</p></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/16/let-me-see/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/16/let-me-see/" class="post-title-link" itemprop="url">let-me-see</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-16 11:13:46" itemprop="dateCreated datePublished" datetime="2026-04-16T11:13:46+08:00">2026-04-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-20 16:16:37" itemprop="dateModified" datetime="2026-04-20T16:16:37+08:00">2026-04-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">个人笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/16/career-planning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/16/career-planning/" class="post-title-link" itemprop="url">career-planning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-16 10:31:26" itemprop="dateCreated datePublished" datetime="2026-04-16T10:31:26+08:00">2026-04-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/15/tech-directions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/15/tech-directions/" class="post-title-link" itemprop="url">tech-directions</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-15 16:11:47" itemprop="dateCreated datePublished" datetime="2026-04-15T16:11:47+08:00">2026-04-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/14/protected-good/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/14/protected-good/" class="post-title-link" itemprop="url">protected_good</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-14 14:32:33" itemprop="dateCreated datePublished" datetime="2026-04-14T14:32:33+08:00">2026-04-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/14/deal-with-unrespect/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/14/deal-with-unrespect/" class="post-title-link" itemprop="url">d</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-14 14:31:17" itemprop="dateCreated datePublished" datetime="2026-04-14T14:31:17+08:00">2026-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-15 17:50:07" itemprop="dateModified" datetime="2026-04-15T17:50:07+08:00">2026-04-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​ 三十六计，走为上策。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/14/talk-with-pm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/14/talk-with-pm/" class="post-title-link" itemprop="url">和project manager, 产品经理如何沟通</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-14 11:44:09 / Modified: 14:13:19" itemprop="dateCreated datePublished" datetime="2026-04-14T11:44:09+08:00">2026-04-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​ 在技术研发里，会有很多个角色，project
-manager项目经理，向程序员提需求的产品经理。我观察自己的心态发现，有时候我会很不爽，从而有一定的内耗。这种不爽的想法来自于：</p>
-<ul>
-<li>pm等呈现一种push的角色，占据我的时间表，嘴一张就是一个ddl。
-<ul>
-<li>因为我的目标之一是成为一个能把项目做成做好的合作者，所以接受pm的这种工作模态，忍受或者爆发都不是我想要的答案。</li>
-<li>我在思考如果我是pm的角色，如何和算法技术沟通，会让对方更愿意配合我</li>
-</ul></li>
-<li>除了催进度，pm无法提供实质性的帮助，却可以"lead"整个项目的需求。</li>
-<li>催出结果引发我的焦虑。我总有种“对结果负责的”焦虑感，但是技术研发总会有各种各样的问题，害怕达不到expectations也会让我焦虑。因此我会把这种焦虑投射到pm身上，以反感或者厌恶的方式“害怕pm提出目标”（仔细想来应该是有优绩主义的影响）
-<ul>
-<li>这部分还是要自己去解决。涉及到很多的议题：
-<ul>
-<li>如何管理自己的期望</li>
-<li>如何管理别人的期望</li>
-<li>做事情的内生动力和内燃机应该是什么样的</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>​ 下面从两个role去阐述：</p>
-<ol type="1">
-<li>如果我是算法研发ae——核心“反向利用pm”
-<ol type="1">
-<li>关于觉得pm只能“催进度”，认识到现在大多数企业的pm都是不合格的，我的不爽也是正常的（并且是健康的）。可以参考角色转换——如果我是一个pm为什么我会做的更好</li>
-<li>变“被动接受”为主动管理，在项目初期就要给出概率评估。</li>
-<li>利用pm：优秀的ae要把pm当成自己的“外挂”。当你缺算力、缺标注数据、或者跨部门对接推不动时，PM
-是帮你解决这些琐事的最佳人选。</li>
-</ol></li>
-<li>如果我是项目经理：从“supervise”变成赋能
-<ol type="1">
-<li>要有向下兼容，对算法有了解。共担风险，而非转嫁压力.</li>
-<li>明确项目的中间态和中间成果，让“对齐”是必要的。</li>
-<li>建立“容错空间”，考虑技术研发的曲折性。尊重技术的“颗粒度”.</li>
-<li>要向技术解释背后的商业逻辑、用户需求。AE
-认为“我在做一个牛逼的产品”而不是“我在完成一个 PM
-的任务”时，内驱动力会大幅提升。</li>
-</ol></li>
-</ol>
-<p>算法工程师的“不爽”，通常是因为在项目链条中感到自己被<strong>工具化</strong>了。</p>
-<p><strong>对抗这种心态最有效的武器，是参与决策。</strong>
-当你开始主动去评估项目可行性、去反向要求资源、去界定技术边界时，你就不再是一个“听活儿的”，而是一个<strong>带头人</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/14/talk-with-frank/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/14/talk-with-frank/" class="post-title-link" itemprop="url">和Frank的谈话</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-14 11:41:56" itemprop="dateCreated datePublished" datetime="2026-04-14T11:41:56+08:00">2026-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-15 17:50:27" itemprop="dateModified" datetime="2026-04-15T17:50:27+08:00">2026-04-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​ frank最近的烦恼</p>
-<p>​ “我不知道怎么处理和上级的关系”</p>
-<p>​ “我不知道怎么让他不来烦我”</p>
-<p>​ “他们总觉得让我去干一个事情是对我的恩赐，比如帮忙带学生”</p>
-<p>​ “其实这种social有什么用呢，没有什么用”</p>
-<hr />
-<p>​ 我“带学生麻烦吗”</p>
-<p>​ F"我现在就想把他们全部开掉"</p>
-<p>​ 我“你现在的时间安排是什么”</p>
-<p>​ F"四天在朋友的公司写代码"</p>
-<hr />
-<p>​ 我“你的朋友已经财富自由了你羡慕吗”</p>
-<p>​ F"很好啊，非常好，和他们吃饭我没花过钱"</p>
-<hr />
-<p>​ 我“工作做别人安排的项目会没有十分的动力，怎么解决“</p>
-<p>​
-F"但是你的经验都是你自己的啊。我没做过‘别人’的东西，我做的所有东西都是我自己的"</p>
-<hr />
-<p>​ learn so much from Frank.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/10/robot-dynamics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/10/robot-dynamics/" class="post-title-link" itemprop="url">机器人动力学 robot dynamics</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-10 14:34:59" itemprop="dateCreated datePublished" datetime="2026-04-10T14:34:59+08:00">2026-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-14 09:44:23" itemprop="dateModified" datetime="2026-04-14T09:44:23+08:00">2026-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="介绍">介绍</h3>
-<p>机器人动力学关注的是作用在机器人上的力与其所产生的加速度之间的关系。</p>
-<p>两种：</p>
-<ul>
-<li><p>Fixed-base</p></li>
-<li><p>Floating-base</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410144119505.png"
-alt="image-20260410144119505" />
-<figcaption aria-hidden="true">image-20260410144119505</figcaption>
-</figure>
-<h3 id="kinematics">Kinematics</h3>
-<p>运动学只关心“怎样运动”（位置、速度、加速度、旋转角度等几何和时间上的描述），而<strong>不关心</strong>“为什么运动”（即不关心产生运动的力、质量、扭矩等）。</p>
-<h5 id="position">position</h5>
-<p>笛卡尔坐标系、柱坐标系、球坐标系</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410152543347.png"
-alt="image-20260410152543347" />
-<figcaption aria-hidden="true">image-20260410152543347</figcaption>
-</figure></li>
-</ul>
-<h5 id="velocity">velocity:</h5>
-<p>position相对时间的梯度。</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260413101837937.png"
-alt="image-20260413101837937" />
-<figcaption aria-hidden="true">image-20260413101837937</figcaption>
-</figure>
-<h5 id="rotation">rotation</h5>
-<p>欧拉角，旋转矩阵，或者四元数</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410152707409.png"
-alt="image-20260410152707409" />
-<figcaption aria-hidden="true">image-20260410152707409</figcaption>
-</figure>
-<h5
-id="举例子向量绕轴的旋转可以转换为四元数的乘法">举例子：向量绕轴的旋转可以转换为四元数的乘法</h5>
-<h5 id="角速度">角速度：</h5>
-<ul>
-<li><p>角速度和线速度的关系：</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410170716046.png"
-alt="image-20260410170716046" />
-<figcaption aria-hidden="true">image-20260410170716046</figcaption>
-</figure></li>
-<li><p>角速度和姿态四元数的关系</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410170857930.png"
-alt="image-20260410170857930" />
-<figcaption aria-hidden="true">image-20260410170857930</figcaption>
-</figure></li>
-</ul>
-<h5 id="transformation">Transformation</h5>
-<ul>
-<li><p>坐标系之间的转换：点P在坐标系A下的坐标=坐标系平移+坐标系旋转*点P在B坐标系下的坐标</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410171057090.png"
-alt="image-20260410171057090" />
-<figcaption aria-hidden="true">image-20260410171057090</figcaption>
-</figure></li>
-<li><p>坐标系之间的R和T可以通过齐次坐标整合到一个矩阵里</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410171153860.png"
-alt="image-20260410171153860" />
-<figcaption aria-hidden="true">image-20260410171153860</figcaption>
-</figure></li>
-<li><p>刚性body的速度变换</p></li>
-</ul>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410171207973.png"
-alt="image-20260410171207973" />
-<figcaption aria-hidden="true">image-20260410171207973</figcaption>
-</figure>
-<h3
-id="多体系统运动学kinematics-of-systems-of-bodies">多体系统运动学Kinematics
-of Systems of Bodies</h3>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410172023572.png"
-alt="image-20260410172023572" />
-<figcaption aria-hidden="true">image-20260410172023572</figcaption>
-</figure>
-<ul>
-<li><p>广义坐标Generalized Coordinates) q</p>
-<ul>
-<li>描述系统配置的一组最小独立变量。</li>
-<li>对于一个机器人臂：
-<ul>
-<li><span class="math inline">\(q = [q_1, q_2, \dots,
-q_n]^T\)</span>。</li>
-<li>通常对应于旋转关节的<strong>角度</strong> (<span
-class="math inline">\(\theta\)</span>) 或移动关节的<strong>位移</strong>
-(<span class="math inline">\(d\)</span>)。</li>
-<li><strong>关节空间</strong>：所有可能的 <span
-class="math inline">\(q\)</span> 构成的向量空间。</li>
-</ul></li>
-</ul></li>
-<li><p>自由度</p></li>
-<li><p>任务空间坐标</p>
-<ul>
-<li><p>机器人末端执行器（End-effector）工作的物理空间。</p></li>
-<li><p><strong>组成</strong>： <span class="math display">\[
-x_e = [r_e, \phi_e]^T
-\]</span></p>
-<ul>
-<li><span class="math inline">\(r_e \in
-\mathbb{R}^3\)</span>：末端执行器在基坐标系下的<strong>位置</strong>（x,
-y, z）。</li>
-<li><span class="math inline">\(\phi_e \in
-SO(3)\)</span>：末端执行器的<strong>姿态</strong>（通常用旋转矩阵、欧拉角或四元数表示）。</li>
-</ul></li>
-<li><p><strong>映射关系</strong>：</p>
-<ul>
-<li><strong>正运动学 (Forward
-Kinematics)</strong>：从关节空间推导任务空间位姿，<span
-class="math inline">\(x_e = f(q)\)</span>。</li>
-<li><strong>逆运动学 (Inverse
-Kinematics)</strong>：已知目标位姿求关节角度，<span
-class="math inline">\(q = f^{-1}(x_e)\)</span>。</li>
-</ul></li>
-</ul></li>
-<li><p>操作空间坐标</p>
-<ul>
-<li>任务空间的一个<strong>最小化子集</strong>，仅包含完成特定任务所需的参数。
-<ul>
-<li>任务空间可能描述完整的 6
-维位姿（位置+姿态），但某些任务（如平面点焊）可能只需要 3 个参数（x, y
-坐标和偏航角）。</li>
-</ul></li>
-</ul></li>
-<li><p>举例子：4自由度的scara机器人</p>
-<ul>
-<li><p>拥有 4 个自由度（通常是 RRPR
-构型，即两个平行旋转副、一个平移副、一个旋转副）。</p></li>
-<li><p>广义坐标</p></li>
-<li><p>自由度:4</p></li>
-<li><p>操作空间坐标</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410173309741.png"
-alt="image-20260410173309741" />
-<figcaption aria-hidden="true">image-20260410173309741</figcaption>
-</figure></li>
-</ul></li>
-</ul>
-<p>​</p>
-<h4 id="正运动学">正运动学</h4>
-<ul>
-<li><p>正运动学解决的是“<strong>如果我知道每个关节转了多少，那么机械臂末端在哪里？</strong>”的问题。</p></li>
-<li><p><span class="math display">\[
-\chi_e = \chi_e(q) \\
-q 是关节向量，\chi_e 是末端执行器在笛卡尔空间（或操作空间）中的位姿。
-\]</span></p></li>
-</ul>
-<h4 id="微分运动学differential-kinematics">微分运动学Differential
-Kinematics</h4>
-<ul>
-<li><p>微分运动学研究的是<strong>速度</strong>之间的映射，即“<strong>如果关节以某种速度运动，末端执行器的线速度和角速度是多少？</strong>”。</p></li>
-<li><p><span class="math display">\[
-\dot{\chi}_e = J_{eA}(q) \dot{q} \\
-\dot{\dot{q}} 是关节速度向量，\dot{\chi}_e 是末端速度向量。
-\]</span></p></li>
-<li><p><strong>线性映射</strong>：与正运动学的非线性不同，在给定的位形
-<span class="math inline">\(q\)</span>
-下，末端速度与关节速度之间是<strong>线性映射</strong>关系，这个映射矩阵就是
-<strong>雅可比矩阵 (Jacobian Matrix)</strong>。</p></li>
-<li><p>雅可比矩阵 <span class="math inline">\(J_{eA}(q)\)</span>
-的维度是 <span class="math inline">\(m \times n\)</span>（<span
-class="math inline">\(m\)</span> 为任务空间维数，<span
-class="math inline">\(n\)</span>
-为关节数）。其每一个元素代表了<strong>第 <span
-class="math inline">\(j\)</span> 个关节的变化对末端第 <span
-class="math inline">\(i\)</span> 个坐标分量的偏导数</strong>： <span
-class="math display">\[
-J_{eA}(q) = \frac{\partial \chi_e}{\partial q}
-\]</span></p></li>
-<li><p>通常将雅可比矩阵拆分为<strong>线性部分（位置）*<em>和*</em>旋转部分（姿态）</strong>：
-<span class="math display">\[
-J_{eA} = \begin{bmatrix} J_{eA}^P \\ J_{eA}^R \end{bmatrix} \\
-J_{eA}^P$ (Position Jacobian) :对应末端执行器的线速度 v_e = J_{eA}^P
-\dot{q}\\
-J_{eA}^R$ (Orientation Jacobian)：对应末端执行器的角速度  \omega_e =
-J_{eA}^R \dot{q}
-\]</span></p></li>
-</ul>
-<h4 id="几何雅可比基础雅可比">几何雅可比/基础雅可比</h4>
-<ul>
-<li><p>几何雅可比矩阵 <span class="math inline">\(J_{e0}(q)\)</span>
-直接将关节速度 <span class="math inline">\(\dot{q}\)</span>
-映射到末端执行器在三维空间中的<strong>物理速度</strong> <span
-class="math inline">\(w_e\)</span>（即线速度 <span
-class="math inline">\(v_e\)</span> 和角速度 <span
-class="math inline">\(\omega_e\)</span>）</p>
-<figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260410174447397.png"
-alt="image-20260410174447397" />
-<figcaption aria-hidden="true">image-20260410174447397</figcaption>
-</figure></li>
-<li><p>几何雅可比和分析雅可比的关系</p>
-<ul>
-<li><strong>线速度部分：</strong> 通常情况下，解析雅可比的位置部分 <span
-class="math inline">\(J_{eAP}\)</span> 和几何雅可比的线速度部分 <span
-class="math inline">\(v_e\)</span> 是一致的，即 <span
-class="math inline">\(v_e = \dot{\chi}_{eP}\)</span>。</li>
-<li><strong>旋转部分（差异所在）：</strong> *
-<strong>解析雅可比</strong>使用的是姿态表示（如欧拉角）的时间变化率
-<span class="math inline">\(\dot{\alpha}\)</span>。
-<ul>
-<li><strong>几何雅可比</strong>使用的是物理角速度 <span
-class="math inline">\(\omega_e\)</span>。</li>
-</ul></li>
-</ul></li>
-<li><p>欧拉角变化率和物理角速度不一样https://gemini.google.com/app/1ba1cfb7602fe1fa?is_sa=1&amp;is_sa=1&amp;android-min-version=301356232&amp;ios-min-version=322.0&amp;campaign_id=bkws&amp;utm_source=sem&amp;utm_medium=paid-media&amp;utm_campaign=bkws&amp;pt=9008&amp;mt=8&amp;ct=p-growth-sem-bkws&amp;gclsrc=aw.ds&amp;gad_source=1&amp;gad_campaignid=20357620797&amp;gbraid=0AAAAApk5BhmrfxN96eyL6B8sj__yCdR2J&amp;gclid=CjwKCAjwhe3OBhABEiwA6392zOVa895zqphQ4PnODjDKyLYhYxDXBT0RUd_d982tnMBw4vHrsYmLiRoCEcwQAvD_BwE</p></li>
-<li><figure>
-<img data-src="/2026/04/10/robot-dynamics/image-20260413141752041.png"
-alt="image-20260413141752041" />
-<figcaption aria-hidden="true">image-20260413141752041</figcaption>
-</figure></li>
-</ul>
-<h3 id="运动控制方法">运动控制方法</h3>
-<h4 id="逆微分运动学">逆微分运动学</h4>
-<p>在机器人运行过程中，我们通常给末端设定一个期望速度 <span
-class="math inline">\(\dot{w}_e\)</span>。</p>
-<ul>
-<li><strong>正向微分运动学：</strong> <span
-class="math inline">\(\dot{w}_e = J
-\dot{q}\)</span>（已知关节动多快，算末端多快）。</li>
-<li><strong>逆微分运动学：</strong> <span class="math inline">\(\dot{q}
-= J^{+} \dot{w}_e\)</span>（已知末端要多快，反推关节给多少速度）。</li>
-</ul>
-<p>这里使用的是<strong>伪逆（Pseudo-inverse）</strong> <span
-class="math inline">\(J^{+}\)</span>，因为雅可比矩阵通常不是方阵。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1268,18 +1079,18 @@ class="math inline">\(J^{+}\)</span>，因为雅可比矩阵通常不是方阵�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1361,6 +1172,19 @@ class="math inline">\(J^{+}\)</span>，因为雅可比矩阵通常不是方阵�
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   
