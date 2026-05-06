@@ -187,6 +187,207 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/29/linux-settings/" class="post-title-link" itemprop="url">linux-settings</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-29 10:16:52" itemprop="dateCreated datePublished" datetime="2025-04-29T10:16:52+08:00">2025-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="linux开发环境配置">linux开发环境配置</h1>
+<p>1.安装ubuntu</p>
+<p>2.安装Nvidia driver</p>
+<p>3.zerotier用于远程连接(同时安装向日葵以防万一)</p>
+<p>4.更换shell为zsh，安装oh-my-zsh,配置高亮、自动补全、autojump等的插件；将主题更改为agnoster;</p>
+<p>https://www.cnblogs.com/chencarl/p/16824387.html</p>
+<p>为了展示 <strong>Agnoster</strong> 主题提示符里的三角形，需要
+<strong>Powerline</strong> 字体库的支持。</p>
+<p>https://zhuanlan.zhihu.com/p/62419420</p>
+<p>5.tmux进行管理</p>
+<p>6.安装miniconda并把路径加入到zshrc的配置文件里。</p>
+<figure>
+<img data-src="/2025/04/29/linux-settings/image-20250429143912288.png"
+alt="image-20250429143912288" />
+<figcaption aria-hidden="true">image-20250429143912288</figcaption>
+</figure>
+<p>https://www.cnblogs.com/xingnie/p/16269190.html</p>
+<p>完了要执行conda init，简单的让conda配置在zshrc的方法（有时候conda
+init默认更新了bashrc，不用拷贝设置到zshrc）</p>
+<figure>
+<img data-src="/2025/04/29/linux-settings/image-20250429145219288.png"
+alt="image-20250429145219288" />
+<figcaption aria-hidden="true">image-20250429145219288</figcaption>
+</figure>
+<p>Conda init zsh即可(因为我已经执行过了，所以是no change)</p>
+<figure>
+<img data-src="/2025/04/29/linux-settings/image-20250429145236438.png"
+alt="image-20250429145236438" />
+<figcaption aria-hidden="true">image-20250429145236438</figcaption>
+</figure>
+<p>7.远程服务器免密码连接：</p>
+<p>7.1 复制本地公钥文件到远程服务器</p>
+<p>先看.ssh文件夹下面是否有生成好的密钥文件</p>
+<p>ssh-copy-id -i ~/.ssh/id_ed25519.pub username@ip</p>
+<p>此时可以通过ssh username@ip直接登陆不需要输入密码。</p>
+<p>7.2 通过<strong><code>~/.ssh/config</code></strong> 简化连接</p>
+<p>nano ~/.ssh/config</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Host server1</span><br><span class="line">    HostName 192.168.1.100</span><br><span class="line">    User root</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line"></span><br><span class="line">Host server2</span><br><span class="line">    HostName example.com</span><br><span class="line">    User admin</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line">    Port 2222  # 如果SSH端口不是默认的22</span><br></pre></td></tr></table></figure>
+<p>之后就可以直接用别名登录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh server1  # 代替 ssh root@192.168.1.100</span><br><span class="line">ssh server2  # 代替 ssh -p 2222 admin@example.com</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/macos-install-zerotier-cannot-launch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/28/macos-install-zerotier-cannot-launch/" class="post-title-link" itemprop="url">macos-install-zerotier-cannot-launch</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-28 18:08:46" itemprop="dateCreated datePublished" datetime="2025-04-28T18:08:46+08:00">2025-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="macos-pro安装zero-tier却无法打开">macOS
+pro安装zero-tier却无法打开</h1>
+<p>https://gist.github.com/Paraphraser/3c01b5f2c9e1f298751d7c255773a1cd</p>
+<figure>
+<img
+src="/2025/04/28/macos-install-zerotier-cannot-launch/image-20250428181123099.png"
+alt="image-20250428181123099" />
+<figcaption aria-hidden="true">image-20250428181123099</figcaption>
+</figure>
+<figure>
+<img
+src="/2025/04/28/macos-install-zerotier-cannot-launch/image-20250428181152069.png"
+alt="image-20250428181152069" />
+<figcaption aria-hidden="true">image-20250428181152069</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/28/ubuntu-nvidia-driver-noNetwork/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2071,336 +2272,6 @@ alt="image-20250107105804953" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/%E4%B8%80%E4%BA%9Blora%E8%AE%AD%E7%BB%83%E7%9A%84%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/06/%E4%B8%80%E4%BA%9Blora%E8%AE%AD%E7%BB%83%E7%9A%84%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">一些lora训练的背景知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-06 23:23:29" itemprop="dateCreated datePublished" datetime="2025-01-06T23:23:29+08:00">2025-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="understanding-stable-diffusion-models">1. Understanding stable
-diffusion models</h3>
-<ul>
-<li><p>Stable diffusion 怎样理解concepts</p>
-<ul>
-<li>Stable
-diffusion已经有了大量的知识，如果我们训练lora,非常重要的就是理解和区分"New
-concepts"和"modified concepts"</li>
-<li>New concepts:这些是模型之前没遇到的或者是未充分体现</li>
-<li>Modified concepts:调整或者完善模型的现有理解</li>
-</ul></li>
-<li><p>lora种类：只用关注标准的就行。</p></li>
-<li><p>理解sd模型</p>
-<ul>
-<li><p>Latent
-space:一张512x512像素的图片大小是4x512x512，计算很耗费。因此一个解决方法是latent
-space.将数学上复杂的对象比如image转换为简单压缩的形式。</p></li>
-<li><p>一个做这种压缩过程的就是VAE,将图像压缩到它的latent
-space然后将其重建为原来的形式。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>In the case of Stable Diffusion,for an image of size 512x512, the VAE
-compresses it to 64x64x4 =16,384 values, making the process extremely
-more efficient.</p>
-</blockquote></li>
-<li><p>Text encoder, tokenizer and Embeddings</p>
-<ul>
-<li><p>kenizer将输入分词</p></li>
-<li><p>Text encoder将token编码成数字向量</p></li>
-<li><p>编码后的向量叫做embedding</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>Example:"Poiuytrezay",is encoded by the Text Encoder into "po
-#628","iu#14292","y #88","Tre #975"，“z #89”, "ay</w> #551",where the
-numbers represent the embedding ids within stable diffusion.</p>
-</blockquote></li>
-</ul></li>
-<li><p>Unet</p>
-<ul>
-<li><p>unet是一个关键部分，它mix embedding和latent-encoded图像into a
-mathematical soup 输出一个"noise" prediction.然后这个noise
-prediction会被removed
-from图像从而"denoise"it.训练lora的时候这也是train的主要部分，因为it is
-the one making prediction.</p>
-<figure>
-<img data-src="lora-training-background/image-20250106235503406.png"
-alt="image-20250106235503406" />
-<figcaption aria-hidden="true">image-20250106235503406</figcaption>
-</figure></li>
-</ul></li>
-</ul></li>
-</ul>
-<h3 id="训练的准备">2. 训练的准备</h3>
-<ul>
-<li><p>数据集</p>
-<ul>
-<li>“A bad apple spoils the bunch”</li>
-<li>Activation tags:特殊的触发词，
-prompt模型产生或者强调相应的视觉元素。</li>
-<li>The activation tag should be a unique tag that represents your
-concept/character/style and should be present as the FIRST element in
-the caption files of your dataset.</li>
-</ul></li>
-<li><p>Training script/UI</p>
-<ul>
-<li><p>各种训练脚本/ui都有相同的参数设置，只是会在部分features上有区别。</p></li>
-<li><p>理解Lora,Dreambooth和TI(text inversion)</p>
-<ul>
-<li>sd的模型用传统的fine-tune的技术可能会耗费大量资源，下面是一些替代的技术。
-<ul>
-<li>DreamBooth:与常规微调没有太大区别，但通常针对单个概念。与常规微调的主要区别在于事先保存。</li>
-<li>Textual inversion:创新新的嵌入帮助模型学习新关联</li>
-<li>LoRA:这是一种只修改模型权重的一小部分的技术。</li>
-<li>Pivotal Tuning:</li>
-<li>hypernetwork</li>
-</ul></li>
-</ul></li>
-<li><p>Base model for training</p>
-<ul>
-<li>总是用bf16/fp16 pruned模型用于训练</li>
-<li>用四种base model：NAI, SD1.5, SD2.1 SDXL
-<ul>
-<li>真实性：SD1.5，SD2.1, or SDXL(your choice)</li>
-<li>Anime/cartoon:NSI,SDXL</li>
-</ul></li>
-</ul></li>
-<li><p>Dreambooth</p>
-<ul>
-<li><p>简单解释：Dreambooth是一种微调AI模型部分内容（特别是unet和文本编码器）的方法，使用稀有标记和正则化图像来维护模型的现有知识。生成的Dreambooth模型是一个检查点。</p></li>
-<li><p>详细解释：文本到图像模型（如稳定扩散）最初在大量数据集上进行训练，以学习广泛的概念。这种初始训练形成了模型的“先验”<strong>——</strong>关于各种物体和想法（如不同的动物、车辆等）的基本知识。在这种情况下，引入新概念可能会很棘手。传统的微调（涉及根据新数据调整模型参数）可能会使模型忘记一些原始训练（称为“语言漂移”或“灾难性遗忘”).<strong>Dreambooth</strong>
-提供了一种解决方案，可以在添加新概念的同时，使用特定于类的先验保存和稀有标记来减轻模型先验知识的丢失。</p></li>
-<li><p>Regularization images/Class-specific prior preservation</p>
-<p>Dreambooth使用一种特殊方法来保持模型的原始知识不变。它涉及使用与新概念属于同一“类别”但已经是模型知识一部分的图像来训练模型。在这里，“类别”是指实体（如对象、概念或数据点）所属的广泛类别或组。</p>
-<p>例如，如果您正在教它关于特定类型的狗（例如金毛猎犬）的知识，您还包括使用初始模型生成的狗的一般图像。这有助于模型在学习新的特定类型时记住其关于狗的原始训练。</p></li>
-</ul></li>
-<li><p>Rare tokens</p>
-<ul>
-<li>在引入新概念时，<strong>Dreambooth</strong>
-建议使用不常见或罕见的标记 <strong>-</strong>
-模型不会与已知内容紧密关联的唯一标识符。由于它们先前的关联较弱，它将使语言漂移的影响较小（因为它将失去可能毫无意义的关联）
-。这可以防止新训练干扰模型的现有功能。此类标记的示例可能是：“<strong>olis</strong>”、“<strong>bnha</strong>”或“<strong>hta</strong>”。要用罕见标记表示新概念，您可以将罕见标记与类一起使用（例如“一个
-<strong>olis</strong> 女孩”，其中 <strong>olis</strong>
-可以是您想要训练的任何新角色） 。</li>
-</ul></li>
-<li><p>How Dreambooth apply to lora</p>
-<ul>
-<li><strong>LoRA</strong> 需要与现有的微调方法协同工作。最常用的方法是
-<strong>Dreambooth</strong> 和文本反转。但是，由于 <strong>LoRA</strong>
-与文本反转不兼容，因此它主要与 <strong>Dreambooth</strong> 结合使用。将
-<strong>LoRA</strong> 与<strong>Dreambooth</strong>
-结合使用的主要区别在于它如何改进模型：<strong>LoRA</strong>
-减少了需要调整的参数总数，并专注于微调模型的注意力层。这意味着它不会改变模型的整个单元和文本编码器。实际上，指导
-<strong>Dreambooth</strong> 的原则也适用于 <strong>LoRA</strong>。在
-<strong>LoRA</strong>
-训练中省略罕见的标记或正则化图像可能会导致“语言漂移”<strong>——</strong>模型开始失去其原始的训练准确性。虽然包含这些元素不是强制性的，但在训练期间注意这个潜在问题很重要。</li>
-</ul></li>
-</ul>
-<p>使用<strong>LoRA</strong> 时的一个关键挑战是有效地整合多个概念。一些
-<strong>LoRA</strong>
-模型最终会生成类似于其训练数据集中不同元素的拼贴图像（又称“拼贴画”）
-。最好的 <strong>LoRA</strong>
-不仅会生成高质量的图像，还会保留原始模型的广泛功能。例如，如果您要针对特定名人调整模型，则目标是实现该名人的变化（例如头发颜色变化）
-，而不会失去模型准确识别或描绘其他名人的能力。</p></li>
-</ul>
-<h3 id="lora">Lora</h3>
-<p>单纯引入模型，很多时候并不会触发LoRA的效果，因为LoRA在训练时基本都会加入若干个特殊的触发词，所以使用时也需要在提示词中输入触发词才能激活LoRA的效果。</p>
-<blockquote>
-<p>[!IMPORTANT]</p>
-<p>存在一些特殊的Lora不需要触发词，只要引入模型就能生效。</p>
-</blockquote>
-<p>理论上引入的LoRA不限个数（只是插件限制了），但同时引入多个LoRA模型时，同类的LoRA尽量不要重复。例如一个影响服饰、一个影响画风，它们之间是不会冲突的，还能起到很好的互补作用。但是如果两个
-<strong>LoRA</strong>
-都是影响容貌的，就有可能冲突，这时可以适当调节它们之间的权重，以其中一个为主、另一个则稍微起到调味作用就可以了。</p>
-<h4 id="lora的应用场景">lora的应用场景：</h4>
-<ol type="1">
-<li><p>描绘特定人物形象</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>大部分LoRA为了确保泛用性，训练使用的底膜都是SD大模型，所以一般情况下LoRA不挑模型，尤其是参考图上没有标注模型信息的LoRA,放心切换大模型就好。</p>
-</blockquote>
-<p>其实除了这些针对“某一个人”的LoRA之外，还有针对“某一类人”的LoRA模型——不局限于某一个人、而是实现了一个大方向的整体美化，例如：</p>
-<ul>
-<li>Fashion Girl: 使用时尚女性照片训练的模型</li>
-<li>Cute Girl: 使用可爱女性照片训练的模型</li>
-<li>AsianMale: 使用亚洲型男面孔训练的模型</li>
-</ul>
-<p>现在追加一个AsianMale的LoRA,权重不需要设置太高（免得喧宾夺主）：&lt;lora:Lora-Custom-ModelLiXian:0.3&gt;,1man</p></li>
-<li><p>描绘特定画风</p></li>
-<li><p>描绘特定概念</p></li>
-<li><p>穿着特定服饰</p></li>
-<li><p>添加特定元素</p>
-<p>特定元素其实算是服饰类的延伸，只不过它更小、更专。搭配局部重绘使用。</p></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/06/train-vpred/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/06/train-vpred/" class="post-title-link" itemprop="url">基于noobai-vpred0.65底膜的训练</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-06 23:14:28" itemprop="dateCreated datePublished" datetime="2025-01-06T23:14:28+08:00">2025-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="comfyui工作流加载">1. comfyui工作流加载</h2>
-<p>需要增加节点，直接使用官方提供的工作流即可。</p>
-<figure>
-<img data-src="/2025/01/06/train-vpred/image-20250106231614399.png"
-alt="image-20250106231614399" />
-<figcaption aria-hidden="true">image-20250106231614399</figcaption>
-</figure>
-<h2 id="webui运行">2.webui运行</h2>
-<p>根据https://huggingface.co/Laxhar/noob_sdxl_v_pred_test（一个月以前的说明文档），无法在webui里运行。</p>
-<p>根据https://huggingface.co/Laxhar/noobai-XL-Vpred-0.65s?not-for-all-audiences=true</p>
-<figure>
-<img data-src="/2025/01/06/train-vpred/image-20250106231748876.png"
-alt="image-20250106231748876" />
-<figcaption aria-hidden="true">image-20250106231748876</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/06/train-vpred/image-20250106231801221.png"
-alt="image-20250106231801221" />
-<figcaption aria-hidden="true">image-20250106231801221</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/06/train-vpred/image-20250106231816557.png"
-alt="image-20250106231816557" />
-<figcaption aria-hidden="true">image-20250106231816557</figcaption>
-</figure>
-<h2 id="lora脚本训练">3.lora脚本训练</h2>
-<p>将parameterization=1 --v_parameterization --zero_terminal_snr
---scale_v_pred_loss_like_noise_pred --debiased_estimation_loss<br />
-</p>
-<p>在https://civitai.com/models/833294/noobai-xl-nai-xl
-下面找到分享提示要将noise相关的都让之不生效 包括offset_noise之类的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2472,7 +2343,7 @@ alt="image-20250106231816557" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2483,7 +2354,7 @@ alt="image-20250106231816557" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
