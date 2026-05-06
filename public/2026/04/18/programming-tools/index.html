@@ -28,7 +28,7 @@
 <meta property="og:description" content="claude（fee） 官方中文教程参考https:&#x2F;&#x2F;code.claude.com&#x2F;docs&#x2F;zh-CN&#x2F;best-practices 1.安装（linux&#x2F;macOS） 总的通过npm安装比较方便。 12345678&#x2F;&#x2F;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;1930212605588412104 linux安装&#x2F;&#x2F; 安装最新node --version 24&#x2F;&#x2F; 终端cl">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-04-18T09:11:31.000Z">
-<meta property="article:modified_time" content="2026-04-21T02:54:30.466Z">
+<meta property="article:modified_time" content="2026-04-24T09:53:44.493Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="tool">
 <meta property="article:tag" content="programming">
@@ -146,6 +146,11 @@
     <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
 
   </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
@@ -219,7 +224,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-21 10:54:30" itemprop="dateModified" datetime="2026-04-21T10:54:30+08:00">2026-04-21</time>
+                <time title="Modified: 2026-04-24 17:53:44" itemprop="dateModified" datetime="2026-04-24T17:53:44+08:00">2026-04-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,11 +258,16 @@
 <li>可能是浏览器能上网，但是终端没有设置代理。export https_proxy和export
 http_proxy-&gt;一般是这个原因，验证成功。</li>
 </ul>
-<h4 id="个人用手机号注册">3.个人用手机号注册</h4>
+<h4 id="for-china购买获取个人用手机号注册">3.（for
+China）购买获取：个人用手机号注册</h4>
 <p>https://juejin.cn/post/7613209888123027510</p>
 <p>Hero-SMS实卡接码，买的英国区</p>
 <p>https://hero-sms.com/purchases/numbers</p>
-<h4 id="api访问">4. api访问</h4>
+<p>没有尝试上面的方法。目前手里有一个api key.通过编辑环境里的api
+key解决了这个问题。</p>
+<p>Api key访问：</p>
+<p>https://zhuanlan.zhihu.com/p/1937543043256386586</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">## vim ~/.claude/settings.json</span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;env&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_AUTH_TOKEN&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_BASE_URL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://open.bigmodel.cn/api/anthropic&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;API_TIMEOUT_MS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3000000&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GLM-4.5-air&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GLM-5.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GLM-5.1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deny&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="cursorfee">cursor(fee)</h3>
 <p>和claude构建cot的思路可能不一样，作为第二种选择。准备用claude不适应的时候来</p>
 <h3 id="copilot">copilot</h3>
@@ -354,7 +364,8 @@ http_proxy-&gt;一般是这个原因，验证成功。</li>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#claudefee"><span class="nav-number">1.</span> <span class="nav-text">claude（fee）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85linuxmacos"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装（linux&#x2F;macOS）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEclaude%E5%8E%9F%E5%9B%A0%E7%BD%91%E7%BB%9C%E9%99%90%E5%88%B6"><span class="nav-number">1.2.</span> <span class="nav-text">2. 无法访问Claude:原因网络限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E7%94%A8%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%B3%A8%E5%86%8C"><span class="nav-number">1.3.</span> <span class="nav-text">3.个人用手机号注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#api%E8%AE%BF%E9%97%AE"><span class="nav-number">1.4.</span> <span class="nav-text">4. api访问</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cursorfee"><span class="nav-number">2.</span> <span class="nav-text">cursor(fee)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#copilot"><span class="nav-number">3.</span> <span class="nav-text">copilot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gemini-clifree"><span class="nav-number">4.</span> <span class="nav-text">gemini cli（free）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%85%E8%AF%BBgithub-repodeepwiki"><span class="nav-number">5.</span> <span class="nav-text">阅读github repo:deepwiki</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section"><span class="nav-number">6.</span> <span class="nav-text"></span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#claudefee"><span class="nav-number">1.</span> <span class="nav-text">claude（fee）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85linuxmacos"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装（linux&#x2F;macOS）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEclaude%E5%8E%9F%E5%9B%A0%E7%BD%91%E7%BB%9C%E9%99%90%E5%88%B6"><span class="nav-number">1.2.</span> <span class="nav-text">2. 无法访问Claude:原因网络限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for-china%E8%B4%AD%E4%B9%B0%E8%8E%B7%E5%8F%96%E4%B8%AA%E4%BA%BA%E7%94%A8%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%B3%A8%E5%86%8C"><span class="nav-number">1.3.</span> <span class="nav-text">3.（for
+China）购买获取：个人用手机号注册</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cursorfee"><span class="nav-number">2.</span> <span class="nav-text">cursor(fee)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#copilot"><span class="nav-number">3.</span> <span class="nav-text">copilot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gemini-clifree"><span class="nav-number">4.</span> <span class="nav-text">gemini cli（free）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%85%E8%AF%BBgithub-repodeepwiki"><span class="nav-number">5.</span> <span class="nav-text">阅读github repo:deepwiki</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section"><span class="nav-number">6.</span> <span class="nav-text"></span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -370,18 +381,18 @@ http_proxy-&gt;一般是这个原因，验证成功。</li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -463,6 +474,19 @@ http_proxy-&gt;一般是这个原因，验证成功。</li>
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

@@ -140,6 +140,11 @@
     <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
 
   </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
@@ -182,7 +187,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/20/David-Ha-World-models/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/06/how-gpu-works/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -196,7 +201,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/20/David-Ha-World-models/" class="post-title-link" itemprop="url">David Ha<World models></a>
+            <a href="/2026/05/06/how-gpu-works/" class="post-title-link" itemprop="url">GPU 的工作原理：从并行像素到 CUDA 加速</a>
         </h2>
 
         <div class="post-meta">
@@ -207,7 +212,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2026-04-20 16:20:43 / Modified: 16:36:50" itemprop="dateCreated datePublished" datetime="2026-04-20T16:20:43+08:00">2026-04-20</time>
+              <time title="Created: 2026-05-06 11:08:28 / Modified: 11:22:07" itemprop="dateCreated datePublished" datetime="2026-05-06T11:08:28+08:00">2026-05-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,42 +235,130 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这篇论文是第一篇关于世界模型的畅想。发表于NIPs2018,由David
-Ha和人工智能四大奠基人之一的Jürgen Schmidhuber 共同撰写。</p>
-<h3 id="problem">problem</h3>
-<p>是否能构建一个智能体学习了环境的压缩信息，然后让训练在“梦境”中学习而不是在现实中学习。这篇论文给出了一个肯定的答案。</p>
-<h3 id="motivation">motivation</h3>
-<p>人预测一个球的运动轨迹从而进行成功的拦截。</p>
-<h3 id="methods">methods</h3>
-<figure>
-<img
-src="/2026/04/20/David-Ha-World-models/1*nWEquJW0aSaZPqMVg7FIMQ.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+          <h3 id="gpu-和-cpu">1. Gpu 和 cpu</h3>
 <ul>
-<li><strong>Visual “V” Model (VAE) 视觉“V”模型（VAE）</strong></li>
-<li><strong>内存“M”模型（MDN-RNN）</strong></li>
-<li><strong>Controller “C” Model (Linear Model)</strong>:
-论文中是一个线性模型</li>
+<li>CPU 尤其擅长处理涉及分支逻辑、操作系统管理和顺序算法的任务。</li>
+<li><strong>GPU</strong>
+是专为<strong>并行计算</strong>而设计的。它不是由几个强大的核心组成，而是由<strong>数千个较小的运算单元</strong>组成，能够同时执行许多运算。</li>
 </ul>
-<h3 id="limits">limits</h3>
-<p>1.<strong>无监督学习可能会编码无关信息。VAE</strong>
-不知道哪些信息与任务相关</p>
-<p>2.灾难性遗忘</p>
-<p>3.没有层级规划，在当前时间点预测未来。</p>
-<h3 id="关于神经科学的一些问题">关于神经科学的一些问题</h3>
-<p>1.最直接的神经科学联系是<strong>预测编码理论</strong>
-，该理论认为大脑不是被动地接收感觉信息，而是主动地预测感觉信息，并且只处理预测与现实之间的<em>误差</em>
-。体现在论文里就是世界模型给出预测，vae捕获实际信息。根据差值激活神经元。</p>
-<p>2.快速反应动作。control并不显式的plan，而是直接从rnn的隐藏状态中查询。（此时已经对未来做了预测）</p>
-<p>​ 有点类似于kv cache,真的有memory吗？其实只是推理加速。</p>
-<p>3.海马体重放</p>
-<p>在世界模型架构中，我们可以看到类似的机制：回放缓冲区相当于快速情景记忆存储；训练好的
-MDN-RNN 权重相当于缓慢统计记忆存储。</p>
-<p>4.任务相关特征的学习</p>
-<p>真实的生物感觉系统通过奖赏门控可塑性来避免这种情况：多巴胺信号（以及相关的调节系统）选择性地增强感觉区域中与奖赏结果相关的突触。</p>
-<p>​ 类似于MOE</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p><em>“CPU 就像几个技艺精湛的大厨烹饪复杂的菜肴，而 GPU
+就像成千上万个厨师同时准备简单的菜肴。”</em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">例如，考虑将两个大小为 N 的向量相加。</span><br><span class="line"></span><br><span class="line">顺序 CPU 计算：</span><br><span class="line">C[i] = A[i] + B[i]</span><br><span class="line"></span><br><span class="line">for i = 1 to N</span><br><span class="line">对于 i = 1 到 N</span><br><span class="line"></span><br><span class="line">这需要 N 次顺序操作。</span><br><span class="line"></span><br><span class="line">在 GPU 上，N 个独立的线程可以同时计算每个元素：</span><br><span class="line"></span><br><span class="line">Thread i 计算：</span><br><span class="line">C[i] = A[i] + B[i]</span><br><span class="line"></span><br><span class="line">因此，理论运行时间近似为：</span><br><span class="line">T_gpu ≈ T_cpu / P</span><br><span class="line">其中 P 为并行处理单元的数量。</span><br></pre></td></tr></table></figure>
+<h3 id="gpu的架构">2. gpu的架构</h3>
+<ol type="1">
+<li><p><strong>流式多处理器（SM）</strong></p>
+<p>这些是主要的计算单元。每个 SM
+包含许多小型算术逻辑单元（ALU）、寄存器和共享内存。</p></li>
+<li><p><strong>CUDA cores</strong></p>
+<p>负责执行加法和乘法等算术指令的基本计算单元。</p></li>
+<li><p><strong>内存层次结构</strong></p>
+<ul>
+<li>Global memory 全局内存（容量大但速度相对较慢）</li>
+<li>Shared memory 共享内存（线程块内线程共享的快速内存）</li>
+<li>Registers 寄存器（每个线程的超快存储）</li>
+<li>Constant and texture memory 常量内存和纹理内存（专用缓存内存）</li>
+</ul></li>
+</ol>
+<h3 id="gpu图形起源">3. gpu图形起源</h3>
+<p>GPU 最初是为<strong>图形渲染而</strong>设计的，特别是用于将 3D
+场景转换为 2D 图像等任务。</p>
+<p>传统的渲染流程包括以下几个阶段：</p>
+<ol type="1">
+<li>Vertex processing 顶点处理</li>
+<li>Geometry transformation 几何变换</li>
+<li>Rasterization 栅格化</li>
+<li>Pixel shading 像素着色</li>
+</ol>
+<p>每个阶段都会对大量顶点或像素执行操作。由于这些操作大多是独立的，因此可以并行计算。</p>
+<p>例如，计算每个像素的颜色涉及评估如下光照方程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">I = k_a * I_a + k_d * (N dot L) * I_l</span><br><span class="line">I = k_a * I_a + k_d * (N 点 L) * I_l</span><br><span class="line"></span><br><span class="line">where:  在哪里：</span><br><span class="line"></span><br><span class="line">I = pixel intensity  I = 像素强度</span><br><span class="line">k_a = ambient coefficient</span><br><span class="line">k_a = 环境系数</span><br><span class="line">k_d = diffuse coefficient</span><br><span class="line">k_d = 扩散系数</span><br><span class="line">N = surface normal  N = 表面法线</span><br><span class="line">L = light direction  L = 光照方向</span><br></pre></td></tr></table></figure>
+<p>每个像素独立执行此计算，这使得 GPU 成为此类工作负载的理想处理器。</p>
+<p>随着时间的推移，工程师们意识到同样的并行架构也可以加速<strong>非图形计算</strong>
+。</p>
+<h3 id="gpu效率背后的数学原理">4.gpu效率背后的数学原理</h3>
+<p>许多计算问题都可以用<strong>线性代数运算</strong>来表示，而 GPU
+可以极其高效地执行这些运算。</p>
+<p>一个基本的例子是<strong>矩阵乘法</strong> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">给定矩阵 A 和 B：</span><br><span class="line">C = A * B</span><br><span class="line"></span><br><span class="line">C 的每个元素计算如下：</span><br><span class="line">C[i,j] = 对 k 求和 A[i,k] * B[k,j]</span><br><span class="line"></span><br><span class="line">该操作涉及重复的乘加运算 ，而 GPU 正是针对此类运算进行了专门优化。</span><br><span class="line">如果 A 和 B 是大小为 N x N 的大矩阵，则计算大约需要：</span><br><span class="line">O(N³)</span><br><span class="line">但是，每个元素 C[i,j] 都可以独立计算，从而允许并行执行。</span><br><span class="line">例如，GPU 可能会分配：</span><br><span class="line"></span><br><span class="line">One thread per matrix element</span><br><span class="line">每个矩阵元素一个线程</span><br><span class="line">One block per matrix tile</span><br><span class="line">每个矩阵单元一个方块</span><br><span class="line"></span><br><span class="line">这种结构能够实现大规模并行处理 ，从而显著缩短运行时间。</span><br><span class="line">诸如此类的矩阵运算构成了以下计算的基础：</span><br><span class="line">neural networks  神经网络</span><br><span class="line">signal processing  信号处理</span><br><span class="line">scientific simulations  科学模拟</span><br><span class="line">wireless communication algorithms</span><br><span class="line">无线通信算法</span><br></pre></td></tr></table></figure>
+<h3 id="线程层次cuda运行模型">5.线程层次：cuda运行模型</h3>
+<p>为了利用 GPU 的强大功能，开发人员使用
+<strong>CUDA（统一计算设备架构）</strong> 等编程模型。</p>
+<p>CUDA 将计算组织成一个层次结构：</p>
+<p><strong>Threads → Blocks → Grids 线程 → 块 → 网格</strong></p>
+<p>每个线程执行一小段计算。线程被分组为<strong>块</strong>
+，块构成<strong>网格</strong> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">例如，假设我们要计算 N 个元素的向量加法。</span><br><span class="line"></span><br><span class="line">每个 CUDA 线程计算：</span><br><span class="line">C[i] = A[i] + B[i]</span><br><span class="line"></span><br><span class="line">线程索引通常按以下方式计算：</span><br><span class="line">i = blockIdx.x * blockDim.x + threadIdx.x</span><br><span class="line">blockIdx.x = block index  blockIdx.x = 区块索引</span><br><span class="line">blockDim.x = number of threads per block</span><br><span class="line">blockDim.x = 每个块的线程数</span><br><span class="line">threadIdx.x = thread index inside the block</span><br><span class="line">threadIdx.x = 代码块内的线程索引</span><br><span class="line"></span><br><span class="line">这种索引方式使得数千个线程能够在 GPU 上高效地协调运行。</span><br><span class="line"></span><br><span class="line">同一代码块内的线程也可以通过共享内存进行通信，这比使用全局内存要快得多。</span><br></pre></td></tr></table></figure>
+<h3 id="内存访问和性能">6.内存访问和性能</h3>
+<p>GPU 性能很大程度上取决于<strong>内存访问模式</strong> 。</p>
+<p>全局内存访问速度相对较慢。因此，CUDA
+程序会尽可能地利用<strong>共享内存和寄存器</strong> 。</p>
+<p>一项关键的优化是<strong>内存合并</strong> 。</p>
+<p>如果线程以连续模式访问内存：</p>
+<p>A[i], A[i+1], A[i+2], …</p>
+<p>GPU 可以将多个内存请求合并成一个事务。</p>
+<p>然而，不规则的访问模式会导致许多单独的内存请求，从而降低性能。</p>
+<p>实际上，经过良好优化的 GPU 程序与 CPU 实现相比，速度通常可提高
+<strong>10 倍到 100 倍</strong> 。</p>
+<h3 id="机器学习里的gpu">7. 机器学习里的gpu</h3>
+<p>深度学习的兴起极大地提升了 GPU 的重要性。</p>
+<p>训练神经网络需要反复进行矩阵运算。</p>
+<p>例如，神经网络层计算：</p>
+<p>y = W * x + b</p>
+<p>where: 在哪里：</p>
+<p>W = weight matrix W = 权重矩阵 x = input vector x = 输入向量 b = bias
+vector b = 偏置向量</p>
+<p>在训练过程中，梯度下降需要计算导数：</p>
+<p>dL/dW</p>
+<p>并执行如下更新：</p>
+<p>W = W − eta * dL/dW</p>
+<p>这些操作涉及数十亿次浮点运算，而 GPU
+由于其并行架构，能够极其高效地处理这些运算。</p>
+<h3 id="gpu在科学计算里的加速">8.gpu在科学计算里的加速</h3>
+<p>CUDA 允许开发人员使用 C/C++ 的扩展来编写 GPU 加速程序。</p>
+<p>一个简单的 CUDA 内核在概念上可能如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__global__ void vectorAdd(float *A, float *B, float *C) &#123;</span><br><span class="line">    int i = blockIdx.x * blockDim.x + threadIdx.x;</span><br><span class="line">    C[i] = A[i] + B[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>关键字 <code>__global__</code> 表示该函数在 GPU 上运行。</p>
+<p>CPU 启动内核时使用的配置如下：</p>
+<p>vectorAdd&lt;&lt;&lt;numBlocks, threadsPerBlock&gt;&gt;&gt;(A, B, C);
+vectorAdd&lt;&lt;&lt;numBlocks, threadsPerBlock&gt;
+&gt;&gt;（A、B、C）；</p>
+<p>这将同时启动数千个线程。</p>
+<p>现代 GPU 还支持以下高级功能：</p>
+<ul>
+<li>Tensor cores for deep learning 用于深度学习的张量核心</li>
+<li>Mixed-precision arithmetic 混合精度算术</li>
+<li>Asynchronous execution 异步执行</li>
+<li>Unified memory 统一内存</li>
+</ul>
+<p>这些特性显著加快了矩阵乘法和卷积运算等任务的速度。</p>
+<h3 id="现代gpu创新">9.现代gpu创新</h3>
+<p>现代 GPU 的发展已经远远超越了图形硬件的范畴。</p>
+<p>一些关键进展包括：</p>
+<p><strong>A. Tensor Cores</strong></p>
+<p>专为加速神经网络中使用的矩阵乘法运算而设计的专用单元。</p>
+<p>D = A * B + C</p>
+<p>合并成一条指令。</p>
+<p><strong>B. Ray Tracing Hardware</strong></p>
+<p>用于计算三维环境中光线相交的专用核心。</p>
+<p><strong>C. High Bandwidth Memory (HBM)</strong></p>
+<p>现代 GPU 采用堆叠式内存架构，可提供超过 <strong>1TB/s
+的</strong>带宽。</p>
+<p>这些改进使得 GPU 能够高效地处理海量数据集。</p>
+<h3 id="gpu不仅处理图形其他领域">10.gpu不仅处理图形，其他领域——</h3>
+<p>如今，GPU 为众多领域提供动力：</p>
+<ul>
+<li>Artificial intelligence 人工智能</li>
+<li>Climate simulations 气候模拟</li>
+<li>Genomics 基因组学</li>
+<li>Cryptography 密码学</li>
+<li>Wireless communication research 无线通信研究</li>
+<li>Computational physics 计算物理学</li>
+</ul>
+<p>例如，在信号处理或通信系统中，GPU 可以加速以下操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">快速傅里叶变换（FFT）：</span><br><span class="line">X[k] = sum over n of x[n] * exp(-j * 2pi * k * n / N)</span><br><span class="line">X[k] = ∑_(n) x[n] * exp(-j * 2π * k * n / N)</span><br><span class="line"></span><br><span class="line">这种变换出现在 OFDM 系统、雷达处理和频谱分析中</span><br><span class="line">GPU 加速技术即使对于极其庞大的数据集也能实现实时处理。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -285,7 +378,7 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/20/nvidia-cosmos/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/29/%E5%AD%97%E8%8A%82gr-rl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -299,7 +392,7 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/20/nvidia-cosmos/" class="post-title-link" itemprop="url">nvidia-cosmos</a>
+            <a href="/2026/04/29/%E5%AD%97%E8%8A%82gr-rl/" class="post-title-link" itemprop="url">字节gr-rl</a>
         </h2>
 
         <div class="post-meta">
@@ -308,18 +401,8 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-04-20 14:49:26 / Modified: 14:49:51" itemprop="dateCreated datePublished" datetime="2026-04-20T14:49:26+08:00">2026-04-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
+              <time title="Created: 2026-04-29 11:32:54" itemprop="dateCreated datePublished" datetime="2026-04-29T11:32:54+08:00">2026-04-29</time>
             </span>
 
           
@@ -353,7 +436,7 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/programming-tools/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/29/deepseek/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -367,7 +450,7 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/18/programming-tools/" class="post-title-link" itemprop="url">vibe coding工具:claude/geminic li+cursor+copilot</a>
+            <a href="/2026/04/29/deepseek/" class="post-title-link" itemprop="url">deepseek</a>
         </h2>
 
         <div class="post-meta">
@@ -377,14 +460,72 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2026-04-18 17:11:31" itemprop="dateCreated datePublished" datetime="2026-04-18T17:11:31+08:00">2026-04-18</time>
+              <time title="Created: 2026-04-29 08:34:08" itemprop="dateCreated datePublished" datetime="2026-04-29T08:34:08+08:00">2026-04-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/28/physical-intelligence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/28/physical-intelligence/" class="post-title-link" itemprop="url">physical-intelligence</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-28 14:33:53" itemprop="dateCreated datePublished" datetime="2026-04-28T14:33:53+08:00">2026-04-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-21 10:54:30" itemprop="dateModified" datetime="2026-04-21T10:54:30+08:00">2026-04-21</time>
+                <time title="Modified: 2026-04-29 15:50:11" itemprop="dateModified" datetime="2026-04-29T15:50:11+08:00">2026-04-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -407,184 +548,326 @@ MDN-RNN 权重相当于缓慢统计记忆存储。</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="claudefee">claude（fee）</h3>
-<p>官方中文教程参考https://code.claude.com/docs/zh-CN/best-practices</p>
-<h4 id="安装linuxmacos">1.安装（linux/macOS）</h4>
-<p>总的通过npm安装比较方便。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//https://zhuanlan.zhihu.com/p/1930212605588412104 linux安装</span><br><span class="line">// 安装最新node --version 24</span><br><span class="line">// 终端claude验证安装成功</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//在macos安装多次各种各样的失败 要么没安装二进制文件要么npm没有权限，后来vpn切换到日本一次安装成功</span><br><span class="line">//https://zhuanlan.zhihu.com/p/1937543043256386586</span><br><span class="line">// claude --version</span><br></pre></td></tr></table></figure>
-<h4 id="无法访问claude原因网络限制">2. 无法访问Claude:原因网络限制</h4>
-<ul>
-<li>代理global</li>
-<li>可能是浏览器能上网，但是终端没有设置代理。export https_proxy和export
-http_proxy-&gt;一般是这个原因，验证成功。</li>
-</ul>
-<h4 id="个人用手机号注册">3.个人用手机号注册</h4>
-<p>https://juejin.cn/post/7613209888123027510</p>
-<p>Hero-SMS实卡接码，买的英国区</p>
-<p>https://hero-sms.com/purchases/numbers</p>
-<h4 id="api访问">4. api访问</h4>
-<h3 id="cursorfee">cursor(fee)</h3>
-<p>和claude构建cot的思路可能不一样，作为第二种选择。准备用claude不适应的时候来</p>
-<h3 id="copilot">copilot</h3>
-<p>代码补全的时候切换用</p>
-<h3 id="gemini-clifree">gemini cli（free）</h3>
-<p>跟claude
-在终端的控制方式有点像，关键是免费！claude用不了的时候果断切换。</p>
-<h3 id="阅读github-repodeepwiki">阅读github repo:deepwiki</h3>
-<p>阅读github repo</p>
-<h3 id="section"></h3>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/todo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/18/todo/" class="post-title-link" itemprop="url">todo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-18 12:41:45 / Modified: 13:39:53" itemprop="dateCreated datePublished" datetime="2026-04-18T12:41:45+08:00">2026-04-18</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>1.做心灵捕手的剧本版和电影版对照_能力锻炼</p>
-<p>2.看电影《她》：https://www.zhihu.com/question/58291543/answer/1967552114474594565</p>
-<p>3.调研Lululemon</p>
-<ol start="4" type="1">
-<li>bu</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/post-feminists/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/18/post-feminists/" class="post-title-link" itemprop="url">后女权主义者</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-18 12:38:14 / Modified: 12:59:45" itemprop="dateCreated datePublished" datetime="2026-04-18T12:38:14+08:00">2026-04-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​
-我对于现在社交媒体的趋势和现在性别对立的趋势深感忧虑。因为对某一件事情失望，从而走向对立的另一面。西方民粹政治，极端主义分子等这是政客和鼓吹者们惯用的手段，通过对立似乎能让我们的愤怒一下子找到宣泄的出口。我不喜欢这种趋势，即使从一定程度来说我也很长时期处于蒙昧和客体的阶段而不自知，处于长期的自卑和不如男性自我压抑而不知。但是我仍然觉得这个问题的解不应该这样子。</p>
+          <h3 id="tldr">TL;DR</h3>
 <p>​
-就像“希望中国真的支持女足，而不是因为为了嘲讽男足才让女足走到大众眼下”。</p>
-<p>知乎：https://www.zhihu.com/question/58291543/answer/1967552114474594565</p>
+在训练一个通用机器人模型的过程中，分享自己关于vla,rl,机器人操作的观点。</p>
+<h3 id="关于公司">关于公司</h3>
+<h3 id="website">website</h3>
+<h3 id="timeline">Timeline</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">timeline</span><br><span class="line">    title Physics-Informed Neural Networks (PINN) 演进史</span><br><span class="line">    2017 : 奠基之作 : Raissi et al. 提出 PINN (Physics Informed Deep Learning)</span><br><span class="line">    2019 : 理论完善 : J. Comput. Phys. 正式刊载 PINN 核心算法</span><br><span class="line">    2020 : 变体涌现 : fPINN (分数阶) : cPINN (守恒律) : XPINN (扩展型)</span><br><span class="line">    2021 : 架构优化 : Adaptive Activation Functions : DeepONet (算子学习结合)</span><br><span class="line">    2022 - 2024 : 工业与大模型结合 : Physics-Informed Transformers : PINNacle 基准测试</span><br></pre></td></tr></table></figure>
+<h5 id="年4月-观察到涌现">1. 2026年4月 观察到涌现</h5>
+<ul>
+<li><p>π 0.7
+是一个通用模型，能够以与经过精细调校的专家模型相同的性能执行各种灵巧性任务。重点是通过语言指令执行了训练数据里没有出现的任务。</p>
+<ul>
+<li>能够以相同的速度和鲁棒性执行我们之前用强化学习微调的 π * 0.6 <a
+target="_blank" rel="noopener" href="https://www.pi.website/blog/pistar06">专业模型</a>所展示的灵巧操作技能</li>
+<li>能够组合和重组已学习的技能来解决新任务；</li>
+</ul></li>
+<li><p>泛化的原因：使用广泛且多样化的数据</p>
+<ul>
+<li><p>添加<em>多样化的上下文</em>
+：使用各种多模态提示结构训练模型，这些结构不仅指定机器人应<em>该做什么</em>
+，还指定它应<em>该如何做</em>
+。提示信息不仅可以包含任务的文本描述，还可以包含各种其他标注和模态。</p></li>
+<li><p>整合：</p>
 <figure>
-<img
-src="/2026/04/18/post-feminists/v2-6004811864d4a982ad9888a1d6ff02a5_r.jpg"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h5 id="值得学习的电影作品">值得学习的电影作品</h5>
-<p>《她》《坠落的审判》</p>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428144130005.png"
+alt="image-20260428144130005" />
+<figcaption aria-hidden="true">image-20260428144130005</figcaption>
+</figure></li>
+</ul></li>
+<li><p>Methods framework:</p>
 <figure>
-<img
-src="/2026/04/18/post-feminists/v2-a06c0c1dca38d1c492d4c7e8f94e2ef4_1440w.webp"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428144203317.png"
+alt="image-20260428144203317" />
+<figcaption aria-hidden="true">image-20260428144203317</figcaption>
+</figure></li>
+<li><p>新任务，用简单的语言微调可以达到目的；跨本体完成叠衣服的任务。</p></li>
+</ul>
+<h5 id="年3月-rlt的rl微调方法精细操作">2.2026年3月：
+RLT的rl微调方法——精细操作</h5>
+<p>Precise Manipulation with Efficient Online RL</p>
+<ul>
+<li><p>15分钟的在线rl帮助改进最后的高精度阶段</p></li>
+<li><p>背景：精确，灵巧的动作，对准的动作vla还不够：vla可以拿起螺丝刀，对准就差点意思。</p>
+<ul>
+<li><p>提出一种名为 RL tokens ( RLT )
+的新方法，该方法旨在改进需要精细操作的精确且复杂的任务，仅需几分钟或几小时的真实世界经验即可进行学习。</p></li>
+<li><p>在 VLA
+和轻量级强化学习策略之间提供了一个简洁的接口，使机器人能够在短短几个小时内调整自身行为，而无需对整个模型进行微调。</p>
+<ul>
+<li>之前（上一篇工作）证明rl可以从经验中学习，提出了recap的方法针对大规模、长周期任务的强化学习，在某些情况我们希望能快速改进特定情况，比微调vla要快。</li>
+</ul></li>
+<li><p>思路：训练 VLA 生成一个“RL 标记”，该标记可以提供 VLA
+内部表征的简洁摘要。然后，我们将此 RL
+标记用作一个更小模型的输入，该模型可以实时进行强化学习训练。</p></li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428145314630.png"
+alt="image-20260428145314630" />
+<figcaption aria-hidden="true">image-20260428145314630</figcaption>
+</figure></li>
+<li><p>Rl-token的生成过程：通过添加一个编码器-解码器转换器来改进
+VLA，生成vla的压缩表示</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428150110463.png"
+alt="image-20260428150110463" />
+<figcaption aria-hidden="true">image-20260428150110463</figcaption>
+</figure></li>
+</ul></li>
+<li><p>Results:将一颗微小的 M3
+螺丝拧入机械臂、扎带固定、以太网线插入和电源线插入;</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428150131666.png"
+alt="image-20260428150131666" />
+<figcaption aria-hidden="true">image-20260428150131666</figcaption>
+</figure></li>
+</ul>
+<h5 id="年3月-长短期记忆的vla">3.2026年3月 长短期记忆的vla</h5>
+<p>https://www.pi.website/research/memory</p>
+<ul>
+<li>认识：单一的运动技能不够，机器人需要有记忆：
+<ul>
+<li>机器人必须能够清晰地描述自己在任务中所处的位置，即使相关物体不在视野范围内，也能记住它们的位置，并且能够回忆起过去哪些方法有效、哪些无效，从而避免重蹈覆辙。</li>
+</ul></li>
+<li>Multi-scale Embodied Memory
+(MEM)，跟踪时长不超过十五分钟的任务，同时保留短期和长期任务。
+<ul>
+<li>短期：以原始观察数据的形式保存</li>
+<li>长期：以自然语言中的抽象概念形式存储</li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428152257143.png"
+alt="image-20260428152257143" />
+<figcaption aria-hidden="true">image-20260428152257143</figcaption>
+</figure></li>
+<li>短期记忆的视频编码器进行了设计<img
+src="/2026/04/28/physical-intelligence/image-20260428152406712.png"
+alt="image-20260428152406712" /></li>
+<li>长期记忆由对过去事件的文本描述构成。</li>
+</ul></li>
+<li>MEM
+为我们的模型提供了更强的鲁棒性，使其能够长时间地执行更复杂的指令。我们正朝着更接近真实工作的任务模式迈进，而不再局限于单个的原子动作。未来，用户可能不仅会向机器人发出“帮我叠衣服”这样的简单指令，还会发出完整的家务安排（“我下午
+6
+点到家，请准备好晚餐，并在周三打扫房子”）。模型需要解析这些指令，将其分解成具体的计划，并在数小时、数天甚至数周内跟踪该计划的执行情况。</li>
+</ul>
+<h5 id="年2月-物理智能层调用基础模型api在上面扩展">4. 2026年2月
+物理智能层：调用基础模型api在上面扩展</h5>
+<p>https://www.pi.website/blog/partner</p>
+<ul>
+<li>机器人的应用目前不是api访问，调用就可以用。往往自己要从0开始构建整个物理智能栈。我们希望提供一个现成的、易于访问和重用的<em>物理智能层</em>
+。通用机器人基础模型，例如 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pi0">π
+0</a> 、 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pi05">π 0.5</a> 、 <a
+target="_blank" rel="noopener" href="https://website.pi-asset.com/pi06star/PI06_model_card.pdf">π
+0.6</a> 或 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pistar06">π * 0.6</a>
+，就提供了这样一个层，能够显著降低构建实用机器人系统的成本和工作量。</li>
+<li>目前pi06的落地应用场景：
+<ul>
+<li>折叠衣物的场景</li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428153104206.png"
+alt="image-20260428153104206" />
+<figcaption aria-hidden="true">image-20260428153104206</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h5 id="年12月-pi06各种莫拉维克悖论任务测试">5. 2025年12月
+pi06各种莫拉维克悖论任务测试</h5>
+<p>Moravec's Paradox and the Robot Olympics</p>
+<p>https://www.pi.website/blog/olympics</p>
+<ul>
+<li><p>开门：</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428163242579.png"
+alt="image-20260428163242579" />
+<figcaption aria-hidden="true">image-20260428163242579</figcaption>
+</figure></li>
+<li><p>洗衣</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428163300934.png"
+alt="image-20260428163300934" />
+<figcaption aria-hidden="true">image-20260428163300934</figcaption>
+</figure></li>
+<li><p>基本工具使用：开锁</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428163323964.png"
+alt="image-20260428163323964" />
+<figcaption aria-hidden="true">image-20260428163323964</figcaption>
+</figure></li>
+<li><p>三明治涂花生酱</p></li>
+<li><p>清洁窗户、使用狗屎带夹起狗屎</p></li>
+<li><p>金牌项目剥橙子：使用了辅助小道，完成的不好</p></li>
+<li><p>关键在于将多模态逻辑学习模型（LLM）中的先验知识（这些知识可以提供对物理任务的“理论”理解）与多样化且具有代表性的真实物理行为数据相结合。</p></li>
+</ul>
+<h5 id="年12月-human-to-robot">6.2025年12月 human-to-robot</h5>
+<p>https://www.pi.website/research/human_to_robot</p>
+<ul>
+<li><p>随着机器人训练数据量的增加，机器人基础模型能够实现从人类视频到机器人任务的迁移。</p></li>
+<li><p>我们开发了一种利用人类自我中心数据来改进模型的方法，在机器人数据有限的任务上，模型性能提升了约
+2 倍。</p>
+<ul>
+<li><p>将人类视频数据视为我们现有的机器人模型，其动作由 3D
+手部位置表示，无需任何特殊的迁移学习方法。我们将人类数据与最相关的机器人数据相结合，并在此混合数据上进行微调，然后在仅在人类演示中展示的特定场景下评估策略。例如，在鸡蛋分类任务中，机器人数据展示了如何将鸡蛋放入纸盒，而人类数据则展示了如何将不同颜色的鸡蛋分类放入多个纸盒中——这是用于评估的场景。</p></li>
+<li><p>仅仅通过在微调中加入人类视频数据，我们的策略在仅存在于人类数据中的
+4 个泛化场景下的性能就提升了约 2 倍。</p></li>
+<li><p><em>随着预训练模型规模的扩大，添加人类数据带来的性能提升也随之增加</em>
+。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428164144458.png"
+alt="image-20260428164144458" />
+<figcaption aria-hidden="true">image-20260428164144458</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h5 id="年11月-π0.6-从经验中学习的vla">7. 2025年11月 π*0.6:
+从经验中学习的vla</h5>
+<p>https://www.pi.website/blog/pistar06</p>
+<p>开发了一种名为
+Recap（基于优势条件策略的经验与纠正强化学习）的方法，它实现了所有三个步骤：通过演示训练机器人，通过纠正指导机器人，并使其能够从自主经验中改进。</p>
+<p>使用 Recap 改进了最新版本的视觉-语言-动作 (VLA) 模型 π 0.6
+，使其能够稳健高效地执行复杂任务：制作意式浓缩咖啡、组装盒子和折叠各种衣物。模型可靠性得到了很大的提升。（长期执行任务）</p>
+<ul>
+<li><p>Methods:<em>一是指导</em>以提供纠正，即专家向机器人展示如何纠正错误或做得更好；二是<em>强化学习</em></p>
+<ul>
+<li><p>Recap
+通过训练一个<em>价值函数</em>来应对强化学习中奖励分配的问题：从机器人的经验中学习价值函数，就可以通过观察价值函数的变化来判断哪些行为是好是坏。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428165641268.png"
+alt="image-20260428165641268" />
+<figcaption aria-hidden="true">image-20260428165641268</figcaption>
+</figure></li>
+<li><p>在 Recap 中，我们根据价值变化来<em>调整</em>策略（即
+VLA），使用所有数据进行训练（包括好动作和坏动作），同时告知 VLA
+哪些动作是好动作，哪些动作是坏动作。</p></li>
+<li><p>Recap 的第一阶段是使用离线强化学习 (RL) 对 π * 0.6
+模型进行预训练，这与基础 π 0.6 和 π 0.5 VLA
+使用的标准监督学习方法不同。之后，我们利用演示数据对 π * 0.6
+模型进行微调，使其适应每个任务，然后使用从机器人收集的额外数据，通过强化学习进一步训练该模型。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428165827020.png"
+alt="image-20260428165827020" />
+<figcaption aria-hidden="true">image-20260428165827020</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h5 id="年6月-实时action-chunk">8.2025年6月 实时action chunk</h5>
+<p>https://www.pi.website/research/real_time_chunking</p>
+<p>PI05是同步执行的。推理-》执行-〉下一步；结果就是没有差异但是有停顿。</p>
+<p>提出一种RTC的算法，能够实现无间断的实时执行，并且适用于任何基于扩散或流的
+VLA（包括 π 0.5 ），无需<strong>任何训练时间的更改</strong> 。</p>
+<p>一个优秀的实时算法应该生成一个与上次action
+chunk重叠动作<em>一致的</em>新数据块，同时保持模型对新信息的反应能力和做出智能决策的能力。</p>
+<p>把实时分块问题建模为图像修复问题。假设我们的模型在接收到观测数据后，需要
+3 个控制器时间步才能生成一个动作块。新动作块的前 3
+个动作无法执行，因为在新动作块可用时，这 3
+个时间步已经过去。因此，将这些动作“冻结”为已知<em>会</em>执行的前一个动作块的值是合理的；我们的目标是填充新动作块的剩余部分，就像修复图像中被移除的部分一样。</p>
+<p>效果也非常好。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428171504797.png"
+alt="image-20260428171504797" />
+<figcaption aria-hidden="true">image-20260428171504797</figcaption>
 </figure>
-<h4 id="some-words">some words</h4>
-<p><strong>于佩尔的那句话：“我演的所有女人，都是直面命运的。她们必须从现状的泥潭中走出，跨越到彼岸。”</strong></p>
+<h5 id="年5月-训练一个速度快泛化好的vlapi05ki">9. 2025年5月
+训练一个速度快，泛化好的vla：PI05+KI</h5>
+<p>https://www.pi.website/research/knowledge_insulation</p>
+<p>第一代vla(RT-2， openvla)
+把action离散成token,虽然这种方法适用于基本的操作，例如拾取物体，但并不适用于高频、精确或流畅的运动,运行慢。</p>
+<p>第二代vla从 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pi0">π 0</a>
+开始）通过在 VLA
+训练过程中添加新的神经模块来生成连续输出，通常采用扩散或流匹配等连续生成建模技术。这些新模块以<a
+target="_blank" rel="noopener" href="https://www.pi.website/blog/pi0">动作专家</a>或<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.14734">动作头</a>的形式出现;嫁接到vlm上可能导致遗忘，损害vlm的内部表征。</p>
+<p>我们想要：把action expert
+嫁接到vlm上，但是不需要丢失预先训练的网络规模只是，称之为“知识隔离vla”:利用
+<a target="_blank" rel="noopener" href="https://www.pi.website/research/fast">FAST
+标记化的</a>离散化动作来微调 VLM
+主干网络，从而快速学习高质量的表示；同时，调整动作专家，使其能够生成连续动作，而无需将其梯度传播回
+VLM
+主干网络。训练完成后，动作专家可以通过流匹配生成流畅的连续动作，而离散化的动作则被丢弃。</p>
+<p>但是直接嫁接会有不利的影响：</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429144032922.png"
+alt="image-20260429144032922" />
+<figcaption aria-hidden="true">image-20260429144032922</figcaption>
+</figure>
+<ul>
+<li>自回归的vla算法(比如PI0-fast)不存在这个问题，但是由于自回归的推理很耗时，完成任务非常慢。</li>
+<li>提出了一种方法：</li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429150848178.png"
+alt="image-20260429150848178" />
+<figcaption aria-hidden="true">image-20260429150848178</figcaption>
+</figure></li>
+</ul>
+<p>我们用以下方式训练 VLM 骨干网络：</p>
+<p>1.阻止动作专家到vlm的梯度流</p>
+<p>2.由于vlm不再接受action
+expert的梯度，表征不再适应机器人控制的要求，使得action
+expert更难生成正确的运动。用pi0-fast训练vlm骨干网络。</p>
+<h5 id="年4月-pi05">10.2025年4月 PI05</h5>
+<p>https://www.pi.website/blog/pi05</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429151407478.png"
+alt="image-20260429151407478" />
+<figcaption aria-hidden="true">image-20260429151407478</figcaption>
+</figure>
+<ul>
+<li><p>如何运作：</p>
+<ul>
+<li><p>异构数据上的协同训练</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429151531558.png"
+alt="image-20260429151531558" />
+<figcaption aria-hidden="true">image-20260429151531558</figcaption>
+</figure></li>
+<li><p>排除web数据，多环境数据进行对比实验发现：π 0.5
+的泛化性能随着训练集中不同环境数量的增加而稳步提升，而且在仅约 100
+个训练环境后，其性能就已接近直接在测试环境上训练的基线模型。<img
+src="/2026/04/28/physical-intelligence/image-20260429151718404.png"
+alt="image-20260429151718404" /></p></li>
+<li><p>运行的时候，先输出一个以文本形式表达的“高层”动作，后要求它根据这个高层动作选择合适的机器人电机指令，该指令以
+50 步（1 秒）的连续低层关节动作“动作块”的形式呈现。<img
+src="/2026/04/28/physical-intelligence/image-20260429152002198.png"
+alt="image-20260429152002198" /></p></li>
+</ul></li>
+</ul>
+<h5 id="年2月-hi-robot">11. 2025年2月 hi robot</h5>
+<p>https://www.pi.website/research/hirobot</p>
+<p>上层vlm思考+下层vla的执行</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429152736030.png"
+alt="image-20260429152736030" />
+<figcaption aria-hidden="true">image-20260429152736030</figcaption>
+</figure>
+<h5 id="开源pi0">12.开源pi0</h5>
+<p>https://www.pi.website/blog/openpi</p>
+<p>1 到 20
+小时的数据足以对各种任务进行微调，但实际情况可能有所不同。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429152947513.png"
+alt="image-20260429152947513" />
+<figcaption aria-hidden="true">image-20260429152947513</figcaption>
+</figure>
+<h5 id="fast-action-tokenization">13. FAST: Action Tokenization</h5>
+<p>https://www.pi.website/research/fast</p>
+<ul>
+<li><p>Transformer 的discrete
+bin对精细灵巧控制不够；扩散和流匹配表现更好但是慢。怎么表示动作词元对下游任务很重要；提出了一种针对动作的新型分词器，名为
+FAST。</p></li>
+<li><p>DCT+编码 (BPE) 相结合,相比以往的把动作压缩了10倍。<img
+src="/2026/04/28/physical-intelligence/image-20260429154431018.png"
+alt="image-20260429154431018" /></p></li>
+<li><p>训练快5倍，但是推理比flow matching慢<img
+src="/2026/04/28/physical-intelligence/image-20260429154553743.png"
+alt="image-20260429154553743" /></p></li>
+</ul>
+<h5 id="年10月-pi0第一个通才模型">14.2024年10月 PI0:第一个通才模型</h5>
+<p>https://www.pi.website/blog/pi0</p>
+<p>从预训练的vlm出发</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429154751079.png"
+alt="image-20260429154751079" />
+<figcaption aria-hidden="true">image-20260429154751079</figcaption>
+</figure>
 
       
     </div>
@@ -604,7 +887,7 @@ alt="img" />
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/paper-tool/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/28/diffusion-policy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -618,7 +901,7 @@ alt="img" />
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/18/paper-tool/" class="post-title-link" itemprop="url">论文阅读tool</a>
+            <a href="/2026/04/28/diffusion-policy/" class="post-title-link" itemprop="url">diffusion-policy</a>
         </h2>
 
         <div class="post-meta">
@@ -627,9 +910,17 @@ alt="img" />
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-04-18 12:03:56 / Modified: 12:40:49" itemprop="dateCreated datePublished" datetime="2026-04-18T12:03:56+08:00">2026-04-18</time>
+              <time title="Created: 2026-04-28 11:50:10" itemprop="dateCreated datePublished" datetime="2026-04-28T11:50:10+08:00">2026-04-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
             </span>
 
           
@@ -643,8 +934,19 @@ alt="img" />
     <div class="post-body" itemprop="articleBody">
 
       
-          <h5 id="alphaxiv">alphaxiv</h5>
-<h5 id="scholarcy">scholarcy</h5>
+          <h2 id="title-url">Title &amp; URL</h2>
+<ul>
+<li><strong>Title</strong>:</li>
+<li><strong>URL</strong>:</li>
+<li><strong>Author</strong>:</li>
+<li><strong>Time</strong>:</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<h2 id="key-insights">Key Insights</h2>
+<h2 id="methods">Methods</h2>
+<h2 id="results">Results</h2>
+<h2 id="reflections">Reflections</h2>
+<h2 id="other-links">Other Links</h2>
 
       
     </div>
@@ -664,7 +966,7 @@ alt="img" />
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/18/robot-bigModel-paper-line/">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/28/Rl-100/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -678,7 +980,7 @@ alt="img" />
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/04/18/robot-bigModel-paper-line/" class="post-title-link" itemprop="url">大模型时代机器人模型发展的history line</a>
+            <a href="/2026/04/28/Rl-100/" class="post-title-link" itemprop="url">Rl-100</a>
         </h2>
 
         <div class="post-meta">
@@ -689,7 +991,465 @@ alt="img" />
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2026-04-18 11:47:35 / Modified: 12:08:17" itemprop="dateCreated datePublished" datetime="2026-04-18T11:47:35+08:00">2026-04-18</time>
+              <time title="Created: 2026-04-28 11:32:24 / Modified: 11:39:26" itemprop="dateCreated datePublished" datetime="2026-04-28T11:32:24+08:00">2026-04-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="title-url">Title &amp; URL</h2>
+<ul>
+<li><strong>Title</strong>:Performant Robotic Manipulation with
+Real-World Reinforcement Learning</li>
+<li><strong>URL</strong>:
+<ul>
+<li>https://arxiv.org/abs/2510.14830</li>
+<li>https://github.com/lucidrains/RL-100/tree/main
+（截止2026.4暂未开源）</li>
+</ul></li>
+<li><strong>Author</strong>:</li>
+<li><strong>Time</strong>:2025年10月</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<p>把“示教 + 离线 RL + 少量在线
+RL”这条路线组织成了一套清晰的训练流程，并在真实机器人任务中进行了系统验证。</p>
+<h2 id="key-insights">Key Insights</h2>
+<p>1.清晰地组织了<strong>示教 → 离线迭代 →
+少量</strong>在线微调的训练路径。效果和hil-serl是两个能在真机99%的算法。</p>
+<p>2.蒸馏解决扩散策略在实际控制中“推理慢”的工程问题</p>
+<h2 id="methods">Methods</h2>
+<figure>
+<img data-src="/2026/04/28/Rl-100/image-20260428113745454.png"
+alt="image-20260428113745454" />
+<figcaption aria-hidden="true">image-20260428113745454</figcaption>
+</figure>
+<h2 id="results">Results</h2>
+<h2 id="reflections">Reflections</h2>
+<h2 id="other-links">Other Links</h2>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/27/generalistai/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/27/generalistai/" class="post-title-link" itemprop="url">generalistai</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-27 17:52:19" itemprop="dateCreated datePublished" datetime="2026-04-27T17:52:19+08:00">2026-04-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="tldr">TL;DR</h4>
+<p>设计了一套手持装备，100hz高频无感摇操，从0开始训练，100hz高频控制。</p>
+<h4 id="关于公司">关于公司</h4>
+<p>Generalist ai的人来自open,波士顿动力，google
+deepmind等公司；demo很惊艳，技术很少披露。</p>
+<p>公司的目标是构建AGI.</p>
+<h4 id="website">website:</h4>
+<p>https://generalistai.com/</p>
+<figure>
+<img data-src="/2026/04/27/generalistai/image-20260427162553678.png"
+alt="image-20260427162553678" />
+<figcaption aria-hidden="true">image-20260427162553678</figcaption>
+</figure>
+<h4 id="timeline">Timeline:</h4>
+<p>将generalistai官方博客披露的文章用一句话概括。</p>
+<p>从新到旧：</p>
+<h6 id="不是vlawm">1.2026.4.7 不是vla/wm</h6>
+<p>Going Beyond World Models &amp; VLAs</p>
+<p>（https://generalistai.com/blog/apr-07-2026-beyond-world-models）：我们的模型不定义为vla或者wm，强调以目标为主从0开始训练。认为“只要数据够”（50万小时），就能训练强大的模型。具体的，从AGI的最终目标出发(zero-shot
+do task),先完成x小时的微调可以完成99%的工作，优化过程将x逐渐减小。</p>
+<p>参考：</p>
+<ul>
+<li>https://x.com/giffmana/status/1995634504321687979 learning from
+scratch always wins</li>
+<li>在vla的历史探索RT-2:https://robotics-transformer2.github.io/</li>
+<li>关于vlm的探索：https://video-language-planning.github.io/</li>
+<li>最早的多模态模型：https://palm-e.github.io/</li>
+</ul>
+<h6 id="gen-1达到99商业可用凸显">2.2026.4.2
+Gen-1达到99%商业可用凸显</h6>
+<p>《Introducing GEN-1》</p>
+<p>（https://generalistai.com/blog/apr-02-2026-GEN-1）:</p>
+<ul>
+<li>模型成功率从64%到99%，达到商业化部署水平。1小时机器人数据，推理速度比现有快3倍</li>
+<li>在Gen-0上改进，万小时真实世界数据的数据集<em>从零开始</em>训练。</li>
+<li>Gen-1是一个系统：涵盖预训练、后训练、经验学习
+(RL)、多模态人工指导以及全新的推理时技术。</li>
+<li><figure>
+<img data-src="/2026/04/27/generalistai/image-20260427165735910.png"
+alt="image-20260427165735910" />
+<figcaption aria-hidden="true">image-20260427165735910</figcaption>
+</figure></li>
+</ul>
+<h6 id="gtc演示gen-0">3.2026.3.24 GTC演示Gen-0</h6>
+<p>《The Real Breakthrough Behind Our GTC Demo》</p>
+<p>https://generalistai.com/blog/mar-24-2026-gtc-demo</p>
+<ul>
+<li>在GTC上演示Gen-0</li>
+</ul>
+<h6 id="强调物理常识">4.2026.1.29 强调物理常识</h6>
+<p>《The <strong>Dark Matter</strong> of Robotics: Physical
+Commonsense》</p>
+<p>https://generalistai.com/blog/jan-29-2026-physical-commonsense</p>
+<ul>
+<li>人在拿东西过程中反应式的、闭环式的智能：一种对力、摩擦、顺应性和不确定性的直觉——物理常识</li>
+<li>对机器人来说难以学习，互联网训练模型没有物理常识；物体常识根据身体经验习得。</li>
+<li>遥操由于延迟、有限的触觉反馈以及不自然的界面无法达到systems1
+thinking，唯一的可能性是数据收集做到无缝衔接仿佛无感。generalist
+ai在这方面设计了手持式人体工学设备帮忙做到这一点。</li>
+</ul>
+<h6 id="gen-0观察到scaling-law">5.2025.11 GEN-0观察到scaling-law</h6>
+<p>GEN-0 / Embodied Foundation Models That Scale with Physical
+Interaction</p>
+<p>https://generalistai.com/blog/nov-04-2025-GEN-0</p>
+<ul>
+<li>GEN-0
+模型必须足够大才能吸收大量的物理交互数据。1B太小，6B开始展现多任务处理，7B+几千步训练可以迁移到下游任务。</li>
+<li>27万小时真实交互数据，每周10000小时速度增加。</li>
+</ul>
+<h6 id="hz装积木">6. 2025.9.24 100hz装积木</h6>
+<p>The Robots Build Now, Too</p>
+<p>https://generalistai.com/blog/sep-24-2025-the-robots-build-now-too</p>
+<h6 id="年6月17-展现100hz端到端任务">7.2025年6月17
+展现100hz端到端任务</h6>
+<p>Research Preview</p>
+<p>https://generalistai.com/blog/jun-17-2025-research-preview</p>
+<figure>
+<img data-src="/2026/04/27/generalistai/image-20260427174816427.png"
+alt="image-20260427174816427" />
+<figcaption aria-hidden="true">image-20260427174816427</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/27/Motus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/27/Motus/" class="post-title-link" itemprop="url">Motus</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-27 10:32:32 / Modified: 10:51:58" itemprop="dateCreated datePublished" datetime="2026-04-27T10:32:32+08:00">2026-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="title-url">Title &amp; URL</h2>
+<ul>
+<li><strong>Title</strong>: Motus: A Unified Latent Action World
+Model</li>
+<li><strong>URL</strong>:
+<ul>
+<li>Arrive: https://arxiv.org/abs/2512.13030</li>
+<li>Motus：https://motus-robotics.github.io/motus</li>
+</ul></li>
+<li><strong>Author</strong>:1 清华大学 2 圣书大学 3 北京大学 4
+地平线机器人公司</li>
+<li><strong>Time</strong>: 2025年12月</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<p>​ 训练了一个统一的latent action world
+model，旨在利用尽可能多的所有数据训练一个统一的模型。</p>
+<h2 id="key-insights">Key Insights</h2>
+<ol type="1">
+<li><p>unified model + latent action的想法。Google
+Deepmind在25年6月份发了一篇General agents contain world
+models的论文，证明了通用agent内部必然包括一个世界模型。</p>
+<p>目标、dynamics
+model(世界模型)、policy三者有任意两者都可以推出另外一个，因此给定目标的情况下，建模世界模型和建模policy之间是互通的，可以用更统一的视角来看待这两者，也就是unified
+world models。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104621439.png"
+alt="image-20260427104621439" />
+<figcaption aria-hidden="true">image-20260427104621439</figcaption>
+</figure></li>
+<li><p>Motus, VLM.WM</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104710281.png"
+alt="image-20260427104710281" />
+<figcaption aria-hidden="true">image-20260427104710281</figcaption>
+</figure></li>
+</ol>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104726413.png"
+alt="image-20260427104726413" />
+<figcaption aria-hidden="true">image-20260427104726413</figcaption>
+</figure>
+<h2 id="methods">Methods</h2>
+<h5 id="architecture">1.architecture:</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427103737858.png"
+alt="image-20260427103737858" />
+<figcaption aria-hidden="true">image-20260427103737858</figcaption>
+</figure>
+<h5 id="latent-actions">2.latent actions:</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427103947885.png"
+alt="image-20260427103947885" />
+<figcaption aria-hidden="true">image-20260427103947885</figcaption>
+</figure>
+<h5 id="利用的数据数据金字塔">3.利用的数据：数据金字塔</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104015655.png"
+alt="image-20260427104015655" />
+<figcaption aria-hidden="true">image-20260427104015655</figcaption>
+</figure>
+<h5 id="trainig-三阶段逐渐联合">4.Trainig 三阶段逐渐联合</h5>
+<p>发现直接放在一起训练效果不好。先单独训再联合起来。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104134646.png"
+alt="image-20260427104134646" />
+<figcaption aria-hidden="true">image-20260427104134646</figcaption>
+</figure>
+<h2 id="results">Results</h2>
+<p>pi05随着任务增多单个任务performance下降（说明任务之间彼此有矛盾），但是motus随着多个任务训练能力增强。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104219598.png"
+alt="image-20260427104219598" />
+<figcaption aria-hidden="true">image-20260427104219598</figcaption>
+</figure>
+<h2 id="reflections">Reflections</h2>
+<p>​ 关注training方法和整合的方法。</p>
+<h2 id="other-links">Other Links</h2>
+<p>微信公众号对作者的采访：https://mp.weixin.qq.com/s/hAlnB--SjURS7ukY4gO_Kw</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/26/health-care/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/26/health-care/" class="post-title-link" itemprop="url">health-care</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-26 12:49:39 / Modified: 19:36:45" itemprop="dateCreated datePublished" datetime="2026-04-26T12:49:39+08:00">2026-04-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">个人笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>起因是要帮父母制定体检方案。由此发散了很多想要关注的点，希望有时间一个个去思考解决</p>
+<ul>
+<li>身体健康只是一部分，我认为在互联网发达的现在，精神健康和关怀反而成为越来越不可忽视的一部分。
+<ul>
+<li>如何看待死亡</li>
+<li>如果看待抑郁症</li>
+<li>如何处理焦虑情绪</li>
+</ul></li>
+<li>如何制定一份合适的体检方案</li>
+<li>薄世宁《医学通识讲义》阅读</li>
+<li>薄世宁《icu》阅读</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/24/DreamZero-DreamDojo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/24/DreamZero-DreamDojo/" class="post-title-link" itemprop="url">DreamZero&DreamDojo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-24 11:25:48 / Modified: 17:28:20" itemprop="dateCreated datePublished" datetime="2026-04-24T11:25:48+08:00">2026-04-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -712,262 +1472,36 @@ alt="img" />
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="rt-2-2023年8月google-mind">RT-2 (2023年8月,google mind)</h3>
-<blockquote>
-<p>[!NOTE]</p>
-<p>将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力。</p>
-</blockquote>
-<h4 id="url">URL：</h4>
-<p>官方project url: https://robotics-transformer2.github.io/</p>
-<p>Alphaxiv: https://www.alphaxiv.org/overview/2307.15818</p>
-<p>Scholarly: https://library.scholarcy.com/try</p>
-<figure>
-<img data-src="/2026/04/18/robot-bigModel-paper-line/img-0.jpeg"
-alt="RT-2 概述" />
-<figcaption aria-hidden="true">RT-2 概述</figcaption>
-</figure>
-<h4 id="methods">methods:</h4>
+          <h4 id="world-model路线概览">world model路线概览</h4>
+<p>World model定义：一个transition model, 输入action + state， 输出next
+state.(action-conditioned状态转移方程)</p>
 <ul>
-<li>预训练的vlm + finetune:互联网规模数据(图像-文本对)+机器人演示数据
-<ul>
-<li>为什么有了vlm还要用视觉问答损失？防止忘记通用知识</li>
-</ul></li>
-<li>直接把机器人动作映射为language的同等地位的token，因此架构基本还是vlm的结构。</li>
-<li>推理频率： 1-3Hz,更小的vlm模型5hz</li>
+<li>Video Generation Model-Pixel Space</li>
+<li>JEPA</li>
+<li>Dynamics Model</li>
+<li>3D Word Model</li>
+<li>基于物理引擎的World Model</li>
 </ul>
-<blockquote>
-<p>[!NOTE]</p>
-<p>1.推理频率比较低</p>
-<p>2.展示的demo背景还是很干净的，实际操作估计要翻车。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/work-with-cailei/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/work-with-cailei/" class="post-title-link" itemprop="url">work-with-cailei</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-17 16:44:08" itemprop="dateCreated datePublished" datetime="2026-04-17T16:44:08+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/PI-series/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/PI-series/" class="post-title-link" itemprop="url">PI系列论文</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-17 15:54:44 / Modified: 16:36:08" itemprop="dateCreated datePublished" datetime="2026-04-17T15:54:44+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="pi07-具有涌现能力的可控模型">pi07: 具有涌现能力的可控模型</h3>
+<figure>
+<img data-src="/2026/04/24/DreamZero-DreamDojo/image-20260424133745192.png"
+alt="image-20260424133745192" />
+<figcaption aria-hidden="true">image-20260424133745192</figcaption>
+</figure>
+<h3 id="dreamzero">dreamzero</h3>
 <h5 id="url">URL:</h5>
-<p>https://www.pi.website/blog/pi07</p>
-<p>量子位总结：https://mp.weixin.qq.com/s/Z7JpjZbEk59wqAKCLLbKtg</p>
-<h5 id="架构">架构：</h5>
-<p>π0.7把prompt展开成四层：任务指令（清理厨房）+子任务指令（打开冰箱）+子目标图像（下一秒画面应该长什么样）+episode元数据（这条数据质量几分、有没有出错、速度多快）。</p>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417163157372.png"
-alt="image-20260417163157372" />
-<figcaption aria-hidden="true">image-20260417163157372</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417162259422.png"
-alt="image-20260417162259422" />
-<figcaption aria-hidden="true">image-20260417162259422</figcaption>
-</figure>
-<h5 id="几个重点发现">几个重点发现</h5>
+<p>https://dreamzero0.github.io/</p>
+<h5 id="结论">结论：</h5>
 <ul>
-<li><p>开箱即用no
-finetune:π0.7没做任何专项训练，就能在<strong>做咖啡、叠衣服、装箱</strong>三个复杂任务上，追平π0.6经过微调的的专家模型。</p>
-<ul>
-<li>vla开始展现出组合泛化的能力，不一定强于world model？</li>
-</ul></li>
-<li><p>Cross-embodiment：让UR5e双臂完成没有采集过的叠衣服任务</p></li>
-<li><p>通过metadata告诉“数据好坏”可以提升模型效果</p>
-<ul>
-<li>这点和机器学习很像，在判别模型里我们的“坏数据”可能有比好数据更高的价值</li>
+<li>应对世界模型推理慢的问题：通过工程（量化，并行，cache），推理加速30倍，7hz</li>
+<li></li>
 </ul>
+<h5 id="methods">methods:</h5>
 <figure>
-<img data-src="/2026/04/17/PI-series/image-20260417163027237.png"
-alt="image-20260417163027237" />
-<figcaption aria-hidden="true">image-20260417163027237</figcaption>
-</figure></li>
-<li><p>pi07的世界模型只预测<strong>把任务指令翻译成成功那一帧应该长啥样</strong>。不预测动作后果，不模拟物理，不参与决策链路。</p></li>
-</ul>
-<h5 id="技术实现vlm-action-expert-flow-matching">技术实现：vlm + action
-expert + flow matching</h5>
-<p><strong>π0.7是一个5B参数的模型，分三块。</strong></p>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417163501417.png"
-alt="image-20260417163501417" />
-<figcaption aria-hidden="true">image-20260417163501417</figcaption>
+<img data-src="/2026/04/24/DreamZero-DreamDojo/image-20260424154007711.png"
+alt="image-20260424154007711" />
+<figcaption aria-hidden="true">image-20260424154007711</figcaption>
 </figure>
-<ul>
-<li>VLM骨干：4B参数的Gemma3，负责理解视觉和语言。</li>
-<li>Action expert：860M参数的transformer，用flow
-matching生成连续动作chunk，50Hz高频控制。</li>
-<li>World
-model：从14B的BAGEL图像生成模型初始化，负责给π0.7画出未来几秒应该是什么样子。</li>
-</ul>
-<p>在推理中，<strong>模型输入</strong>包括：4路摄像头（前视+两个腕部+可选后视）、每路6帧历史画面、机器人关节状态、再加上任务指令、子任务指令、元数据、以及world
-model实时画出的次目标图像。</p>
-<p><strong>输出</strong>是一段50步的action
-chunk，实际执行15到25步，然后再推下一段。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/robot-news/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/robot-news/" class="post-title-link" itemprop="url">robot-news</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-17 15:31:24" itemprop="dateCreated datePublished" datetime="2026-04-17T15:31:24+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
+<h3 id="dreamdojo">dreamdojo</h3>
 
       
     </div>
@@ -986,7 +1520,7 @@ chunk，实际执行15到25步，然后再推下一段。</p>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1054,18 +1588,18 @@ chunk，实际执行15到25步，然后再推下一段。</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1147,6 +1681,19 @@ chunk，实际执行15到25步，然后再推下一段。</p>
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="TL;DR ​ 在训练一个通用机器人模型的过程中，分享自己关于vla,rl,机器人操作的观点。 关于公司 website Timeline 1234567timeline    title Physics-Informed Neural Networks (PINN) 演进史    2017 : 奠基之作 : Raissi et al. 提出 PINN (Physics Informed Deep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="physical-intelligence">
+<meta property="og:url" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="TL;DR ​ 在训练一个通用机器人模型的过程中，分享自己关于vla,rl,机器人操作的观点。 关于公司 website Timeline 1234567timeline    title Physics-Informed Neural Networks (PINN) 演进史    2017 : 奠基之作 : Raissi et al. 提出 PINN (Physics Informed Deep">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428144130005.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428144203317.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428145314630.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428150110463.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428150131666.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428152257143.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428153104206.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428163242579.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428163300934.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428163323964.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428164144458.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428165641268.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428165827020.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428171504797.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429144032922.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429150848178.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429151407478.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429151531558.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429152736030.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429152947513.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260429154751079.png">
+<meta property="article:published_time" content="2026-04-28T06:33:53.000Z">
+<meta property="article:modified_time" content="2026-04-29T07:50:11.816Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/04/28/physical-intelligence/image-20260428144130005.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/04/28/physical-intelligence/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>physical-intelligence | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_zh">
+
+    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_en">
+
+    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/28/physical-intelligence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          physical-intelligence
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-28 14:33:53" itemprop="dateCreated datePublished" datetime="2026-04-28T14:33:53+08:00">2026-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-29 15:50:11" itemprop="dateModified" datetime="2026-04-29T15:50:11+08:00">2026-04-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="tldr">TL;DR</h3>
+<p>​
+在训练一个通用机器人模型的过程中，分享自己关于vla,rl,机器人操作的观点。</p>
+<h3 id="关于公司">关于公司</h3>
+<h3 id="website">website</h3>
+<h3 id="timeline">Timeline</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">timeline</span><br><span class="line">    title Physics-Informed Neural Networks (PINN) 演进史</span><br><span class="line">    2017 : 奠基之作 : Raissi et al. 提出 PINN (Physics Informed Deep Learning)</span><br><span class="line">    2019 : 理论完善 : J. Comput. Phys. 正式刊载 PINN 核心算法</span><br><span class="line">    2020 : 变体涌现 : fPINN (分数阶) : cPINN (守恒律) : XPINN (扩展型)</span><br><span class="line">    2021 : 架构优化 : Adaptive Activation Functions : DeepONet (算子学习结合)</span><br><span class="line">    2022 - 2024 : 工业与大模型结合 : Physics-Informed Transformers : PINNacle 基准测试</span><br></pre></td></tr></table></figure>
+<h5 id="年4月-观察到涌现">1. 2026年4月 观察到涌现</h5>
+<ul>
+<li><p>π 0.7
+是一个通用模型，能够以与经过精细调校的专家模型相同的性能执行各种灵巧性任务。重点是通过语言指令执行了训练数据里没有出现的任务。</p>
+<ul>
+<li>能够以相同的速度和鲁棒性执行我们之前用强化学习微调的 π * 0.6 <a
+target="_blank" rel="noopener" href="https://www.pi.website/blog/pistar06">专业模型</a>所展示的灵巧操作技能</li>
+<li>能够组合和重组已学习的技能来解决新任务；</li>
+</ul></li>
+<li><p>泛化的原因：使用广泛且多样化的数据</p>
+<ul>
+<li><p>添加<em>多样化的上下文</em>
+：使用各种多模态提示结构训练模型，这些结构不仅指定机器人应<em>该做什么</em>
+，还指定它应<em>该如何做</em>
+。提示信息不仅可以包含任务的文本描述，还可以包含各种其他标注和模态。</p></li>
+<li><p>整合：</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428144130005.png"
+alt="image-20260428144130005" />
+<figcaption aria-hidden="true">image-20260428144130005</figcaption>
+</figure></li>
+</ul></li>
+<li><p>Methods framework:</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428144203317.png"
+alt="image-20260428144203317" />
+<figcaption aria-hidden="true">image-20260428144203317</figcaption>
+</figure></li>
+<li><p>新任务，用简单的语言微调可以达到目的；跨本体完成叠衣服的任务。</p></li>
+</ul>
+<h5 id="年3月-rlt的rl微调方法精细操作">2.2026年3月：
+RLT的rl微调方法——精细操作</h5>
+<p>Precise Manipulation with Efficient Online RL</p>
+<ul>
+<li><p>15分钟的在线rl帮助改进最后的高精度阶段</p></li>
+<li><p>背景：精确，灵巧的动作，对准的动作vla还不够：vla可以拿起螺丝刀，对准就差点意思。</p>
+<ul>
+<li><p>提出一种名为 RL tokens ( RLT )
+的新方法，该方法旨在改进需要精细操作的精确且复杂的任务，仅需几分钟或几小时的真实世界经验即可进行学习。</p></li>
+<li><p>在 VLA
+和轻量级强化学习策略之间提供了一个简洁的接口，使机器人能够在短短几个小时内调整自身行为，而无需对整个模型进行微调。</p>
+<ul>
+<li>之前（上一篇工作）证明rl可以从经验中学习，提出了recap的方法针对大规模、长周期任务的强化学习，在某些情况我们希望能快速改进特定情况，比微调vla要快。</li>
+</ul></li>
+<li><p>思路：训练 VLA 生成一个“RL 标记”，该标记可以提供 VLA
+内部表征的简洁摘要。然后，我们将此 RL
+标记用作一个更小模型的输入，该模型可以实时进行强化学习训练。</p></li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428145314630.png"
+alt="image-20260428145314630" />
+<figcaption aria-hidden="true">image-20260428145314630</figcaption>
+</figure></li>
+<li><p>Rl-token的生成过程：通过添加一个编码器-解码器转换器来改进
+VLA，生成vla的压缩表示</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428150110463.png"
+alt="image-20260428150110463" />
+<figcaption aria-hidden="true">image-20260428150110463</figcaption>
+</figure></li>
+</ul></li>
+<li><p>Results:将一颗微小的 M3
+螺丝拧入机械臂、扎带固定、以太网线插入和电源线插入;</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428150131666.png"
+alt="image-20260428150131666" />
+<figcaption aria-hidden="true">image-20260428150131666</figcaption>
+</figure></li>
+</ul>
+<h5 id="年3月-长短期记忆的vla">3.2026年3月 长短期记忆的vla</h5>
+<p>https://www.pi.website/research/memory</p>
+<ul>
+<li>认识：单一的运动技能不够，机器人需要有记忆：
+<ul>
+<li>机器人必须能够清晰地描述自己在任务中所处的位置，即使相关物体不在视野范围内，也能记住它们的位置，并且能够回忆起过去哪些方法有效、哪些无效，从而避免重蹈覆辙。</li>
+</ul></li>
+<li>Multi-scale Embodied Memory
+(MEM)，跟踪时长不超过十五分钟的任务，同时保留短期和长期任务。
+<ul>
+<li>短期：以原始观察数据的形式保存</li>
+<li>长期：以自然语言中的抽象概念形式存储</li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428152257143.png"
+alt="image-20260428152257143" />
+<figcaption aria-hidden="true">image-20260428152257143</figcaption>
+</figure></li>
+<li>短期记忆的视频编码器进行了设计<img
+src="/2026/04/28/physical-intelligence/image-20260428152406712.png"
+alt="image-20260428152406712" /></li>
+<li>长期记忆由对过去事件的文本描述构成。</li>
+</ul></li>
+<li>MEM
+为我们的模型提供了更强的鲁棒性，使其能够长时间地执行更复杂的指令。我们正朝着更接近真实工作的任务模式迈进，而不再局限于单个的原子动作。未来，用户可能不仅会向机器人发出“帮我叠衣服”这样的简单指令，还会发出完整的家务安排（“我下午
+6
+点到家，请准备好晚餐，并在周三打扫房子”）。模型需要解析这些指令，将其分解成具体的计划，并在数小时、数天甚至数周内跟踪该计划的执行情况。</li>
+</ul>
+<h5 id="年2月-物理智能层调用基础模型api在上面扩展">4. 2026年2月
+物理智能层：调用基础模型api在上面扩展</h5>
+<p>https://www.pi.website/blog/partner</p>
+<ul>
+<li>机器人的应用目前不是api访问，调用就可以用。往往自己要从0开始构建整个物理智能栈。我们希望提供一个现成的、易于访问和重用的<em>物理智能层</em>
+。通用机器人基础模型，例如 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pi0">π
+0</a> 、 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pi05">π 0.5</a> 、 <a
+target="_blank" rel="noopener" href="https://website.pi-asset.com/pi06star/PI06_model_card.pdf">π
+0.6</a> 或 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pistar06">π * 0.6</a>
+，就提供了这样一个层，能够显著降低构建实用机器人系统的成本和工作量。</li>
+<li>目前pi06的落地应用场景：
+<ul>
+<li>折叠衣物的场景</li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428153104206.png"
+alt="image-20260428153104206" />
+<figcaption aria-hidden="true">image-20260428153104206</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h5 id="年12月-pi06各种莫拉维克悖论任务测试">5. 2025年12月
+pi06各种莫拉维克悖论任务测试</h5>
+<p>Moravec's Paradox and the Robot Olympics</p>
+<p>https://www.pi.website/blog/olympics</p>
+<ul>
+<li><p>开门：</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428163242579.png"
+alt="image-20260428163242579" />
+<figcaption aria-hidden="true">image-20260428163242579</figcaption>
+</figure></li>
+<li><p>洗衣</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428163300934.png"
+alt="image-20260428163300934" />
+<figcaption aria-hidden="true">image-20260428163300934</figcaption>
+</figure></li>
+<li><p>基本工具使用：开锁</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428163323964.png"
+alt="image-20260428163323964" />
+<figcaption aria-hidden="true">image-20260428163323964</figcaption>
+</figure></li>
+<li><p>三明治涂花生酱</p></li>
+<li><p>清洁窗户、使用狗屎带夹起狗屎</p></li>
+<li><p>金牌项目剥橙子：使用了辅助小道，完成的不好</p></li>
+<li><p>关键在于将多模态逻辑学习模型（LLM）中的先验知识（这些知识可以提供对物理任务的“理论”理解）与多样化且具有代表性的真实物理行为数据相结合。</p></li>
+</ul>
+<h5 id="年12月-human-to-robot">6.2025年12月 human-to-robot</h5>
+<p>https://www.pi.website/research/human_to_robot</p>
+<ul>
+<li><p>随着机器人训练数据量的增加，机器人基础模型能够实现从人类视频到机器人任务的迁移。</p></li>
+<li><p>我们开发了一种利用人类自我中心数据来改进模型的方法，在机器人数据有限的任务上，模型性能提升了约
+2 倍。</p>
+<ul>
+<li><p>将人类视频数据视为我们现有的机器人模型，其动作由 3D
+手部位置表示，无需任何特殊的迁移学习方法。我们将人类数据与最相关的机器人数据相结合，并在此混合数据上进行微调，然后在仅在人类演示中展示的特定场景下评估策略。例如，在鸡蛋分类任务中，机器人数据展示了如何将鸡蛋放入纸盒，而人类数据则展示了如何将不同颜色的鸡蛋分类放入多个纸盒中——这是用于评估的场景。</p></li>
+<li><p>仅仅通过在微调中加入人类视频数据，我们的策略在仅存在于人类数据中的
+4 个泛化场景下的性能就提升了约 2 倍。</p></li>
+<li><p><em>随着预训练模型规模的扩大，添加人类数据带来的性能提升也随之增加</em>
+。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428164144458.png"
+alt="image-20260428164144458" />
+<figcaption aria-hidden="true">image-20260428164144458</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h5 id="年11月-π0.6-从经验中学习的vla">7. 2025年11月 π*0.6:
+从经验中学习的vla</h5>
+<p>https://www.pi.website/blog/pistar06</p>
+<p>开发了一种名为
+Recap（基于优势条件策略的经验与纠正强化学习）的方法，它实现了所有三个步骤：通过演示训练机器人，通过纠正指导机器人，并使其能够从自主经验中改进。</p>
+<p>使用 Recap 改进了最新版本的视觉-语言-动作 (VLA) 模型 π 0.6
+，使其能够稳健高效地执行复杂任务：制作意式浓缩咖啡、组装盒子和折叠各种衣物。模型可靠性得到了很大的提升。（长期执行任务）</p>
+<ul>
+<li><p>Methods:<em>一是指导</em>以提供纠正，即专家向机器人展示如何纠正错误或做得更好；二是<em>强化学习</em></p>
+<ul>
+<li><p>Recap
+通过训练一个<em>价值函数</em>来应对强化学习中奖励分配的问题：从机器人的经验中学习价值函数，就可以通过观察价值函数的变化来判断哪些行为是好是坏。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428165641268.png"
+alt="image-20260428165641268" />
+<figcaption aria-hidden="true">image-20260428165641268</figcaption>
+</figure></li>
+<li><p>在 Recap 中，我们根据价值变化来<em>调整</em>策略（即
+VLA），使用所有数据进行训练（包括好动作和坏动作），同时告知 VLA
+哪些动作是好动作，哪些动作是坏动作。</p></li>
+<li><p>Recap 的第一阶段是使用离线强化学习 (RL) 对 π * 0.6
+模型进行预训练，这与基础 π 0.6 和 π 0.5 VLA
+使用的标准监督学习方法不同。之后，我们利用演示数据对 π * 0.6
+模型进行微调，使其适应每个任务，然后使用从机器人收集的额外数据，通过强化学习进一步训练该模型。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428165827020.png"
+alt="image-20260428165827020" />
+<figcaption aria-hidden="true">image-20260428165827020</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h5 id="年6月-实时action-chunk">8.2025年6月 实时action chunk</h5>
+<p>https://www.pi.website/research/real_time_chunking</p>
+<p>PI05是同步执行的。推理-》执行-〉下一步；结果就是没有差异但是有停顿。</p>
+<p>提出一种RTC的算法，能够实现无间断的实时执行，并且适用于任何基于扩散或流的
+VLA（包括 π 0.5 ），无需<strong>任何训练时间的更改</strong> 。</p>
+<p>一个优秀的实时算法应该生成一个与上次action
+chunk重叠动作<em>一致的</em>新数据块，同时保持模型对新信息的反应能力和做出智能决策的能力。</p>
+<p>把实时分块问题建模为图像修复问题。假设我们的模型在接收到观测数据后，需要
+3 个控制器时间步才能生成一个动作块。新动作块的前 3
+个动作无法执行，因为在新动作块可用时，这 3
+个时间步已经过去。因此，将这些动作“冻结”为已知<em>会</em>执行的前一个动作块的值是合理的；我们的目标是填充新动作块的剩余部分，就像修复图像中被移除的部分一样。</p>
+<p>效果也非常好。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260428171504797.png"
+alt="image-20260428171504797" />
+<figcaption aria-hidden="true">image-20260428171504797</figcaption>
+</figure>
+<h5 id="年5月-训练一个速度快泛化好的vlapi05ki">9. 2025年5月
+训练一个速度快，泛化好的vla：PI05+KI</h5>
+<p>https://www.pi.website/research/knowledge_insulation</p>
+<p>第一代vla(RT-2， openvla)
+把action离散成token,虽然这种方法适用于基本的操作，例如拾取物体，但并不适用于高频、精确或流畅的运动,运行慢。</p>
+<p>第二代vla从 <a target="_blank" rel="noopener" href="https://www.pi.website/blog/pi0">π 0</a>
+开始）通过在 VLA
+训练过程中添加新的神经模块来生成连续输出，通常采用扩散或流匹配等连续生成建模技术。这些新模块以<a
+target="_blank" rel="noopener" href="https://www.pi.website/blog/pi0">动作专家</a>或<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.14734">动作头</a>的形式出现;嫁接到vlm上可能导致遗忘，损害vlm的内部表征。</p>
+<p>我们想要：把action expert
+嫁接到vlm上，但是不需要丢失预先训练的网络规模只是，称之为“知识隔离vla”:利用
+<a target="_blank" rel="noopener" href="https://www.pi.website/research/fast">FAST
+标记化的</a>离散化动作来微调 VLM
+主干网络，从而快速学习高质量的表示；同时，调整动作专家，使其能够生成连续动作，而无需将其梯度传播回
+VLM
+主干网络。训练完成后，动作专家可以通过流匹配生成流畅的连续动作，而离散化的动作则被丢弃。</p>
+<p>但是直接嫁接会有不利的影响：</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429144032922.png"
+alt="image-20260429144032922" />
+<figcaption aria-hidden="true">image-20260429144032922</figcaption>
+</figure>
+<ul>
+<li>自回归的vla算法(比如PI0-fast)不存在这个问题，但是由于自回归的推理很耗时，完成任务非常慢。</li>
+<li>提出了一种方法：</li>
+<li><figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429150848178.png"
+alt="image-20260429150848178" />
+<figcaption aria-hidden="true">image-20260429150848178</figcaption>
+</figure></li>
+</ul>
+<p>我们用以下方式训练 VLM 骨干网络：</p>
+<p>1.阻止动作专家到vlm的梯度流</p>
+<p>2.由于vlm不再接受action
+expert的梯度，表征不再适应机器人控制的要求，使得action
+expert更难生成正确的运动。用pi0-fast训练vlm骨干网络。</p>
+<h5 id="年4月-pi05">10.2025年4月 PI05</h5>
+<p>https://www.pi.website/blog/pi05</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429151407478.png"
+alt="image-20260429151407478" />
+<figcaption aria-hidden="true">image-20260429151407478</figcaption>
+</figure>
+<ul>
+<li><p>如何运作：</p>
+<ul>
+<li><p>异构数据上的协同训练</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429151531558.png"
+alt="image-20260429151531558" />
+<figcaption aria-hidden="true">image-20260429151531558</figcaption>
+</figure></li>
+<li><p>排除web数据，多环境数据进行对比实验发现：π 0.5
+的泛化性能随着训练集中不同环境数量的增加而稳步提升，而且在仅约 100
+个训练环境后，其性能就已接近直接在测试环境上训练的基线模型。<img
+src="/2026/04/28/physical-intelligence/image-20260429151718404.png"
+alt="image-20260429151718404" /></p></li>
+<li><p>运行的时候，先输出一个以文本形式表达的“高层”动作，后要求它根据这个高层动作选择合适的机器人电机指令，该指令以
+50 步（1 秒）的连续低层关节动作“动作块”的形式呈现。<img
+src="/2026/04/28/physical-intelligence/image-20260429152002198.png"
+alt="image-20260429152002198" /></p></li>
+</ul></li>
+</ul>
+<h5 id="年2月-hi-robot">11. 2025年2月 hi robot</h5>
+<p>https://www.pi.website/research/hirobot</p>
+<p>上层vlm思考+下层vla的执行</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429152736030.png"
+alt="image-20260429152736030" />
+<figcaption aria-hidden="true">image-20260429152736030</figcaption>
+</figure>
+<h5 id="开源pi0">12.开源pi0</h5>
+<p>https://www.pi.website/blog/openpi</p>
+<p>1 到 20
+小时的数据足以对各种任务进行微调，但实际情况可能有所不同。</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429152947513.png"
+alt="image-20260429152947513" />
+<figcaption aria-hidden="true">image-20260429152947513</figcaption>
+</figure>
+<h5 id="fast-action-tokenization">13. FAST: Action Tokenization</h5>
+<p>https://www.pi.website/research/fast</p>
+<ul>
+<li><p>Transformer 的discrete
+bin对精细灵巧控制不够；扩散和流匹配表现更好但是慢。怎么表示动作词元对下游任务很重要；提出了一种针对动作的新型分词器，名为
+FAST。</p></li>
+<li><p>DCT+编码 (BPE) 相结合,相比以往的把动作压缩了10倍。<img
+src="/2026/04/28/physical-intelligence/image-20260429154431018.png"
+alt="image-20260429154431018" /></p></li>
+<li><p>训练快5倍，但是推理比flow matching慢<img
+src="/2026/04/28/physical-intelligence/image-20260429154553743.png"
+alt="image-20260429154553743" /></p></li>
+</ul>
+<h5 id="年10月-pi0第一个通才模型">14.2024年10月 PI0:第一个通才模型</h5>
+<p>https://www.pi.website/blog/pi0</p>
+<p>从预训练的vlm出发</p>
+<figure>
+<img data-src="/2026/04/28/physical-intelligence/image-20260429154751079.png"
+alt="image-20260429154751079" />
+<figcaption aria-hidden="true">image-20260429154751079</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/04/28/diffusion-policy/" rel="prev" title="diffusion-policy">
+      <i class="fa fa-chevron-left"></i> diffusion-policy
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/04/29/deepseek/" rel="next" title="deepseek">
+      deepseek <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tldr"><span class="nav-number">1.</span> <span class="nav-text">TL;DR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%85%AC%E5%8F%B8"><span class="nav-number">2.</span> <span class="nav-text">关于公司</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#website"><span class="nav-number">3.</span> <span class="nav-text">website</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#timeline"><span class="nav-number">4.</span> <span class="nav-text">Timeline</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B44%E6%9C%88-%E8%A7%82%E5%AF%9F%E5%88%B0%E6%B6%8C%E7%8E%B0"><span class="nav-number">4.0.1.</span> <span class="nav-text">1. 2026年4月 观察到涌现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B43%E6%9C%88-rlt%E7%9A%84rl%E5%BE%AE%E8%B0%83%E6%96%B9%E6%B3%95%E7%B2%BE%E7%BB%86%E6%93%8D%E4%BD%9C"><span class="nav-number">4.0.2.</span> <span class="nav-text">2.2026年3月：
+RLT的rl微调方法——精细操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B43%E6%9C%88-%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%9A%84vla"><span class="nav-number">4.0.3.</span> <span class="nav-text">3.2026年3月 长短期记忆的vla</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B42%E6%9C%88-%E7%89%A9%E7%90%86%E6%99%BA%E8%83%BD%E5%B1%82%E8%B0%83%E7%94%A8%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8Bapi%E5%9C%A8%E4%B8%8A%E9%9D%A2%E6%89%A9%E5%B1%95"><span class="nav-number">4.0.4.</span> <span class="nav-text">4. 2026年2月
+物理智能层：调用基础模型api在上面扩展</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B412%E6%9C%88-pi06%E5%90%84%E7%A7%8D%E8%8E%AB%E6%8B%89%E7%BB%B4%E5%85%8B%E6%82%96%E8%AE%BA%E4%BB%BB%E5%8A%A1%E6%B5%8B%E8%AF%95"><span class="nav-number">4.0.5.</span> <span class="nav-text">5. 2025年12月
+pi06各种莫拉维克悖论任务测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B412%E6%9C%88-human-to-robot"><span class="nav-number">4.0.6.</span> <span class="nav-text">6.2025年12月 human-to-robot</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B411%E6%9C%88-%CF%800.6-%E4%BB%8E%E7%BB%8F%E9%AA%8C%E4%B8%AD%E5%AD%A6%E4%B9%A0%E7%9A%84vla"><span class="nav-number">4.0.7.</span> <span class="nav-text">7. 2025年11月 π*0.6:
+从经验中学习的vla</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B46%E6%9C%88-%E5%AE%9E%E6%97%B6action-chunk"><span class="nav-number">4.0.8.</span> <span class="nav-text">8.2025年6月 实时action chunk</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B45%E6%9C%88-%E8%AE%AD%E7%BB%83%E4%B8%80%E4%B8%AA%E9%80%9F%E5%BA%A6%E5%BF%AB%E6%B3%9B%E5%8C%96%E5%A5%BD%E7%9A%84vlapi05ki"><span class="nav-number">4.0.9.</span> <span class="nav-text">9. 2025年5月
+训练一个速度快，泛化好的vla：PI05+KI</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B44%E6%9C%88-pi05"><span class="nav-number">4.0.10.</span> <span class="nav-text">10.2025年4月 PI05</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B42%E6%9C%88-hi-robot"><span class="nav-number">4.0.11.</span> <span class="nav-text">11. 2025年2月 hi robot</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%80%E6%BA%90pi0"><span class="nav-number">4.0.12.</span> <span class="nav-text">12.开源pi0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#fast-action-tokenization"><span class="nav-number">4.0.13.</span> <span class="nav-text">13. FAST: Action Tokenization</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B410%E6%9C%88-pi0%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%80%9A%E6%89%8D%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.0.14.</span> <span class="nav-text">14.2024年10月 PI0:第一个通才模型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
