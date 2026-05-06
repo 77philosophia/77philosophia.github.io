@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. Gpu 和 cpu  CPU 尤其擅长处理涉及分支逻辑、操作系统管理和顺序算法的任务。 GPU 是专为并行计算而设计的。它不是由几个强大的核心组成，而是由数千个较小的运算单元组成，能够同时执行许多运算。   [!NOTE] “CPU 就像几个技艺精湛的大厨烹饪复杂的菜肴，而 GPU 就像成千上万个厨师同时准备简单的菜肴。”  123456789101112131415161718例如，考虑将">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPU 的工作原理：从并行像素到 CUDA 加速">
+<meta property="og:url" content="http://77philosophia.github.io/2026/05/06/how-gpu-works/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="1. Gpu 和 cpu  CPU 尤其擅长处理涉及分支逻辑、操作系统管理和顺序算法的任务。 GPU 是专为并行计算而设计的。它不是由几个强大的核心组成，而是由数千个较小的运算单元组成，能够同时执行许多运算。   [!NOTE] “CPU 就像几个技艺精湛的大厨烹饪复杂的菜肴，而 GPU 就像成千上万个厨师同时准备简单的菜肴。”  123456789101112131415161718例如，考虑将">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-06T03:08:28.000Z">
+<meta property="article:modified_time" content="2026-05-06T03:22:07.821Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/05/06/how-gpu-works/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>GPU 的工作原理：从并行像素到 CUDA 加速 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_zh">
+
+    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_en">
+
+    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/06/how-gpu-works/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GPU 的工作原理：从并行像素到 CUDA 加速
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-06 11:08:28 / Modified: 11:22:07" itemprop="dateCreated datePublished" datetime="2026-05-06T11:08:28+08:00">2026-05-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="gpu-和-cpu">1. Gpu 和 cpu</h3>
+<ul>
+<li>CPU 尤其擅长处理涉及分支逻辑、操作系统管理和顺序算法的任务。</li>
+<li><strong>GPU</strong>
+是专为<strong>并行计算</strong>而设计的。它不是由几个强大的核心组成，而是由<strong>数千个较小的运算单元</strong>组成，能够同时执行许多运算。</li>
+</ul>
+<blockquote>
+<p>[!NOTE]</p>
+<p><em>“CPU 就像几个技艺精湛的大厨烹饪复杂的菜肴，而 GPU
+就像成千上万个厨师同时准备简单的菜肴。”</em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">例如，考虑将两个大小为 N 的向量相加。</span><br><span class="line"></span><br><span class="line">顺序 CPU 计算：</span><br><span class="line">C[i] = A[i] + B[i]</span><br><span class="line"></span><br><span class="line">for i = 1 to N</span><br><span class="line">对于 i = 1 到 N</span><br><span class="line"></span><br><span class="line">这需要 N 次顺序操作。</span><br><span class="line"></span><br><span class="line">在 GPU 上，N 个独立的线程可以同时计算每个元素：</span><br><span class="line"></span><br><span class="line">Thread i 计算：</span><br><span class="line">C[i] = A[i] + B[i]</span><br><span class="line"></span><br><span class="line">因此，理论运行时间近似为：</span><br><span class="line">T_gpu ≈ T_cpu / P</span><br><span class="line">其中 P 为并行处理单元的数量。</span><br></pre></td></tr></table></figure>
+<h3 id="gpu的架构">2. gpu的架构</h3>
+<ol type="1">
+<li><p><strong>流式多处理器（SM）</strong></p>
+<p>这些是主要的计算单元。每个 SM
+包含许多小型算术逻辑单元（ALU）、寄存器和共享内存。</p></li>
+<li><p><strong>CUDA cores</strong></p>
+<p>负责执行加法和乘法等算术指令的基本计算单元。</p></li>
+<li><p><strong>内存层次结构</strong></p>
+<ul>
+<li>Global memory 全局内存（容量大但速度相对较慢）</li>
+<li>Shared memory 共享内存（线程块内线程共享的快速内存）</li>
+<li>Registers 寄存器（每个线程的超快存储）</li>
+<li>Constant and texture memory 常量内存和纹理内存（专用缓存内存）</li>
+</ul></li>
+</ol>
+<h3 id="gpu图形起源">3. gpu图形起源</h3>
+<p>GPU 最初是为<strong>图形渲染而</strong>设计的，特别是用于将 3D
+场景转换为 2D 图像等任务。</p>
+<p>传统的渲染流程包括以下几个阶段：</p>
+<ol type="1">
+<li>Vertex processing 顶点处理</li>
+<li>Geometry transformation 几何变换</li>
+<li>Rasterization 栅格化</li>
+<li>Pixel shading 像素着色</li>
+</ol>
+<p>每个阶段都会对大量顶点或像素执行操作。由于这些操作大多是独立的，因此可以并行计算。</p>
+<p>例如，计算每个像素的颜色涉及评估如下光照方程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">I = k_a * I_a + k_d * (N dot L) * I_l</span><br><span class="line">I = k_a * I_a + k_d * (N 点 L) * I_l</span><br><span class="line"></span><br><span class="line">where:  在哪里：</span><br><span class="line"></span><br><span class="line">I = pixel intensity  I = 像素强度</span><br><span class="line">k_a = ambient coefficient</span><br><span class="line">k_a = 环境系数</span><br><span class="line">k_d = diffuse coefficient</span><br><span class="line">k_d = 扩散系数</span><br><span class="line">N = surface normal  N = 表面法线</span><br><span class="line">L = light direction  L = 光照方向</span><br></pre></td></tr></table></figure>
+<p>每个像素独立执行此计算，这使得 GPU 成为此类工作负载的理想处理器。</p>
+<p>随着时间的推移，工程师们意识到同样的并行架构也可以加速<strong>非图形计算</strong>
+。</p>
+<h3 id="gpu效率背后的数学原理">4.gpu效率背后的数学原理</h3>
+<p>许多计算问题都可以用<strong>线性代数运算</strong>来表示，而 GPU
+可以极其高效地执行这些运算。</p>
+<p>一个基本的例子是<strong>矩阵乘法</strong> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">给定矩阵 A 和 B：</span><br><span class="line">C = A * B</span><br><span class="line"></span><br><span class="line">C 的每个元素计算如下：</span><br><span class="line">C[i,j] = 对 k 求和 A[i,k] * B[k,j]</span><br><span class="line"></span><br><span class="line">该操作涉及重复的乘加运算 ，而 GPU 正是针对此类运算进行了专门优化。</span><br><span class="line">如果 A 和 B 是大小为 N x N 的大矩阵，则计算大约需要：</span><br><span class="line">O(N³)</span><br><span class="line">但是，每个元素 C[i,j] 都可以独立计算，从而允许并行执行。</span><br><span class="line">例如，GPU 可能会分配：</span><br><span class="line"></span><br><span class="line">One thread per matrix element</span><br><span class="line">每个矩阵元素一个线程</span><br><span class="line">One block per matrix tile</span><br><span class="line">每个矩阵单元一个方块</span><br><span class="line"></span><br><span class="line">这种结构能够实现大规模并行处理 ，从而显著缩短运行时间。</span><br><span class="line">诸如此类的矩阵运算构成了以下计算的基础：</span><br><span class="line">neural networks  神经网络</span><br><span class="line">signal processing  信号处理</span><br><span class="line">scientific simulations  科学模拟</span><br><span class="line">wireless communication algorithms</span><br><span class="line">无线通信算法</span><br></pre></td></tr></table></figure>
+<h3 id="线程层次cuda运行模型">5.线程层次：cuda运行模型</h3>
+<p>为了利用 GPU 的强大功能，开发人员使用
+<strong>CUDA（统一计算设备架构）</strong> 等编程模型。</p>
+<p>CUDA 将计算组织成一个层次结构：</p>
+<p><strong>Threads → Blocks → Grids 线程 → 块 → 网格</strong></p>
+<p>每个线程执行一小段计算。线程被分组为<strong>块</strong>
+，块构成<strong>网格</strong> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">例如，假设我们要计算 N 个元素的向量加法。</span><br><span class="line"></span><br><span class="line">每个 CUDA 线程计算：</span><br><span class="line">C[i] = A[i] + B[i]</span><br><span class="line"></span><br><span class="line">线程索引通常按以下方式计算：</span><br><span class="line">i = blockIdx.x * blockDim.x + threadIdx.x</span><br><span class="line">blockIdx.x = block index  blockIdx.x = 区块索引</span><br><span class="line">blockDim.x = number of threads per block</span><br><span class="line">blockDim.x = 每个块的线程数</span><br><span class="line">threadIdx.x = thread index inside the block</span><br><span class="line">threadIdx.x = 代码块内的线程索引</span><br><span class="line"></span><br><span class="line">这种索引方式使得数千个线程能够在 GPU 上高效地协调运行。</span><br><span class="line"></span><br><span class="line">同一代码块内的线程也可以通过共享内存进行通信，这比使用全局内存要快得多。</span><br></pre></td></tr></table></figure>
+<h3 id="内存访问和性能">6.内存访问和性能</h3>
+<p>GPU 性能很大程度上取决于<strong>内存访问模式</strong> 。</p>
+<p>全局内存访问速度相对较慢。因此，CUDA
+程序会尽可能地利用<strong>共享内存和寄存器</strong> 。</p>
+<p>一项关键的优化是<strong>内存合并</strong> 。</p>
+<p>如果线程以连续模式访问内存：</p>
+<p>A[i], A[i+1], A[i+2], …</p>
+<p>GPU 可以将多个内存请求合并成一个事务。</p>
+<p>然而，不规则的访问模式会导致许多单独的内存请求，从而降低性能。</p>
+<p>实际上，经过良好优化的 GPU 程序与 CPU 实现相比，速度通常可提高
+<strong>10 倍到 100 倍</strong> 。</p>
+<h3 id="机器学习里的gpu">7. 机器学习里的gpu</h3>
+<p>深度学习的兴起极大地提升了 GPU 的重要性。</p>
+<p>训练神经网络需要反复进行矩阵运算。</p>
+<p>例如，神经网络层计算：</p>
+<p>y = W * x + b</p>
+<p>where: 在哪里：</p>
+<p>W = weight matrix W = 权重矩阵 x = input vector x = 输入向量 b = bias
+vector b = 偏置向量</p>
+<p>在训练过程中，梯度下降需要计算导数：</p>
+<p>dL/dW</p>
+<p>并执行如下更新：</p>
+<p>W = W − eta * dL/dW</p>
+<p>这些操作涉及数十亿次浮点运算，而 GPU
+由于其并行架构，能够极其高效地处理这些运算。</p>
+<h3 id="gpu在科学计算里的加速">8.gpu在科学计算里的加速</h3>
+<p>CUDA 允许开发人员使用 C/C++ 的扩展来编写 GPU 加速程序。</p>
+<p>一个简单的 CUDA 内核在概念上可能如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__global__ void vectorAdd(float *A, float *B, float *C) &#123;</span><br><span class="line">    int i = blockIdx.x * blockDim.x + threadIdx.x;</span><br><span class="line">    C[i] = A[i] + B[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>关键字 <code>__global__</code> 表示该函数在 GPU 上运行。</p>
+<p>CPU 启动内核时使用的配置如下：</p>
+<p>vectorAdd&lt;&lt;&lt;numBlocks, threadsPerBlock&gt;&gt;&gt;(A, B, C);
+vectorAdd&lt;&lt;&lt;numBlocks, threadsPerBlock&gt;
+&gt;&gt;（A、B、C）；</p>
+<p>这将同时启动数千个线程。</p>
+<p>现代 GPU 还支持以下高级功能：</p>
+<ul>
+<li>Tensor cores for deep learning 用于深度学习的张量核心</li>
+<li>Mixed-precision arithmetic 混合精度算术</li>
+<li>Asynchronous execution 异步执行</li>
+<li>Unified memory 统一内存</li>
+</ul>
+<p>这些特性显著加快了矩阵乘法和卷积运算等任务的速度。</p>
+<h3 id="现代gpu创新">9.现代gpu创新</h3>
+<p>现代 GPU 的发展已经远远超越了图形硬件的范畴。</p>
+<p>一些关键进展包括：</p>
+<p><strong>A. Tensor Cores</strong></p>
+<p>专为加速神经网络中使用的矩阵乘法运算而设计的专用单元。</p>
+<p>D = A * B + C</p>
+<p>合并成一条指令。</p>
+<p><strong>B. Ray Tracing Hardware</strong></p>
+<p>用于计算三维环境中光线相交的专用核心。</p>
+<p><strong>C. High Bandwidth Memory (HBM)</strong></p>
+<p>现代 GPU 采用堆叠式内存架构，可提供超过 <strong>1TB/s
+的</strong>带宽。</p>
+<p>这些改进使得 GPU 能够高效地处理海量数据集。</p>
+<h3 id="gpu不仅处理图形其他领域">10.gpu不仅处理图形，其他领域——</h3>
+<p>如今，GPU 为众多领域提供动力：</p>
+<ul>
+<li>Artificial intelligence 人工智能</li>
+<li>Climate simulations 气候模拟</li>
+<li>Genomics 基因组学</li>
+<li>Cryptography 密码学</li>
+<li>Wireless communication research 无线通信研究</li>
+<li>Computational physics 计算物理学</li>
+</ul>
+<p>例如，在信号处理或通信系统中，GPU 可以加速以下操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">快速傅里叶变换（FFT）：</span><br><span class="line">X[k] = sum over n of x[n] * exp(-j * 2pi * k * n / N)</span><br><span class="line">X[k] = ∑_(n) x[n] * exp(-j * 2π * k * n / N)</span><br><span class="line"></span><br><span class="line">这种变换出现在 OFDM 系统、雷达处理和频谱分析中</span><br><span class="line">GPU 加速技术即使对于极其庞大的数据集也能实现实时处理。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/04/29/%E5%AD%97%E8%8A%82gr-rl/" rel="prev" title="字节gr-rl">
+      <i class="fa fa-chevron-left"></i> 字节gr-rl
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#gpu-%E5%92%8C-cpu"><span class="nav-number">1.</span> <span class="nav-text">1. Gpu 和 cpu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gpu%E7%9A%84%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">2. gpu的架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gpu%E5%9B%BE%E5%BD%A2%E8%B5%B7%E6%BA%90"><span class="nav-number">3.</span> <span class="nav-text">3. gpu图形起源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gpu%E6%95%88%E7%8E%87%E8%83%8C%E5%90%8E%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">4.gpu效率背后的数学原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%B1%82%E6%AC%A1cuda%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">5.线程层次：cuda运行模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%E5%92%8C%E6%80%A7%E8%83%BD"><span class="nav-number">6.</span> <span class="nav-text">6.内存访问和性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%87%8C%E7%9A%84gpu"><span class="nav-number">7.</span> <span class="nav-text">7. 机器学习里的gpu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gpu%E5%9C%A8%E7%A7%91%E5%AD%A6%E8%AE%A1%E7%AE%97%E9%87%8C%E7%9A%84%E5%8A%A0%E9%80%9F"><span class="nav-number">8.</span> <span class="nav-text">8.gpu在科学计算里的加速</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%B0%E4%BB%A3gpu%E5%88%9B%E6%96%B0"><span class="nav-number">9.</span> <span class="nav-text">9.现代gpu创新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gpu%E4%B8%8D%E4%BB%85%E5%A4%84%E7%90%86%E5%9B%BE%E5%BD%A2%E5%85%B6%E4%BB%96%E9%A2%86%E5%9F%9F"><span class="nav-number">10.</span> <span class="nav-text">10.gpu不仅处理图形，其他领域——</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
