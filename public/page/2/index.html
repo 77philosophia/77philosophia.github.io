@@ -187,6 +187,327 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/27/Motus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/27/Motus/" class="post-title-link" itemprop="url">Motus</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-27 10:32:32 / Modified: 10:51:58" itemprop="dateCreated datePublished" datetime="2026-04-27T10:32:32+08:00">2026-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="title-url">Title &amp; URL</h2>
+<ul>
+<li><strong>Title</strong>: Motus: A Unified Latent Action World
+Model</li>
+<li><strong>URL</strong>:
+<ul>
+<li>Arrive: https://arxiv.org/abs/2512.13030</li>
+<li>Motus：https://motus-robotics.github.io/motus</li>
+</ul></li>
+<li><strong>Author</strong>:1 清华大学 2 圣书大学 3 北京大学 4
+地平线机器人公司</li>
+<li><strong>Time</strong>: 2025年12月</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<p>​ 训练了一个统一的latent action world
+model，旨在利用尽可能多的所有数据训练一个统一的模型。</p>
+<h2 id="key-insights">Key Insights</h2>
+<ol type="1">
+<li><p>unified model + latent action的想法。Google
+Deepmind在25年6月份发了一篇General agents contain world
+models的论文，证明了通用agent内部必然包括一个世界模型。</p>
+<p>目标、dynamics
+model(世界模型)、policy三者有任意两者都可以推出另外一个，因此给定目标的情况下，建模世界模型和建模policy之间是互通的，可以用更统一的视角来看待这两者，也就是unified
+world models。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104621439.png"
+alt="image-20260427104621439" />
+<figcaption aria-hidden="true">image-20260427104621439</figcaption>
+</figure></li>
+<li><p>Motus, VLM.WM</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104710281.png"
+alt="image-20260427104710281" />
+<figcaption aria-hidden="true">image-20260427104710281</figcaption>
+</figure></li>
+</ol>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104726413.png"
+alt="image-20260427104726413" />
+<figcaption aria-hidden="true">image-20260427104726413</figcaption>
+</figure>
+<h2 id="methods">Methods</h2>
+<h5 id="architecture">1.architecture:</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427103737858.png"
+alt="image-20260427103737858" />
+<figcaption aria-hidden="true">image-20260427103737858</figcaption>
+</figure>
+<h5 id="latent-actions">2.latent actions:</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427103947885.png"
+alt="image-20260427103947885" />
+<figcaption aria-hidden="true">image-20260427103947885</figcaption>
+</figure>
+<h5 id="利用的数据数据金字塔">3.利用的数据：数据金字塔</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104015655.png"
+alt="image-20260427104015655" />
+<figcaption aria-hidden="true">image-20260427104015655</figcaption>
+</figure>
+<h5 id="trainig-三阶段逐渐联合">4.Trainig 三阶段逐渐联合</h5>
+<p>发现直接放在一起训练效果不好。先单独训再联合起来。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104134646.png"
+alt="image-20260427104134646" />
+<figcaption aria-hidden="true">image-20260427104134646</figcaption>
+</figure>
+<h2 id="results">Results</h2>
+<p>pi05随着任务增多单个任务performance下降（说明任务之间彼此有矛盾），但是motus随着多个任务训练能力增强。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104219598.png"
+alt="image-20260427104219598" />
+<figcaption aria-hidden="true">image-20260427104219598</figcaption>
+</figure>
+<h2 id="reflections">Reflections</h2>
+<p>​ 关注training方法和整合的方法。</p>
+<h2 id="other-links">Other Links</h2>
+<p>微信公众号对作者的采访：https://mp.weixin.qq.com/s/hAlnB--SjURS7ukY4gO_Kw</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/26/health-care/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/26/health-care/" class="post-title-link" itemprop="url">health-care</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-26 12:49:39 / Modified: 19:36:45" itemprop="dateCreated datePublished" datetime="2026-04-26T12:49:39+08:00">2026-04-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">个人笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>起因是要帮父母制定体检方案。由此发散了很多想要关注的点，希望有时间一个个去思考解决</p>
+<ul>
+<li>身体健康只是一部分，我认为在互联网发达的现在，精神健康和关怀反而成为越来越不可忽视的一部分。
+<ul>
+<li>如何看待死亡</li>
+<li>如果看待抑郁症</li>
+<li>如何处理焦虑情绪</li>
+</ul></li>
+<li>如何制定一份合适的体检方案</li>
+<li>薄世宁《医学通识讲义》阅读</li>
+<li>薄世宁《icu》阅读</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/24/DreamZero-DreamDojo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/24/DreamZero-DreamDojo/" class="post-title-link" itemprop="url">DreamZero&DreamDojo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-24 11:25:48 / Modified: 17:28:20" itemprop="dateCreated datePublished" datetime="2026-04-24T11:25:48+08:00">2026-04-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="world-model路线概览">world model路线概览</h4>
+<p>World model定义：一个transition model, 输入action + state， 输出next
+state.(action-conditioned状态转移方程)</p>
+<ul>
+<li>Video Generation Model-Pixel Space</li>
+<li>JEPA</li>
+<li>Dynamics Model</li>
+<li>3D Word Model</li>
+<li>基于物理引擎的World Model</li>
+</ul>
+<figure>
+<img data-src="/2026/04/24/DreamZero-DreamDojo/image-20260424133745192.png"
+alt="image-20260424133745192" />
+<figcaption aria-hidden="true">image-20260424133745192</figcaption>
+</figure>
+<h3 id="dreamzero">dreamzero</h3>
+<h5 id="url">URL:</h5>
+<p>https://dreamzero0.github.io/</p>
+<h5 id="结论">结论：</h5>
+<ul>
+<li>应对世界模型推理慢的问题：通过工程（量化，并行，cache），推理加速30倍，7hz</li>
+<li></li>
+</ul>
+<h5 id="methods">methods:</h5>
+<figure>
+<img data-src="/2026/04/24/DreamZero-DreamDojo/image-20260424154007711.png"
+alt="image-20260424154007711" />
+<figcaption aria-hidden="true">image-20260424154007711</figcaption>
+</figure>
+<h3 id="dreamdojo">dreamdojo</h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/20/David-Ha-World-models/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -765,234 +1086,6 @@ alt="RT-2 概述" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/work-with-cailei/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/work-with-cailei/" class="post-title-link" itemprop="url">work-with-cailei</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-17 16:44:08" itemprop="dateCreated datePublished" datetime="2026-04-17T16:44:08+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/PI-series/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/PI-series/" class="post-title-link" itemprop="url">PI系列论文</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-17 15:54:44 / Modified: 16:36:08" itemprop="dateCreated datePublished" datetime="2026-04-17T15:54:44+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="pi07-具有涌现能力的可控模型">pi07: 具有涌现能力的可控模型</h3>
-<h5 id="url">URL:</h5>
-<p>https://www.pi.website/blog/pi07</p>
-<p>量子位总结：https://mp.weixin.qq.com/s/Z7JpjZbEk59wqAKCLLbKtg</p>
-<h5 id="架构">架构：</h5>
-<p>π0.7把prompt展开成四层：任务指令（清理厨房）+子任务指令（打开冰箱）+子目标图像（下一秒画面应该长什么样）+episode元数据（这条数据质量几分、有没有出错、速度多快）。</p>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417163157372.png"
-alt="image-20260417163157372" />
-<figcaption aria-hidden="true">image-20260417163157372</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417162259422.png"
-alt="image-20260417162259422" />
-<figcaption aria-hidden="true">image-20260417162259422</figcaption>
-</figure>
-<h5 id="几个重点发现">几个重点发现</h5>
-<ul>
-<li><p>开箱即用no
-finetune:π0.7没做任何专项训练，就能在<strong>做咖啡、叠衣服、装箱</strong>三个复杂任务上，追平π0.6经过微调的的专家模型。</p>
-<ul>
-<li>vla开始展现出组合泛化的能力，不一定强于world model？</li>
-</ul></li>
-<li><p>Cross-embodiment：让UR5e双臂完成没有采集过的叠衣服任务</p></li>
-<li><p>通过metadata告诉“数据好坏”可以提升模型效果</p>
-<ul>
-<li>这点和机器学习很像，在判别模型里我们的“坏数据”可能有比好数据更高的价值</li>
-</ul>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417163027237.png"
-alt="image-20260417163027237" />
-<figcaption aria-hidden="true">image-20260417163027237</figcaption>
-</figure></li>
-<li><p>pi07的世界模型只预测<strong>把任务指令翻译成成功那一帧应该长啥样</strong>。不预测动作后果，不模拟物理，不参与决策链路。</p></li>
-</ul>
-<h5 id="技术实现vlm-action-expert-flow-matching">技术实现：vlm + action
-expert + flow matching</h5>
-<p><strong>π0.7是一个5B参数的模型，分三块。</strong></p>
-<figure>
-<img data-src="/2026/04/17/PI-series/image-20260417163501417.png"
-alt="image-20260417163501417" />
-<figcaption aria-hidden="true">image-20260417163501417</figcaption>
-</figure>
-<ul>
-<li>VLM骨干：4B参数的Gemma3，负责理解视觉和语言。</li>
-<li>Action expert：860M参数的transformer，用flow
-matching生成连续动作chunk，50Hz高频控制。</li>
-<li>World
-model：从14B的BAGEL图像生成模型初始化，负责给π0.7画出未来几秒应该是什么样子。</li>
-</ul>
-<p>在推理中，<strong>模型输入</strong>包括：4路摄像头（前视+两个腕部+可选后视）、每路6帧历史画面、机器人关节状态、再加上任务指令、子任务指令、元数据、以及world
-model实时画出的次目标图像。</p>
-<p><strong>输出</strong>是一段50步的action
-chunk，实际执行15到25步，然后再推下一段。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/robot-news/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/robot-news/" class="post-title-link" itemprop="url">robot-news</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-17 15:31:24" itemprop="dateCreated datePublished" datetime="2026-04-17T15:31:24+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1064,7 +1157,7 @@ chunk，实际执行15到25步，然后再推下一段。</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1075,7 +1168,7 @@ chunk，实际执行15到25步，然后再推下一段。</p>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

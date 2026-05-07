@@ -187,6 +187,572 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/07/robot-peripheral/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/07/robot-peripheral/" class="post-title-link" itemprop="url">主机外设通信方式和常见问题总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-07 10:48:03 / Modified: 11:06:01" itemprop="dateCreated datePublished" datetime="2026-05-07T10:48:03+08:00">2026-05-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2
+id="一各种外设通信方式特点问题和方案">一：各种外设通信方式、特点、问题和方案</h2>
+<p>在机器人开发中，将各种不同协议的外设集成到一起时，物理连接只是第一步，<strong>稳定性调试</strong>才是最耗时的。</p>
+<h3 id="网络类外设比如vr谷歌眼镜">1.网络类外设(比如vr,谷歌眼镜)</h3>
+<p>用来摇操。</p>
+<p>这类设备最大的敌人是<strong>延迟（Latency）*<em>和*</em>抖动（Jitter）</strong>。</p>
+<p>谷歌眼镜通过网络发送数据时，如果主机开启了防火墙，或者路由器分配了动态
+IP（DHCP）导致 IP 变化，会导致连接中断。通常需要设置<strong>静态
+IP</strong>。</p>
+<h3 id="串行执行类外设-如so-101-电机总线">2.串行/执行类外设 (如：SO-101
+电机总线)</h3>
+<p>这类设备直接关系到机器人的动作安全。</p>
+<p><strong>端口跳变 (Port Flapping)：</strong></p>
+<ul>
+<li><strong>现象：</strong> 今天是
+<code>/dev/ttyACM0</code>，拔插一下变成了
+<code>/dev/ttyACM1</code>。</li>
+<li><strong>对策：</strong> 机器人专家通常使用 <strong>udev
+rules</strong>，通过设备的 Vendor ID 和 Product ID
+绑定一个固定的别名（例如
+<code>/dev/arm_motors</code>），无论怎么拔插都不会变。</li>
+</ul>
+<p><strong>电源干扰 (EMI)：</strong>
+电机转动时会产生巨大的电磁干扰。如果 USB
+线没有屏蔽环（那个圆柱体），可能会导致串口通信瞬间断开，程序报错崩溃。</p>
+<p><strong>权限问题：</strong>
+刚装好的系统默认普通用户没有串口读写权限，经常报错
+<code>Permission denied</code>，需要将用户加入 <code>dialout</code>
+组。</p>
+<h3 id="视觉类外设-如opencv-相机">3.视觉类外设 (如：OpenCV 相机)</h3>
+<p>这类设备消耗最大的系统资源。</p>
+<p><strong>USB 带宽超限：</strong></p>
+<ul>
+<li><strong>现象：</strong>
+插一个相机没问题，插两个相机其中一个就黑屏或掉帧。</li>
+<li><strong>原因：</strong> 主机主板上的多个 USB 接口往往共享一个
+<strong>USB Controller</strong>。两个 1080P/60fps
+的原始流会撑爆总线带宽。</li>
+</ul>
+<p><strong>索引混乱：</strong> <code>cv2.VideoCapture(0)</code> 里的
+<code>0</code>
+并不总是你想要的那个相机。一旦增加新摄像头，索引可能会乱掉。</p>
+<p>通常的解决方法：</p>
+<p>1.<strong>使用带电源的 Hub：</strong>
+如果你的机械臂上有多个相机，务必买那种自带 DC 插头的 <strong>“有源 USB
+3.0 Hub”</strong>。这样电量是由插座提供的，主机的 USB
+只负责传输信号。</p>
+<p>（<strong>多相机并行：</strong> 如果你在一个 USB Hub（集线器）上插了
+3 个摄像头。虽然 Hub 连在电脑上，但如果这个 Hub
+没有外接电源，它必须把主控口的那点电流分给 3
+个相机。这会导致每个相机分到的电流不足，出现<strong>图像闪烁、掉帧、甚至设备反复掉线</strong>的情况。）</p>
+<p>（USB 线如果超过 2-3 米，线缆本身的电阻会导致电压降（Voltage
+Drop）。到达相机端的电压可能只有 <span
+class="math inline">\(4.5\text{V}\)</span>，这足以让很多工业相机罢工。）</p>
+<p>2.<strong>电源管理关闭：</strong> Linux 默认会有 USB
+省电策略（Auto-suspend），这会让相机在不工作时断电。</p>
+<h3 id="hid-交互类外设-如spacemouse">4.HID 交互类外设
+(如：SpaceMouse)</h3>
+<p>这类设备的核心问题在于<strong>驱动兼容性</strong>。</p>
+<ul>
+<li><strong>内核抢占：</strong> Linux 有时会把 SpaceMouse
+识别为一个普通的“三键鼠标”并试图让它控制光标。这会导致你的 Python
+程序（如 <code>pyspacemouse</code>）无法独占设备。</li>
+<li><strong>休眠唤醒失败：</strong> 很多 USB
+外设在电脑进入省电模式后再唤醒，会导致驱动挂死，必须重新插拔。</li>
+</ul>
+<p>经常需要重新插拔，程序有的时候需要加心跳重连机制。</p>
+<h2 id="二-usb2.03.0端口">二： usb2.0/3.0端口</h2>
+<p>在机器人开发和高精度工业场景中，选择 USB 2.0 还是 3.0
+对外设的影响远不止“速度快慢”那么简单，它直接关系到<strong>数据的确定性、设备的稳定性和系统的整体功耗</strong>。</p>
+<h3 id="传输带宽与数据通量-bandwidth">2.1 传输带宽与数据通量
+(Bandwidth)</h3>
+<p>这是最直观的区别，直接决定了传感器能给出的“信息密度”。</p>
+<ul>
+<li><strong>USB 2.0 (<span class="math inline">\(480\text{
+Mbps}\)</span>):</strong>
+<ul>
+<li><strong>影响：</strong> 限制了视频流的质量。如果你在 2.0
+接口上接高清相机，你可能被迫只能选择较低的分辨率（如 <span
+class="math inline">\(640 \times 480\)</span>）或较低的帧率（<span
+class="math inline">\(15\text{ fps}\)</span>）。</li>
+<li><strong>典型后果：</strong> 画面出现明显的运动模糊（Motion
+Blur），对于需要 ±0.025mm 级精度的视觉引导（Visual
+Servoing）来说，低分辨率和丢帧是致命的。</li>
+</ul></li>
+<li><strong>USB 3.0 (<span class="math inline">\(5\text{ Gbps}\)</span>
+及以上):</strong>
+<ul>
+<li><strong>影响：</strong> 能够支持原生未压缩图像（RAW）传输。</li>
+<li><strong>典型后果：</strong> 画面更清晰、延迟更低。深度相机（如
+RealSense D435）必须在 3.0
+模式下才能输出高分辨率的深度图，否则只能降低采样精度。</li>
+</ul></li>
+</ul>
+<h3 id="供电能力-power-supply">2.2 供电能力 (Power Supply)</h3>
+<p>如前所述，这直接影响外设能否“跑得稳”。</p>
+<ul>
+<li><strong>USB 2.0 (<span class="math inline">\(500\text{
+mA}\)</span>):</strong>
+很多现代传感器（如高性能激光雷达、带计算单元的相机）在启动瞬间的峰值电流会超过
+<span class="math inline">\(500\text{ mA}\)</span>。
+<ul>
+<li><strong>影响：</strong>
+设备可能频繁重启、无法识别，或者在工作负载加大时（例如相机开始高频闪光或计算）突然掉线。</li>
+</ul></li>
+<li><strong>USB 3.0 (<span class="math inline">\(900\text{
+mA}\)</span>):</strong> 提供了更充裕的功率缓冲。
+<ul>
+<li><strong>影响：</strong>
+能够支持更多无需外接电源的小型机器人外设（如小扭矩伺服控制板）。</li>
+</ul></li>
+</ul>
+<h3 id="通信机制半双工-vs-全双工-duplex">2.3 通信机制：半双工 vs 全双工
+(Duplex)</h3>
+<p>这是一个经常被忽略的技术细节，影响<strong>控制的实时性</strong>。</p>
+<ul>
+<li><strong>USB 2.0 (半双工):</strong>
+就像单行道，数据在同一时间只能往一个方向走。主机必须不断地去轮询（Polling）外设是否有数据。
+<ul>
+<li><strong>影响：</strong>
+增加了微小的指令延迟（Latency）。对于需要极高实时反馈的力控算法，这种轮询机制可能引入非确定性的时间抖动。</li>
+</ul></li>
+<li><strong>USB 3.0 (全双工):</strong> 支持同时发送和接收数据。
+<ul>
+<li><strong>影响：</strong>
+通信更高效，降低了“排队等待”的时间，非常适合需要双向高频交互的设备。</li>
+</ul></li>
+</ul>
+<h3 id="关键干扰问题2.4g-信号杀手">2.4 关键干扰问题：2.4G 信号杀手</h3>
+<p>这是 USB 3.0 在机器人领域的一个著名“天坑”。</p>
+<ul>
+<li><strong>现象：</strong> 当你使用 USB 3.0
+接口传输高带宽数据时，它会产生一种宽频带电磁干扰。</li>
+<li><strong>影响：</strong> 这个干扰恰好覆盖了 <strong>2.4GHz
+频段</strong>。</li>
+<li><strong>后果：</strong> 如果你的主机（如 Jetson Orin）插着 USB 3.0
+的相机，那么<strong>旁边的 2.4G WiFi
+信号或无线手柄收发器</strong>可能会瞬间断连、信号极差或丢包严重。这解释了为什么有些谷歌眼镜或无线手柄在连接
+3.0 设备时必须强制切换到 5G 频率或使用加长的屏蔽线。</li>
+</ul>
+<h3 id="线缆长度限制">2.5 线缆长度限制</h3>
+<p><strong>USB 2.0:</strong> 相对宽容，普通线缆可以做到 5
+米左右仍保持稳定。</p>
+<p><strong>USB 3.0:</strong> 由于信号频率极高，衰减非常快。普通的
+passive（无源）线缆超过 3 米就会出现严重的信号完整性问题。</p>
+<ul>
+<li><strong>影响：</strong>
+如果你的机械臂较大，需要从基座拉长线到末端相机，3.0
+的线必须使用<strong>有源延长线 (Active Cable)</strong>
+或是昂贵的工业屏蔽线。</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>USB 2.0</strong></th>
+<th><strong>USB 3.0</strong></th>
+<th><strong>对机器人的建议</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>电机/SpaceMouse</strong></td>
+<td>✅ 完全足够</td>
+<td>⚠️ 浪费且易受干扰</td>
+<td>建议插在 2.0 口，预留 3.0 给视觉</td>
+</tr>
+<tr>
+<td><strong>工业/深度相机</strong></td>
+<td>❌ 延迟高、易掉帧</td>
+<td>✅ 必须使用</td>
+<td>必须使用 3.0 且注意线缆屏蔽</td>
+</tr>
+<tr>
+<td><strong>无线接收器</strong></td>
+<td>✅ 较稳定</td>
+<td>❌ 严重干扰</td>
+<td>尽量远离 USB 3.0 插槽或使用延长线隔离</td>
+</tr>
+</tbody>
+</table>
+<p>在做 <strong>LeRobot</strong>
+这种涉及视觉和精确动作控制的项目时，通常的配置策略是：<strong>视觉走
+3.0（保证感知密度），控制走 2.0（保证链路纯净稳定）。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/06/lerobot-bind-port/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/06/lerobot-bind-port/" class="post-title-link" itemprop="url">lerobot端口绑定</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-06 16:18:58" itemprop="dateCreated datePublished" datetime="2026-05-06T16:18:58+08:00">2026-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-07 15:12:43" itemprop="dateModified" datetime="2026-05-07T15:12:43+08:00">2026-05-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>[!NOTE]</p>
+<p>我有一个LEROBOT主臂主板USB口是/dev/ttyACM0，还有一个从臂usb口是/dev/ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMOD
+666</p>
+</blockquote>
+<p>这种情况在机器人开发（如 LeRobot）中非常常见。由于 Linux 系统分配
+<code>/dev/ttyACM*</code>
+是按照插拔顺序随机分配的，且默认权限受限，最稳妥的解决方案是<strong>编写
+udev 规则</strong>。</p>
+<p>通过 udev 规则，你可以根据硬件的唯一序列号（Serial
+Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code> 和
+<code>/dev/slave_arm</code>），并自动设置 <code>0666</code> 权限。</p>
+<h3 id="第一步获取设备的硬件信息">第一步：获取设备的硬件信息</h3>
+<p>你需要找到两个主板的
+<strong>idVendor</strong>、<strong>idProduct</strong> 以及最重要的
+<strong>serial</strong>（序列号）。</p>
+<ol type="1">
+<li><p>拔掉从臂，只插上<strong>主臂</strong>。</p></li>
+<li><p>运行以下命令查看信息：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">udevadm info -a -n /dev/ttyACM0 | grep -E &quot;idVendor|idProduct|serial&quot; | head -n 3</span><br></pre></td></tr></table></figure>
+<p><em>注意：如果你的主臂在</em>
+<code>/dev/ttyACM1</code><em>，请相应修改路径。</em></p></li>
+<li><p><strong>记录输出结果</strong>，例如：</p>
+<ul>
+<li><code>ATTRS&#123;idVendor&#125;=="2e8a"</code></li>
+<li><code>ATTRS&#123;idProduct&#125;=="000a"</code></li>
+<li><code>ATTRS&#123;serial&#125;=="1234567890AB"</code>（这是区分两个相同型号主板的关键）</li>
+</ul></li>
+<li><p>拔掉主臂，插上<strong>从臂</strong>，重复上述步骤，记录从臂的序列号。</p></li>
+</ol>
+<hr />
+<h3 id="第二步创建-udev-规则文件">第二步：创建 udev 规则文件</h3>
+<p>创建一个新的规则文件：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/udev/rules.d/99-lerobot.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中输入以下内容（请将 <code>xxxx</code>
+替换为你刚才查到的实际数值）：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 主臂 (Master Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;主臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;master_arm&quot;</span><br><span class="line"></span><br><span class="line"># 从臂 (Slave Arm)</span><br><span class="line">KERNEL==&quot;ttyACM*&quot;, ATTRS&#123;idVendor&#125;==&quot;xxxx&quot;, ATTRS&#123;idProduct&#125;==&quot;xxxx&quot;, ATTRS&#123;serial&#125;==&quot;从臂序列号&quot;, MODE=&quot;0666&quot;, SYMLINK+=&quot;slave_arm&quot;</span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="第三步应用规则并验证">第三步：应用规则并验证</h3>
+<ol type="1">
+<li><p><strong>加载新规则：</strong></p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo udevadm control --reload-rules</span><br><span class="line">sudo udevadm trigger</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>验证绑定是否成功：</strong> 插上两个主板，运行：</p>
+<p>Bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/master_arm /dev/slave_arm</span><br></pre></td></tr></table></figure>
+<p>你会看到类似这样的输出，显示它们已经指向了 <code>ttyACM*</code>：
+<code>lrwxrwxrwx 1 root root 7 Dec 18 10:00 /dev/master_arm -&gt; ttyACM0</code></p></li>
+<li><p><strong>检查权限：</strong></p></li>
+</ol>
+<p>Bash</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
+<p>你会发现权限已经是 <code>crw-rw-rw-</code> (即
+666)，不再需要手动修改。</p>
+<hr />
+<h3 id="核心优势">核心优势</h3>
+<ul>
+<li><strong>持久性：</strong>
+无论重启还是重新插拔，<code>/dev/master_arm</code>
+永远指向正确的主板。</li>
+<li><strong>零配置：</strong> 你在 LeRobot
+的代码或配置文件中，直接将端口设置为 <code>/dev/master_arm</code>
+即可。</li>
+<li><strong>权限自动化：</strong> <code>MODE="0666"</code>
+彻底解决了权限拒绝（Permission Denied）的问题。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/06/lerobot-startup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/06/lerobot-startup/" class="post-title-link" itemprop="url">lerobot机械臂从组装到跑通</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-06 15:52:40" itemprop="dateCreated datePublished" datetime="2026-05-06T15:52:40+08:00">2026-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-07 15:22:18" itemprop="dateModified" datetime="2026-05-07T15:22:18+08:00">2026-05-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="一硬件组装">一、硬件组装</h3>
+<p>如图所示，lerobot主要由一个主臂（右边的操作臂）和一个从臂组成（左边的臂）。通过右边的臂进行示教，左边的臂相当于执行示教的动作或者policy的动作。</p>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260506155543496.png"
+alt="image-20260506155543496" />
+<figcaption aria-hidden="true">image-20260506155543496</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/so100_video.webp"
+alt="SO101 Video" />
+<figcaption aria-hidden="true">SO101 Video</figcaption>
+</figure>
+<h3 id="二lerobot环境安装">二、lerobot环境安装</h3>
+<p>用docker或者conda环境都可以，我是安装了一个anaconda环境。</p>
+<h3
+id="三确定遥控臂teleop-arm和机械人手臂robot-arm端口">三、确定遥控臂（teleop
+arm）和机械人手臂(robot arm)端口</h3>
+<h4 id="识别遥控臂teleop-arm端口">3.1 识别遥控臂（teleop arm）端口</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lerobot-find-port</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 过程可以参考https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/07-calibrating-so101.html</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 你会得到</span></span></span><br><span class="line">The port of this MotorsBus is &#x27;/dev/ttyACM0&#x27;</span><br><span class="line">Reconnect the USB cable.</span><br><span class="line"></span><br><span class="line">在本例中， /dev/ttyACM0 是主机分配的端口。</span><br></pre></td></tr></table></figure>
+<h4 id="识别机器人手臂端口">3.2 识别机器人手臂端口</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lerobot-find-port</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 相同的操作过程可以得到机器人手臂的端口/dev/ttyACM1</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="可选-绑定机器人端口">3.3(可选) 绑定机器人端口</h4>
+<p>完成上面的设定可能存在两个问题：</p>
+<p>由于 Linux 系统分配 <code>/dev/ttyACM*</code>
+是按照插拔顺序随机分配的，且默认权限受限：</p>
+<p>1.(插拔端口号变化)如果同时重新连接多根 USB
+线缆，端口可能会发生变化。需要通过断开其中一根线缆并按 Enter
+键重新来确定哪个端口对应哪个机械臂。</p>
+<p>2.（插拔权限重置）：每次插拔都要重新CHMOD 666</p>
+<p>检查绑定：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/master_arm /dev/slave_arm</span><br></pre></td></tr></table></figure>
+<p>你会看到类似这样的输出，显示它们已经指向了 <code>ttyACM*</code>：
+<code>lrwxrwxrwx 1 root root 7 Dec 18 10:00 /dev/master_arm -&gt; ttyACM0</code></p>
+<p>检查权限：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
+<p>你会发现权限已经是 <code>crw-rw-rw-</code> (即
+666)，不再需要手动修改。</p>
+<p>解决方案参考另外一篇文档：lerobot端口绑定。</p>
+<h3 id="四校准">四、校准</h3>
+<h4 id="校准遥控臂主控臂">4.1 校准遥控臂（主控臂）</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lerobot-calibrate \</span><br><span class="line">    --teleop.type=so101_leader \   </span><br><span class="line">    --teleop.port=/dev/master_arm \    ## 刚才绑定的端口</span><br><span class="line">    --teleop.id=my_awesome_leader_arm   #起个unique的名字</span><br></pre></td></tr></table></figure>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260506210427564.png"
+alt="image-20260506210427564" />
+<figcaption aria-hidden="true">image-20260506210427564</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260506210702290.png"
+alt="image-20260506210702290" />
+<figcaption aria-hidden="true">image-20260506210702290</figcaption>
+</figure>
+<h4 id="校准从臂">4.2 校准从臂</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lerobot-calibrate \</span><br><span class="line">    --teleop.type=so101_follower \   </span><br><span class="line">    --teleop.port=/dev/slave_arm \    ## 刚才绑定的端口</span><br><span class="line">    --teleop.id=my_awesome_follower_arm   #起个unique的名字</span><br></pre></td></tr></table></figure>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260506211906054.png"
+alt="image-20260506211906054" />
+<figcaption aria-hidden="true">image-20260506211906054</figcaption>
+</figure>
+<h4 id="teleoperation">4.3 Teleoperation</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lerobot-teleoperate \</span><br><span class="line">    --robot.type=so101_follower \</span><br><span class="line">    --robot.port=/dev/slave_arm \</span><br><span class="line">    --robot.id=my_awesome_follower_arm \</span><br><span class="line">    --teleop.type=so101_leader \</span><br><span class="line">    --teleop.port=/dev/master_arm \</span><br><span class="line">    --teleop.id=my_awesome_leader_arm</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<p>https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/08-operating-so101.html</p>
+<h4 id="camera设置">4.4 camera设置</h4>
+<p>每个机器人workspace配备了两个摄像头：</p>
+<ul>
+<li>Gripper camera：夹爪摄像头，安装在机器人的手腕/夹爪上</li>
+<li>External camera: 外部摄像头，从上方或者侧面观察工作区域</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lerobot-find-cameras opencv</span><br></pre></td></tr></table></figure>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260507145429245.png"
+alt="image-20260507145429245" />
+<figcaption aria-hidden="true">image-20260507145429245</figcaption>
+</figure>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>(可能会遇到一个摄像头fail to
+connect的问题，现象是分别connect一个摄像头没问题,两个摄像头一起连就会这样)</p>
+<p>这种情况非常典型，几乎可以确定是usb总线带宽不足或者是电源供应限制。</p>
+<p>1.分散usb接口：不要把两个摄像头插在相邻的接口上，更不要插在同一个usb
+hub上。电脑主板上面通常有多个usb控制器，将两个摄像头分别插在电脑的前置和后置面板上。——solved</p>
+<p>2.修改摄像头格式压缩视频或者降低分辨率或者帧率来节省带宽。</p>
+</blockquote>
+<p>会捕捉图像存储到文件夹里。</p>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260507151541294.png"
+alt="image-20260507151541294" />
+<figcaption aria-hidden="true">image-20260507151541294</figcaption>
+</figure>
+<h3
+id="五利用摄像头来进行远程teleoperation">五、利用摄像头来进行远程teleoperation</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">lerobot-teleoperate \</span><br><span class="line">  --robot.type=so101_follower \</span><br><span class="line">  --robot.port=/dev/slave_arm \</span><br><span class="line">  --robot.id=my_awesome_follower_arm \</span><br><span class="line">  --teleop.type=so101_leader \</span><br><span class="line">  --teleop.port=/dev/master_arm \</span><br><span class="line">  --teleop.id=my_awesome_leader_arm \</span><br><span class="line">  --display_data=true \</span><br><span class="line">  --robot.cameras=&#x27;&#123;</span><br><span class="line">    &quot;wrist&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;opencv&quot;,</span><br><span class="line">      &quot;index_or_path&quot;: &#x27;2&#x27;,   #看outputs存入图像的索引</span><br><span class="line">      &quot;width&quot;: 640,</span><br><span class="line">      &quot;height&quot;: 480,</span><br><span class="line">      &quot;fps&quot;: 30</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;front&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;opencv&quot;,</span><br><span class="line">      &quot;index_or_path&quot;: &#x27;0&#x27;,</span><br><span class="line">      &quot;width&quot;: 640,</span><br><span class="line">      &quot;height&quot;: 480,</span><br><span class="line">      &quot;fps&quot;: 30</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;&#x27;</span><br></pre></td></tr></table></figure>
+<p>可以在Rerun viewer这个工具里看到</p>
+<figure>
+<img data-src="/2026/05/06/lerobot-startup/image-20260507151752747.png"
+alt="image-20260507151752747" />
+<figcaption aria-hidden="true">image-20260507151752747</figcaption>
+</figure>
+<p>接下来可以尝试对应的操作。注意：</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p><strong>尝试仅通过摄像头画面</strong> （而非肉眼）进行遥操作。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/06/how-gpu-works/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1196,327 +1762,6 @@ alt="image-20260427174816427" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/27/Motus/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/27/Motus/" class="post-title-link" itemprop="url">Motus</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-27 10:32:32 / Modified: 10:51:58" itemprop="dateCreated datePublished" datetime="2026-04-27T10:32:32+08:00">2026-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="title-url">Title &amp; URL</h2>
-<ul>
-<li><strong>Title</strong>: Motus: A Unified Latent Action World
-Model</li>
-<li><strong>URL</strong>:
-<ul>
-<li>Arrive: https://arxiv.org/abs/2512.13030</li>
-<li>Motus：https://motus-robotics.github.io/motus</li>
-</ul></li>
-<li><strong>Author</strong>:1 清华大学 2 圣书大学 3 北京大学 4
-地平线机器人公司</li>
-<li><strong>Time</strong>: 2025年12月</li>
-</ul>
-<h2 id="tldr">TL;DR</h2>
-<p>​ 训练了一个统一的latent action world
-model，旨在利用尽可能多的所有数据训练一个统一的模型。</p>
-<h2 id="key-insights">Key Insights</h2>
-<ol type="1">
-<li><p>unified model + latent action的想法。Google
-Deepmind在25年6月份发了一篇General agents contain world
-models的论文，证明了通用agent内部必然包括一个世界模型。</p>
-<p>目标、dynamics
-model(世界模型)、policy三者有任意两者都可以推出另外一个，因此给定目标的情况下，建模世界模型和建模policy之间是互通的，可以用更统一的视角来看待这两者，也就是unified
-world models。</p>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427104621439.png"
-alt="image-20260427104621439" />
-<figcaption aria-hidden="true">image-20260427104621439</figcaption>
-</figure></li>
-<li><p>Motus, VLM.WM</p>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427104710281.png"
-alt="image-20260427104710281" />
-<figcaption aria-hidden="true">image-20260427104710281</figcaption>
-</figure></li>
-</ol>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427104726413.png"
-alt="image-20260427104726413" />
-<figcaption aria-hidden="true">image-20260427104726413</figcaption>
-</figure>
-<h2 id="methods">Methods</h2>
-<h5 id="architecture">1.architecture:</h5>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427103737858.png"
-alt="image-20260427103737858" />
-<figcaption aria-hidden="true">image-20260427103737858</figcaption>
-</figure>
-<h5 id="latent-actions">2.latent actions:</h5>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427103947885.png"
-alt="image-20260427103947885" />
-<figcaption aria-hidden="true">image-20260427103947885</figcaption>
-</figure>
-<h5 id="利用的数据数据金字塔">3.利用的数据：数据金字塔</h5>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427104015655.png"
-alt="image-20260427104015655" />
-<figcaption aria-hidden="true">image-20260427104015655</figcaption>
-</figure>
-<h5 id="trainig-三阶段逐渐联合">4.Trainig 三阶段逐渐联合</h5>
-<p>发现直接放在一起训练效果不好。先单独训再联合起来。</p>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427104134646.png"
-alt="image-20260427104134646" />
-<figcaption aria-hidden="true">image-20260427104134646</figcaption>
-</figure>
-<h2 id="results">Results</h2>
-<p>pi05随着任务增多单个任务performance下降（说明任务之间彼此有矛盾），但是motus随着多个任务训练能力增强。</p>
-<figure>
-<img data-src="/2026/04/27/Motus/image-20260427104219598.png"
-alt="image-20260427104219598" />
-<figcaption aria-hidden="true">image-20260427104219598</figcaption>
-</figure>
-<h2 id="reflections">Reflections</h2>
-<p>​ 关注training方法和整合的方法。</p>
-<h2 id="other-links">Other Links</h2>
-<p>微信公众号对作者的采访：https://mp.weixin.qq.com/s/hAlnB--SjURS7ukY4gO_Kw</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/26/health-care/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/26/health-care/" class="post-title-link" itemprop="url">health-care</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-26 12:49:39 / Modified: 19:36:45" itemprop="dateCreated datePublished" datetime="2026-04-26T12:49:39+08:00">2026-04-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">个人笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>起因是要帮父母制定体检方案。由此发散了很多想要关注的点，希望有时间一个个去思考解决</p>
-<ul>
-<li>身体健康只是一部分，我认为在互联网发达的现在，精神健康和关怀反而成为越来越不可忽视的一部分。
-<ul>
-<li>如何看待死亡</li>
-<li>如果看待抑郁症</li>
-<li>如何处理焦虑情绪</li>
-</ul></li>
-<li>如何制定一份合适的体检方案</li>
-<li>薄世宁《医学通识讲义》阅读</li>
-<li>薄世宁《icu》阅读</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/24/DreamZero-DreamDojo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/24/DreamZero-DreamDojo/" class="post-title-link" itemprop="url">DreamZero&DreamDojo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-04-24 11:25:48 / Modified: 17:28:20" itemprop="dateCreated datePublished" datetime="2026-04-24T11:25:48+08:00">2026-04-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="world-model路线概览">world model路线概览</h4>
-<p>World model定义：一个transition model, 输入action + state， 输出next
-state.(action-conditioned状态转移方程)</p>
-<ul>
-<li>Video Generation Model-Pixel Space</li>
-<li>JEPA</li>
-<li>Dynamics Model</li>
-<li>3D Word Model</li>
-<li>基于物理引擎的World Model</li>
-</ul>
-<figure>
-<img data-src="/2026/04/24/DreamZero-DreamDojo/image-20260424133745192.png"
-alt="image-20260424133745192" />
-<figcaption aria-hidden="true">image-20260424133745192</figcaption>
-</figure>
-<h3 id="dreamzero">dreamzero</h3>
-<h5 id="url">URL:</h5>
-<p>https://dreamzero0.github.io/</p>
-<h5 id="结论">结论：</h5>
-<ul>
-<li>应对世界模型推理慢的问题：通过工程（量化，并行，cache），推理加速30倍，7hz</li>
-<li></li>
-</ul>
-<h5 id="methods">methods:</h5>
-<figure>
-<img data-src="/2026/04/24/DreamZero-DreamDojo/image-20260424154007711.png"
-alt="image-20260424154007711" />
-<figcaption aria-hidden="true">image-20260424154007711</figcaption>
-</figure>
-<h3 id="dreamdojo">dreamdojo</h3>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1588,7 +1833,7 @@ alt="image-20260424154007711" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1599,7 +1844,7 @@ alt="image-20260424154007711" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

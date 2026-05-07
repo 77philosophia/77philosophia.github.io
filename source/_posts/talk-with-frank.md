@@ -1,5 +1,5 @@
 ---
-title: 和Frank的谈话
+title: 和Frank的谈话——“我做的东西都是我自己的”
 date: 2026-04-14 11:41:56
 tags: talk
 category:

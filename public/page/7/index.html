@@ -187,6 +187,452 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/21/pi05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/21/pi05/" class="post-title-link" itemprop="url">pi05</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-01-21 11:45:23" itemprop="dateCreated datePublished" datetime="2026-01-21T11:45:23+08:00">2026-01-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Paper:https://www.alphaxiv.org/zh/overview/2504.16054</p>
+<p>类似于smolVLA,对输入pi05也分为两部分，第一部分对图像和语言进行编码，第二部分对动作输入进行加噪。</p>
+<h5 id="对输入图像和lang处理">对输入图像和lang处理</h5>
+<ul>
+<li><p>对图像处理：</p>
+<ul>
+<li>(Batch,3,224,224)-&gt;image backbone-&gt;(Batch, num_img_embeds=256,
+2048)</li>
+<li>对应的pad masks:(batch=4, 256)</li>
+<li>Att_masks: [0,0,0...(256个)， 0，0，0，...(256个)]</li>
+</ul></li>
+<li><p>对language处理</p>
+<ul>
+<li>(Batch, 200) -&gt; (Batch, 200, 2048)</li>
+<li>Pad_masks:(batch=4,200)</li>
+<li>Att_masks: [0,0,...,0(200个)]</li>
+</ul>
+<hr />
+<p>最终输入：</p>
+<p>Ebbs:[img(4,256,2048), img(4,256,2048), lang(4,200,2048)]</p>
+<p>Pad_masks:[(4,256), (4,256), (4,200)]</p>
+<p>Att_masks:[0,0,...(256个)， 0,0,...(256个)，
+0，0，...(200个)]</p></li>
+</ul>
+<h4 id="对action处理">对action处理</h4>
+<ul>
+<li>Action：(batch比如=4, chunk_size=50,
+action_dim=32)-&gt;nn.Linear()-&gt;(batch=4, 50, 1024)</li>
+<li>对time进行采样：(batch=4)-&gt;embedding-&gt; time_embed:(batch=4,
+1024)</li>
+<li>类似于smolvla的操作对action进行加噪，得到noised_actions:(batch=4,50,1024)</li>
+<li>最后返回：
+<ul>
+<li>Embs:[action_emb(batch=4,50,1024)]</li>
+<li>Pad_mask:(batch=4,50). 全1</li>
+<li>Att_mask: [1,0,0,...0] 后面49个0</li>
+<li>Adam_cond: (batch=4,1024). 就是time_emb</li>
+</ul></li>
+<li>接下来的网络主要对两部分的信息进行融合</li>
+</ul>
+<h3 id="网络结构">网络结构</h3>
+<figure>
+<img data-src="/2026/01/21/pi05/image-20260121141619827.png"
+alt="image-20260121141619827" />
+<figcaption aria-hidden="true">image-20260121141619827</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/01/21/pi05/image-20260121141633087.png"
+alt="image-20260121141633087" />
+<figcaption aria-hidden="true">image-20260121141633087</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/20/smolvla/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/20/smolvla/" class="post-title-link" itemprop="url">smolvla</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-01-20 16:34:13" itemprop="dateCreated datePublished" datetime="2026-01-20T16:34:13+08:00">2026-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文：https://www.alphaxiv.org/zh/overview/2506.01844</p>
+<h3 id="smolvla主要架构">smolVLA主要架构</h3>
+<pre><code>[Paper]()
+
+Designed by Hugging Face.
+┌──────────────────────────────┐
+│                 actions      │
+│                    ▲         │
+│ ┌─────────┐      ┌─|────┐    │
+│ |         │────► │      │    │
+│ |         │ kv   │      │    │
+│ |         │────► │Action│    │
+│ |   VLM   │cache │Expert│    |
+│ │         │────► |      │    │
+│ │         │      │      │    │
+│ └▲──▲───▲─┘      └───▲──┘    |
+│  │  |   |            │       |
+│  |  |   |          noise     │
+│  │  │ state                  │
+│  │ language tokens           │
+│  image(s)                    │
+└──────────────────────────────┘</code></pre>
+<ul>
+<li><p>对输入进行的处理：</p>
+<ul>
+<li>Images:[(Batch, C,512,512), (Batch, C,512,512)] (两路相机)</li>
+<li>Img_masks:([B],[B])
+(image级别的mask，不同机器人配置的相机个数不一样，为了统一对齐格式)</li>
+<li>Lang_tokens:(Batch, lang_len=48)</li>
+<li>Lang_masks:(Batch, 48)</li>
+<li>State:(Batch, state_dim=32)
+实验中机器人关节dim=6，其余的是padding</li>
+<li>Actions:(Batch,chunk_size=50,action_dim=32)</li>
+<li>Noise:(Batch,chunk_size=50,noise_dim=action_dim=32)</li>
+</ul></li>
+<li><p>对输入进行处理</p>
+<ul>
+<li><p>第一步：多模态融合(embed_prefix)</p>
+<ul>
+<li>对每张images(Batch,C=3,H=512,W=512),vit的结构中14x14是一个patch,则图像的sequence长度是L=(512/14)x(512/14)=32x32=1024,提取经过vlm模型的vision_model的last_hidden_state得到(Batch,
+Len=1024,D=hidden_dim=768)</li>
+<li>经过vlm结构的connector(把图像特征对齐到跟语言空间一致)最终是(Batch,64,960)</li>
+<li>对文本进行处理：
+<ul>
+<li>Lang_tokens:(Batch,48) -&gt; Embedding -&gt;(Batch,48,960)</li>
+<li>State;(Batch,32)-&gt;nn.Linear()-&gt;(Batch,960)-&gt;unsqueezed:(Batch,1,960)</li>
+</ul></li>
+<li>输出拼接：
+<ul>
+<li>Embs:[image_embed, image_embed, lang_embed, state_embed]</li>
+<li>Pad_masks:[1,1,...(B,64), 1,1,1...(B,64), 1/0...(B,48), 1(B,1)
+]</li>
+<li>Attn_masks:[0,0,...(64), 0,0,...(64), 0,0,0,...(48), 1]</li>
+</ul></li>
+</ul>
+<hr /></li>
+<li><p>第二步：融合action和time(embed_suffix)</p>
+<ul>
+<li><p>Flow Matching原理</p>
+<figure>
+<img data-src="/2026/01/20/smolvla/image-20260120165038918.png"
+alt="image-20260120165038918" />
+<figcaption aria-hidden="true">image-20260120165038918</figcaption>
+</figure></li>
+<li><p>根据flow matching的原理：</p>
+<ul>
+<li><p>输入actions:(batch, chunk_size=50, action_dim=32),</p>
+<p>输入noise:(batch, 50,32)</p>
+<p>Time:(B) -&gt; (B,1,1)</p></li>
+<li><p>则x_t = noise + (1-time)*actions, 速度u_t =
+noise-actions</p></li>
+<li><p>这里注意对noise采样是正态分布随机采样，但是对时间t采取的是beta分布：</p></li>
+</ul>
+<figure>
+<img data-src="/2026/01/20/smolvla/image-20260120165422935.png"
+alt="image-20260120165422935" />
+<figcaption aria-hidden="true">image-20260120165422935</figcaption>
+</figure>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>那我们如何将time信息和noise_action很好的fuse在一起，这是个problem,
+我们来看embed_suffix是如何做的。</p>
+</blockquote></li>
+<li><p>对noised_action:(Batch,chunk_size=50,action_dim=32)-&gt;nn.Linear()-&gt;(batch,
+chunk_size=50,720)</p></li>
+<li><p>对time:(B)-&gt;sin_cos的方法对(0,1)区间的时间数值进行编码-&gt;(Batch,720)-&gt;repeat-&gt;(Batch,50,720)</p></li>
+<li><p>用mlp(Linear-&gt;Silu-&gt;Linear-&gt;Silu)
+将action和time结合起来, 最后得到noised_actions_with_time:(batch,
+50,720), pad_masks:[1,1,1...] (B,50), attn_masks:[1,1,1,...] (B,50)</p>
+<hr /></li>
+</ul></li>
+<li><p>最后把所有的输入信息concate在一起</p>
+<ul>
+<li><p>[img, img, lang, state, noised_action_with_time]</p></li>
+<li><p>Pad_masks: (B, 64x2+48+1+50). -&gt; (B,227)</p></li>
+<li><p>Attn_masks: (B, 64x2+48+1+50). -&gt; (B,227)</p>
+<figure>
+<img data-src="/2026/01/20/smolvla/image-20260120170605891.png"
+alt="image-20260120170605891" />
+<figcaption aria-hidden="true">image-20260120170605891</figcaption>
+</figure>
+<hr /></li>
+</ul></li>
+<li><p>第三步： VLM_with_expert的推理</p>
+<ul>
+<li>首先，总体来看通过vlm_with_expert的推理会得到一个(batch,50,720)的tensor-&gt;nn.Linear(720,32=padded
+action dim)-&gt;得到估计的v_t</li>
+<li>和上面的u_t真值做mse_loss</li>
+<li>所以这一步的关键其实是看VLM_with_expert是怎么把这些信息做整合的</li>
+</ul>
+<figure>
+<img data-src="/2026/01/20/smolvla/image-20260120212329700.png"
+alt="image-20260120212329700" />
+<figcaption aria-hidden="true">image-20260120212329700</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><p>输入:</p>
+<ul>
+<li>Inputs_embeds:[prefix_embes, suffix_embs]</li>
+<li>Prefix_embs:[img, img, lang, state] (Batch,64+64+48+1,960)</li>
+<li>Suffix_embeds: [noised_actions]. (B,50,720)</li>
+</ul></li>
+<li><p>VLM_with_Expert的网络结构</p>
+<ul>
+<li><p>[vlm.text_model, lm_expert(transformer
+decoder结构)]。分别有16层；是一个典型的“大模型带小模型”的结构。并且这两个网络结构的层数是一样的，在每一层都进行特征融合。</p></li>
+<li><p>16层计算</p>
+<ul>
+<li>对于奇数层，采取的是joint
+attention,代码里的方法是forward_attn_layer(把vlm每次的hidden
+state和expert每次的hidden
+state拼接在一起，作为一个统一的长序列，在同一个注意力机制下相互观察)</li>
+<li>对于偶数层采取的是cross_attention,代码里的方法是forward_cross_attn_layer(互相查询方式的观察)</li>
+<li>每一层的观察得到attn_output:(batch, 177+50, 960)</li>
+<li>然后分开使用各自网络这一层的linear, norm, mlp层回到各自hidden
+state的维度，vlm是（Batch,177,960), expert是（Batch,50,720)
+(虽然attn_out_dim=960,但是expert可以通过自己层的proj回到720的维度)</li>
+</ul></li>
+<li><p>接下来可以关注一下奇数层的joint_attention(self_attention)和偶数层的cross_attention具体是如何实现的。</p>
+<ul>
+<li><p>Self_attention: 即将两个hidden state
+tensor堆叠起来，然后运行multihead attntion计算，互相观察。</p>
+<figure>
+<img data-src="/2026/01/20/smolvla/image-20260121113442948.png"
+alt="image-20260121113442948" />
+<figcaption aria-hidden="true">image-20260121113442948</figcaption>
+</figure></li>
+<li><p>Cross_attention</p>
+<figure>
+<img data-src="/2026/01/20/smolvla/image-20260121113625317.png"
+alt="image-20260121113625317" />
+<figcaption aria-hidden="true">image-20260121113625317</figcaption>
+</figure></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/20/vae%E7%9A%84%E6%9E%84%E9%80%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/20/vae%E7%9A%84%E6%9E%84%E9%80%A0/" class="post-title-link" itemprop="url">vae的构造</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-01-20 16:24:26" itemprop="dateCreated datePublished" datetime="2026-01-20T16:24:26+08:00">2026-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-04-07 15:25:24" itemprop="dateModified" datetime="2026-04-07T15:25:24+08:00">2026-04-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="vae是什么">vae是什么</h3>
+<p>VAE由三部分组成，VAE encoder, latent space, vae decoder vae
+encoder将原始的数据信息X进行编码映射到latent space空间中，latent
+space是代表训练数据的一个隐式空间，从中进行采样得到采样数据Z'，最终通过VAE
+DECODER的解码过程可以把数据恢复X'</p>
+<h3 id="贝叶斯框架下的因果推断">贝叶斯框架下的因果推断</h3>
+<figure>
+<img data-src="vae/image-20260120163052283.png"
+alt="image-20260120163052283" />
+<figcaption aria-hidden="true">image-20260120163052283</figcaption>
+</figure>
+<h3 id="重参数化技巧">重参数化技巧</h3>
+<figure>
+<img data-src="vae/image-20260120163204904.png"
+alt="image-20260120163204904" />
+<figcaption aria-hidden="true">image-20260120163204904</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/01/19/camera-read/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1133,341 +1579,6 @@ id="ssh-agent避免每次重新输入密码">ssh-agent避免每次重新输入�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/12/04/port-transfer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/12/04/port-transfer/" class="post-title-link" itemprop="url">端口转发</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-12-04 16:25:47" itemprop="dateCreated datePublished" datetime="2025-12-04T16:25:47+08:00">2025-12-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="场景">场景</h3>
-<p>在可以连接的远程服务器某图片文件夹下面启用了一个图片服务：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// cd xxx/image_root/</span><br><span class="line">python -m http.server 8005</span><br></pre></td></tr></table></figure>
-<p>想在我的本地mac上面直接访问这个端口，看到图片，用termius的端口转发。</p>
-<p><img data-src="port-transfer/image-20251204162857205.png" alt="image-20251204162857205" style="zoom:30%;" /></p>
-<p>发现有local rule和remote
-rule两种方式。我的理解是“把远程服务器的端口转发到我的电脑/本地上”，所以一开始设置的remote
-rule,结果应该是local rule.于是去探究了一下端口转发背后的规律。</p>
-<p>这里是local
-rule之后可以在本机访问。（也可以用远程服务器ip:8005,如果防火墙没有限制的话）</p>
-<p><img data-src="port-transfer/image-20251204163013848.png" alt="image-20251204163013848" style="zoom:30%;" /></p>
-<p>参考：https://github.com/mohammedAcheddad/SSH_port_forwarding</p>
-<h3 id="介绍">介绍</h3>
-<p>Ssh是一种安全连接远程服务器的协议。重要的功能之一就是端口转发，可以绕开远程服务器防火墙的限制进行通信。有三种转发类型：本地转发local
-forwarding,远程转发remote forwarding,动态转发dynamic forwarding.</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>问了一些gpt为什么ssh可以绕开防火墙：</p>
-<p>实际上是把流量包裹在ssh里，而ssh的服务一般是对外开放的，防火墙没有限制。</p>
-</blockquote>
-<h3 id="端口转发类型">端口转发类型</h3>
-<h4 id="本地转发local-forwarding">本地转发local forwarding</h4>
-<p>意味着将你的ip+port和远端服务的ip+port映射起来。当你访问你本地的ip+port的之后，就会将request重定位到远端的ip+port.
-语法如下：（我理解：把xxx和xxx关联起来）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L local_port:remote_host:remote_port user@remote_server</span><br></pre></td></tr></table></figure>
-<p>比如，你想把本地的8080端口转发到远程server的80端口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 8080:remote_server:80 user@remote_server</span><br></pre></td></tr></table></figure>
-<p>举例应用：</p>
-<ul>
-<li>由于远程服务器防火墙限制，本地无法访问远程server的web服务</li>
-<li>想访问运行在remote
-server的数据库，建立端口转发之后访问数据库可以仿佛就在本地运行一样。</li>
-<li>绕过某些block某些网页/服务的企业防火墙</li>
-</ul>
-<p><img data-src="port-transfer/213832060-a3ecff25-d3bb-4466-8a5b-4875e0685ed8.png" alt="enter image description here" style="zoom:60%;" /></p>
-<h4 id="远程转发remote-forwarding">远程转发remote forwarding</h4>
-<p>将remote
-server的某个端口转发到本地。用于本地机器的一些资源，远程服务器想访问。</p>
-<p>（想象一根通信的线路拉到了本地）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -R remote_port:local_host:local_port user@remote_server</span><br></pre></td></tr></table></figure>
-<p>比如，如果你想转发远程服务器的80到本地的8080</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -R 80:localhost:8080 user@remote_server</span><br></pre></td></tr></table></figure>
-<p>举例子应用：</p>
-<ul>
-<li>远程user访问本地服务</li>
-<li>远程服务器管理设置反向隧道（不懂）</li>
-<li>允许远程机器访问本地开发服务器。</li>
-</ul>
-<p><img data-src="port-transfer/213830877-a9372e34-cdbe-48e1-b692-cb458330526d.png" alt="enter image description here" style="zoom:60%;" /></p>
-<h4 id="动态转发">动态转发</h4>
-<p>将本地机器某端口的所有流量通过ssh转发到远程服务器。用于希望将远程服务器用作所有流量的代理。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -D local_port user@remote_server</span><br></pre></td></tr></table></figure>
-<p>比如将本地访问1080的所有流量转发到远程server:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -D 1080 user@remote_server</span><br></pre></td></tr></table></figure>
-<p>举例子说明：</p>
-<ul>
-<li>使用远程服务器作为所有流量的代理</li>
-<li>从远程服务器访问本地网络资源。</li>
-<li>使用远程服务器作为代理绕开互联网啊或者地理限制。</li>
-<li><img data-src="port-transfer/213830765-61eb5769-b98e-4fd1-b31c-ed456a783686.png" alt="img" style="zoom:60%;" /></li>
-</ul>
-<h3 id="几种转发方式比较">几种转发方式比较</h3>
-<p>端口转发方面，每种转发类型都有不同的用途，适用于不同的场景。本地转发适用于需要访问本地计算机无法直接访问的远程服务器上的服务的情况。远程转发适用于需要允许远程服务器访问本地计算机上运行的服务的情况。动态转发适用于希望将远程服务器用作所有网络流量的代理的情况。</p>
-<p>值得注意的是，以上所有类型的端口转发都可以在同一个 SSH
-连接中一起使用。</p>
-<h3 id="安全">安全</h3>
-<p>使用 SSH 隧道时，务必注意安全问题，因为黑客可能会利用 SSH
-隧道漏洞入侵您的网络。以下是一些确保 SSH 隧道安全的步骤：</p>
-<ol type="1">
-<li>所有可以访问远程服务器的账户都应使用强密码。</li>
-<li>如果可能，请使用公钥认证而非密码认证。这将防止攻击者猜测您的密码并访问您的帐户。</li>
-<li>限制可以访问远程服务器的帐户数量，并严格控制谁可以访问公钥认证所需的私钥。</li>
-<li>使用防火墙和其他安全措施来保护远程服务器和本地网络。</li>
-<li>监控远程服务器和本地网络是否存在可疑活动，如果发现任何可疑活动，应采取适当措施。</li>
-<li>请确保远程服务器和本地网络上的所有软件和操作系统都已安装最新的安全补丁。</li>
-</ol>
-<p>按照这些步骤操作，可以帮助确保 SSH
-隧道的安全，并保护您的网络免受潜在攻击</p>
-<h3 id="参考">参考：</h3>
-<p>https://github.com/mohammedAcheddad/SSH_port_forwarding</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/11/19/sam2%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8AGUI%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/19/sam2%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8AGUI%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">sam2环境部署以及GUI搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-11-19 15:54:12" itemprop="dateCreated datePublished" datetime="2025-11-19T15:54:12+08:00">2025-11-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="sam2环境安装">1.sam2环境安装</h3>
-<p>Url: https://github.com/facebookresearch/sam2?tab=readme-ov-file</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.conda create -n sam2 python=3.11</span><br><span class="line"></span><br><span class="line">2.nvidia-smi //查看最高支持的CUDA 12.8</span><br><span class="line">// 进入pytorch官网查看安装版本：https://pytorch.org/get-started/locally/</span><br><span class="line">pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126</span><br><span class="line"></span><br><span class="line">pip install -e .</span><br><span class="line">pip install -e &quot;.[notebooks]&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 下载模型</span><br><span class="line">cd checkpoints &amp;&amp; \</span><br><span class="line">./download_ckpts.sh &amp;&amp; \</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
-<h3 id="sam2-gui">2. Sam2 gui</h3>
-<p>基于这个仓库进行改造：https://github.com/YunxuanMao/SAM2-GUI</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">在上面的SAM目录下：</span><br><span class="line">将mask_app.py放到根目录下</span><br><span class="line"></span><br><span class="line">pip install -r requirements.txt</span><br><span class="line">sam2 gui用的有些库比较老，和SAM2不兼容，因此升级了几个包</span><br><span class="line">pip install --upgrade gradio</span><br><span class="line">pip install --upgrade matplotlib numpy</span><br><span class="line">// pip list | grep gradio</span><br><span class="line">// gradio                               5.49.1</span><br><span class="line">// gradio_client                        1.13.3</span><br><span class="line"></span><br><span class="line">mask_app.py设置模型和配置文件，注意SAM2官方用的是2.1</span><br><span class="line">    parser.add_argument(&quot;--checkpoint_dir&quot;, type=str, default=&quot;checkpoints/sam2.1_hiera_large.pt&quot;)</span><br><span class="line">    parser.add_argument(&quot;--model_cfg&quot;, type=str, default=&quot;configs/sam2.1/sam2.1_hiera_l.yaml&quot;)</span><br><span class="line"></span><br><span class="line">python mask_app.py --root_dir ./data_root</span><br></pre></td></tr></table></figure>
-<h3 id="gui执行">3.GUI执行</h3>
-<p>a.将视频文件提取帧（这里存入的是PNG）</p>
-<figure>
-<img
-src="sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b9806db1f397f248180168a5883a7a71819e352394fc8257659a752c18982f3e8579d17a12fe57b012.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>b.选择初始帧提取SAM特征（这里会报错，定位到SAM2的MISC.PY里面没有支持PNG图片，直接加上就行）</p>
-<figure>
-<img
-src="sam2/5eecdaf48460cde5c41f73ea9707f057898a765bc7233df675b8339e1c4c24831f739168b2e59d878d68742cd653602a27905087190dd0b98ad7bdf5c85b3c0f5a86b33c300b704e0467a4a87aa09e3589a17306de87f1d1fed6d43adee18774.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ol type="1">
-<li>后面依次操作就行</li>
-</ol>
-<p>把SAM2和GUI一起的PIPELINE放到了GIT里</p>
-<p>https://github.com/77philosophia/sam2#</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/11/18/some-culture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/18/some-culture/" class="post-title-link" itemprop="url">some-independent-role</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-11-18 15:45:05" itemprop="dateCreated datePublished" datetime="2025-11-18T15:45:05+08:00">2025-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-07 11:29:00" itemprop="dateModified" datetime="2026-04-07T11:29:00+08:00">2026-04-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul class="task-list">
-<li><label><input type="checkbox" />段永平
-https://www.zhihu.com/question/1890560325713100945/answer/1971885003609740065</label></li>
-</ul>
-<p>问怎么办？</p>
-<p>“我该怎么办”，是一个问父母、问老师、问上司、问上帝的问题。</p>
-<p>养成习惯，自己的事情，不要问人“应该怎么办”</p>
-<p>只问情报，不问决定。</p>
-<p>只有别人的事情，才问人“你觉得应该怎么办”（你是一个雇工，工作的事情问老板；是一个子女问父母），除此之外，你自己负责的事情，你自己决定。</p>
-<p>反过来，作为回答的一方，不要回答“我该怎么办”这种问题。如果你回答了，你先记好——问问题的人没有意识到自己要如何为自己的言行负何种责任。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1539,7 +1650,7 @@ https://www.zhihu.com/question/1890560325713100945/answer/1971885003609740065</l
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1550,7 +1661,7 @@ https://www.zhihu.com/question/1890560325713100945/answer/1971885003609740065</l
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
