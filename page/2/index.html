@@ -187,6 +187,151 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/27/Motus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/27/Motus/" class="post-title-link" itemprop="url">Motus</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-04-27 10:32:32 / Modified: 10:51:58" itemprop="dateCreated datePublished" datetime="2026-04-27T10:32:32+08:00">2026-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="title-url">Title &amp; URL</h2>
+<ul>
+<li><strong>Title</strong>: Motus: A Unified Latent Action World
+Model</li>
+<li><strong>URL</strong>:
+<ul>
+<li>Arrive: https://arxiv.org/abs/2512.13030</li>
+<li>Motus：https://motus-robotics.github.io/motus</li>
+</ul></li>
+<li><strong>Author</strong>:1 清华大学 2 圣书大学 3 北京大学 4
+地平线机器人公司</li>
+<li><strong>Time</strong>: 2025年12月</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<p>​ 训练了一个统一的latent action world
+model，旨在利用尽可能多的所有数据训练一个统一的模型。</p>
+<h2 id="key-insights">Key Insights</h2>
+<ol type="1">
+<li><p>unified model + latent action的想法。Google
+Deepmind在25年6月份发了一篇General agents contain world
+models的论文，证明了通用agent内部必然包括一个世界模型。</p>
+<p>目标、dynamics
+model(世界模型)、policy三者有任意两者都可以推出另外一个，因此给定目标的情况下，建模世界模型和建模policy之间是互通的，可以用更统一的视角来看待这两者，也就是unified
+world models。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104621439.png"
+alt="image-20260427104621439" />
+<figcaption aria-hidden="true">image-20260427104621439</figcaption>
+</figure></li>
+<li><p>Motus, VLM.WM</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104710281.png"
+alt="image-20260427104710281" />
+<figcaption aria-hidden="true">image-20260427104710281</figcaption>
+</figure></li>
+</ol>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104726413.png"
+alt="image-20260427104726413" />
+<figcaption aria-hidden="true">image-20260427104726413</figcaption>
+</figure>
+<h2 id="methods">Methods</h2>
+<h5 id="architecture">1.architecture:</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427103737858.png"
+alt="image-20260427103737858" />
+<figcaption aria-hidden="true">image-20260427103737858</figcaption>
+</figure>
+<h5 id="latent-actions">2.latent actions:</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427103947885.png"
+alt="image-20260427103947885" />
+<figcaption aria-hidden="true">image-20260427103947885</figcaption>
+</figure>
+<h5 id="利用的数据数据金字塔">3.利用的数据：数据金字塔</h5>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104015655.png"
+alt="image-20260427104015655" />
+<figcaption aria-hidden="true">image-20260427104015655</figcaption>
+</figure>
+<h5 id="trainig-三阶段逐渐联合">4.Trainig 三阶段逐渐联合</h5>
+<p>发现直接放在一起训练效果不好。先单独训再联合起来。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104134646.png"
+alt="image-20260427104134646" />
+<figcaption aria-hidden="true">image-20260427104134646</figcaption>
+</figure>
+<h2 id="results">Results</h2>
+<p>pi05随着任务增多单个任务performance下降（说明任务之间彼此有矛盾），但是motus随着多个任务训练能力增强。</p>
+<figure>
+<img data-src="/2026/04/27/Motus/image-20260427104219598.png"
+alt="image-20260427104219598" />
+<figcaption aria-hidden="true">image-20260427104219598</figcaption>
+</figure>
+<h2 id="reflections">Reflections</h2>
+<p>​ 关注training方法和整合的方法。</p>
+<h2 id="other-links">Other Links</h2>
+<p>微信公众号对作者的采访：https://mp.weixin.qq.com/s/hAlnB--SjURS7ukY4gO_Kw</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/26/health-care/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -941,64 +1086,6 @@ alt="RT-2 概述" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/work-with-cailei/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/work-with-cailei/" class="post-title-link" itemprop="url">work-with-cailei</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-17 16:44:08" itemprop="dateCreated datePublished" datetime="2026-04-17T16:44:08+08:00">2026-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1070,7 +1157,7 @@ alt="RT-2 概述" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1081,7 +1168,7 @@ alt="RT-2 概述" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

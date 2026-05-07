@@ -28,7 +28,7 @@
 <meta property="og:description" content="[!NOTE] 我有一个LEROBOT主臂主板USB口是&#x2F;dev&#x2F;ttyACM0，还有一个从臂usb口是&#x2F;dev&#x2F;ttyACM1,我想进行端口绑定避免每次插拔都要重新CHMOD 666  这种情况在机器人开发（如 LeRobot）中非常常见。由于 Linux 系统分配 &#x2F;dev&#x2F;ttyACM* 是按照插拔顺序随机分配的，且默认权限受限，最稳妥的解决方案是编写 udev 规则。 通过 udev 规">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-05-06T08:18:58.000Z">
-<meta property="article:modified_time" content="2026-05-06T08:20:31.766Z">
+<meta property="article:modified_time" content="2026-05-07T07:12:43.909Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="lerobot">
 <meta property="article:tag" content="project">
@@ -214,10 +214,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-05-06 16:18:58 / Modified: 16:20:31" itemprop="dateCreated datePublished" datetime="2026-05-06T16:18:58+08:00">2026-05-06</time>
+              <time title="Created: 2026-05-06 16:18:58" itemprop="dateCreated datePublished" datetime="2026-05-06T16:18:58+08:00">2026-05-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-07 15:12:43" itemprop="dateModified" datetime="2026-05-07T15:12:43+08:00">2026-05-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -293,7 +299,7 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
 <li><p><strong>检查权限：</strong></p></li>
 </ol>
 <p>Bash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev/ttyACM*</span><br></pre></td></tr></table></figure>
 <p>你会发现权限已经是 <code>crw-rw-rw-</code> (即
 666)，不再需要手动修改。</p>
 <hr />
@@ -330,7 +336,10 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
     <a href="/2026/05/06/lerobot-startup/" rel="prev" title="lerobot机械臂从组装到跑通">
       <i class="fa fa-chevron-left"></i> lerobot机械臂从组装到跑通
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2026/05/07/robot-peripheral/" rel="next" title="主机外设通信方式和常见问题总结">
+      主机外设通信方式和常见问题总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -405,7 +414,7 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -416,7 +425,7 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
