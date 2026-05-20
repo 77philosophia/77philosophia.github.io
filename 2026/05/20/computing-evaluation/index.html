@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="[!NOTE] 显存（VRAM）是决定模型能否跑起来的绝对硬限制（OOM 闸门），而算力（TFLOPS）和显存带宽则决定了它能跑多快。  模型是否跑起来——显存计算 1.推理场景(inference) 推理时的显存占用主要由三部分组成：静态权重、KV Cache（动态上下文）*和*框架固有开销。 \[ \text{Total VRAM (Inference)} &#x3D; M_{\text{weight">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算力评估">
+<meta property="og:url" content="http://77philosophia.github.io/2026/05/20/computing-evaluation/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="[!NOTE] 显存（VRAM）是决定模型能否跑起来的绝对硬限制（OOM 闸门），而算力（TFLOPS）和显存带宽则决定了它能跑多快。  模型是否跑起来——显存计算 1.推理场景(inference) 推理时的显存占用主要由三部分组成：静态权重、KV Cache（动态上下文）*和*框架固有开销。 \[ \text{Total VRAM (Inference)} &#x3D; M_{\text{weight">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-20T03:11:53.000Z">
+<meta property="article:modified_time" content="2026-05-20T06:19:14.984Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/05/20/computing-evaluation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>算力评估 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_zh">
+
+    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_en">
+
+    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/20/computing-evaluation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算力评估
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-20 11:11:53 / Modified: 14:19:14" itemprop="dateCreated datePublished" datetime="2026-05-20T11:11:53+08:00">2026-05-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>[!NOTE]</p>
+<p>显存（VRAM）是决定模型能否跑起来的绝对硬限制（OOM
+闸门），而算力（TFLOPS）和显存带宽则决定了它能跑多快。</p>
+</blockquote>
+<h3 id="模型是否跑起来显存计算">模型是否跑起来——显存计算</h3>
+<h5 id="推理场景inference">1.推理场景(inference)</h5>
+<p>推理时的显存占用主要由三部分组成：<strong>静态权重</strong>、<strong>KV
+Cache（动态上下文）*<em>和*</em>框架固有开销</strong>。 <span
+class="math display">\[
+\text{Total VRAM (Inference)} = M_{\text{weight}} + M_{\text{kv\_cache}}
++ M_{\text{overhead}}
+\]</span></p>
+<ul>
+<li><p><strong>静态权重 (<span
+class="math inline">\(M_{\text{weight}}\)</span>)：</strong> <span
+class="math display">\[
+M_{\text{weight}} = P \times b_{\text{precision}} \times 1.2
+\]</span></p>
+<ul>
+<li><span class="math inline">\(P\)</span>
+为参数量（单位：Billion，十亿）。</li>
+<li><span class="math inline">\(b_{\text{precision}}\)</span>
+为每个参数占用的字节数（BF16/FP16 = 2 Byte，INT8 = 1 Byte，INT4 = 0.5
+Byte）。</li>
+<li><code>1.2</code> 是预留的 20%
+缓冲区（用于存放激活值中间状态和对齐开销）。</li>
+</ul></li>
+<li><p><strong>KV Cache (<span
+class="math inline">\(M_{\text{kv\_cache}}\)</span>)：</strong>
+大模型在多轮对话中缓存历史 Key 和 Value 矩阵的开销。 <span
+class="math display">\[
+M_{\text{kv\_cache}} = 2 \times B \times S \times L \times H \times
+b_{\text{precision}}
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(B\)</span>: Batch
+Size（批次大小）</p></li>
+<li><p><span class="math inline">\(S\)</span>: Sequence
+Length（总上下文长度，输入+输出）</p></li>
+<li><p><span class="math inline">\(L\)</span>: 层数 (Layers)</p></li>
+<li><p><span class="math inline">\(H\)</span>: 隐藏层维度 (Hidden
+Size)</p>
+<p><em>(注意：如果模型采用了 GQA</em></p></li>
+</ul></li>
+</ul>
+<h5 id="训练微调">2.训练/微调</h5>
+<p>训练是显存杀手。除了静态权重，你必须把<strong>梯度、优化器状态和激活值</strong>全部存下来（为了反向传播）。</p>
+<p>以主流的 <strong>AdamW 优化器 + 混合精度 (FP16/BF16) 训练</strong>
+为例，每 1B 参数所需的模型状态（Model States）显存高达 <strong>16
+GB</strong>：</p>
+<ul>
+<li><strong>Model Weights (FP16):</strong> 2 bytes/param</li>
+<li><strong>Gradients (FP16):</strong> 2 bytes/param</li>
+<li><strong>Optimizer States (AdamW):</strong> 12 bytes/param <em>(包含
+FP32 Master Weights 4 bytes + 一阶动量 4 bytes + 二阶动量 4
+bytes)</em></li>
+</ul>
+<p><span class="math display">\[
+\text{Model States VRAM} = P \times 16 \text{ GB}
+\]</span></p>
+<p>に加え、<strong>激活值 (Activations)</strong> 会随着 Batch Size 和
+Sequence Length 的增大呈线性爆发，通常需要开启<strong>梯度检查点
+(Gradient Checkpointing)</strong> 来空间换时间，减少 70%
+的激活值显存。</p>
+<h3 id="硬件选型">硬件选型</h3>
+<p>在实际工程落地中，我们会根据模型规模和业务场景，将显卡设备划分为以下几个梯队：</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 12%" />
+<col style="width: 10%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>显卡型号</strong></th>
+<th><strong>显存 (VRAM)</strong></th>
+<th><strong>显存带宽</strong></th>
+<th><strong>核心定位与适用场景</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NVIDIA H100 / A100 (80GB)</strong></td>
+<td>80 GB HBM3/2e</td>
+<td>2-3 TB/s</td>
+<td><strong>工业级主力：</strong> 大规模
+LLM/多模态/世界模型全参数训练，或高并发万亿参数级模型多卡分布式推理。</td>
+</tr>
+<tr>
+<td><strong>NVIDIA RTX 6000 Ada</strong></td>
+<td>48 GB GDDR6</td>
+<td>~960 GB/s</td>
+<td><strong>高端工作站/具身智能：</strong> 适合运行中等规模
+VLA（视觉-语言-动作）模型、复杂 3D 机器人仿真（如 Isaac Lab
+复杂场景）、或者 30B 级别模型的消费级单卡推理。</td>
+</tr>
+<tr>
+<td><strong>NVIDIA L40S</strong></td>
+<td>48 GB GDDR6</td>
+<td>~860 GB/s</td>
+<td><strong>推理与微调性价比之选：</strong> 适合单卡多模态推理，或通过
+LoRA/QLoRA 进行高效参数微调（PEFT）。</td>
+</tr>
+<tr>
+<td><strong>NVIDIA RTX 4090</strong></td>
+<td>24 GB GDDR6X</td>
+<td>~1 TB/s</td>
+<td><strong>消费级旗舰/边缘 R&amp;D：</strong> 适合 7B/8B 级别模型（如
+Llama 3 8B）的本地单卡 BF16 推理与轻量微调，或单臂/简单
+DLO（可变形线状物体）操控算</td>
+</tr>
+</tbody>
+</table>
+<h3 id="工程实践">工程实践</h3>
+<h5 id="快速自动化评估工具">1.快速自动化评估工具</h5>
+<p>https://huggingface.co/docs/accelerate/usage_guides/model_size_estimator</p>
+<p><strong>Hugging Face Accelerate CLI:</strong>
+可以在不真正下载完整模型权重（只读
+<code>config.json</code>）的情况下，通过元设备模拟加载并计算出所需的精准显存。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install accelerate</span><br><span class="line">accelerate estimate-memory meta-llama/Meta-Llama-3-8B --dtypes float16</span><br></pre></td></tr></table></figure>
+<p>它会为你输出该模型在 <code>float16</code>
+下的单层最大显存、整机加载显存以及使用 Adam 训练所需的显存量。</p>
+<h5 id="工程checklists">2.工程checklists</h5>
+<ul>
+<li><strong>CUDA Context Base Overhead（底噪显存）</strong> PyTorch 或
+JAX 在初始化 CUDA 时，哪怕一个模型都不加载，也会瞬间吃掉大概 <strong>1.2
+GB - 2 GB</strong> 的显存作为 Context
+底噪。因此，计算出的理论剩余显存如果小于 2GB，必定 OOM。</li>
+<li><strong>FlashAttention 的必要性</strong> 在 Transformer
+结构的推理和训练中，原始 Attention 的显存复杂度是 <span
+class="math inline">\(O(S^2)\)</span>。工程部署上<strong>必须</strong>强制开启
+<strong>FlashAttention-2</strong> 或 PyTorch 的
+<strong>SDPA</strong>，将显存复杂度降到 <span
+class="math inline">\(O(S)\)</span>，否则长文本下 KV Cache
+会瞬间撑爆显存。</li>
+<li><strong>量化（Quantization）的边界</strong> 如果显存卡在临界点（例如
+24GB 显卡想跑 14B 模型），首选 <strong>AWQ</strong> 或
+<strong>GPTQ</strong> 进行 4-bit / 8-bit 推理量化。INT4
+量化可以将显存直接斩断至原来的 25%，而综合泛化精度损失通常在 1%
+左右，完全在工业可接受范围内。</li>
+</ul>
+<h5
+id="多卡分布式切分策略当单卡装不下时">3.多卡分布式切分策略（当单卡装不下时）</h5>
+<ul>
+<li><strong>流水线并行 (Pipeline Parallelism - PP):</strong>
+按层切分，适合单卡显存能装下若干层，但装不下整个模型。</li>
+<li><strong>张量并行 (Tensor Parallelism - TP):</strong>
+将单层的矩阵乘法切分到多卡（如
+Megatron-LM），对卡间通信带宽（NVLink）要求极高。如果在没有 NVLink 的
+PCIe 机器上跑 TP，通信延迟会彻底拖垮 TFLOPS。</li>
+<li><strong>ZeRO (Zero Redundancy Optimizer):</strong>
+如果是训练阶段，强烈推荐 DeepSpeed 的 ZeRO-3 或者是 JAX 的 Sharding
+机制，将优化器状态、梯度和权重分摊到所有 GPU 节点。</li>
+</ul>
+<h5 id="举例子计算">4.举例子计算</h5>
+<p>https://gemini.google.com/app/9360704b1f6dbccd</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/05/20/wise-father-poor-father/" rel="prev" title="wise-father-poor-father">
+      <i class="fa fa-chevron-left"></i> wise-father-poor-father
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/05/20/kv-cache/" rel="next" title="kv-cache">
+      kv-cache <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%90%A6%E8%B7%91%E8%B5%B7%E6%9D%A5%E6%98%BE%E5%AD%98%E8%AE%A1%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">模型是否跑起来——显存计算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8E%A8%E7%90%86%E5%9C%BA%E6%99%AFinference"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.推理场景(inference)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%BE%AE%E8%B0%83"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.训练&#x2F;微调</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E9%80%89%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">硬件选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5"><span class="nav-number">3.</span> <span class="nav-text">工程实践</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%84%E4%BC%B0%E5%B7%A5%E5%85%B7"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.快速自动化评估工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8Bchecklists"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.工程checklists</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E5%8D%A1%E5%88%86%E5%B8%83%E5%BC%8F%E5%88%87%E5%88%86%E7%AD%96%E7%95%A5%E5%BD%93%E5%8D%95%E5%8D%A1%E8%A3%85%E4%B8%8D%E4%B8%8B%E6%97%B6"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.多卡分布式切分策略（当单卡装不下时）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E5%AD%90%E8%AE%A1%E7%AE%97"><span class="nav-number">3.0.4.</span> <span class="nav-text">4.举例子计算</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">135</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="RT-2 (2023年8月,google mind)  [!NOTE] 将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力。  URL： 官方project url: https:&#x2F;&#x2F;robotics-transformer2.github.io&#x2F; Alphaxiv: https:&#x2F;&#x2F;www.alphaxiv.org&#x2F;overview&#x2F;2307.15818 Scholarly:">
+  <meta name="description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  总览 timeline fromhttps:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260520153436436  各种架构   image-2026052015380">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大模型时代机器人模型发展的history line">
 <meta property="og:url" content="http://77philosophia.github.io/2026/04/18/robot-bigModel-paper-line/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="RT-2 (2023年8月,google mind)  [!NOTE] 将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力。  URL： 官方project url: https:&#x2F;&#x2F;robotics-transformer2.github.io&#x2F; Alphaxiv: https:&#x2F;&#x2F;www.alphaxiv.org&#x2F;overview&#x2F;2307.15818 Scholarly:">
+<meta property="og:description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  总览 timeline fromhttps:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260520153436436  各种架构   image-2026052015380">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://77philosophia.github.io/2026/04/18/robot-bigModel-paper-line/img-0.jpeg">
 <meta property="article:published_time" content="2026-04-18T03:47:35.000Z">
-<meta property="article:modified_time" content="2026-04-18T04:08:17.674Z">
+<meta property="article:modified_time" content="2026-05-20T09:01:19.939Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="robot">
 <meta property="article:tag" content="vla">
@@ -218,10 +218,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-04-18 11:47:35 / Modified: 12:08:17" itemprop="dateCreated datePublished" datetime="2026-04-18T11:47:35+08:00">2026-04-18</time>
+              <time title="Created: 2026-04-18 11:47:35" itemprop="dateCreated datePublished" datetime="2026-04-18T11:47:35+08:00">2026-04-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-20 17:01:19" itemprop="dateModified" datetime="2026-05-20T17:01:19+08:00">2026-05-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -243,7 +249,177 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="rt-2-2023年8月google-mind">RT-2 (2023年8月,google mind)</h3>
+        <h3 id="before-vla">before vla</h3>
+<ul>
+<li><p>分层/模块化架构:感知——规划——控制，无泛化</p></li>
+<li><p>模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。</p></li>
+</ul>
+<h3 id="总览">总览</h3>
+<h5 id="timeline">timeline</h5>
+<p>fromhttps://vla-survey.github.io/data/paper.pdf</p>
+<figure>
+<img
+src="/2026/04/18/robot-bigModel-paper-line/image-20260520153436436.png"
+alt="image-20260520153436436" />
+<figcaption aria-hidden="true">image-20260520153436436</figcaption>
+</figure>
+<h5 id="各种架构">各种架构</h5>
+<figure>
+<img
+src="/2026/04/18/robot-bigModel-paper-line/image-20260520153805253.png"
+alt="image-20260520153805253" />
+<figcaption aria-hidden="true">image-20260520153805253</figcaption>
+</figure>
+<p><em>感知运动模型的七种变体，展示了骨干架构（Transformer，VLM）与动作头（离散令牌、扩散、流匹配）的不同组合。</em></p>
+<ol type="1">
+<li><p>Transformer + discrete action</p>
+<ul>
+<li><p>在 VLA 模型的早期阶段（如 <strong>RT-1</strong> 或
+<strong>Gato</strong>），将 Transformer
+用于机器人控制的核心思路是：<strong>把机器人的动作（Action）看作是一种“语言”</strong>。</p></li>
+<li><p><strong>自回归生成 (Autoregressive):</strong>
+模型不是一次性预测出完整的 7 维动作，而是按顺序预测：先预测 <span
+class="math inline">\(x\)</span>，再预测 <span
+class="math inline">\(y\)</span>，再预测 <span
+class="math inline">\(z\)</span>...。这样每一维度的预测都可以参考前面的信息。</p></li>
+<li><p>```python import torch import torch.nn as nn</p>
+<p>class SimpleVLA(nn.Module): def <strong>init</strong>(self,
+vocab_size=256, action_dim=7): # 7维动作: 6自由度+抓取
+super().__init__() # 1. 视觉编码器 (例如 EfficientNet 或 ViT)
+self.vision_encoder = nn.Sequential(nn.Conv2d(3, 64, 3),
+nn.AdaptiveAvgPool2d((1, 1)))</p>
+<pre><code>    # 2. 文本编码器 (例如冻结的 CLIP 或 BERT)
+    self.text_encoder = nn.Linear(512, 128) 
+
+    # 3. 动作嵌入 (将离散的 Action ID 转为向量)
+    self.action_embedding = nn.Embedding(vocab_size, 128)
+
+    # 4. 标准 Transformer Decoder
+    self.transformer = nn.TransformerDecoder(
+        nn.TransformerDecoderLayer(d_model=128, nhead=8), num_layers=6
+    )
+
+    # 5. 输出层: 预测每个动作维度的分类结果 (256个分桶)
+    self.action_head = nn.Linear(128, vocab_size)
+
+def forward(self, image, text_features, past_actions):
+    # image: [Batch, 3, 224, 224]
+    # text_features: [Batch, 512] (预先提取的语言特征)
+    # past_actions: [Batch, Sequence_Length, action_dim] (之前的动作 ID)
+
+    # 提取多模态特征
+    vis_feat = self.vision_encoder(image).flatten(1) # [B, 128]
+    lang_feat = self.text_encoder(text_features)     # [B, 128]
+
+    # 组合成 Token 序列
+    # 假设我们将 [语言, 视觉, 历史动作] 拼在一起作为输入
+    obs_token = (vis_feat + lang_feat).unsqueeze(1)  # [B, 1, 128]
+    act_tokens = self.action_embedding(past_actions) # [B, T, 128]
+
+    # Transformer 处理
+    output = self.transformer(act_tokens.transpose(0, 1), obs_token.transpose(0, 1))
+
+    # 预测下一个动作的概率分布
+    logits = self.action_head(output.transpose(0, 1)) # [B, T, 256]
+    return logits</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">nn.Embedding输入（batch,词表个数，表示维度），权重可学习</span><br><span class="line"></span><br><span class="line">transformer encoder:综合总结性理解，self attention +ffn</span><br><span class="line"></span><br><span class="line">transformer decoder:生成 masked attention + encoder过来的k,v和空的输入q, 只有decoder才有cross attention</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line"></span><br><span class="line"># 基础参数配置</span><br><span class="line">batch_size = 2</span><br><span class="line">src_len = 5     # 源序列长度（Encoder输入）</span><br><span class="line">tgt_len = 4     # 目标序列长度（Decoder输入）</span><br><span class="line">d_model = 512   # 特征维度</span><br><span class="line"></span><br><span class="line"># 实例化 Encoder 和 Decoder 的单层</span><br><span class="line">encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=8, batch_first=True)</span><br><span class="line">transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=6)</span><br><span class="line"></span><br><span class="line">decoder_layer = nn.TransformerDecoderLayer(d_model=d_model, nhead=8, batch_first=True)</span><br><span class="line">transformer_decoder = nn.TransformerDecoder(decoder_layer, num_layers=6)</span><br><span class="line"></span><br><span class="line"># ----------------------------------------------------</span><br><span class="line"># 1. Encoder 的代码行为</span><br><span class="line"># ----------------------------------------------------</span><br><span class="line"># 模拟输入：(batch, seq_len, dims)</span><br><span class="line">encoder_input = torch.randn(batch_size, src_len, d_model)</span><br><span class="line"></span><br><span class="line"># Encoder 只需要自己的输入</span><br><span class="line">memory = transformer_encoder(encoder_input) </span><br><span class="line">print(&quot;Encoder Output (Memory) Shape:&quot;, memory.shape) </span><br><span class="line"># 输出依然是: (2, 5, 512) -&gt; 信息提取综合，长度不变，维度不变</span><br><span class="line"></span><br><span class="line"># ----------------------------------------------------</span><br><span class="line"># 2. Decoder 的代码行为</span><br><span class="line"># ----------------------------------------------------</span><br><span class="line"># 模拟 Decoder 的输入（已经生成的 Token 序列）</span><br><span class="line">decoder_input = torch.randn(batch_size, tgt_len, d_model)</span><br><span class="line"></span><br><span class="line"># 关键：生成自回归掩码（Causal Mask），防止 Decoder 看到未来的信息</span><br><span class="line"># 这是一个上三角矩阵，右上角全为 -inf 或 True（表示遮蔽）</span><br><span class="line">tgt_mask = nn.Transformer.generate_square_subsequent_mask(tgt_len)</span><br><span class="line"></span><br><span class="line"># Decoder 必须同时接收：自己的输入 + Encoder的输出(memory) + 掩码(tgt_mask)</span><br><span class="line">decoder_output = transformer_decoder(</span><br><span class="line">    tgt=decoder_input, </span><br><span class="line">    memory=memory, </span><br><span class="line">    tgt_mask=tgt_mask</span><br><span class="line">)</span><br><span class="line">print(&quot;Decoder Output Shape:&quot;, decoder_output.shape)</span><br><span class="line"># 输出: (2, 4, 512) -&gt; 用于后面接 Linear 层预测下一个 Token</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>Transformer + diffusion action head（diffusion action
+head结构可以是mlp可以是unet可以是dit）</p></li>
+</ol>
+<ul>
+<li><p>不对action空间切分，还是连续的。</p>
+<p>transformer不直接输出动作，而是输出一个环境表征condition,然后送入一个diffusion
+model进行多部去噪</p></li>
+<li><p>将机器人控制变成一个<strong>条件生成（Conditional
+Generation）任务</strong>，直接建模多峰分布（Multimodal
+Distribution，即同一个场景下，机械臂既可以从左边绕过去拿杯子，也可以从右边拿）。</p></li>
+<li><p>Diffusion Policy (TRI团队), π0 (Physical Intelligence), 各种基于
+DiT 的具身模型。</p></li>
+<li><p>动作平滑，解决多峰问题，但是延迟高</p></li>
+<li><div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Simple1DDiffusionNet(nn.Module):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;一个简化的 1D 扩散去噪网络，用于预测噪声&quot;&quot;&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, action_dim, cond_dim):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 输入：当前带噪动作 + 时间步嵌入 + Transformer传过来的条件嵌入</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.net <span class="op">=</span> nn.Sequential(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            nn.Linear(action_dim <span class="op">+</span> <span class="dv">1</span> <span class="op">+</span> cond_dim, <span class="dv">256</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            nn.ReLU(),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            nn.Linear(<span class="dv">256</span>, <span class="dv">256</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            nn.ReLU(),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            nn.Linear(<span class="dv">256</span>, action_dim) <span class="co"># 预测的噪声形状与动作一致</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, noisy_action, timestep, cond):</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 拼接所有输入</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        inputs <span class="op">=</span> torch.cat([noisy_action, timestep, cond], dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.net(inputs)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerDiffusionActionPolicy(nn.Module):</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, d_model<span class="op">=</span><span class="dv">512</span>, action_dim<span class="op">=</span><span class="dv">7</span>, pred_horizon<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. 骨干网络：提取环境和历史特征</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        encoder_layer <span class="op">=</span> nn.TransformerEncoderLayer(d_model<span class="op">=</span>d_model, nhead<span class="op">=</span><span class="dv">8</span>, batch_first<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.transformer <span class="op">=</span> nn.TransformerEncoder(encoder_layer, num_layers<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. 扩散去噪网络</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pred_horizon <span class="op">=</span> pred_horizon <span class="co"># 扩散模型一次性预测未来的动作步数 (Action Chunk)</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action_dim <span class="op">=</span> action_dim</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.diffusion_head <span class="op">=</span> Simple1DDiffusionNet(action_dim<span class="op">=</span>action_dim <span class="op">*</span> pred_horizon, cond_dim<span class="op">=</span>d_model)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, obs_tokens, noisy_action, t):</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">        训练阶段的 forward：</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">        noisy_action: 真实动作加噪后的状态 (batch, pred_horizon * action_dim)</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">        t: 当前扩散步数，如 0~50 之间的整数 (batch, 1)</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">        &quot;&quot;&quot;</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. Transformer 提取特征作为 Condition</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        cond_features <span class="op">=</span> <span class="va">self</span>.transformer(obs_tokens)[:, <span class="op">-</span><span class="dv">1</span>, :] <span class="co"># (batch, d_model)</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. 扩散头预测噪声</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        pred_noise <span class="op">=</span> <span class="va">self</span>.diffusion_head(noisy_action, t, cond_features)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pred_noise <span class="co"># 用于与真实噪声计算 MSE Loss</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">@torch.no_grad</span>()</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_action(<span class="va">self</span>, obs_tokens, num_diffusion_steps<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;推理阶段：从纯高斯噪声开始，经过多步迭代去噪，生成连续的轨迹&quot;&quot;&quot;</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        batch_size <span class="op">=</span> obs_tokens.size(<span class="dv">0</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. 提取环境特征（在去噪循环外只执行一次，节省算力）</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        cond_features <span class="op">=</span> <span class="va">self</span>.transformer(obs_tokens)[:, <span class="op">-</span><span class="dv">1</span>, :] <span class="co"># (batch, d_model)</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. 随机初始化一串纯高斯噪声作为动作起点</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        current_action <span class="op">=</span> torch.randn(batch_size, <span class="va">self</span>.pred_horizon <span class="op">*</span> <span class="va">self</span>.action_dim).to(obs_tokens.device)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. 循环迭代去噪 (DDIM 或 DDPM 采样逻辑简化版)</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> step <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(num_diffusion_steps)):</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 构造时间步输入</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>            t_tensor <span class="op">=</span> torch.full((batch_size, <span class="dv">1</span>), step, dtype<span class="op">=</span>torch.float32).to(obs_tokens.device)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 预测噪声</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>            pred_noise <span class="op">=</span> <span class="va">self</span>.diffusion_head(current_action, t_tensor, cond_features)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 根据扩散理论更新当前动作（此处为极简线性步进示意）</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>            current_action <span class="op">=</span> current_action <span class="op">-</span> <span class="fl">0.1</span> <span class="op">*</span> pred_noise </span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4. 将扁平的向量恢复为 (batch, 预测步数, 动作维度) 的连续轨迹</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        action_trajectory <span class="op">=</span> current_action.view(batch_size, <span class="va">self</span>.pred_horizon, <span class="va">self</span>.action_dim)</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> action_trajectory</span></code></pre></div></li>
+</ul>
+<p>3.diffusion transformer</p>
+<ul>
+<li>噪声动作直接被转化为 Token，和其他多模态
+Token（视觉、语言）一起排队进入 Transformer。</li>
+<li>它不仅要理解环境，还要直接负责<strong>去噪</strong>。每一层
+Transformer 都在处理“环境特征如何引导噪声还原为动作”。整个 Transformer
+骨干网络本身就是去噪器。它利用 Self-Attention
+来建模“当前视觉特征”与“正在生成的动作轨迹”之间的复杂空间关系。</li>
+</ul>
+<h3 id="rt-2-2023年8月google-mind正式提出了vla的概念">RT-2
+(2023年8月,google mind)——正式提出了vla的概念</h3>
 <blockquote>
 <p>[!NOTE]</p>
 <p>将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力。</p>
@@ -259,18 +435,94 @@ alt="RT-2 概述" />
 </figure>
 <h4 id="methods">methods:</h4>
 <ul>
-<li>预训练的vlm + finetune:互联网规模数据(图像-文本对)+机器人演示数据
+<li><p>预训练的vlm +
+finetune:互联网规模数据(图像-文本对)+机器人演示数据</p>
 <ul>
 <li>为什么有了vlm还要用视觉问答损失？防止忘记通用知识</li>
 </ul></li>
-<li>直接把机器人动作映射为language的同等地位的token，因此架构基本还是vlm的结构。</li>
-<li>推理频率： 1-3Hz,更小的vlm模型5hz</li>
+<li><p>直接把机器人动作映射为language的同等地位的token，因此架构基本还是vlm的结构。输入是
+<code>[256个视觉Token] + [提示词Token]</code>，输出是
+<code>[7-8个动作Token]</code>（代表机械臂的 <span
+class="math inline">\(x,y,z,\text{roll},\text{pitch},\text{yaw},\text{gripper}\)</span>
+离散化 Bin 值）。因为输出序列极短，<strong>KV Cache
+的压力非常小，核心瓶颈在 Prefill（首字延迟，即视觉 ViT
+的前向传播速度）</strong>。</p></li>
+<li><p>推理频率：</p>
+<ul>
+<li><p><strong>55B 旗舰版</strong>：在谷歌云端多 TPU
+协同下，控制频率仅能达到 <strong>1 - 3 Hz</strong>（每秒控制 1-3
+次），对于高精度、高速率装配来说较为勉强。</p>
+<p><strong>5B 剪裁版</strong>：控制频率可提升至 <strong>5 Hz</strong>
+左右，基本能满足日常移动抓取任务。</p></li>
+</ul></li>
+<li><p>训练 RT-2 采用的是 <strong>Co-fine-tuning（共同微调）</strong>
+策略：70% 的算力喂机器人操作数据（如 RT-1 遗留数据集），30%
+的算力继续喂互联网 VQA（视觉问答）数据，防止大模型失忆。</p></li>
 </ul>
 <blockquote>
 <p>[!NOTE]</p>
 <p>1.推理频率比较低</p>
 <p>2.展示的demo背景还是很干净的，实际操作估计要翻车。</p>
 </blockquote>
+<p>根据 DeepMind 发布的论文，RT-2 主要基于两种 VLM
+后端（Backbone）构建，形成了三种主流尺寸：</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 14%" />
+<col style="width: 19%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>RT-2 模型变体</strong></th>
+<th><strong>后端 VLM 基础</strong></th>
+<th><strong>参数量 (Parameters)</strong></th>
+<th><strong>架构组成简述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RT-2-PaLI-X (5B)</strong></td>
+<td>PaLI-X 小版本</td>
+<td><strong>5 Billion (50亿)</strong></td>
+<td>较小的视觉编码器 + 轻量级语言解码器，适合高频控制。</td>
+</tr>
+<tr>
+<td><strong>RT-2-PaLM-E (12B)</strong></td>
+<td>PaLM-E-12B</td>
+<td><strong>12 Billion (120亿)</strong></td>
+<td>ViT (4B) + PaLM-8B 语言模型，具身智能早期经典组合。</td>
+</tr>
+<tr>
+<td><strong>RT-2-PaLI-X (55B)</strong></td>
+<td>PaLI-X 旗舰版</td>
+<td><strong>55 Billion (550亿)</strong></td>
+<td>大型 ViT（如 ViT-e 4B+）+ 巨大的多语言 T5
+底座，泛化与推理能力最强。</td>
+</tr>
+</tbody>
+</table>
+<p>工业界或学术界在复现/平替 RT-2 时，目前多采用 <strong>OpenVLA
+(7B)</strong> 这一开源变体（基于 Prismatic VLM 和 Llama-2-7B
+构建）。</p>
+<h3 id="octo-uc-berkeley引入基于扩散的生成模型">Octo, UC
+Berkeley——引入基于扩散的生成模型</h3>
+<h3
+id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的开源视觉动作语言模型</h3>
+<ul>
+<li>基于 Llam、a2、DINOv2 和 SigLIP 构建</li>
+<li>适用于 16GB 以上显存的 7B 参数模型，并可选择进一步量化。</li>
+<li>支持 LoRA 和全面的微调功能，以实现用户特定的训练适应性。</li>
+</ul>
+<h3 id="pi0--------flow-matching">PI0------- Flow matching</h3>
+<h3
+id="smolvla紧凑高效的-vla-可以在消费级硬件上运行">SmolVLA——紧凑高效的
+VLA 可以在消费级硬件上运行</h3>
+<h3 id="参考链接">参考链接：</h3>
+<p>2025年综述paper:https://vla-survey.github.io/data/paper.pdf</p>
+<p>https://vla-survey.github.io/?utm_source=chatgpt.com</p>
+<p>课件：https://alinlab.kaist.ac.kr/resource/2024_FALL_AI602/AI602_Lec6_VLA.pdf</p>
 
     </div>
 
@@ -357,7 +609,10 @@ alt="RT-2 概述" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#rt-2-2023%E5%B9%B48%E6%9C%88google-mind"><span class="nav-number">1.</span> <span class="nav-text">RT-2 (2023年8月,google mind)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#url"><span class="nav-number">1.1.</span> <span class="nav-text">URL：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#methods"><span class="nav-number">1.2.</span> <span class="nav-text">methods:</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#before-vla"><span class="nav-number">1.</span> <span class="nav-text">before vla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">总览</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#timeline"><span class="nav-number">2.0.1.</span> <span class="nav-text">timeline</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E6%9E%B6%E6%9E%84"><span class="nav-number">2.0.2.</span> <span class="nav-text">各种架构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rt-2-2023%E5%B9%B48%E6%9C%88google-mind%E6%AD%A3%E5%BC%8F%E6%8F%90%E5%87%BA%E4%BA%86vla%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">RT-2
+(2023年8月,google mind)——正式提出了vla的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#url"><span class="nav-number">3.1.</span> <span class="nav-text">URL：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#methods"><span class="nav-number">3.2.</span> <span class="nav-text">methods:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#octo-uc-berkeley%E5%BC%95%E5%85%A5%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E7%9A%84%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">Octo, UC
+Berkeley——引入基于扩散的生成模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openvla%E6%9C%80%E6%B5%81%E8%A1%8C%E7%9A%84%E5%BC%80%E6%BA%90%E8%A7%86%E8%A7%89%E5%8A%A8%E4%BD%9C%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">OpenVLA——最流行的开源视觉动作语言模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pi0--------flow-matching"><span class="nav-number">6.</span> <span class="nav-text">PI0------- Flow matching</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smolvla%E7%B4%A7%E5%87%91%E9%AB%98%E6%95%88%E7%9A%84-vla-%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%B6%88%E8%B4%B9%E7%BA%A7%E7%A1%AC%E4%BB%B6%E4%B8%8A%E8%BF%90%E8%A1%8C"><span class="nav-number">7.</span> <span class="nav-text">SmolVLA——紧凑高效的
+VLA 可以在消费级硬件上运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">8.</span> <span class="nav-text">参考链接：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -373,12 +628,12 @@ alt="RT-2 概述" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">135</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
