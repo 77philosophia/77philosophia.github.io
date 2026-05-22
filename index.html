@@ -145,6 +145,11 @@
     <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
 
   </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
@@ -183,6 +188,363 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/21/3Blue1Brown-linear-algebra/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/21/3Blue1Brown-linear-algebra/" class="post-title-link" itemprop="url">3Blue1Brown的线性代数课程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-21 15:30:10" itemprop="dateCreated datePublished" datetime="2026-05-21T15:30:10+08:00">2026-05-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-22 15:07:57" itemprop="dateModified" datetime="2026-05-22T15:07:57+08:00">2026-05-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://www.youtube.com/watch?v=eu6i7WJeinw&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&amp;index=10</p>
+<h4 id="chapter5-三维空间线性变换">chapter5 三维空间线性变换</h4>
+<p>1.跟踪i, j,k三个基向量的变化</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153308992.png"
+alt="image-20260521153308992" />
+<figcaption aria-hidden="true">image-20260521153308992</figcaption>
+</figure>
+<p>2.变化后的向量如何计算：还是看成在三个基向量方向上的缩放</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153413478.png"
+alt="image-20260521153413478" />
+<figcaption aria-hidden="true">image-20260521153413478</figcaption>
+</figure>
+<p>3.如何看待矩阵的相乘：从右往左，依次作用线性变换</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153456299.png"
+alt="image-20260521153456299" />
+<figcaption aria-hidden="true">image-20260521153456299</figcaption>
+</figure>
+<h4 id="chapter-6-行列式对空间的压缩对应就是矩阵的行列式为0">chapter 6:
+行列式——对空间的压缩对应就是矩阵的行列式为0</h4>
+<p>变换会导致空间的放大或者挤压——评估对面积的变化。</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153708302.png"
+alt="image-20260521153708302" />
+<figcaption aria-hidden="true">image-20260521153708302</figcaption>
+</figure>
+<p>推论一：由于网格线保持平行且等距分布，对其他网格面积变化的研究等价于对一个网格面积变化的研究。</p>
+<p>并且不规则形状可以看成很多个小方格。</p>
+<p>这种缩放就叫做行列式：</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153937982.png"
+alt="image-20260521153937982" />
+<figcaption aria-hidden="true">image-20260521153937982</figcaption>
+</figure>
+<p>行列式的绝对值表示缩放倍数，正负表示空间定向的改变。</p>
+<h4 id="chapter7-逆矩阵零空间">chapter7: 逆矩阵，零空间</h4>
+<p>矩阵的作用之一：求解方程。</p>
+<p>Ax=v(方程数目与未知数数目相同)</p>
+<p>求解x:</p>
+<p>1.行列式不为0,A变换没有把向量压缩到一个更低维的空间上:可以进行逆向向量变换:</p>
+<p>2.行列式为0: 将空间进行了降维压缩，不存在逆变换，</p>
+<p>​ 用rank描述压缩的程度。rank=1压缩到直线上，rank=2在平面上</p>
+<p>​ 列空间：矩阵的列张成的空间</p>
+<p>​ full rank</p>
+<p>变换后落在原点的称作矩阵的“零空间”或者核。Ax=0</p>
+<h4 id="chapter8-非方阵作为变换">chapter8 非方阵作为变换</h4>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521162347681.png"
+alt="image-20260521162347681" />
+<figcaption aria-hidden="true">image-20260521162347681</figcaption>
+</figure>
+<p>思考一个3x2的矩阵：</p>
+<ul>
+<li>将二维空间映射到三维空间</li>
+<li>矩阵有两列表明输入有两个基向量</li>
+<li>有三行表明每一个基向量在变换后都用三个独立的坐标来描述</li>
+</ul>
+<p>2x3的矩阵：</p>
+<ul>
+<li>从三维到二维</li>
+<li>原始空间是三维的 ，输入有三个基向量</li>
+<li>有2行表明每一个基向量在变换后都用2个独立的坐标来描述</li>
+</ul>
+<h4 id="chapter9-点积和对偶">chapter9: 点积和对偶</h4>
+<p>点积的定义：</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521164415347.png"
+alt="image-20260521164415347" />
+<figcaption aria-hidden="true">image-20260521164415347</figcaption>
+</figure>
+<p>第二个问题：</p>
+<p>为什么对应相乘可以反应在投影——对偶性</p>
+<ul>
+<li><p>看看多维空间到一维空间的线性变换：</p></li>
+<li><p>线性变换是要满足一些条件的，这里我们没有进行复杂的探索，但是有一个直观的等价描述：如果原来空间有一系列等距的点，变换后应该还是等距的，否则就不是线性变换。</p></li>
+<li><figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521165159102.png"
+alt="image-20260521165159102" />
+<figcaption aria-hidden="true">image-20260521165159102</figcaption>
+</figure></li>
+<li><p>多维空间到一维空间的线性变换类似于之前，主要研究对基向量的变换</p></li>
+</ul>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521165340920.png"
+alt="image-20260521165340920" />
+<figcaption aria-hidden="true">image-20260521165340920</figcaption>
+</figure>
+<p>看一个向量【4，3】变换之后</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521165446997.png"
+alt="image-20260521165446997" />
+<figcaption aria-hidden="true">image-20260521165446997</figcaption>
+</figure>
+<p>思考一个二维空间到数轴的线性变换由投影定义，因为这个变换是线性的，所以肯定可以用一个1x2矩阵描述</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521170712983.png"
+alt="image-20260521170712983" />
+<figcaption aria-hidden="true">image-20260521170712983</figcaption>
+</figure>
+<p>那么描述任意一个向量</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521170734497.png"
+alt="image-20260521170734497" />
+<figcaption aria-hidden="true">image-20260521170734497</figcaption>
+</figure>
+<h4 id="chapter10-叉积">chapter10: 叉积</h4>
+<p>叉积的定义：</p>
+<p>叉积是一个向量</p>
+<p>大小是v和w向量围成的平行四边形的面积；正负表示方向（ixj是正）</p>
+<p>方向是与平行四边形垂直</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521171809023.png"
+alt="image-20260521171809023" />
+<figcaption aria-hidden="true">image-20260521171809023</figcaption>
+</figure>
+<p>叉积和线性变换的关系：</p>
+<p>把叉乘的两个向量放在矩阵中各为一列然后求矩阵的行列式就是叉积的大小也就是平行四边形的面积。why,矩阵每一列就可以表示基向量i和基向量j变换后的向量位置，我们之前又说行列式表示面积的缩放，原来i和j构成的小正方形面积为1，现在的平行四边形面积就是缩放后的面积啦。</p>
+<p>计算公式：</p>
+<p>看作一个大小等于平行四边形面积的标量乘以三维基（其中只有最后一维基是1）</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521171939913.png"
+alt="image-20260521171939913" />
+<figcaption aria-hidden="true">image-20260521171939913</figcaption>
+</figure>
+<p>为什么会把i,j,k当作矩阵的一列然后算行列式这样去定义得到叉积</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521172154777.png"
+alt="image-20260521172154777" />
+<figcaption aria-hidden="true">image-20260521172154777</figcaption>
+</figure>
+<h4 id="chapter11-以线性变换的眼光看叉积">chapter11:
+以线性变换的眼光看叉积</h4>
+<p>定义一个三维空间到数轴的线性变换：</p>
+<p>并且它是根据向量v和w来定义的</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521173827228.png"
+alt="image-20260521173827228" />
+<figcaption aria-hidden="true">image-20260521173827228</figcaption>
+</figure>
+<p>去寻找对偶向量使得——应用这个变换和与对偶向量点乘等价</p>
+<p>两个三维向量的点积结果等于一个由(x,y,z)和v和w确定的平行六面体的有向体积</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521173443635.png"
+alt="image-20260521173443635" />
+<figcaption aria-hidden="true">image-20260521173443635</figcaption>
+</figure>
+<p>向量p和其他向量的点积=把其他向量投影到p上：</p>
+<h4 id="chapter12-克莱默规则求解线性方程组">Chapter12:
+克莱默规则求解线性方程组</h4>
+<p>克莱默规则解决线性方程组不是最好的方法（高斯消元），但是对于我们了解线性代数的概念很有用。</p>
+<p>保留了点积的变换：正交变换。——通常对应于旋转变换（刚性，没有变形）</p>
+<ul>
+<li>此时x求解是输出与第一个基向量的点积</li>
+<li><figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522110246482.png"
+alt="image-20260522110246482" />
+<figcaption aria-hidden="true">image-20260522110246482</figcaption>
+</figure></li>
+</ul>
+<p>我们讨论的求解是行列式不为0的：</p>
+<p>克莱默法则</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522112810880.png"
+alt="image-20260522112810880" />
+<figcaption aria-hidden="true">image-20260522112810880</figcaption>
+</figure>
+<h4 id="chapter13-不同坐标系之间的转换和表示">Chapter13
+不同坐标系之间的转换和表示</h4>
+<h4 id="chapter14-特征向量和特征值">Chapter14 特征向量和特征值</h4>
+<p>空间压缩——对应行列式为0</p>
+<p>特征向量：经过矩阵A变换依然停留在它长成的空间里</p>
+<p>特征值：表示对应特征向量的缩放</p>
+<p>不是所有的矩阵都有特征向量（比如逆时针旋转90度）</p>
+<p>特征基：如果我们的基向量正好是特征向量</p>
+<p>变换是一个对角阵，对角元是特征值；</p>
+<p>对角矩阵在很多情况下都更好处理（算矩阵相乘，比如自己和自己相乘，相比计算一个非对角的矩阵幂乘就很噩梦了）</p>
+<p>如果能找到特征基矩阵运算就会特别轻松</p>
+<h4 id="chapter15-快速求解特征值的方法">Chapter15:
+快速求解特征值的方法</h4>
+<p>利用两个特性：</p>
+<p><strong>1.矩阵的迹的一半等于特征值均值</strong></p>
+<p><strong>2.行列式等于特征值乘积</strong></p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522144535341.png"
+alt="image-20260522144535341" />
+<figcaption aria-hidden="true">image-20260522144535341</figcaption>
+</figure>
+<p>快速求解特征值的方法</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522144643242.png"
+alt="image-20260522144643242" />
+<figcaption aria-hidden="true">image-20260522144643242</figcaption>
+</figure>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522144703742.png"
+alt="image-20260522144703742" />
+<figcaption aria-hidden="true">image-20260522144703742</figcaption>
+</figure>
+<h4 id="chapter16-线性变换的定义">Chapter16: 线性变换的定义</h4>
+<p>可加性，线性scaling(数乘)</p>
+<p>还有类似的例子，函数求导（满足可加和可成比例）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/21/wise-father-poor-father/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/21/wise-father-poor-father/" class="post-title-link" itemprop="url">富爸爸穷爸爸</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-21 15:13:12 / Modified: 15:13:46" itemprop="dateCreated datePublished" datetime="2026-05-21T15:13:12+08:00">2026-05-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Books/" itemprop="url" rel="index"><span itemprop="name">Books</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这本书主要分享了关于资产和负债的观点。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -509,74 +871,6 @@ PCIe 机器上跑 TP，通信延迟会彻底拖垮 TFLOPS。</li>
 </ul>
 <h5 id="举例子计算">4.举例子计算</h5>
 <p>https://gemini.google.com/app/9360704b1f6dbccd</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/20/wise-father-poor-father/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/05/20/wise-father-poor-father/" class="post-title-link" itemprop="url">wise-father-poor-father</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-05-20 10:04:10" itemprop="dateCreated datePublished" datetime="2026-05-20T10:04:10+08:00">2026-05-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/reading/" itemprop="url" rel="index"><span itemprop="name">reading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="summary">Summary</h2>
-<h2 id="highlights">Highlights</h2>
 
       
     </div>
@@ -1134,96 +1428,6 @@ alt="image-20260515102630375" /></p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/11/one-shot-prompt-manipulation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/05/11/one-shot-prompt-manipulation/" class="post-title-link" itemprop="url">one-shot-prompt-manipulation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-05-11 11:17:37" itemprop="dateCreated datePublished" datetime="2026-05-11T11:17:37+08:00">2026-05-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-05-12 10:13:08" itemprop="dateModified" datetime="2026-05-12T10:13:08+08:00">2026-05-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="topic-单论抓取目标物体这个动作">topic:
-单论抓取目标物体这个动作</h3>
-<p>“一次提示，持久操作”：One-shot Visual Prompting for Persistent
-Manipulation。</p>
-<p>核心在于将视觉引导（Visual
-Prompting）<strong>与</strong>时序一致性（Temporal
-Consistency）结合。</p>
-<h3 id="方案一稳健派-sam2anygrasp">方案一（稳健派）： sam2+anygrasp</h3>
-<h3 id="方案二vla">方案二：vla</h3>
-<p>把视觉prompt通过不同的方式注入进去</p>
-<h5 id="vp-vla">Vp-vla:</h5>
-<p>https://www.alphaxiv.org/zh/overview/2603.22003</p>
-<figure>
-<img
-src="/2026/05/11/one-shot-prompt-manipulation/image-20260512101151350.png"
-alt="image-20260512101151350" />
-<figcaption aria-hidden="true">image-20260512101151350</figcaption>
-</figure>
-<h5 id="tracevla">tracevla</h5>
-<p>https://tracevla.github.io/</p>
-<figure>
-<img
-src="/2026/05/11/one-shot-prompt-manipulation/image-20260512101236627.png"
-alt="image-20260512101236627" />
-<figcaption aria-hidden="true">image-20260512101236627</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1295,7 +1499,7 @@ alt="image-20260512101236627" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">135</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
