@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="youtube video: https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v&#x3D;kCc8FmEb1nY Toy demo notebook: https:&#x2F;&#x2F;colab.research.google.com&#x2F;drive&#x2F;1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-?usp&#x3D;sharing#scrollTo&#x3D;r_nkbigNuPGY 从一个BigramLangu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Andrej Karpathy-build got from scratch">
+<meta property="og:url" content="http://77philosophia.github.io/2026/05/23/An-Kar-build-gpt-from-scratch/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="youtube video: https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v&#x3D;kCc8FmEb1nY Toy demo notebook: https:&#x2F;&#x2F;colab.research.google.com&#x2F;drive&#x2F;1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-?usp&#x3D;sharing#scrollTo&#x3D;r_nkbigNuPGY 从一个BigramLangu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-23T07:24:12.000Z">
+<meta property="article:modified_time" content="2026-05-26T06:08:06.162Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/05/23/An-Kar-build-gpt-from-scratch/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Andrej Karpathy-build got from scratch | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_zh">
+
+    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_en">
+
+    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/23/An-Kar-build-gpt-from-scratch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Andrej Karpathy-build got from scratch
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-23 15:24:12" itemprop="dateCreated datePublished" datetime="2026-05-23T15:24:12+08:00">2026-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-26 14:08:06" itemprop="dateModified" datetime="2026-05-26T14:08:06+08:00">2026-05-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>youtube video: https://www.youtube.com/watch?v=kCc8FmEb1nY</p>
+<p>Toy demo notebook:
+https://colab.research.google.com/drive/1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-?usp=sharing#scrollTo=r_nkbigNuPGY</p>
+<h3
+id="从一个bigramlanguagemodel开始">从一个BigramLanguageModel开始</h3>
+<h4 id="dataset处理">dataset处理:</h4>
+<p>给一段文本，如何从中构造相应的input和target:</p>
+<figure>
+<img
+src="/2026/05/23/An-Kar-build-gpt-from-scratch/image-20260526102200822.png"
+alt="image-20260526102200822" />
+<figcaption aria-hidden="true">image-20260526102200822</figcaption>
+</figure>
+<figure>
+<img
+src="/2026/05/23/An-Kar-build-gpt-from-scratch/image-20260525174937401.png"
+alt="image-20260525174937401" />
+<figcaption aria-hidden="true">image-20260525174937401</figcaption>
+</figure>
+<h4
+id="bigramlanguagemodel-一对一预测看一位x预测下一位视野为1">BigramLanguageModel:
+一对一预测，看一位x，预测下一位，视野为1</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line">batch_size = <span class="number">4</span> <span class="comment"># how many independent sequences will we process in parallel?</span></span><br><span class="line">block_size = <span class="number">8</span> <span class="comment"># what is the maximum context length for predictions?</span></span><br><span class="line"></span><br><span class="line">xb:(<span class="number">4</span>,<span class="number">8</span>)</span><br><span class="line">yb:(<span class="number">4</span>,<span class="number">8</span>)</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> functional <span class="keyword">as</span> F</span><br><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BigramLanguageModel</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># each token directly reads off the logits for the next token from a lookup table</span></span><br><span class="line">        self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, idx, targets=<span class="literal">None</span></span>):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># idx and targets are both (B,T) tensor of integers</span></span><br><span class="line">        logits = self.token_embedding_table(idx) <span class="comment"># (B,T,C)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> targets <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            loss = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            B, T, C = logits.shape</span><br><span class="line">            logits = logits.view(B*T, C)</span><br><span class="line">            targets = targets.view(B*T)</span><br><span class="line">            loss = F.cross_entropy(logits, targets)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> logits, loss</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, idx, max_new_tokens</span>):</span><br><span class="line">        <span class="comment"># idx is (B, T) array of indices in the current context</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(max_new_tokens):</span><br><span class="line">            <span class="comment"># get the predictions</span></span><br><span class="line">            logits, loss = self(idx)</span><br><span class="line">            <span class="comment"># focus only on the last time step</span></span><br><span class="line">            logits = logits[:, -<span class="number">1</span>, :] <span class="comment"># becomes (B, C)</span></span><br><span class="line">            <span class="comment"># apply softmax to get probabilities</span></span><br><span class="line">            probs = F.softmax(logits, dim=-<span class="number">1</span>) <span class="comment"># (B, C)</span></span><br><span class="line">            <span class="comment"># sample from the distribution</span></span><br><span class="line">            idx_next = torch.multinomial(probs, num_samples=<span class="number">1</span>) <span class="comment"># (B, 1)</span></span><br><span class="line">            <span class="comment"># append sampled index to the running sequence</span></span><br><span class="line">            idx = torch.cat((idx, idx_next), dim=<span class="number">1</span>) <span class="comment"># (B, T+1)</span></span><br><span class="line">        <span class="keyword">return</span> idx</span><br><span class="line"></span><br><span class="line">m = BigramLanguageModel(vocab_size)</span><br><span class="line">logits, loss = m(xb, yb)</span><br><span class="line"><span class="built_in">print</span>(logits.shape)</span><br><span class="line"><span class="built_in">print</span>(loss)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(decode(m.generate(idx = torch.zeros((<span class="number">1</span>, <span class="number">1</span>), dtype=torch.long), max_new_tokens=<span class="number">100</span>)[<span class="number">0</span>].tolist()))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="训练得到的文本">训练得到的文本</h4>
+<figure>
+<img
+src="/2026/05/23/An-Kar-build-gpt-from-scratch/image-20260525180600548.png"
+alt="image-20260525180600548" />
+<figcaption aria-hidden="true">image-20260525180600548</figcaption>
+</figure>
+<h3 id="self-attention">self-attention</h3>
+<h5 id="toy-example-for-weighted-aggregation">toy example for weighted
+aggregation</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###1.</span></span><br><span class="line">torch.manual_seed(<span class="number">42</span>)</span><br><span class="line">a = torch.tril(torch.ones(<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">a = a / torch.<span class="built_in">sum</span>(a, <span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">b = torch.randint(<span class="number">0</span>,<span class="number">10</span>,(<span class="number">3</span>,<span class="number">2</span>)).<span class="built_in">float</span>()</span><br><span class="line">c = a @ b</span><br><span class="line"></span><br><span class="line"><span class="comment">########result</span></span><br><span class="line">a=</span><br><span class="line">tensor([[<span class="number">1.0000</span>, <span class="number">0.0000</span>, <span class="number">0.0000</span>],</span><br><span class="line">        [<span class="number">0.5000</span>, <span class="number">0.5000</span>, <span class="number">0.0000</span>],</span><br><span class="line">        [<span class="number">0.3333</span>, <span class="number">0.3333</span>, <span class="number">0.3333</span>]])</span><br><span class="line">--</span><br><span class="line">b=</span><br><span class="line">tensor([[<span class="number">2.</span>, <span class="number">7.</span>],</span><br><span class="line">        [<span class="number">6.</span>, <span class="number">4.</span>],</span><br><span class="line">        [<span class="number">6.</span>, <span class="number">5.</span>]])</span><br><span class="line">--</span><br><span class="line">c=</span><br><span class="line">tensor([[<span class="number">2.0000</span>, <span class="number">7.0000</span>],</span><br><span class="line">        [<span class="number">4.0000</span>, <span class="number">5.5000</span>],</span><br><span class="line">        [<span class="number">4.6667</span>, <span class="number">5.3333</span>]])</span><br><span class="line"><span class="comment">## 可以用循环的方法求均值We want x[b,t] = mean_&#123;i&lt;=t&#125; x[b,i]，这就是聚合的概念</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 2.用矩阵乘法来计算 for a weighted aggregation</span></span><br><span class="line"><span class="comment">##torch.ones-&gt;tril-&gt;除以每一行sum均一化</span></span><br><span class="line">输入X:(B, T, C) Bath, Time, Channel(vocab <span class="built_in">len</span>)</span><br><span class="line"></span><br><span class="line">wei = torch.tril(torch.ones(T, T))</span><br><span class="line">wei = wei / wei.<span class="built_in">sum</span>(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">xbow2 = wei @ x <span class="comment"># (B, T, T) @ (B, T, C) ----&gt; (B, T, C)</span></span><br><span class="line">torch.allclose(xbow, xbow2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">### 3. 如果不是前面所有值的均值怎么办，重要性有差异，用-inf填充+softmax</span></span><br><span class="line"><span class="comment"># 因为实际上的attention是Q和K乘出来的</span></span><br><span class="line">tril = torch.tril(torch.ones(T, T))</span><br><span class="line">wei = torch.zeros((T,T))</span><br><span class="line">wei = wei.masked_fill(tril == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">wei = F.softmax(wei, dim=-<span class="number">1</span>)</span><br><span class="line">xbow3 = wei @ x</span><br><span class="line">torch.allclose(xbow, xbow3)</span><br></pre></td></tr></table></figure>
+<h5 id="单头self-attention">单头self attention:</h5>
+<ul>
+<li>self attention: key,+value和query都来自于自己</li>
+<li>Cross attention: key,value可能来自于别的地方，如原论文attention is
+all you need是做一个翻译任务</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># version 4: self-attention!</span></span><br><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line">B,T,C = <span class="number">4</span>,<span class="number">8</span>,<span class="number">32</span> <span class="comment"># batch, time, channels</span></span><br><span class="line">x = torch.randn(B,T,C)</span><br><span class="line"></span><br><span class="line"><span class="comment"># let&#x27;s see a single Head perform self-attention</span></span><br><span class="line">head_size = <span class="number">16</span></span><br><span class="line">key = nn.Linear(C, head_size, bias=<span class="literal">False</span>)</span><br><span class="line">query = nn.Linear(C, head_size, bias=<span class="literal">False</span>)</span><br><span class="line">value = nn.Linear(C, head_size, bias=<span class="literal">False</span>)</span><br><span class="line">k = key(x)   <span class="comment"># (B, T, 16)</span></span><br><span class="line">q = query(x) <span class="comment"># (B, T, 16)</span></span><br><span class="line">wei =  q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>) <span class="comment"># (B, T, 16) @ (B, 16, T) ---&gt; (B, T, T)</span></span><br><span class="line"></span><br><span class="line">tril = torch.tril(torch.ones(T, T))</span><br><span class="line"><span class="comment">#wei = torch.zeros((T,T))</span></span><br><span class="line">wei = wei.masked_fill(tril == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">wei = F.softmax(wei, dim=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">v = value(x)</span><br><span class="line">out = wei @ v</span><br><span class="line"><span class="comment">#out = wei @ x</span></span><br><span class="line"></span><br><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>attention可以看作一种交流机制，可以看作一个有向图，彼此互相看，并且聚合所有指向它的node的信息</p></li>
+<li><p>"Encoder" attention
+block不用tril做的mask，可以彼此互相看；只有在建模decoder的attention
+block的时候才会有三角masking.通常用在autogressive的设定里，比如语言的建模。</p></li>
+<li><p>'"Self-attention'只是意味着key和value都是从和query一样的source制造出来的；key和value也可以来自于其他的，比如encoder
+module.</p></li>
+<li><p>要对attention matrix做scaled(1/sqrt(head_size)).这样当Q,K是unit
+variance，这样处理之后还是unit variance.
+Softmax数值还是会相对分散diffuse而不会过度饱和saturate（会将attention过于拉向一个大权重的数值）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">k = torch.randn(B,T,head_size)</span><br><span class="line">q = torch.randn(B,T,head_size)</span><br><span class="line">wei = q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>) * head_size**-<span class="number">0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####</span></span><br><span class="line">k.var()</span><br><span class="line">tensor(<span class="number">1.0449</span>)</span><br><span class="line"></span><br><span class="line">q.var()</span><br><span class="line">tensor(<span class="number">1.0700</span>)</span><br><span class="line"></span><br><span class="line">wei.var()</span><br><span class="line">tensor(<span class="number">1.0918</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">### torch.softmax</span></span><br><span class="line">torch.softmax(torch.tensor([<span class="number">0.1</span>, -<span class="number">0.2</span>, <span class="number">0.3</span>, -<span class="number">0.2</span>, <span class="number">0.5</span>]), dim=-<span class="number">1</span>)</span><br><span class="line">tensor([<span class="number">0.1925</span>, <span class="number">0.1426</span>, <span class="number">0.2351</span>, <span class="number">0.1426</span>, <span class="number">0.2872</span>])</span><br><span class="line"></span><br><span class="line">torch.softmax(torch.tensor([<span class="number">0.1</span>, -<span class="number">0.2</span>, <span class="number">0.3</span>, -<span class="number">0.2</span>, <span class="number">0.5</span>])*<span class="number">8</span>, dim=-<span class="number">1</span>) <span class="comment"># gets too peaky, converges to one-hot</span></span><br><span class="line">tensor([<span class="number">0.0326</span>, <span class="number">0.0030</span>, <span class="number">0.1615</span>, <span class="number">0.0030</span>, <span class="number">0.8000</span>])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="layernorm">layerNorm</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>对于一个（B,T,C）的输入，layerNorm指的是对最后一层C的维度做归一化，因此计算出来也是（B,T）.
+为什么不能对T:因果掩码的语义泄漏，动态长度变化的T, 语义理解上来说。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm1d</span>: <span class="comment"># (used to be BatchNorm1d)</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, eps=<span class="number">1e-5</span>, momentum=<span class="number">0.1</span></span>):</span><br><span class="line">    self.eps = eps</span><br><span class="line">    self.gamma = torch.ones(dim)</span><br><span class="line">    self.beta = torch.zeros(dim)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x</span>):</span><br><span class="line">    <span class="comment"># calculate the forward pass</span></span><br><span class="line">    xmean = x.mean(<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># batch mean</span></span><br><span class="line">    xvar = x.var(<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># batch variance</span></span><br><span class="line">    xhat = (x - xmean) / torch.sqrt(xvar + self.eps) <span class="comment"># normalize to unit variance</span></span><br><span class="line">    self.out = self.gamma * xhat + self.beta</span><br><span class="line">    <span class="keyword">return</span> self.out</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">parameters</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">return</span> [self.gamma, self.beta]</span><br><span class="line"></span><br><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line">module = LayerNorm1d(<span class="number">100</span>)</span><br><span class="line">x = torch.randn(<span class="number">32</span>, <span class="number">100</span>) <span class="comment"># batch size 32 of 100-dimensional vectors</span></span><br><span class="line">x = module(x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x.shape</span><br><span class="line">torch.Size([<span class="number">32</span>, <span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">x[:,<span class="number">0</span>].mean(), x[:,<span class="number">0</span>].std() <span class="comment"># mean,std of one feature across all batch inputs</span></span><br><span class="line">Loading...</span><br><span class="line">(tensor(<span class="number">0.1469</span>), tensor(<span class="number">0.8803</span>))</span><br><span class="line"></span><br><span class="line">x[<span class="number">0</span>,:].mean(), x[<span class="number">0</span>,:].std() <span class="comment"># mean,std of a single input from the batch, of its features</span></span><br><span class="line">(tensor(-<span class="number">9.5367e-09</span>), tensor(<span class="number">1.0000</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="对比batchnorm">对比batchNorm</h4>
+<ul>
+<li>训练和推理，layernorm的均值和方差自己算自己的就可以；但是batch会存入一个全局的，推理的时候用训练集的均值方差。（推理单个sample没有什么均值和方差）</li>
+</ul>
+<p>https://gemini.google.com/app/9546f77378803c34</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm1d</span>(nn.Module): <span class="comment"># 继承 nn.Module</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, eps=<span class="number">1e-5</span></span>):</span><br><span class="line">    <span class="built_in">super</span>().__init__()</span><br><span class="line">    self.eps = eps</span><br><span class="line">    <span class="comment"># 使用 nn.Parameter 包裹，PyTorch 会自动将其识别为需要计算梯度的参数</span></span><br><span class="line">    self.gamma = nn.Parameter(torch.ones(dim))</span><br><span class="line">    self.beta = nn.Parameter(torch.zeros(dim))</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>): <span class="comment"># 习惯上用 forward 代替 __call__</span></span><br><span class="line">    xmean = x.mean(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">    xvar = x.var(<span class="number">1</span>, keepdim=<span class="literal">True</span>, unbiased=<span class="literal">False</span>) <span class="comment"># 这里的方差通常用有偏估计</span></span><br><span class="line">    xhat = (x - xmean) / torch.sqrt(xvar + self.eps)</span><br><span class="line">    <span class="keyword">return</span> self.gamma * xhat + self.beta</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试可微性</span></span><br><span class="line">x = torch.randn(<span class="number">32</span>, <span class="number">100</span>, requires_grad=<span class="literal">True</span>) <span class="comment"># 让输入也需要梯度</span></span><br><span class="line">module = LayerNorm1d(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">out = module(x)</span><br><span class="line">loss = out.<span class="built_in">sum</span>() <span class="comment"># 假设一个简单的 Loss</span></span><br><span class="line">loss.backward()  <span class="comment"># 反向传播</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查梯度是否存在</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;x 的梯度 shape:&quot;</span>, x.grad.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;gamma 的梯度 shape:&quot;</span>, module.gamma.grad.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;beta 的梯度 shape:&quot;</span>, module.beta.grad.shape)</span><br></pre></td></tr></table></figure>
+<h3 id="最终代码">最终代码</h3>
+<p>https://colab.research.google.com/drive/1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-?usp=sharing#scrollTo=hoelkOrFY8bN
+拉到最后</p>
+<ul>
+<li>对x做nn.Embedding: x:(B，T)-&gt;(B,T,C)
+C是embedding维度，不一定是前面的vocab_size</li>
+<li>Pos_embedding: 知道B, T 得到（T,C）</li>
+<li>相加送给transformer
+blocks-&gt;layernorm--&gt;（B,T,C）-&gt;head_linear-&gt;(B,T,vocab_size)</li>
+<li>看看一个transformer block
+<ul>
+<li>输入n_embed就是上面的C, n_heads是头的个数</li>
+<li>forward过程：
+<ul>
+<li>x-&gt;layernorm(n_embd)-&gt;multiheadattention-&gt;+x</li>
+<li>x-&gt;layernorm-&gt;feedforward-&gt;+x</li>
+</ul></li>
+</ul></li>
+<li>看一个multiHeadAttention(num_heads, head_size)
+<ul>
+<li>各自计算head
+attention-&gt;汇总消息用一个Linear(n_embed,n_embed)-&gt;dropout</li>
+</ul></li>
+<li>看one head for attention
+<ul>
+<li>这个例子是decoder架构的，因此有triangle masking</li>
+</ul></li>
+</ul>
+<p>推理：</p>
+<ul>
+<li>输入（B, T）-&gt;采集block_size的几位-》得到logins:(B,T,C) -&gt;
+取最后一个time的数值-&gt;(B,C)-&gt;进行采样-〉（B,1）-&gt;(B,T+1)</li>
+<li>循环上面的过程直到max_new_tokens个数</li>
+</ul>
+<p>gpt的得到是pre-train + finetune 才能得到assistant</p>
+<p>实际上gpt后面还会用到PPO的一些强化学习的算法去调优得到最终的GPT.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/05/23/3Blue1Brown-transformer/" rel="prev" title="3Blue1Brown-transformer">
+      <i class="fa fa-chevron-left"></i> 3Blue1Brown-transformer
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AAbigramlanguagemodel%E5%BC%80%E5%A7%8B"><span class="nav-number">1.</span> <span class="nav-text">从一个BigramLanguageModel开始</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dataset%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">dataset处理:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bigramlanguagemodel-%E4%B8%80%E5%AF%B9%E4%B8%80%E9%A2%84%E6%B5%8B%E7%9C%8B%E4%B8%80%E4%BD%8Dx%E9%A2%84%E6%B5%8B%E4%B8%8B%E4%B8%80%E4%BD%8D%E8%A7%86%E9%87%8E%E4%B8%BA1"><span class="nav-number">1.2.</span> <span class="nav-text">BigramLanguageModel:
+一对一预测，看一位x，预测下一位，视野为1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%BE%97%E5%88%B0%E7%9A%84%E6%96%87%E6%9C%AC"><span class="nav-number">1.3.</span> <span class="nav-text">训练得到的文本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#self-attention"><span class="nav-number">2.</span> <span class="nav-text">self-attention</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#toy-example-for-weighted-aggregation"><span class="nav-number">2.0.1.</span> <span class="nav-text">toy example for weighted
+aggregation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95%E5%A4%B4self-attention"><span class="nav-number">2.0.2.</span> <span class="nav-text">单头self attention:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#layernorm"><span class="nav-number">3.</span> <span class="nav-text">layerNorm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94batchnorm"><span class="nav-number">3.1.</span> <span class="nav-text">对比batchNorm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">最终代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
