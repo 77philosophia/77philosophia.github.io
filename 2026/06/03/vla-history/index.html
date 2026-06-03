@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  overview of vla 来自论文https:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260603144259399  各种架构 主要是骨干架构(transform">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vla-history">
+<meta property="og:url" content="http://77philosophia.github.io/2026/06/03/vla-history/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  overview of vla 来自论文https:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260603144259399  各种架构 主要是骨干架构(transform">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260603144259399.png">
+<meta property="article:published_time" content="2026-06-03T06:41:37.000Z">
+<meta property="article:modified_time" content="2026-06-03T06:51:12.734Z">
+<meta property="article:author" content="philosophia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260603144259399.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/06/03/vla-history/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>vla-history | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_zh">
+
+    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
+
+  </li>
+        <li class="menu-item menu-item-resume_en">
+
+    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/03/vla-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vla-history
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-06-03 14:41:37 / Modified: 14:51:12" itemprop="dateCreated datePublished" datetime="2026-06-03T14:41:37+08:00">2026-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="before-vla">before vla</h3>
+<ul>
+<li>分层/模块化架构:感知——规划——控制，无泛化</li>
+<li>模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。</li>
+</ul>
+<h3 id="overview-of-vla">overview of vla</h3>
+<p>来自论文https://vla-survey.github.io/data/paper.pdf</p>
+<figure>
+<img data-src="/2026/06/03/vla-history/image-20260603144259399.png"
+alt="image-20260603144259399" />
+<figcaption aria-hidden="true">image-20260603144259399</figcaption>
+</figure>
+<h3 id="各种架构">各种架构</h3>
+<p>主要是骨干架构(transformer, vlm) 和动作头(discrete token , diffusion
+, flow matching)的不同组合。</p>
+<h4 id="transformer-discrete-action">1.transformer + discrete
+action</h4>
+<ul>
+<li>在 VLA 模型的早期阶段（如 <strong>RT-1</strong> 或
+<strong>Gato</strong>），将 Transformer
+用于机器人控制的核心思路是：<strong>把机器人的动作（Action）看作是一种“语言”</strong>。</li>
+<li><strong>自回归生成 (Autoregressive):</strong>
+模型不是一次性预测出完整的 7 维动作，而是按顺序预测：先预测 <span
+class="math inline">\(x\)</span>，再预测 <span
+class="math inline">\(y\)</span>，再预测 <span
+class="math inline">\(z\)</span>...。这样每一维度的预测都可以参考前面的信息。</li>
+</ul>
+<h4 id="transformer-diffusion-action-head">2.Transformer + diffusion
+action head</h4>
+<p>（diffusion action head结构可以是mlp可以是unet可以是dit）</p>
+<ul>
+<li>不对action空间切分，还是连续的。transformer不直接输出动作，而是输出一个环境表征condition,然后送入一个diffusion
+model进行多部去噪</li>
+<li>将机器人控制变成一个<strong>条件生成（Conditional
+Generation）任务</strong>，直接建模多峰分布（Multimodal
+Distribution，即同一个场景下，机械臂既可以从左边绕过去拿杯子，也可以从右边拿）。</li>
+<li>Ex:Diffusion Policy (TRI团队), π0 (Physical Intelligence), 各种基于
+DiT 的具身模型。</li>
+<li>动作平滑，解决多峰问题，但是延迟高</li>
+</ul>
+<h4 id="diffusion-transformer">3. diffusion transformer</h4>
+<ul>
+<li>噪声动作直接被转化为 Token，和其他多模态
+Token（视觉、语言）一起排队进入 Transformer。</li>
+<li>网络主结构它不仅要理解环境，还要直接负责<strong>去噪</strong>。每一层
+Transformer 都在处理“环境特征如何引导噪声还原为动作”。整个 Transformer
+骨干网络本身就是去噪器。它利用 Self-Attention
+来建模“当前视觉特征”与“正在生成的动作轨迹”之间的复杂空间关系。</li>
+</ul>
+<h3 id="vla发展的history-line">vla发展的history line</h3>
+<h4 id="rt-2-2023年8月google-mind正式提出了vla的概念"><strong>RT-2
+(2023年8月,google mind)——正式提出了vla的概念</strong></h4>
+<p>将大量的网络数据整合到机器人端到端控制中让机器人操作能涌现出泛化能力URL：</p>
+<h5 id="url">url</h5>
+<p>官方project url:<a
+target="_blank" rel="noopener" href="https://robotics-transformer2.github.io/">https://robotics-transformer2.github.io/</a></p>
+<p>Alphaxiv:<a
+target="_blank" rel="noopener" href="https://www.alphaxiv.org/overview/2307.15818">https://www.alphaxiv.org/overview/2307.15818</a></p>
+<p>Scholarly:<a
+target="_blank" rel="noopener" href="https://library.scholarcy.com/try">https://library.scholarcy.com/try</a></p>
+<h5 id="methods">methods:</h5>
+<ul>
+<li><p>预训练的vlm +
+finetune:互联网规模数据(图像-文本对)+机器人演示数据</p>
+<ul>
+<li>为什么有了vlm还要用视觉问答损失？防止忘记通用知识</li>
+</ul></li>
+<li><p>直接把机器人动作映射为language的同等地位的token，因此架构基本还是vlm的结构。输入是
+[256个视觉Token] + [提示词Token]，输出是 [7-8个动作Token]（代表机械臂的
+<span
+class="math inline">\(x,y,z,\text{roll},\text{pitch},\text{yaw},\text{gripper}\)</span>
+离散化 Bin 值）。因为输出序列极短，<strong>KV Cache
+的压力非常小，核心瓶颈在 Prefill（首字延迟，即视觉 ViT
+的前向传播速度）</strong>。</p></li>
+<li><p>推理频率：</p>
+<ul>
+<li><strong>55B 旗舰版</strong>：在谷歌云端多 TPU
+协同下，控制频率仅能达到 <strong>1 - 3 Hz</strong>（每秒控制 1-3
+次），对于高精度、高速率装配来说较为勉强。 <strong>5B
+剪裁版</strong>：控制频率可提升至 <strong>5 Hz</strong>
+左右，基本能满足日常移动抓取任务。</li>
+<li>训练 RT-2 采用的是 <strong>Co-fine-tuning（共同微调）</strong>
+策略：70% 的算力喂机器人操作数据（如 RT-1 遗留数据集），30%
+的算力继续喂互联网 VQA（视觉问答）数据，防止大模型失忆。</li>
+</ul>
+<p>1.推理频率比较低</p>
+<p>2.展示的demo背景还是很干净的，实际操作估计要翻车。</p>
+<p>根据 DeepMind 发布的论文，RT-2 主要基于两种 VLM
+后端（Backbone）构建，形成了三种主流尺寸：</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 14%" />
+<col style="width: 19%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>RT-2 模型变体</strong></th>
+<th><strong>后端 VLM 基础</strong></th>
+<th><strong>参数量 (Parameters)</strong></th>
+<th><strong>架构组成简述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RT-2-PaLI-X (5B)</strong></td>
+<td>PaLI-X 小版本</td>
+<td><strong>5 Billion (50亿)</strong></td>
+<td>较小的视觉编码器 + 轻量级语言解码器，适合高频控制。</td>
+</tr>
+<tr>
+<td><strong>RT-2-PaLM-E (12B)</strong></td>
+<td>PaLM-E-12B</td>
+<td><strong>12 Billion (120亿)</strong></td>
+<td>ViT (4B) + PaLM-8B 语言模型，具身智能早期经典组合。</td>
+</tr>
+<tr>
+<td><strong>RT-2-PaLI-X (55B)</strong></td>
+<td>PaLI-X 旗舰版</td>
+<td><strong>55 Billion (550亿)</strong></td>
+<td>大型 ViT（如 ViT-e 4B+）+ 巨大的多语言 T5
+底座，泛化与推理能力最强。</td>
+</tr>
+</tbody>
+</table>
+<p>工业界或学术界在复现/平替 RT-2 时，目前多采用 <strong>OpenVLA
+(7B)</strong> 这一开源变体（基于 Prismatic VLM 和 Llama-2-7B
+构建）。</p></li>
+</ul>
+<h4 id="octouc-berkeley引入基于扩散的生成模型">Octo,UC
+Berkeley——引入基于扩散的生成模型</h4>
+<h4
+id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的开源视觉动作语言模型</h4>
+<ul>
+<li><p>基于 Llam、a2、DINOv2 和 SigLIP 构建</p></li>
+<li><p>适用于 16GB 以上显存的 7B 参数模型，并可选择进一步量化。</p></li>
+<li><p>支持 LoRA 和全面的微调功能，以实现用户特定的训练适应性。</p>
+<p>#### PI0-提出flow matching</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/03/openclaw-harness/" rel="prev" title="openclaw-harness">
+      <i class="fa fa-chevron-left"></i> openclaw-harness
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#before-vla"><span class="nav-number">1.</span> <span class="nav-text">before vla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overview-of-vla"><span class="nav-number">2.</span> <span class="nav-text">overview of vla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">各种架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#transformer-discrete-action"><span class="nav-number">3.1.</span> <span class="nav-text">1.transformer + discrete
+action</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#transformer-diffusion-action-head"><span class="nav-number">3.2.</span> <span class="nav-text">2.Transformer + diffusion
+action head</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#diffusion-transformer"><span class="nav-number">3.3.</span> <span class="nav-text">3. diffusion transformer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vla%E5%8F%91%E5%B1%95%E7%9A%84history-line"><span class="nav-number">4.</span> <span class="nav-text">vla发展的history line</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rt-2-2023%E5%B9%B48%E6%9C%88google-mind%E6%AD%A3%E5%BC%8F%E6%8F%90%E5%87%BA%E4%BA%86vla%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.1.</span> <span class="nav-text">RT-2
+(2023年8月,google mind)——正式提出了vla的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#url"><span class="nav-number">4.1.1.</span> <span class="nav-text">url</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#methods"><span class="nav-number">4.1.2.</span> <span class="nav-text">methods:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#octouc-berkeley%E5%BC%95%E5%85%A5%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E7%9A%84%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">Octo,UC
+Berkeley——引入基于扩散的生成模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#openvla%E6%9C%80%E6%B5%81%E8%A1%8C%E7%9A%84%E5%BC%80%E6%BA%90%E8%A7%86%E8%A7%89%E5%8A%A8%E4%BD%9C%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.3.</span> <span class="nav-text">OpenVLA——最流行的开源视觉动作语言模型</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
