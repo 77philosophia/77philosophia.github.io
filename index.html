@@ -480,7 +480,7 @@ id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/06/03/vla-papers/" class="post-title-link" itemprop="url">vla-papers</a>
+            <a href="/2026/06/03/vla-papers/" class="post-title-link" itemprop="url">vla-papers和wm一起</a>
         </h2>
 
         <div class="post-meta">
@@ -491,7 +491,20 @@ id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2026-06-03 10:26:57 / Modified: 10:27:50" itemprop="dateCreated datePublished" datetime="2026-06-03T10:26:57+08:00">2026-06-03</time>
+              <time title="Created: 2026-06-03 10:26:57 / Modified: 19:05:35" itemprop="dateCreated datePublished" datetime="2026-06-03T10:26:57+08:00">2026-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
             </span>
 
           
@@ -505,10 +518,66 @@ id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="worldvla">worldVLA</h3>
-<h3 id="cot-vla">CoT-VLA</h3>
-<h3 id="univla">UniVLA</h3>
-<h3 id="vla-jepa">VLA-JEPA</h3>
+          <blockquote>
+<p>[!NOTE]</p>
+<p>单独的vla是走不通的。寻求和wm和rl结合的方式。下面是一些vla+wm的探索。基本都有code
+release,可以学习。</p>
+</blockquote>
+<h3 id="worldvla2025年6月达摩院">worldVLA，2025年6月，达摩院</h3>
+<h4 id="tldr">tl;dr</h4>
+<p>提出了一种自回归的action world model，同时预测action
+model里的action和wm的next image；认为自回归里action
+chunk后一个action会因为前一个action不准而有预测灾难，从而让后一个action预测的时候看不到上一个action;
+在仿真环境里做的实验，主要还是看各种信息怎么做fusion吧。</p>
+<h4 id="methods">methods</h4>
+<figure>
+<img data-src="/2026/06/03/vla-papers/image-20260603153932032.png"
+alt="image-20260603153932032" />
+<figcaption aria-hidden="true">image-20260603153932032</figcaption>
+</figure>
+<h3
+id="cot-vla2025年3月stanford---cot引入到vla中">CoT-VLA,2025年3月,stanford---cot引入到vla中</h3>
+<p>https://www.alphaxiv.org/zh/overview/2503.22020</p>
+<h4 id="tldr-1">tl;dr</h4>
+<p>把cot引入到vla中，image subgoals作为一种视觉子目标的中间形态；</p>
+<p>加入了no action的视频数据帮助下一帧的预测；</p>
+<p>在仿真和真实场景中进行了训练，验证了有效性。</p>
+<h4 id="methods-1">methods:</h4>
+<figure>
+<img data-src="/2026/06/03/vla-papers/image-20260603160836885.png"
+alt="image-20260603160836885" />
+<figcaption aria-hidden="true">image-20260603160836885</figcaption>
+</figure>
+<p>混合注意力机制：</p>
+<figure>
+<img data-src="/2026/06/03/vla-papers/image-20260603161034851.png"
+alt="image-20260603161034851" />
+<figcaption aria-hidden="true">image-20260603161034851</figcaption>
+</figure>
+<h3
+id="univla2025年6月港大opendrivelab">UniVLA,2025年6月，港大&amp;opendrivelab</h3>
+<p>https://www.alphaxiv.org/zh/overview/2506.19850?chatId=019e8ce3-a971-7de8-bc93-a3e460ebfa4e</p>
+<h4 id="tldr-2">tl;dr</h4>
+<p>UniVLA引入了一个统一的视觉-语言-动作（VLA）模型，该模型将所有模态作为离散令牌在一个共享的自回归Transformer中处理。该框架通过利用在大型无动作视频数据上训练的世界模型，在CALVIN、LIBERO（平均成功率95.5%）和SimplerEnv等机器人操作基准测试上取得了最先进的结果。</p>
+<h4 id="methods-2">methods:</h4>
+<figure>
+<img data-src="/2026/06/03/vla-papers/image-20260603181515090.png"
+alt="image-20260603181515090" />
+<figcaption aria-hidden="true">image-20260603181515090</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/03/vla-papers/image-20260603181610758.png"
+alt="image-20260603181610758" />
+<figcaption aria-hidden="true">image-20260603181610758</figcaption>
+</figure>
+<p>另外，这篇paper把现在的action估计总结了两种路线：</p>
+<p>一种直接预测action的，一种visual guided action prediction.</p>
+<h3
+id="vla-jepa2026年2月中科大中关村研究院等">VLA-JEPA,2026年2月,中科大、中关村研究院等</h3>
+<h4 id="tldr-3">tl;dr</h4>
+<p>提出了一个vla-jepa模型，在latent space而不是pixel
+space预测；强调无泄漏的状态预测，有一个target
+encoder学习未来frames的latent表示。学习对相机运动和背景变化具有鲁棒性的运动学抽象。</p>
 
       
     </div>
