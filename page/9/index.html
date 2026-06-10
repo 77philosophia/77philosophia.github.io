@@ -956,7 +956,7 @@ alt="image-20260121113625317" />
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
+                <time title="Modified: 2026-06-10 15:09:11" itemprop="dateModified" datetime="2026-06-10T15:09:11+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -964,7 +964,11 @@ alt="image-20260121113625317" />
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/papers-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">papers - 专业笔记</span></a>
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
                 </span>
             </span>
 
@@ -979,7 +983,42 @@ alt="image-20260121113625317" />
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="vae是什么">vae是什么</h3>
+          <h3 id="vae的可视化">vae的可视化</h3>
+<p>https://xnought.github.io/vae-explainer/</p>
+<p>1.最开始是为了解决什么问题：</p>
+<p>我手里有一堆真实图像
+X（比如几十万张猫的图片），我希望能训练一个由参数 <span
+class="math display">\[
+\theta
+\]</span> 控制的生成网络，使得这个网络生成这些真实图像的概率最大。</p>
+<p>在数学上，这就是最大化对数似然（Log-Likelihood）： <span
+class="math display">\[
+\max \log P(X)
+\]</span> 2.直接生成 <span class="math inline">\(X\)</span>
+太难了。为了让画面有控制权，我们引入了一个隐变量 <span
+class="math inline">\(z\)</span>（比如代表猫的毛色、耳朵大小等特征）。根据全概率公式，要算
+<span class="math inline">\(P(X)\)</span>，就得把所有可能的特征 <span
+class="math inline">\(z\)</span> 都考虑一遍： <span
+class="math display">\[
+P(X) = \int P(X|z)P(z) dz
+\]</span> 这个积分在数学上叫做
+<strong>Intractable（不可积/无法计算）</strong>。因为潜在的特征空间
+<span class="math inline">\(z\)</span>
+是高维连续的，组合可能性无限大，计算机根本不可能对所有可能的 <span
+class="math inline">\(z\)</span> 进行遍历和积分。</p>
+<p>3.退而求其次 —— 引入编码器去“猜”</p>
+<p>如果能有一个完美的后验分布 <span
+class="math inline">\(P(z|X)\)</span>，告诉我们“看到这张猫的图片 <span
+class="math inline">\(X\)</span> 时，它的特征 <span
+class="math inline">\(z\)</span>
+大概是什么”，那事情就简单了。可惜，这个真实的后验分布 <span
+class="math inline">\(P(z|X)\)</span> 同样无法直接计算。</p>
+<p>于是科学家做了一个大胆的近似：<strong>用一个神经网络 <span
+class="math inline">\(q_\phi(z|X)\)</span>
+去逼近、去“猜”这个真实的分布。</strong>
+这个网络就是后来的<strong>编码器（Encoder）</strong>。</p>
+<p>https://gemini.google.com/app/d1e8860f2db64300</p>
+<h3 id="vae是什么">vae是什么</h3>
 <p>VAE由三部分组成，VAE encoder, latent space, vae decoder vae
 encoder将原始的数据信息X进行编码映射到latent space空间中，latent
 space是代表训练数据的一个隐式空间，从中进行采样得到采样数据Z'，最终通过VAE
@@ -1882,13 +1921,13 @@ Number）将它们永久映射为固定名称（如 <code>/dev/master_arm</code>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1988,6 +2027,59 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
