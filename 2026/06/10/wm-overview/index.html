@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="https:&#x2F;&#x2F;datawhalechina.github.io&#x2F;learn-world-model&#x2F;zh&#x2F;lectures&#x2F;lecture-01-internal-simulation&#x2F; 对世界模型的定义 广义的世界模型就是预测模型，比如语言模型，视频预测模型等等； 狭义的世界模型是action-conditioned的，必须以动作为条件。 我们在具身领域谈论的是后者，action-condit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="世界模型知识总览">
+<meta property="og:url" content="http://77philosophia.github.io/2026/06/10/wm-overview/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;datawhalechina.github.io&#x2F;learn-world-model&#x2F;zh&#x2F;lectures&#x2F;lecture-01-internal-simulation&#x2F; 对世界模型的定义 广义的世界模型就是预测模型，比如语言模型，视频预测模型等等； 狭义的世界模型是action-conditioned的，必须以动作为条件。 我们在具身领域谈论的是后者，action-condit">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/10/wm-overview/image-20260610162233879.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/10/wm-overview/image-20260610162252568.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/10/wm-overview/image-20260610162454088.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/10/wm-overview/image-20260610165832178.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/10/wm-overview/image-20260610165924703.png">
+<meta property="article:published_time" content="2026-06-10T08:11:04.000Z">
+<meta property="article:modified_time" content="2026-06-10T09:05:46.373Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="world model">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/06/10/wm-overview/image-20260610162233879.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/06/10/wm-overview/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>世界模型知识总览 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/10/wm-overview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          世界模型知识总览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-06-10 16:11:04 / Modified: 17:05:46" itemprop="dateCreated datePublished" datetime="2026-06-10T16:11:04+08:00">2026-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>https://datawhalechina.github.io/learn-world-model/zh/lectures/lecture-01-internal-simulation/</p>
+<h3 id="对世界模型的定义">对世界模型的定义</h3>
+<p>广义的世界模型就是预测模型，比如语言模型，视频预测模型等等；</p>
+<p>狭义的世界模型是action-conditioned的，必须以动作为条件。</p>
+<p>我们在具身领域谈论的是后者，action-conditioned,可以用于规划和policy学习的动力学模型。</p>
+<h3 id="观测编码和潜在动力学">观测编码和潜在动力学</h3>
+<h4 id="观测编码vae">观测编码：vae</h4>
+<p>把当前帧从ot压缩成zt。</p>
+<h4 id="潜在动力学">潜在动力学：</h4>
+<h5 id="task">task:</h5>
+<p>在潜在空间中，给定当前状态zt 和动作at ，预测下一时刻的状态zt+1 。</p>
+<h5 id="gru确定性预测">gru:确定性预测</h5>
+<ul>
+<li>GRU 通过两个"门"控制信息流：<strong>重置门（reset
+gate）</strong>决定"遗忘多少过去"，<strong>更新门（update
+gate）</strong>决定"保留多少旧状态 vs 写入新信息"。</li>
+<li>无法建模环境的不确定性；</li>
+</ul>
+<h5 id="mdn-rnn建模不确定性">mdn-rnn：建模不确定性</h5>
+<ul>
+<li>混合高斯建模</li>
+</ul>
+<h5 id="rssm-分离确定性和随机性">RSSM: 分离确定性和随机性</h5>
+<ul>
+<li><p>Dreamer论文核心创新</p>
+<ul>
+<li><strong>确定性隐藏状态</strong> ：由 RNN
+维护，汇聚历史轨迹信息，没有随机性</li>
+<li><strong>随机潜在状态</strong> ：从以
+为条件的分布中采样，表达当前的不确定性</li>
+</ul></li>
+<li><figure>
+<img data-src="/2026/06/10/wm-overview/image-20260610162233879.png"
+alt="image-20260610162233879" />
+<figcaption aria-hidden="true">image-20260610162233879</figcaption>
+</figure></li>
+<li><figure>
+<img data-src="/2026/06/10/wm-overview/image-20260610162252568.png"
+alt="image-20260610162252568" />
+<figcaption aria-hidden="true">image-20260610162252568</figcaption>
+</figure></li>
+<li><p>Dreamer v1-4：GRU→Transformer，连续→离散潜变量，在线→离线策略</p>
+<figure>
+<img data-src="/2026/06/10/wm-overview/image-20260610162454088.png"
+alt="image-20260610162454088" />
+<figcaption aria-hidden="true">image-20260610162454088</figcaption>
+</figure></li>
+<li><p>好的世界模型 = 好的编码器（感知压缩）+
+好的动力学模型（时序预测）。RSSM
+通过分离两类状态，在表达能力和计算效率之间取得了精妙的平衡。</p></li>
+</ul>
+<h3 id="架构范式">架构范式</h3>
+<h5 id="parta-rnn-transformer-diffusion">partA: RNN, transformer,
+Diffusion</h5>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1803.10122">Ha &amp; Schmidhuber
+World Models (2018)</a>、<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/1912.01603">Dreamer V1 (2019)</a>、<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2010.02193">Dreamer V2 (2020)</a></li>
+<li>长时记忆弱，GRU 隐状态的有效记忆窗口通常在 50-100 步之间；</li>
+</ul>
+<h5 id="transformer-based20222023">transformer-based(2022,2023)</h5>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2209.00588">IRIS (2022)</a>、<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.09615">STORM (2023)</a></li>
+<li>用 <strong>Transformer</strong> 替换 GRU，将历史观测序列 分词为离散
+token，然后用<strong>自注意力机制（self-attention）</strong>在整个序列上计算权重.每个位置都能直接"看到"序列里任意一个历史时刻，不再受限于
+GRU 的隐状态瓶颈。</li>
+</ul>
+<h5 id="diffusion-based20232024">diffusion-based(2023,2024)</h5>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.12399">Diamond (2024)</a>、<a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2408.14837">GameNGen (Google, 2024)</a></li>
+<li>在世界模型场景中，以历史帧和动作为条件，扩散模型逐步"去噪"出下一帧。每一步去噪都是一次完整的神经网络前向传播，网络在"动作条件"的引导下决定"把哪里的噪声去掉"。</li>
+</ul>
+<h5 id="jepa2023非生成式">JEPA(2023,非生成式)</h5>
+<ul>
+<li>I-JEPA (2023)、V-JEPA (2024)、V-JEPA 2 (2025)，由 Yann LeCun
+主导提出（<a target="_blank" rel="noopener" href="https://openreview.net/forum?id=BZ5a1r-kVsf">LeCun,
+2022</a>）</li>
+<li>JEPA（Joint Embedding Predictive
+Architecture）的核心理念是：<strong>不预测像素，在语义潜空间里预测</strong>。</li>
+<li><strong>学习范式</strong>：观察型为主。训练数据是视频序列，不需要动作标签。JEPA
+不参与"谁能生成更逼真的视频"的竞争，它的目标是"谁能更好地理解物理世界"。</li>
+</ul>
+<h5 id="架构五robotic-world-modelrwm机器人控制的硬问题">架构五：Robotic
+World Model(RWM),机器人控制的硬问题</h5>
+<ul>
+<li>Self-Forcing (NeurIPS 2025)、RWM-U (ICLR 2026, ETH
+Zurich)、DreamDojo (NVIDIA, 2025)</li>
+<li>前四个架构族的主要战场是"生成质量"或"游戏智能"。机器人控制领域有一类更"硬"的问题，核心不是"能不能生成逼真的图像"，而是"能不能训练出真实可部署的
+policy"。</li>
+<li>两个核心问题
+<ul>
+<li><strong>long-horizon rollout 不发散</strong>：
+<ul>
+<li>训练时，模型每步都以<strong>真实状态</strong>作为输入（teacher
+forcing）；推理时，模型必须以<strong>自己的预测</strong>作为输入（autoregressive
+rollout），误差开始积累，轨迹迅速偏离真实。这个训练与推理之间的分布差距导致长程
+rollout 产生物理上不可能的状态。</li>
+</ul></li>
+<li><strong>policy exploitation</strong>
+<ul>
+<li>Policy
+会主动寻找并利用模型的错误，发现某些动作序列在世界模型里能产生虚假的高奖励，但在真实环境里这些动作毫无意义甚至有害。</li>
+</ul></li>
+</ul></li>
+<li><strong><a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.08009">Self-Forcing</a></strong>（NeurIPS
+2025）：
+<ul>
+<li><strong>scheduled
+sampling</strong>（计划采样，一种训练技巧：训练初期以高概率使用真实历史帧，随训练进行逐步提高使用模型自身预测帧的概率，使模型逐渐适应推理时的自回归模式）</li>
+<li>Self-Forcing 能将 50 步 rollout 的累积误差降低到 teacher forcing
+的约 1/3。</li>
+</ul></li>
+<li><strong><a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.16680">RWM-U</a></strong>（Uncertainty-Aware
+Robotic World Model，ICLR 2026，ETH Zurich, Krause, Hutter）
+<ul>
+<li>同时训练
+个独立初始化的自回归世界模型，用预测的<strong>集成方差</strong>（ensemble
+variance，多个模型对同一输入预测结果的统计方差）量化认知不确定性</li>
+</ul></li>
+<li><strong><a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.06949">DreamDojo</a></strong>（NVIDIA
+et al.,
+2025）从另一个角度解决数据匮乏问题：直接从<strong>大规模人类第一视角视频</strong>中学习，人类视频不需要任何动作标注。
+<ul>
+<li>核心技术是 <strong>LAM</strong>（Latent Action Model），用 VAE
+结构从连续帧对 中自监督提取<strong>连续潜在动作</strong>
+，信息瓶颈过滤掉光照、纹理等无关变量，只保留"帧间发生了什么类型的动作"。预训练时以
+为条件预测未来帧；后训练时用少量有标注的机器人数据对齐 latent action
+到真实控制空间。Teacher 模型经两阶段蒸馏压缩为因果注意力
+Student，推理速度达到实时遥操作要求。</li>
+<li><strong>学习范式</strong>：观察型预训练（人类视频，无动作标注）+
+少量目标数据后训练</li>
+</ul></li>
+<li>Genie: 从视频隐式发现动作
+<ul>
+<li>Genie (Google DeepMind, 2024)、Genie 2 (2024)</li>
+<li>前五个架构族都有一个共同假设：训练数据要么包含动作标签（交互型），要么完全不需要动作（观察型）。Genie
+打破了这个二分法：<strong>从无标注互联网视频中，自动发现隐式的 latent
+action。</strong></li>
+<li><strong>学习范式</strong>：介于观察型和交互型之间。训练只用视频（观察型），但推理时支持动作条件生成（交互型）。这个思路直接启发了后来的
+WAM 系列。</li>
+<li><strong>局限</strong>：latent action
+是自动归纳的，不与真实物理动作对齐，无法直接用于机器人控制。从 latent
+action 到真实 policy 仍需额外的对齐步骤。</li>
+</ul></li>
+</ul>
+<h5 id="架构六从-world-model-到-world-action-modelwam">架构六：从 World
+Model 到 World Action Model（WAM）</h5>
+<ul>
+<li>Motus (2025, Bi et al.)、DreamZero / WAM (NVIDIA 2026)</li>
+<li>Genie 证明了"从视频隐式发现动作表征"这条路可行。WAM
+系列接过这个思路，进一步追问：世界模型和策略模型，真的需要是两个分开的模块吗？</li>
+<li>传统的 World Model 以动作为输入、预测未来状态，是 policy 旁边的一个
+simulator。VLA
+绕过了世界模型，直接从视觉和语言指令预测动作，是一个端到端的 reactive
+policy。WAM
+试图同时做两件事：预测世界的未来状态，同时预测应该采取的动作。世界的视觉演化成为动作学习的
+<strong>dense supervision</strong>（密集监督，与只在 episode
+结束时给出奖励的稀疏监督相对，每一帧的视频内容都提供梯度信号，使学习信号更丰富、更频繁），而不只是一个辅助任务。</li>
+<li><strong><a
+target="_blank" rel="noopener" href="https://arxiv.org/abs/2512.13030">Motus</a></strong>（Bi et al.,
+2025）引入了统一的 <strong>latent action</strong>
+表征：从异构视频数据（包括大量没有动作标签的人类视频和机器人演示）中自动抽取连续
+latent action，再用少量有机器人真实动作标签的数据对齐。</li>
+<li><strong>DreamZero / WAM 系列</strong>（NVIDIA 2026）用预训练的
+<strong>video generation backbone</strong>
+同时预测未来世界状态和机器人动作，用视频序列作为 dense
+supervision。NVIDIA 的 WAM（World Action Models）论文明确提出"WAM 是
+zero-shot
+policy"，预训练的视频生成模型可以直接作为策略推理引擎，无需额外 RL
+微调：</li>
+</ul>
+<h5 id="总结">总结</h5>
+<figure>
+<img data-src="/2026/06/10/wm-overview/image-20260610165832178.png"
+alt="image-20260610165832178" />
+<figcaption aria-hidden="true">image-20260610165832178</figcaption>
+</figure>
+<h5 id="架构选择">架构选择</h5>
+<figure>
+<img data-src="/2026/06/10/wm-overview/image-20260610165924703.png"
+alt="image-20260610165924703" />
+<figcaption aria-hidden="true">image-20260610165924703</figcaption>
+</figure>
+<ul>
+<li>长序列预测精度持续下跌、或任务需要跨多步因果推理，再考虑切换
+Transformer。Diffusion 留给离线场景。JEPA
+控制接口尚不成熟，但表示学习任务已有实质结果，值得跟踪。有大量无标注视频但缺乏动作标签时，Genie
+的 latent action
+发现机制是目前最直接的切入点，但要做真实控制还需要对齐步骤。做真实机器人，Self-Forcing
+和 ensemble uncertainty
+这类工程手段比换架构更重要，先把长程稳定性解决掉。</li>
+</ul>
+<h3 id="规划机制">规划机制</h3>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/world-model/" rel="tag"># world model</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/09/hermes-install/" rel="prev" title="hermes安装使用">
+      <i class="fa fa-chevron-left"></i> hermes安装使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">对世界模型的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E6%B5%8B%E7%BC%96%E7%A0%81%E5%92%8C%E6%BD%9C%E5%9C%A8%E5%8A%A8%E5%8A%9B%E5%AD%A6"><span class="nav-number">2.</span> <span class="nav-text">观测编码和潜在动力学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%82%E6%B5%8B%E7%BC%96%E7%A0%81vae"><span class="nav-number">2.1.</span> <span class="nav-text">观测编码：vae</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BD%9C%E5%9C%A8%E5%8A%A8%E5%8A%9B%E5%AD%A6"><span class="nav-number">2.2.</span> <span class="nav-text">潜在动力学：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#task"><span class="nav-number">2.2.1.</span> <span class="nav-text">task:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gru%E7%A1%AE%E5%AE%9A%E6%80%A7%E9%A2%84%E6%B5%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">gru:确定性预测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mdn-rnn%E5%BB%BA%E6%A8%A1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="nav-number">2.2.3.</span> <span class="nav-text">mdn-rnn：建模不确定性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rssm-%E5%88%86%E7%A6%BB%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%92%8C%E9%9A%8F%E6%9C%BA%E6%80%A7"><span class="nav-number">2.2.4.</span> <span class="nav-text">RSSM: 分离确定性和随机性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E8%8C%83%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">架构范式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#parta-rnn-transformer-diffusion"><span class="nav-number">3.0.1.</span> <span class="nav-text">partA: RNN, transformer,
+Diffusion</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#transformer-based20222023"><span class="nav-number">3.0.2.</span> <span class="nav-text">transformer-based(2022,2023)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#diffusion-based20232024"><span class="nav-number">3.0.3.</span> <span class="nav-text">diffusion-based(2023,2024)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#jepa2023%E9%9D%9E%E7%94%9F%E6%88%90%E5%BC%8F"><span class="nav-number">3.0.4.</span> <span class="nav-text">JEPA(2023,非生成式)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%BA%94robotic-world-modelrwm%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8E%A7%E5%88%B6%E7%9A%84%E7%A1%AC%E9%97%AE%E9%A2%98"><span class="nav-number">3.0.5.</span> <span class="nav-text">架构五：Robotic
+World Model(RWM),机器人控制的硬问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%85%AD%E4%BB%8E-world-model-%E5%88%B0-world-action-modelwam"><span class="nav-number">3.0.6.</span> <span class="nav-text">架构六：从 World
+Model 到 World Action Model（WAM）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.0.7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E9%80%89%E6%8B%A9"><span class="nav-number">3.0.8.</span> <span class="nav-text">架构选择</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E5%88%92%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">规划机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">148</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
