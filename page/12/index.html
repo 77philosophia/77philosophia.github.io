@@ -115,16 +115,6 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-        <li class="menu-item menu-item-resume_zh">
-
-    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
-
-  </li>
-        <li class="menu-item menu-item-resume_en">
-
-    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
-
-  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
@@ -192,6 +182,496 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/07/serl-family/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/07/serl-family/" class="post-title-link" itemprop="url">serl-family</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-07 10:23:26" itemprop="dateCreated datePublished" datetime="2025-05-07T10:23:26+08:00">2025-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">papers - 专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="serl-a-software-suite-for-sample-efficient-robotic-reinforcement-learning">SERL:
+A Software Suite for Sample-Efficient Robotic Reinforcement
+Learning</h1>
+<blockquote>
+<p>[!NOTE]</p>
+<p>总结风格：从整体结构有个outline的感觉，每一块涉及到的具体的算法细节和推导看相关论文和代码深入。</p>
+</blockquote>
+<h2 id="url">URL</h2>
+<p>https://arxiv.org/pdf/2401.16013</p>
+<p>https://serl-robot.github.io/</p>
+<p>https://github.com/rail-berkeley/serl</p>
+<h2 id="tldr">TL;DR</h2>
+<p>2024年1月份的文章，介绍了一个名为SERL的开源软件框架，旨在降低机器人强化学习(Robotic
+Reinforcement Learning, Robotic
+RL)在现实世界中的应用门槛。作者指出，尽管Robotic
+RL在近年来取得了显著进展，但在实际应用中仍然存在许多挑战，特别是算法的实现细节对性能的影响往往非常大，甚至超过算法本身的选择。SERL的目标是提供一个高质量、易于使用的工具，包含样本高效的离线强化学习方法、奖励函数计算方法、环境重置自动化方法、高质量的机器人控制器以及一系列具有挑战性的示例任务。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>1.提供了一个可以用在真实环境的开源的强化学习框架，综合了一套学习策略，算法细节。-》实践落地的work</p>
+<p>2.可扩展性也很好，不跟一个具体的robot硬件平台深绑定，鼓励在此基础上做自己的开发。</p>
+</blockquote>
+<h2 id="show-case">Show case</h2>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250507171443384.png"
+alt="image-20250507171443384" />
+<figcaption aria-hidden="true">image-20250507171443384</figcaption>
+</figure>
+<h4 id="pcb">pcb:</h4>
+<p>在 PCB
+板上装配穿孔元件是一项常见却又充满挑战的机器人任务。电子元件的引脚极易弯曲，而孔位与引脚之间的公差非常小，要求机器人在装配时既要精准又要轻柔。通过仅仅
+21 分钟的自主学习，SERL 使机器人达到了 100%
+的任务完成率。即便面临如电路板位置移动或视线部分被遮挡等未知的干扰，机器人也能稳定完成装配工作。(在执行电路板元件安装任务时，机器人能够应对在训练阶段未曾遇到的各种干扰，顺利完成任务。)</p>
+<figure>
+<img data-src="/2025/05/07/serl-family/serl-pcb.gif" alt="pcb" />
+<figcaption aria-hidden="true">pcb</figcaption>
+</figure>
+<p><img data-src="/2025/05/07/serl-family/pcb2.gif" /></p>
+<p><img data-src="/2025/05/07/serl-family/pcb3.gif" /></p>
+<h4 id="电缆布线">电缆布线</h4>
+<p>在许多机械和电子设备的组装过程中，我们需要将电缆沿着特定的路径精确地安装到位，这一任务对精度和适应性提出了很高的要求。由于柔性电缆在布线过程中容易产生形变，而且布线过程可能会受到各种干扰，比如电缆被意外移动或者夹持器位置的变化，这导致使用传统的非学习型方法难以应对。SERL
+能够在短短 30 分钟内实现 100%
+的成功率。即便是在夹持器位置与训练期间不同时，机器人也能够泛化其学习到的技能，适应新的布线挑战，确保布线工作的正确执行。(机器人无需更多的专项训练也能直接把线缆穿过与训练时位置不一样的夹子里。)</p>
+<p><img data-src="/2025/05/07/serl-family/cab1.gif" /></p>
+<p><img data-src="/2025/05/07/serl-family/cab2.gif" /></p>
+<p><img data-src="/2025/05/07/serl-family/cab3.gif" /></p>
+<h4 id="物体抓取">物体抓取：</h4>
+<p>在仓库管理或零售业中，机器人经常需要将物品从一个地方移动到另一个地方，这要求机器人能够识别并搬运特定的物品。强化学习的训练过程中，很难对欠驱动的物体进行自动的归位重置。利用
+SERL 的无重置强化学习功能，机器人在 1 小时 45 分钟内同时学习两个 100/100
+成功率的策略。用前向策略把物体从 A 箱放到 B 箱，再用后向策略把物体从 B
+箱归为回 A 箱。(SERL
+训练了两套策略，一个把物体从右边搬运到左边，一个从左边放回右边。机器人不仅在训练物体上达到
+100% 成功率，就连没见过的物体也能智能搬运。)</p>
+<p><img data-src="/2025/05/07/serl-family/grab1.gif" /></p>
+<p><img data-src="/2025/05/07/serl-family/grab2.gif" /></p>
+<p><img data-src="/2025/05/07/serl-family/grab3.gif" /></p>
+<h2 id="modelmethod">Model&amp;Method</h2>
+<h4 id="问题定义和拆解">1. 问题定义和拆解</h4>
+<p>机器人的强化学习任务可以定义为一个马尔可夫决策过程：</p>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250507171917083.png"
+alt="image-20250507171917083" />
+<figcaption aria-hidden="true">image-20250507171917083</figcaption>
+</figure>
+<blockquote>
+<p>[!TIP]</p>
+<p>几个字母的代表含义</p>
+</blockquote>
+<p>难点要考虑：</p>
+<ol type="1">
+<li><p>sample efficiency</p></li>
+<li><p>实际场景中为了进行策略学习可能有一些难以定义的场景，比如reward
+function可能依赖于视觉的观察。每次episodic task需要自动化重置。</p></li>
+<li><p>Controller：一个是要精准了（从仿真-&gt;实际环境），一个是要安全</p></li>
+</ol>
+<h4 id="核心的算法">2.核心的算法</h4>
+<h5 id="rlpd算法">2.1 RLPD算法</h5>
+<p>定义了强化学习策略的损失函数、采样过程、用了layer normalization</p>
+<h5 id="reward-function">2.2 reward function</h5>
+<p>用了分类器判断任务是否成功（论文提到有很多种训练方法，训练一个分类器，训练gan等等，可以自由地做一些探索）</p>
+<h5 id="reset-free">2.3 reset free</h5>
+<p>简而言之，省去人工重置，设计了一个forward
+agent执行任务，还有一个backward agent重置任务。</p>
+<h4 id="软件结构">3. 软件结构</h4>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250507173132208.png"
+alt="image-20250507173132208" />
+<figcaption aria-hidden="true">image-20250507173132208</figcaption>
+</figure>
+<h4 id="其他">4. 其他</h4>
+<h5 id="控制器的设计">4.1 控制器的设计</h5>
+<p>简而言之：末端控制器对任务成功率的影响很大，paper里面用了分层结构，两层控制器。不用的频率。</p>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250507173637912.png"
+alt="image-20250507173637912" />
+<figcaption aria-hidden="true">image-20250507173637912</figcaption>
+</figure>
+<h5 id="相对坐标系作observation和action">4.2
+相对坐标系作observation和action</h5>
+<p>免去定义世界坐标系，以末端夹具作为起点，描述下一帧相对上一帧的相对坐标。</p>
+<blockquote>
+<p>[!TODO]</p>
+<p>整体性的框架的一个自上而下的俯视。但是要了解具体的：</p>
+<p>Todo: 1. 各个环节算法 2.代码</p>
+<p>可以放到后面的分享当中。</p>
+</blockquote>
+<h1 id="hil-serl">hil-serl</h1>
+<h2 id="url-1">URL</h2>
+<p>项目主页：https://hil-serl.github.io/</p>
+<p>Paper:https://hil-serl.github.io/static/hil-serl-paper.pdf</p>
+<p>Code: https://github.com/rail-berkeley/hil-serl</p>
+<h2 id="tldr-1">TL；DR</h2>
+<p>验证了经过精细的系统设计，RL算法可以解决一系列灵巧复杂的基于视觉的manipulation任务；</p>
+<p>第一个实现双臂的、image inputs、RL在真实世界处理类似组装timing
+belt的任务。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>和serl不同的：</p>
+<p>1.加入了人类的修正（learn form mistakes）</p>
+<p>2.serl关注简单的任务，也没有涉及双臂的操作。hil-serl聚焦基于视觉的更复杂的manipulation.</p>
+</blockquote>
+<h2 id="methods">Methods</h2>
+<h3 id="问题拆解和定义">1.问题拆解和定义</h3>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250508113632106.png"
+alt="image-20250508113632106" />
+<figcaption aria-hidden="true">image-20250508113632106</figcaption>
+</figure>
+<p>涉及到的关键点是observation space S和action
+space的选择，比如cameras的组合，本体的状态，相应的robot底层控制器的选择。</p>
+<p>针对paper里面的任务：</p>
+<p>1.作者的reward
+function选择了一种稀疏的function：二分类，决定任务是否成功；</p>
+<p>2.RLPD算法（sample
+effenciency和整合先验数据进行训练的能力）：每次训练从prior
+data和on-policy data各采一半数据。</p>
+<h3 id="系统结构">2.系统结构</h3>
+<ul>
+<li><p>Actor process：在robot上执行policy,把数据发送给replay
+buffer</p></li>
+<li><p>learner process:</p></li>
+<li><p>Replay buffers（2）: demo buffer存储离线的人类演示；RL
+buffer存储on-policy data</p></li>
+<li><p>environment:处理各种环境输入：cameras,鼠标操作、各种控制器。</p>
+<p>Learner
+process从两个buffers里面采样，通过RLPD算法更新策略，阶段性将策略发送给actor
+process去执行。</p></li>
+</ul>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250508114359129.png"
+alt="image-20250508114359129" />
+<figcaption aria-hidden="true">image-20250508114359129</figcaption>
+</figure>
+<h3 id="系统设计">3. 系统设计</h3>
+<ul>
+<li>pretrained vision backbones: 对输入的图像进行encode</li>
+<li>reward function:
+训练了一个二分类的分类器,任务完成给奖励1，其它step奖励为0。</li>
+<li>下游的robotic system:
+一个是用ego-centric的坐标系描述；另外安全性方面控制器阻抗控制 +
+限幅，开环控制已经足够。</li>
+<li>Gripper control: 增加了一个critic
+network对夹爪的动作进行离散化（open, close, stay）.简而言之，训练两个MDP
+task，一个action空间用连续的action space, 一个用离散化的action
+space。根据训练方法（DQN），推理的时候从M1中取出连续的actions描述，然后从critic
+network里面查询离散化的M2的action.</li>
+</ul>
+<h3 id="人在回路的强化学习">4. 人在回路的强化学习</h3>
+<h4
+id="rl的样本复杂度sample-complexity">1.<strong>RL的样本复杂度（Sample
+Complexity）</strong></h4>
+<ul>
+<li><strong>定义</strong>：学习最优策略所需的环境交互样本量，受以下因素影响：
+<ol type="1">
+<li><strong>状态/动作空间的维度</strong>（Cardinality of state/action
+spaces）：
+<ul>
+<li>高维空间（如机械臂的连续状态+多传感器输入）需要更多样本覆盖。</li>
+</ul></li>
+<li><strong>任务时间跨度</strong>（Task horizon）：
+<ul>
+<li>长周期任务（如多步骤装配）需更长的轨迹探索。</li>
+</ul></li>
+<li><strong>探索策略</strong>（Exploration policy）：
+<ul>
+<li>不充分的探索会导致策略陷入局部最优。</li>
+</ul></li>
+</ol></li>
+</ul>
+<h4 id="解决方案human-in-the-loop-hitl">2.解决方案：Human-in-the-Loop
+(HITL)**</h4>
+<p>核心思想</p>
+<ul>
+<li><strong>人类干预加速学习</strong>：
+通过人类提供实时反馈（如动作修正、奖励调整、示范数据），<strong>直接引导探索方向</strong>，减少无效样本。</li>
+<li><strong>理论依据</strong>：
+人类先验知识可缩小策略搜索空间，降低样本复杂度。</li>
+</ul>
+<ol start="3" type="1">
+<li><p>在看一次这张图，人可以在t0到tN的中间时刻干预，用人类干预的action替换robot
+policy的action.把数据同时存储在两个buffers中，但是策略转换只存储在RL
+buffers中。</p>
+<p>简而言之：robot表现差的时候人工就干预；</p>
+<p>实验发现，开始阶段人工频繁干预，后面可以干预的越来越少。</p></li>
+</ol>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250508114359129.png"
+alt="image-20250508114359129" />
+<figcaption aria-hidden="true">image-20250508114359129</figcaption>
+</figure>
+<h4 id="训练过程">5. 训练过程</h4>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250508140805366.png"
+alt="image-20250508140805366" />
+<figcaption aria-hidden="true">image-20250508140805366</figcaption>
+</figure>
+<ul>
+<li>相机的选择：wrist cameras(基于ego-centric views的选择)+side
+cameras(拍摄到整个ROI)</li>
+<li>训练reward classifier: 10 trajectories x 10s/条</li>
+<li>准备offline demo replay buffer： 20～30trajectories</li>
+<li>训练中注意人工干预不要过度，避免过拟合</li>
+</ul>
+<h2 id="results">Results</h2>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250508142437272.png"
+alt="image-20250508142437272" />
+<figcaption aria-hidden="true">image-20250508142437272</figcaption>
+</figure>
+<h5 id="任务">1. 任务</h5>
+<figure>
+<img data-src="/2025/05/07/serl-family/image-20250508142453433.png"
+alt="image-20250508142453433" />
+<figcaption aria-hidden="true">image-20250508142453433</figcaption>
+</figure>
+<ul>
+<li>主板组装任务：内存插入、SSD组装、USB插入、电缆夹紧</li>
+<li>宜家组装任务：侧面板组装、上面板组装</li>
+<li>汽车仪表器组装、物体传递、履带组装、叠叠乐抽取、物体翻转</li>
+</ul>
+<h5 id="findings">2. findings</h5>
+<ul>
+<li><p>HIL-SERL在几乎所有任务中，在1到2.5小时的真实世界训练中实现了100%的成功率，完成任务时间也更短。</p></li>
+<li><p>从零开始的RL，没有任何演示或纠正，在所有任务上成功率为0%</p></li>
+<li><p>为了验证在线人类纠正的重要性，作者将SERL的离线缓冲区中的演示数量增加了十倍，从通常的20增加到200
+(HIL-SERL no
+itv)。然而，没有任何在线纠正，这种方法的成功率显著低于HIL-SERL，包括在复杂任务如汽车仪表板组装中的完全失败（0%成功率）。这证实了在线纠正在促进策略学习中的关键作用。这些结果证实了离线演示和策略学习指导中在策略学习中的关键作用，尤其是对于需要持续反应行为的复杂操作任务。</p></li>
+</ul>
+<p>Todo:</p>
+<ol type="1">
+<li>从hil-serl迁移到配天机器人上的总结工作</li>
+<li>中间具体的算法细节</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/06/%E4%BB%8E%E6%95%B0%E5%AD%A6%E7%90%86%E8%A7%A3diffusion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/06/%E4%BB%8E%E6%95%B0%E5%AD%A6%E7%90%86%E8%A7%A3diffusion/" class="post-title-link" itemprop="url">从数学理解diffusion</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-06 18:53:18" itemprop="dateCreated datePublished" datetime="2025-05-06T18:53:18+08:00">2025-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">papers - 专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>学习链接：</p>
+<p>《Mathematical Foundation of Diffusion Generative Models》</p>
+<p>https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/foundation-diffusion-generative-models</p>
+<h2 id="background">background</h2>
+<p>Diffusion generative
+models是一种从distributions当中采样的方法，与其他的,比如GANS,
+VAEs有很大的不同。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/06/http-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/06/http-proxy/" class="post-title-link" itemprop="url">http_proxy</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-06 18:09:56" itemprop="dateCreated datePublished" datetime="2025-05-06T18:09:56+08:00">2025-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1
+id="代理软件测试链路畅通但是终端浏览器始终无法访问外网">代理软件测试链路畅通但是终端/浏览器始终无法访问外网</h1>
+<p>测试：在终端临时设置http_proxy,https_proxy,all_proxy之后可以访问google</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">env | grep -i proxy //发现输出为空，设置的proxy没有在终端生效</span><br><span class="line">curl https://www.google.com //卡顿，不出意外也是无法访问的</span><br><span class="line"></span><br><span class="line">export http_proxy=http://127.0.0.1:7890 </span><br><span class="line">export https_proxy=http://127.0.0.1:7890</span><br><span class="line">export all_proxy=socks5://127.0.0.1:7891</span><br><span class="line">// 终端生效</span><br><span class="line"></span><br><span class="line">curl https://www.google.com //success，返回html页面</span><br><span class="line"></span><br><span class="line">unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY //取消proxy设置重新访问google无法访问</span><br></pre></td></tr></table></figure>
+<p>验证猜想之后修改配置文件让一直生效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">unset... //防止是终端设置一次生效</span><br><span class="line">env xxx // 确认没有了</span><br><span class="line">echo xxx ~/.zshrc //修改配置文件</span><br><span class="line">source xxx</span><br><span class="line"></span><br><span class="line">env xxx // 确认proxy生效</span><br></pre></td></tr></table></figure>
+<figure>
+<img data-src="/2025/05/06/http-proxy/image-20250506181813284.png"
+alt="image-20250506181813284" />
+<figcaption aria-hidden="true">image-20250506181813284</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/29/linux-settings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -223,7 +703,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +711,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记</span></a>
                 </span>
             </span>
 
@@ -336,7 +816,7 @@ alt="image-20250429145236438" />
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -344,7 +824,7 @@ alt="image-20250429145236438" />
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记</span></a>
                 </span>
             </span>
 
@@ -424,7 +904,7 @@ alt="image-20250428181152069" />
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -432,7 +912,7 @@ alt="image-20250428181152069" />
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记</span></a>
                 </span>
             </span>
 
@@ -506,7 +986,7 @@ id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-03 14:38:40" itemprop="dateModified" datetime="2026-06-03T14:38:40+08:00">2026-06-03</time>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -514,11 +994,7 @@ id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡�
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-papers/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记 - papers</span></a>
                 </span>
             </span>
 
@@ -714,7 +1190,7 @@ data-cites="LawrencewleKnight/how-vision-language-action-models-are-revolutioniz
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-06-10 09:48:04" itemprop="dateModified" datetime="2026-06-10T09:48:04+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -722,7 +1198,7 @@ data-cites="LawrencewleKnight/how-vision-language-action-models-are-revolutioniz
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
                 </span>
             </span>
 
@@ -1046,7 +1522,7 @@ learning要用计算量和memory更低的近似的策略替代。</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1054,7 +1530,7 @@ learning要用计算量和memory更低的近似的策略替代。</p>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记</span></a>
                 </span>
             </span>
 
@@ -1827,7 +2303,7 @@ alt="image-20250204000606798" />
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
+                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1835,7 +2311,7 @@ alt="image-20250204000606798" />
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记</span></a>
                 </span>
             </span>
 
@@ -1860,411 +2336,6 @@ alt="image-20250107192244341" />
 <img data-src="python-multi/image-20250107192257067.png"
 alt="image-20250107192257067" />
 <figcaption aria-hidden="true">image-20250107192257067</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/comfyui-env/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/07/comfyui-env/" class="post-title-link" itemprop="url">comfyui环境搭建+问题记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-07 19:15:27" itemprop="dateCreated datePublished" datetime="2025-01-07T19:15:27+08:00">2025-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="环境安装">环境安装</h3>
-<ol type="1">
-<li><p>import torchaudio的时候报错“undefined symbol”</p>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191646057.png"
-alt="image-20250107191646057" />
-<figcaption aria-hidden="true">image-20250107191646057</figcaption>
-</figure></li>
-</ol>
-<p>推测还是版本不兼容，按照下面这个博客的版本进行安装</p>
-<p><strong>pip install torch==2.1.0</strong></p>
-<p><strong>pip install torchvision==0.16.0</strong></p>
-<p><strong>pip install torchaudio==2.1.0</strong></p>
-<p><strong>https://blog.csdn.net/qq_45599476/article/details/140207176</strong></p>
-<p>再次启动就好了</p>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191710761.png"
-alt="image-20250107191710761" />
-<figcaption aria-hidden="true">image-20250107191710761</figcaption>
-</figure>
-<ol start="2" type="1">
-<li><p>在点击Queue Prompt出图的时候报错</p>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191754873.png"
-alt="image-20250107191754873" />
-<figcaption aria-hidden="true">image-20250107191754873</figcaption>
-</figure></li>
-</ol>
-<p>现这个工程中<strong>xformers</strong>也没有成功运行。</p>
-<p><strong>https://github.com/comfyanonymous/ComfyUI/issues/4870</strong></p>
-<p><strong>The torch repo has a release wheel of xformers that works
-with torch 2.4.1</strong></p>
-<p><strong>pip3 install -U xformers --index-url</strong>
-<strong>https://download.pytorch.org/whl/cu124</strong> <strong>should
-pull</strong></p>
-<p>*<strong>0.0.28.post1*</strong></p>
-<p><strong>https://pytorch.org/get-started/previous-versions/</strong></p>
-<p>解决还是变包：</p>
-<p><strong>pip install torch==2.4.1</strong></p>
-<p><strong>Pip install torchvision==0.19.1</strong></p>
-<p><strong>Pip install torchaudio==2.4.1</strong></p>
-<p><strong>pip3 install -U xformers --index-url</strong>
-<strong>https://download.pytorch.org/whl/cu124</strong> <strong>should
-pull</strong></p>
-<p>*<strong>0.0.28.post1*</strong></p>
-<p>成功出图</p>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191854078.png"
-alt="image-20250107191854078" />
-<figcaption aria-hidden="true">image-20250107191854078</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191903222.png"
-alt="image-20250107191903222" />
-<figcaption aria-hidden="true">image-20250107191903222</figcaption>
-</figure>
-<h3 id="测试">测试：</h3>
-<p>安装和sd跑同一个prompt</p>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191927650.png"
-alt="image-20250107191927650" />
-<figcaption aria-hidden="true">image-20250107191927650</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/07/comfyui-env/image-20250107191936508.png"
-alt="image-20250107191936508" />
-<figcaption aria-hidden="true">image-20250107191936508</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/B-Lora-reproduce/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/07/B-Lora-reproduce/" class="post-title-link" itemprop="url">复现B-Lora算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-07 19:09:30" itemprop="dateCreated datePublished" datetime="2025-01-07T19:09:30+08:00">2025-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="用官方提供的推理">1. 用官方提供的推理</h3>
-<figure>
-<img data-src="/2025/01/07/B-Lora-reproduce/image-20250107191054805.png"
-alt="image-20250107191054805" />
-<figcaption aria-hidden="true">image-20250107191054805</figcaption>
-</figure>
-<h3 id="训练出现nan">2. 训练出现nan</h3>
-<p>需要调节学习率<strong>heckpoint=1100, lr=5e-6</strong></p>
-<figure>
-<img data-src="/2025/01/07/B-Lora-reproduce/image-20250107191222548.png"
-alt="image-20250107191222548" />
-<figcaption aria-hidden="true">image-20250107191222548</figcaption>
-</figure>
-<h4 id="其他问题">其他问题：</h4>
-<p>训练过程中每次都会有<strong>bug report</strong></p>
-<p><strong>Welcome to bitsandbytes. For bug reports, please submit your
-error trace to:</strong>
-<strong>https://github.com/TimDettmers/bitsandbytes/issues</strong></p>
-<p><strong>For effortless bug reporting copy-paste your error into this
-form:</strong></p>
-<p>https://docs.google.com/forms/d/e/1FAIpQLScPB8emS3Thkp66nvqwmjTEgxp8Y9ufuWTzFyr9kJ5AoI47dQ/viewform?usp=sf_link</p>
-<p>找到一个<strong>issue</strong>
-<strong>https://github.com/bitsandbytes-foundation/bitsandbytes/issues/168</strong></p>
-<figure>
-<img data-src="/2025/01/07/B-Lora-reproduce/image-20250107191329941.png"
-alt="image-20250107191329941" />
-<figcaption aria-hidden="true">image-20250107191329941</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/07/lora-scripts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/07/lora-scripts/" class="post-title-link" itemprop="url">lora-scripts</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-07 00:47:35" itemprop="dateCreated datePublished" datetime="2025-01-07T00:47:35+08:00">2025-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-04-03 16:08:03" itemprop="dateModified" datetime="2026-04-03T16:08:03+08:00">2026-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107004758199.png"
-alt="image-20250107004758199" />
-<figcaption aria-hidden="true">image-20250107004758199</figcaption>
-</figure>
-<h3 id="准备lora-scripts环境">1. 准备lora-scripts环境</h3>
-<p>https://github.com/Akegarasu/lora-scripts</p>
-<blockquote>
-<p>[!CAUTION]</p>
-<p>需要用python3.9，按照仓库代码指示进行安装，安装成功可以启动ui页面。</p>
-</blockquote>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107104846559.png"
-alt="image-20250107104846559" />
-<figcaption aria-hidden="true">image-20250107104846559</figcaption>
-</figure>
-<h3 id="准备数据集">2. 准备数据集</h3>
-<ol type="1">
-<li>lora训练脚本图片默认大小是1024x1024,如果训练图片大小不够，可以对图片进行高清放大：</li>
-</ol>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105006386.png"
-alt="image-20250107105006386" />
-<figcaption aria-hidden="true">image-20250107105006386</figcaption>
-</figure>
-<h3 id="打标筛选">3. 打标+筛选</h3>
-<p>打标的基本步骤：用<strong>webui</strong>的<strong>tagger</strong>打标工具自动打标，生成<strong>txt</strong>文件，人工修正标签。</p>
-<p>在这个过程里面我用到的一些人工打标的原则：</p>
-<blockquote>
-<p>[!NOTE]</p>
-<ol type="1">
-<li>过滤多人交互的复杂图片，不确定的可以只留单人图。凑足<strong>100</strong>张图片</li>
-<li>打标风格标签用简单的无意义的单个词，如sznanpinds。（我一般用小说前两个拼音首字母+nanpinds/nvpinds）</li>
-<li>筛选标签
-<ol type="1">
-<li>合并删除重复、矛盾的标签，比如shirt,white shirt-&gt;white shirt;
-gray hair, brown hair -&gt; brown hair</li>
-<li>删除识别错误的标签</li>
-</ol></li>
-</ol>
-</blockquote>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105300989.png"
-alt="image-20250107105300989" />
-<figcaption aria-hidden="true">image-20250107105300989</figcaption>
-</figure>
-<h4 id="修改训练脚本train.sh">4. 修改训练脚本train.sh</h4>
-<ol type="1">
-<li><p>底膜设置、数据集文件夹、输出文件设置</p>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105409825.png"
-alt="image-20250107105409825" />
-<figcaption aria-hidden="true">image-20250107105409825</figcaption>
-</figure></li>
-<li><p>训练数据集地址，
-，数据集文件夹的命名是<strong>repeat</strong>次数**_<strong>含义，比如我在训练风格</strong>lora**的时候我希望</p>
-<p>每张图片训练的时候<strong>repeat
-20</strong>次<strong>,</strong>我的数据集文件夹命名就是<strong>20_xxxStyle</strong></p></li>
-</ol>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105459729.png"
-alt="image-20250107105459729" />
-<figcaption aria-hidden="true">image-20250107105459729</figcaption>
-</figure>
-<p>但是在脚本里填数据集位置的时候不能直接写这里</p>
-<p>的<strong>/xxx/datasets/large_filterMultiPeople_addOld_datasets/12-</strong></p>
-<p><strong>SheZhengWang/output_x2/training/20_shezhengwang</strong>，要写到上一级父目录，因此数据集地址</p>
-<p>是<strong>/xxx/datasets/large_filterMultiPeople_addOld_datasets/12-</strong></p>
-<p><strong>SheZhengWang/output_x2/training</strong>，这个目录下只有<strong>20_xxx</strong>一个文件夹。</p>
-<ol start="3" type="1">
-<li>模型输出文件夹<strong>output_dir_name</strong>，log目录，避免新run覆盖旧的模型文件。</li>
-</ol>
-<h4 id="测试">5. 测试</h4>
-<p>在输出文件夹会有一些模型文件，可以选择一轮的模型复制到<strong>webui</strong>的<strong>models/LoRA</strong>目录下（或者comfyui相应的目录下面），刷新加载选中之后用提示词<strong>+lora</strong>模型就可以出图了。注意<strong>lora</strong>训练一般都会过拟合，一般<strong>10</strong>～<strong>20</strong>个<strong>epoch</strong>就可以，之后的<strong>epoch</strong>虽然还会损失下降，但是已经过拟合了。</p>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105655243.png"
-alt="image-20250107105655243" />
-<figcaption aria-hidden="true">image-20250107105655243</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105706660.png"
-alt="image-20250107105706660" />
-<figcaption aria-hidden="true">image-20250107105706660</figcaption>
-</figure>
-<p>测试图可以勾选Hires.fix高清放大和ADetailer面部修复得到更好的出图效果。如我在训练动漫数据用到的参数如下：</p>
-<figure>
-<img data-src="/2025/01/07/lora-scripts/image-20250107105804953.png"
-alt="image-20250107105804953" />
-<figcaption aria-hidden="true">image-20250107105804953</figcaption>
 </figure>
 
       
@@ -2352,13 +2423,15 @@ alt="image-20250107105804953" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">147</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">

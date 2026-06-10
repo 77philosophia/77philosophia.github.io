@@ -115,16 +115,6 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-        <li class="menu-item menu-item-resume_zh">
-
-    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
-
-  </li>
-        <li class="menu-item menu-item-resume_en">
-
-    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
-
-  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
@@ -188,6 +178,461 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/12/active-vision/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/12/active-vision/" class="post-title-link" itemprop="url">主动vision&action</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-12 11:14:57" itemprop="dateCreated datePublished" datetime="2026-05-12T11:14:57+08:00">2026-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-15 10:26:34" itemprop="dateModified" datetime="2026-05-15T10:26:34+08:00">2026-05-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="主动视觉">主动视觉</h3>
+<p>主动视觉的概念主要由 <strong>阿洛伊蒙纳斯（John (Yiannis)
+Aloimonos）</strong> 及其同事在 <strong>1987年</strong>
+左右明确提出。</p>
+<p>几乎在同一时期，其他研究者也从不同角度贡献了类似的理论：</p>
+<ul>
+<li><strong>John Aloimonos:</strong> 在其论文 <em>Active Vision</em>
+中首次正式确立了这一学术术语。</li>
+<li><strong>Dana Ballard:</strong> 提出了 <strong>“拟人视觉”（Animate
+Vision）</strong>，强调视觉系统应模仿人类的眼球运动和注意力机制。</li>
+<li><strong>Ruzena Bajcsy:</strong> 提出了 <strong>“感知控制”</strong>
+的思想，认为感知不应是被动的数据收集，而是一个受控的过程。</li>
+</ul>
+<h3 id="定义主动视觉">定义主动视觉</h3>
+<p>​ <a
+target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=68186923&amp;content_type=Answer&amp;match_order=1&amp;q=View+Path+Planing&amp;zhida_source=entity">View
+Path Planing</a>(VPP)或者Next-Best-View(NBV)</p>
+<p>​
+主动视觉是指观测者（相机或机器人）根据任务需求，<strong>主动、有目的地改变其传感器（镜头）的参数</strong>（如位置、方向、焦距、光圈等），从而获取更优质、更易处理的视觉信息流。</p>
+<h3 id="核心任务三维重建和主动感知">核心任务——三维重建和主动感知</h3>
+<h4 id="主动三维重建active-3d-reconstruction">主动三维重建(active 3D
+reconstruction)</h4>
+<p>获取物体<strong>全局、完整、高精度</strong>的三维几何表征（如点云、Mesh、3DGS）。</p>
+<p>全局信息增益（Information
+Gain）。机器人需要规划一条路径，把物体所有的死角、阴影、凹槽全部扫干净。</p>
+<p>主动三维重建目前的发展感觉是不是已经sota了，主要是精度的问题。</p>
+<p>2026的一篇工作：https://drive.google.com/file/d/1qA3WS7Z3KPYxNYwlfsfKqLNi5yddjg9Q/view?pli=1</p>
+<h4
+id="边操作边转换视角active-manipulation-in-hand-visual-servoing">边操作边转换视角(Active
+Manipulation / In-hand Visual Servoing)</h4>
+<p><strong>目标：</strong>
+服务于当前的<strong>操作任务</strong>（如抓取、装配、插拔）。</p>
+<p>局部关键特征的可见性。算法不需要知道整个物体长什么样，它只关心操作点（ROI）有没有被遮挡、有没有对齐、有没有放大到足够清晰的程度。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>我们主要要解决的是第二个任务。</p>
+<p>两种思路：</p>
+<p>1.局部重建为操作服务：机器人在边操作边转换视角时，往往也会在后台实时构建一个局部的、精细的神经辐射场（如
+<strong>Live-3DGS</strong>）。它通过快速的视角转换，瞬间脑补出操作区域的局部
+3D 结构，从而辅助计算接触力学。</p>
+<p>2.统一的policy网络，比如pi-0之类的端到端模型已经不再区分“我现在是在看，还是在动”。</p>
+</blockquote>
+<p>思路一：基于vla模型做微调整</p>
+<p>任务目标：“桌面级操作”（Desktop Manipulation）。<em>"Pick up the DB
+connector and show its pins to the camera"</em>。</p>
+<p>模型选择：</p>
+<ul>
+<li>Openvla: 把动作离散化（Quantization）成一个个像单词一样的
+Token（比如 0-256
+之间的整数）。泛化能力极强，控制频率低，不够细。几hz</li>
+<li>Act（丝滑速度）: 有action chunk,用
+CVAE（条件变分自编码器）来建模人类演示的多样性。频率高，适合丝滑高难度动态任务。20hz~50hz,但是几乎没有泛化能力，它不认识什么是“DB接口”，如果你把桌子换个颜色，或者把接口挪远了
+20 厘米，它可能就完全抓瞎，需要重新采集数据。</li>
+<li>diffusion policy（多峰分布）:
+它把机器人的动作轨迹看作是一张“噪声图像”。模型输入当前的视觉特征，然后通过多轮“去噪（Denoising）”。擅长处理多峰分布。和
+ACT
+一样，属于端到端策略网络，<strong>缺乏高层的语义理解和跨物体的通用泛化能力</strong>。此外，由于需要多步去噪迭代，在算力较弱的设备上可能会带来轻微的推理延迟。</li>
+<li>目前：VLA + Policy Head（强强联合）
+<ul>
+<li>把 OpenVLA 当作眼睛和脑袋，把 ACT 或 Diffusion Policy
+当作小脑。</li>
+</ul></li>
+</ul>
+<p>思路二：局部重建</p>
+<h3
+id="边操作边转换视角主动视觉vla的几个work">边操作边转换视角——主动视觉vla的几个work</h3>
+<h4 id="vision-in-action">Vision in Action</h4>
+<h5 id="tldr">TL;DR</h5>
+<p>​ 主要还是通过异步的方式解决主动视觉用human
+demonstration的方法模仿学习的时候，vr眼镜遥操会眩晕的问题。选取了一个中间的3d表示来让人看到的和机器执行反馈回来的过程异步，从而克服延迟的问题。训练本身没变，就是vla的思路。加了个脖子6自由度的输入，动作用的diffusion
+policy进行的学习。</p>
+<h5 id="url">url:</h5>
+<p>https://www.alphaxiv.org/overview/2506.15666</p>
+<p>双手操作+主动视觉策略，通过真实世界人类演示学习，不需要特别的任务相关的假设。</p>
+<h5 id="硬件设置">硬件设置</h5>
+<p>颈部用的是现成的6自由度手臂。</p>
+<figure>
+<img data-src="/2026/05/12/active-vision/image-20260514151423179.png"
+alt="image-20260514151423179" />
+<figcaption aria-hidden="true">image-20260514151423179</figcaption>
+</figure>
+<h5 id="methods">methods:</h5>
+<ul>
+<li>从人类演示中学习主动感知策略的手动操作系统</li>
+<li>让机器人“看到的”和人“看到的”同步需要快速的电机控制和低延迟的数据流，目前硬件还达不到。通过中间3d表示来解耦vr远程操作中的人类和机器人运动。使用中间的3d场景表示，而不是直接镜像人类头部运动和直播机器人的camera试图。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">https://www.alphaxiv.org/abs/2506.15666?chatId=019e2560-bce9-7a94-9aef-c819e6e090a9</span><br><span class="line"></span><br><span class="line">在 Vision in Action (ViA) 系统中，“使用中间 3D 表示来解耦人类与机器人的运动”是一个核心的工程设计，旨在解决远程操控（Teleoperation）中常见的视觉延迟和**晕动症（Motion Sickness）**问题。</span><br><span class="line"></span><br><span class="line">核心挑战：物理运动的延迟</span><br><span class="line">在传统的 VR 远程操控中，机器人通常直接将相机拍摄的 RGB 画面流传回人类的 VR 头显。如果人类转动头部，机器人也必须立即转动其机械“脖子”来更新画面。</span><br><span class="line"></span><br><span class="line">问题： 机械控制、数据传输和视频编解码都会产生延迟（Motion-to-photon latency）。当人类转头但看到的画面却“慢半拍”时，大脑会产生严重的眩晕感。</span><br><span class="line"></span><br><span class="line">解决方案：3D 点云作为“中转站”</span><br><span class="line">ViA 系统不再直接通过视频流进行镜像操作，而是引入了一个中间 3D 场景表示（点云）：</span><br><span class="line"></span><br><span class="line">实时构建 3D 场景： 机器人通过 RGB-D 相机（如 iPhone）捕捉环境的颜色和深度信息，并在世界坐标系中构建一个 3D 点云。</span><br><span class="line">本地渲染（解耦的关键）： VR 头显根据人类当前的头部姿态，直接在本地从这个 3D 点云中渲染出对应的视角。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. 为什么叫“解耦（Decouple）”？</span><br><span class="line">这里的“解耦”是指将人类看到的画面更新速度与机器人的物理运动速度分离开来：</span><br><span class="line"></span><br><span class="line">视觉上的即时性： 即使机器人的脖子还没转过去，人类只要在 VR 里转头，系统就能利用已有的点云数据渲染出那个方向的画面。这保证了视觉刷新率极高（约 150 Hz），延迟极低（&lt; 7 ms）。</span><br><span class="line">动作上的异步性： 机器人不再需要跟随人类头部的每一个细微抖动，而是可以“异步”地接收人类头部的平均/汇总动作，以较低的频率（10 Hz）平滑地移动到目标位置。</span><br><span class="line"></span><br><span class="line">这种设计的优劣</span><br><span class="line">优点： 极大降低了操作者的运动感知延迟，用户研究显示这能显著减轻晕动症，让长时间的示教和数据采集变得可行。</span><br><span class="line">代价： 由于点云是基于单帧或有限帧生成的，当人类转头看到机器人尚未覆盖的区域时，画面中可能会出现空洞或遮挡（缺少信息）。但作者认为，维持视觉连续性比画面的绝对完整对减少眩晕更重要。</span><br></pre></td></tr></table></figure>
+<h5 id="训练基于diffusion-policy">训练：基于diffusion policy</h5>
+<p>策略学习框架基于 Diffusion
+Policy，这是一种最先进的视觉运动控制方法。在每个时间步，策略都会接收来自主动头部摄像头的
+RGB 图像以及包括末端执行器姿态和夹爪状态在内的本体感受信息。预训练的
+DINOv2 视觉 Transformer 作为视觉编码器，提供语义丰富的 384
+维特征表示，无需进行任务特定的微调。</p>
+<p>策略输出 16
+步预测范围的动作序列，控制颈部和双臂的未来姿态以及夹爪指令。系统在生成新的预测之前执行其中
+8 个预测动作，以 10 Hz
+的频率运行。通过对人类演示进行行为克隆，机器人学会将视觉观察与人类操作员自然采用的主动感知策略进行隐式关联。</p>
+<h4 id="avr框架2025">AVR框架（2025）</h4>
+<h5 id="tldr-1">TL;DR</h5>
+<p>​ 硬件是2自由度的云台。仿真训练学习视角变化。</p>
+<p>https://avr-robot.github.io/</p>
+<p>2025 年的 AVR
+框架）不仅调整相机的空间位置，还加入了<strong>动态焦距（Zooming）</strong>的控制。这模拟了人类在精细操作（如插螺丝、穿针）时“凑近看”和“聚焦”的行为。</p>
+<ul>
+<li><strong>动态跟踪</strong>：通过控制机械臂末端的相机，使目标始终保持在画面中心。</li>
+<li><strong>多尺度感知</strong>：在操作距离较远时使用广角视角，在接近操作点时自动“变焦”放大局部细节，显著提升了螺丝插入等高精度任务的成功率。</li>
+</ul>
+<figure>
+<img data-src="/2026/05/12/active-vision/image-20260514203015381.png"
+alt="image-20260514203015381" />
+<figcaption aria-hidden="true">image-20260514203015381</figcaption>
+</figure>
+<ul>
+<li><strong>仿真训练（RoboTwin）</strong>：为了解决数据采集成本高的问题，AVR
+利用了 <strong>RoboTwin</strong>
+仿真平台，并开发了一个实时图像处理插件，能够模拟真实物理环境下的视角切换和变焦效果。</li>
+<li><strong>学习策略</strong>：该框架通过模仿学习（Imitation
+Learning）将“视觉调整动作”与“机械臂操作动作”联合编码，让机器人在执行任务时自动学会“在什么时候该看哪里”以及“什么时候该放大看”。</li>
+</ul>
+<h4 id="sapave">SaPaVe</h4>
+<p>当指令是“找到桌底的杯子”时，机器人会自动规划弯腰、倾斜相机的动作。</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 20%" />
+<col style="width: 32%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">阶段</th>
+<th style="text-align: left;">目标</th>
+<th style="text-align: left;">数据集</th>
+<th style="text-align: left;">优化重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">第一阶段：语义主动感知对齐</td>
+<td
+style="text-align: left;">训练机器人具备寻找目标物的“摄影师”能力</td>
+<td
+style="text-align: left;">ActiveViewPose-200K（包含20万对图像-语言-相机运动）</td>
+<td style="text-align: left;">专注于训练相机适配器</td>
+</tr>
+<tr>
+<td style="text-align: left;">第二阶段：主动操控微调</td>
+<td style="text-align: left;">防止遗忘感知技能，实现复杂操控</td>
+<td
+style="text-align: left;">混合数据集（相机运动数据、机器人操控仿真数据、真实世界演示数据）</td>
+<td
+style="text-align: left;">使用加权损失函数，对26自由度操控空间和相机运动空间进行联合监督</td>
+</tr>
+</tbody>
+</table>
+<h3 id="三维重建nbv">三维重建——nbv</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>这部分对于机器人具体操作去转换视角不一定有用，但是对于slam建图，数字孪生，检测，远程监控和memory机制可能有用。</p>
+</blockquote>
+<p>在 Next-Best-View (NBV) 和主动视觉领域，很难定义一个单一的“绝对
+SOTA”，因为性能高度依赖于任务目标（如<strong>纯几何重建</strong>、<strong>物体
+6D 位姿估计</strong>或<strong>抓取操作</strong>）。</p>
+<p>根据 2024-2025
+年的最前沿进展，以下是各细分方向公认的顶尖（SOTA）算法或框架：</p>
+<h4 id="纯物体-3d-重建与视角规划dm-osvp">1.纯物体 3D
+重建与视角规划：DM-OSVP++</h4>
+<p>2025年4月 德国波恩大学人形机器人实验室</p>
+<figure>
+<img data-src="/2026/05/12/active-vision/image-20260515102144260.png"
+alt="image-20260515102144260" />
+<figcaption aria-hidden="true">image-20260515102144260</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/05/12/active-vision/image-20260515102150296.png"
+alt="image-20260515102150296" />
+<figcaption aria-hidden="true">image-20260515102150296</figcaption>
+</figure>
+<p>方法：one-shot view planning
+代码暂时未开源：https://github.com/psc0628/DM-OSVPplusplus demo:
+https://www.youtube.com/watch?v=GBBCn28v-lQ</p>
+<h4 id="实时感知决策-gauss-mi">2.实时感知决策：## GauSS-MI</h4>
+<p>3D Gaussian Splatting <strong>与</strong> 香农互信息 (Shannon Mutual
+Information)** 结合。 2025年7月
+开源：https://github.com/JohannaXie/GauSS-MI</p>
+<figure>
+<img data-src="/2026/05/12/active-vision/image-20260515102222939.png"
+alt="image-20260515102222939" />
+<figcaption aria-hidden="true">image-20260515102222939</figcaption>
+</figure>
+<p>demo:https://www.bilibili.com/video/BV1rVNUziEFy/?vd_source=db693e375cf7809ea90067d2fd609b51</p>
+<p>CUDA模块代码：https://github.com/JohannaXie/diff-gaussian-rasterization-gaussmi</p>
+<h4
+id="针对无纹理物体的-6d-位姿估计active-6d-pose-多伦多大学航空航天研究所和机器人研究所">3.针对无纹理物体的
+6D 位姿估计：Active 6D Pose 多伦多大学航空航天研究所和机器人研究所</h4>
+<p>2025年3月 未开源
+在工业场景或处理反光、无纹理物体（这是位姿估计最难的部分） 通过
+<strong>多视角 RGB 融合</strong>
+来消除单视角下的对称性歧义。它通过主动移动相机来寻找能最大程度降低位姿估计熵（Entropy）的视角。
+机械臂在杂乱堆叠（Clutter）中抓取金属零件或塑料制品。</p>
+<h4 id="任务为导向ac-nbv">4.任务为导向：AC-NBV</h4>
+<p>23年11月</p>
+<ul>
+<li><strong>核心优势</strong>：它是<strong>示能引导（Affordance-driven）</strong>的。它不追求物体表面的
+100%
+重建，而是优先寻找对“成功抓取”最有帮助的视角（例如物体的边缘、手柄、开口处）。</li>
+<li><strong>结果</strong>：在抓取成功率（Success
+Rate）和效率上优于纯几何重建的 NBV。</li>
+</ul>
+<h4
+id="如果要追求精度亚毫米级的位姿和形状恢复">如果要追求精度：亚毫米级的位姿和形状恢复**：</h4>
+<p>1.投影引导的 NBV 规划：PB-NBV
+https://www.alphaxiv.org/assistant/019d6696-d258-7fd3-bb8e-2c2e824d5a87</p>
+<ul>
+<li><strong>核心优势</strong>：通过高效的投影映射机制，快速计算下一视角对“表面精细度”的贡献，而不仅仅是覆盖范围。它能确保扫描仪始终在最佳测量距离和角度（工作距离范围内）运行。</li>
+<li><strong>工业表现</strong>：在未知物体的自动三维建模中，它比传统基于体素（Voxel）的方法效率提高
+30% 以上，且点云密度和完整性更高。</li>
+</ul>
+<ol start="2" type="1">
+<li></li>
+<li>高保真主动探索：Active3D (Hierarchical Uncertainty)</li>
+</ol>
+<p>引入了<strong>分层不确定性量化（Hierarchical Uncertainty
+Quantification）</strong>。算法不仅看哪里没扫到，还看哪里扫得“不够准”。通过多层级的不确定性空间，引导机器人对细节复杂的区域进行多次、多角度的精细扫描。
+2025年11月 https://yanyan-li.github.io/project/vlx/active3d <img
+src="/2026/05/12/active-vision/image-20260515102630375.png"
+alt="image-20260515102630375" /></p>
+<p>https://github.com/yanyan-li/4DGS-SLAM</p>
+<h3 id="实现">实现：</h3>
+<p>https://www.alphaxiv.org/assistant/019d6696-d258-7fd3-bb8e-2c2e824d5a87</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/11/gemini-cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/11/gemini-cli/" class="post-title-link" itemprop="url">gemini-cli</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-11 15:07:34 / Modified: 15:08:53" itemprop="dateCreated datePublished" datetime="2026-05-11T15:07:34+08:00">2026-05-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="安装gemini">安装gemini</h3>
+<h3 id="在ai-studio申请api-key">在ai studio申请api key</h3>
+<p>https://aistudio.google.com/app/api-keys</p>
+<h3 id="终端使用">终端使用</h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/11/one-shot-prompt-manipulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/11/one-shot-prompt-manipulation/" class="post-title-link" itemprop="url">one-shot-prompt-manipulation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-11 11:17:37" itemprop="dateCreated datePublished" datetime="2026-05-11T11:17:37+08:00">2026-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-05-12 10:13:08" itemprop="dateModified" datetime="2026-05-12T10:13:08+08:00">2026-05-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="topic-单论抓取目标物体这个动作">topic:
+单论抓取目标物体这个动作</h3>
+<p>“一次提示，持久操作”：One-shot Visual Prompting for Persistent
+Manipulation。</p>
+<p>核心在于将视觉引导（Visual
+Prompting）<strong>与</strong>时序一致性（Temporal
+Consistency）结合。</p>
+<h3 id="方案一稳健派-sam2anygrasp">方案一（稳健派）： sam2+anygrasp</h3>
+<h3 id="方案二vla">方案二：vla</h3>
+<p>把视觉prompt通过不同的方式注入进去</p>
+<h5 id="vp-vla">Vp-vla:</h5>
+<p>https://www.alphaxiv.org/zh/overview/2603.22003</p>
+<figure>
+<img
+src="/2026/05/11/one-shot-prompt-manipulation/image-20260512101151350.png"
+alt="image-20260512101151350" />
+<figcaption aria-hidden="true">image-20260512101151350</figcaption>
+</figure>
+<h5 id="tracevla">tracevla</h5>
+<p>https://tracevla.github.io/</p>
+<figure>
+<img
+src="/2026/05/11/one-shot-prompt-manipulation/image-20260512101236627.png"
+alt="image-20260512101236627" />
+<figcaption aria-hidden="true">image-20260512101236627</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1461,345 +1906,6 @@ alt="image-20260429154751079" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/28/diffusion-policy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/28/diffusion-policy/" class="post-title-link" itemprop="url">diffusion-policy</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-28 11:50:10" itemprop="dateCreated datePublished" datetime="2026-04-28T11:50:10+08:00">2026-04-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="title-url">Title &amp; URL</h2>
-<ul>
-<li><strong>Title</strong>:</li>
-<li><strong>URL</strong>:</li>
-<li><strong>Author</strong>:</li>
-<li><strong>Time</strong>:</li>
-</ul>
-<h2 id="tldr">TL;DR</h2>
-<h2 id="key-insights">Key Insights</h2>
-<h2 id="methods">Methods</h2>
-<h2 id="results">Results</h2>
-<h2 id="reflections">Reflections</h2>
-<h2 id="other-links">Other Links</h2>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/28/Rl-100/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/28/Rl-100/" class="post-title-link" itemprop="url">Rl-100论文(2025年)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-28 11:32:24" itemprop="dateCreated datePublished" datetime="2026-04-28T11:32:24+08:00">2026-04-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-03 14:31:18" itemprop="dateModified" datetime="2026-06-03T14:31:18+08:00">2026-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="title-url">Title &amp; URL</h2>
-<ul>
-<li><strong>Title</strong>:Performant Robotic Manipulation with
-Real-World Reinforcement Learning</li>
-<li><strong>URL</strong>:
-<ul>
-<li>https://arxiv.org/abs/2510.14830</li>
-<li>https://github.com/lucidrains/RL-100/tree/main
-（截止2026.4暂未开源）</li>
-</ul></li>
-<li><strong>Author</strong>:</li>
-<li><strong>Time</strong>:2025年10月</li>
-</ul>
-<h2 id="tldr">TL;DR</h2>
-<p>把“示教 + 离线 RL + 少量在线
-RL”这条路线组织成了一套清晰的训练流程，并在真实机器人任务中进行了系统验证。</p>
-<h2 id="key-insights">Key Insights</h2>
-<p>1.清晰地组织了<strong>示教 → 离线迭代 →
-少量</strong>在线微调的训练路径。效果和hil-serl是两个能在真机99%的算法。</p>
-<p>2.蒸馏解决扩散策略在实际控制中“推理慢”的工程问题</p>
-<h2 id="methods">Methods</h2>
-<figure>
-<img data-src="/2026/04/28/Rl-100/image-20260428113745454.png"
-alt="image-20260428113745454" />
-<figcaption aria-hidden="true">image-20260428113745454</figcaption>
-</figure>
-<h2 id="results">Results</h2>
-<h2 id="reflections">Reflections</h2>
-<h2 id="other-links">Other Links</h2>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/27/generalistai/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/27/generalistai/" class="post-title-link" itemprop="url">generalistai进展一览</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-27 17:52:19" itemprop="dateCreated datePublished" datetime="2026-04-27T17:52:19+08:00">2026-04-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-03 14:36:23" itemprop="dateModified" datetime="2026-06-03T14:36:23+08:00">2026-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="tldr">TL;DR</h4>
-<p>设计了一套手持装备，100hz高频无感摇操，从0开始训练，100hz高频控制。</p>
-<h4 id="关于公司">关于公司</h4>
-<p>Generalist ai的人来自open,波士顿动力，google
-deepmind等公司；demo很惊艳，技术很少披露。</p>
-<p>公司的目标是构建AGI.</p>
-<h4 id="website">website:</h4>
-<p>https://generalistai.com/</p>
-<figure>
-<img data-src="/2026/04/27/generalistai/image-20260427162553678.png"
-alt="image-20260427162553678" />
-<figcaption aria-hidden="true">image-20260427162553678</figcaption>
-</figure>
-<h4 id="timeline">Timeline:</h4>
-<p>将generalistai官方博客披露的文章用一句话概括。</p>
-<p>从新到旧：</p>
-<h6 id="不是vlawm">1.2026.4.7 不是vla/wm</h6>
-<p>Going Beyond World Models &amp; VLAs</p>
-<p>（https://generalistai.com/blog/apr-07-2026-beyond-world-models）：我们的模型不定义为vla或者wm，强调以目标为主从0开始训练。认为“只要数据够”（50万小时），就能训练强大的模型。具体的，从AGI的最终目标出发(zero-shot
-do task),先完成x小时的微调可以完成99%的工作，优化过程将x逐渐减小。</p>
-<p>参考：</p>
-<ul>
-<li>https://x.com/giffmana/status/1995634504321687979 learning from
-scratch always wins</li>
-<li>在vla的历史探索RT-2:https://robotics-transformer2.github.io/</li>
-<li>关于vlm的探索：https://video-language-planning.github.io/</li>
-<li>最早的多模态模型：https://palm-e.github.io/</li>
-</ul>
-<h6 id="gen-1达到99商业可用凸显">2.2026.4.2
-Gen-1达到99%商业可用凸显</h6>
-<p>《Introducing GEN-1》</p>
-<p>（https://generalistai.com/blog/apr-02-2026-GEN-1）:</p>
-<ul>
-<li>模型成功率从64%到99%，达到商业化部署水平。1小时机器人数据，推理速度比现有快3倍</li>
-<li>在Gen-0上改进，万小时真实世界数据的数据集<em>从零开始</em>训练。</li>
-<li>Gen-1是一个系统：涵盖预训练、后训练、经验学习
-(RL)、多模态人工指导以及全新的推理时技术。</li>
-<li><figure>
-<img data-src="/2026/04/27/generalistai/image-20260427165735910.png"
-alt="image-20260427165735910" />
-<figcaption aria-hidden="true">image-20260427165735910</figcaption>
-</figure></li>
-</ul>
-<h6 id="gtc演示gen-0">3.2026.3.24 GTC演示Gen-0</h6>
-<p>《The Real Breakthrough Behind Our GTC Demo》</p>
-<p>https://generalistai.com/blog/mar-24-2026-gtc-demo</p>
-<ul>
-<li>在GTC上演示Gen-0</li>
-</ul>
-<h6 id="强调物理常识">4.2026.1.29 强调物理常识</h6>
-<p>《The <strong>Dark Matter</strong> of Robotics: Physical
-Commonsense》</p>
-<p>https://generalistai.com/blog/jan-29-2026-physical-commonsense</p>
-<ul>
-<li>人在拿东西过程中反应式的、闭环式的智能：一种对力、摩擦、顺应性和不确定性的直觉——物理常识</li>
-<li>对机器人来说难以学习，互联网训练模型没有物理常识；物体常识根据身体经验习得。</li>
-<li>遥操由于延迟、有限的触觉反馈以及不自然的界面无法达到systems1
-thinking，唯一的可能性是数据收集做到无缝衔接仿佛无感。generalist
-ai在这方面设计了手持式人体工学设备帮忙做到这一点。</li>
-</ul>
-<h6 id="gen-0观察到scaling-law">5.2025.11 GEN-0观察到scaling-law</h6>
-<p>GEN-0 / Embodied Foundation Models That Scale with Physical
-Interaction</p>
-<p>https://generalistai.com/blog/nov-04-2025-GEN-0</p>
-<ul>
-<li>GEN-0
-模型必须足够大才能吸收大量的物理交互数据。1B太小，6B开始展现多任务处理，7B+几千步训练可以迁移到下游任务。</li>
-<li>27万小时真实交互数据，每周10000小时速度增加。</li>
-</ul>
-<h6 id="hz装积木">6. 2025.9.24 100hz装积木</h6>
-<p>The Robots Build Now, Too</p>
-<p>https://generalistai.com/blog/sep-24-2025-the-robots-build-now-too</p>
-<h6 id="年6月17-展现100hz端到端任务">7.2025年6月17
-展现100hz端到端任务</h6>
-<p>Research Preview</p>
-<p>https://generalistai.com/blog/jun-17-2025-research-preview</p>
-<figure>
-<img data-src="/2026/04/27/generalistai/image-20260427174816427.png"
-alt="image-20260427174816427" />
-<figcaption aria-hidden="true">image-20260427174816427</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1871,13 +1977,15 @@ alt="image-20260427174816427" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">147</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">

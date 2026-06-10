@@ -115,16 +115,6 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-        <li class="menu-item menu-item-resume_zh">
-
-    <a href="/my-resume/wangxin_ch_CV.html" rel="section"><i class="fa fa-file-pdf fa-fw"></i>resume_zh</a>
-
-  </li>
-        <li class="menu-item menu-item-resume_en">
-
-    <a href="/my-resume/wangxin_en_CV.html" rel="section"><i class="fa fa-file-alt fa-fw"></i>resume_en</a>
-
-  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
@@ -188,6 +178,546 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/23/An-Kar-build-gpt-from-scratch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/23/An-Kar-build-gpt-from-scratch/" class="post-title-link" itemprop="url">Andrej Karpathy-从0到1建造gpt</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-23 15:24:12" itemprop="dateCreated datePublished" datetime="2026-05-23T15:24:12+08:00">2026-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-03 11:07:44" itemprop="dateModified" datetime="2026-06-03T11:07:44+08:00">2026-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>youtube video: https://www.youtube.com/watch?v=kCc8FmEb1nY</p>
+<p>Toy demo notebook:
+https://colab.research.google.com/drive/1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-?usp=sharing#scrollTo=r_nkbigNuPGY</p>
+<h3
+id="从一个bigramlanguagemodel开始">从一个BigramLanguageModel开始</h3>
+<h4 id="dataset处理">dataset处理:</h4>
+<p>给一段文本，如何从中构造相应的input和target:</p>
+<figure>
+<img
+src="/2026/05/23/An-Kar-build-gpt-from-scratch/image-20260526102200822.png"
+alt="image-20260526102200822" />
+<figcaption aria-hidden="true">image-20260526102200822</figcaption>
+</figure>
+<figure>
+<img
+src="/2026/05/23/An-Kar-build-gpt-from-scratch/image-20260525174937401.png"
+alt="image-20260525174937401" />
+<figcaption aria-hidden="true">image-20260525174937401</figcaption>
+</figure>
+<h4
+id="bigramlanguagemodel-一对一预测看一位x预测下一位视野为1">BigramLanguageModel:
+一对一预测，看一位x，预测下一位，视野为1</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line">batch_size = <span class="number">4</span> <span class="comment"># how many independent sequences will we process in parallel?</span></span><br><span class="line">block_size = <span class="number">8</span> <span class="comment"># what is the maximum context length for predictions?</span></span><br><span class="line"></span><br><span class="line">xb:(<span class="number">4</span>,<span class="number">8</span>)</span><br><span class="line">yb:(<span class="number">4</span>,<span class="number">8</span>)</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> functional <span class="keyword">as</span> F</span><br><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BigramLanguageModel</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># each token directly reads off the logits for the next token from a lookup table</span></span><br><span class="line">        self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, idx, targets=<span class="literal">None</span></span>):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># idx and targets are both (B,T) tensor of integers</span></span><br><span class="line">        logits = self.token_embedding_table(idx) <span class="comment"># (B,T,C)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> targets <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            loss = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            B, T, C = logits.shape</span><br><span class="line">            logits = logits.view(B*T, C)</span><br><span class="line">            targets = targets.view(B*T)</span><br><span class="line">            loss = F.cross_entropy(logits, targets)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> logits, loss</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, idx, max_new_tokens</span>):</span><br><span class="line">        <span class="comment"># idx is (B, T) array of indices in the current context</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(max_new_tokens):</span><br><span class="line">            <span class="comment"># get the predictions</span></span><br><span class="line">            logits, loss = self(idx)</span><br><span class="line">            <span class="comment"># focus only on the last time step</span></span><br><span class="line">            logits = logits[:, -<span class="number">1</span>, :] <span class="comment"># becomes (B, C)</span></span><br><span class="line">            <span class="comment"># apply softmax to get probabilities</span></span><br><span class="line">            probs = F.softmax(logits, dim=-<span class="number">1</span>) <span class="comment"># (B, C)</span></span><br><span class="line">            <span class="comment"># sample from the distribution</span></span><br><span class="line">            idx_next = torch.multinomial(probs, num_samples=<span class="number">1</span>) <span class="comment"># (B, 1)</span></span><br><span class="line">            <span class="comment"># append sampled index to the running sequence</span></span><br><span class="line">            idx = torch.cat((idx, idx_next), dim=<span class="number">1</span>) <span class="comment"># (B, T+1)</span></span><br><span class="line">        <span class="keyword">return</span> idx</span><br><span class="line"></span><br><span class="line">m = BigramLanguageModel(vocab_size)</span><br><span class="line">logits, loss = m(xb, yb)</span><br><span class="line"><span class="built_in">print</span>(logits.shape)</span><br><span class="line"><span class="built_in">print</span>(loss)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(decode(m.generate(idx = torch.zeros((<span class="number">1</span>, <span class="number">1</span>), dtype=torch.long), max_new_tokens=<span class="number">100</span>)[<span class="number">0</span>].tolist()))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="训练得到的文本">训练得到的文本</h4>
+<figure>
+<img
+src="/2026/05/23/An-Kar-build-gpt-from-scratch/image-20260525180600548.png"
+alt="image-20260525180600548" />
+<figcaption aria-hidden="true">image-20260525180600548</figcaption>
+</figure>
+<h3 id="self-attention">self-attention</h3>
+<h5 id="toy-example-for-weighted-aggregation">toy example for weighted
+aggregation</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###1.</span></span><br><span class="line">torch.manual_seed(<span class="number">42</span>)</span><br><span class="line">a = torch.tril(torch.ones(<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">a = a / torch.<span class="built_in">sum</span>(a, <span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">b = torch.randint(<span class="number">0</span>,<span class="number">10</span>,(<span class="number">3</span>,<span class="number">2</span>)).<span class="built_in">float</span>()</span><br><span class="line">c = a @ b</span><br><span class="line"></span><br><span class="line"><span class="comment">########result</span></span><br><span class="line">a=</span><br><span class="line">tensor([[<span class="number">1.0000</span>, <span class="number">0.0000</span>, <span class="number">0.0000</span>],</span><br><span class="line">        [<span class="number">0.5000</span>, <span class="number">0.5000</span>, <span class="number">0.0000</span>],</span><br><span class="line">        [<span class="number">0.3333</span>, <span class="number">0.3333</span>, <span class="number">0.3333</span>]])</span><br><span class="line">--</span><br><span class="line">b=</span><br><span class="line">tensor([[<span class="number">2.</span>, <span class="number">7.</span>],</span><br><span class="line">        [<span class="number">6.</span>, <span class="number">4.</span>],</span><br><span class="line">        [<span class="number">6.</span>, <span class="number">5.</span>]])</span><br><span class="line">--</span><br><span class="line">c=</span><br><span class="line">tensor([[<span class="number">2.0000</span>, <span class="number">7.0000</span>],</span><br><span class="line">        [<span class="number">4.0000</span>, <span class="number">5.5000</span>],</span><br><span class="line">        [<span class="number">4.6667</span>, <span class="number">5.3333</span>]])</span><br><span class="line"><span class="comment">## 可以用循环的方法求均值We want x[b,t] = mean_&#123;i&lt;=t&#125; x[b,i]，这就是聚合的概念</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 2.用矩阵乘法来计算 for a weighted aggregation</span></span><br><span class="line"><span class="comment">##torch.ones-&gt;tril-&gt;除以每一行sum均一化</span></span><br><span class="line">输入X:(B, T, C) Bath, Time, Channel(vocab <span class="built_in">len</span>)</span><br><span class="line"></span><br><span class="line">wei = torch.tril(torch.ones(T, T))</span><br><span class="line">wei = wei / wei.<span class="built_in">sum</span>(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">xbow2 = wei @ x <span class="comment"># (B, T, T) @ (B, T, C) ----&gt; (B, T, C)</span></span><br><span class="line">torch.allclose(xbow, xbow2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">### 3. 如果不是前面所有值的均值怎么办，重要性有差异，用-inf填充+softmax</span></span><br><span class="line"><span class="comment"># 因为实际上的attention是Q和K乘出来的</span></span><br><span class="line">tril = torch.tril(torch.ones(T, T))</span><br><span class="line">wei = torch.zeros((T,T))</span><br><span class="line">wei = wei.masked_fill(tril == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">wei = F.softmax(wei, dim=-<span class="number">1</span>)</span><br><span class="line">xbow3 = wei @ x</span><br><span class="line">torch.allclose(xbow, xbow3)</span><br></pre></td></tr></table></figure>
+<h5 id="单头self-attention">单头self attention:</h5>
+<ul>
+<li>self attention: key,+value和query都来自于自己</li>
+<li>Cross attention: key,value可能来自于别的地方，如原论文attention is
+all you need是做一个翻译任务</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># version 4: self-attention!</span></span><br><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line">B,T,C = <span class="number">4</span>,<span class="number">8</span>,<span class="number">32</span> <span class="comment"># batch, time, channels</span></span><br><span class="line">x = torch.randn(B,T,C)</span><br><span class="line"></span><br><span class="line"><span class="comment"># let&#x27;s see a single Head perform self-attention</span></span><br><span class="line">head_size = <span class="number">16</span></span><br><span class="line">key = nn.Linear(C, head_size, bias=<span class="literal">False</span>)</span><br><span class="line">query = nn.Linear(C, head_size, bias=<span class="literal">False</span>)</span><br><span class="line">value = nn.Linear(C, head_size, bias=<span class="literal">False</span>)</span><br><span class="line">k = key(x)   <span class="comment"># (B, T, 16)</span></span><br><span class="line">q = query(x) <span class="comment"># (B, T, 16)</span></span><br><span class="line">wei =  q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>) <span class="comment"># (B, T, 16) @ (B, 16, T) ---&gt; (B, T, T)</span></span><br><span class="line"></span><br><span class="line">tril = torch.tril(torch.ones(T, T))</span><br><span class="line"><span class="comment">#wei = torch.zeros((T,T))</span></span><br><span class="line">wei = wei.masked_fill(tril == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">wei = F.softmax(wei, dim=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">v = value(x)</span><br><span class="line">out = wei @ v</span><br><span class="line"><span class="comment">#out = wei @ x</span></span><br><span class="line"></span><br><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>attention可以看作一种交流机制，可以看作一个有向图，彼此互相看，并且聚合所有指向它的node的信息</p></li>
+<li><p>"Encoder" attention
+block不用tril做的mask，可以彼此互相看；只有在建模decoder的attention
+block的时候才会有三角masking.通常用在autogressive的设定里，比如语言的建模。</p></li>
+<li><p>'"Self-attention'只是意味着key和value都是从和query一样的source制造出来的；key和value也可以来自于其他的，比如encoder
+module.</p></li>
+<li><p>要对attention matrix做scaled(1/sqrt(head_size)).这样当Q,K是unit
+variance，这样处理之后还是unit variance.
+Softmax数值还是会相对分散diffuse而不会过度饱和saturate（会将attention过于拉向一个大权重的数值）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">k = torch.randn(B,T,head_size)</span><br><span class="line">q = torch.randn(B,T,head_size)</span><br><span class="line">wei = q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>) * head_size**-<span class="number">0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####</span></span><br><span class="line">k.var()</span><br><span class="line">tensor(<span class="number">1.0449</span>)</span><br><span class="line"></span><br><span class="line">q.var()</span><br><span class="line">tensor(<span class="number">1.0700</span>)</span><br><span class="line"></span><br><span class="line">wei.var()</span><br><span class="line">tensor(<span class="number">1.0918</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">### torch.softmax</span></span><br><span class="line">torch.softmax(torch.tensor([<span class="number">0.1</span>, -<span class="number">0.2</span>, <span class="number">0.3</span>, -<span class="number">0.2</span>, <span class="number">0.5</span>]), dim=-<span class="number">1</span>)</span><br><span class="line">tensor([<span class="number">0.1925</span>, <span class="number">0.1426</span>, <span class="number">0.2351</span>, <span class="number">0.1426</span>, <span class="number">0.2872</span>])</span><br><span class="line"></span><br><span class="line">torch.softmax(torch.tensor([<span class="number">0.1</span>, -<span class="number">0.2</span>, <span class="number">0.3</span>, -<span class="number">0.2</span>, <span class="number">0.5</span>])*<span class="number">8</span>, dim=-<span class="number">1</span>) <span class="comment"># gets too peaky, converges to one-hot</span></span><br><span class="line">tensor([<span class="number">0.0326</span>, <span class="number">0.0030</span>, <span class="number">0.1615</span>, <span class="number">0.0030</span>, <span class="number">0.8000</span>])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="layernorm">layerNorm</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>对于一个（B,T,C）的输入，layerNorm指的是对最后一层C的维度做归一化，因此计算出来也是（B,T）.
+为什么不能对T:因果掩码的语义泄漏，动态长度变化的T, 语义理解上来说。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm1d</span>: <span class="comment"># (used to be BatchNorm1d)</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, eps=<span class="number">1e-5</span>, momentum=<span class="number">0.1</span></span>):</span><br><span class="line">    self.eps = eps</span><br><span class="line">    self.gamma = torch.ones(dim)</span><br><span class="line">    self.beta = torch.zeros(dim)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x</span>):</span><br><span class="line">    <span class="comment"># calculate the forward pass</span></span><br><span class="line">    xmean = x.mean(<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># batch mean</span></span><br><span class="line">    xvar = x.var(<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># batch variance</span></span><br><span class="line">    xhat = (x - xmean) / torch.sqrt(xvar + self.eps) <span class="comment"># normalize to unit variance</span></span><br><span class="line">    self.out = self.gamma * xhat + self.beta</span><br><span class="line">    <span class="keyword">return</span> self.out</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">parameters</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">return</span> [self.gamma, self.beta]</span><br><span class="line"></span><br><span class="line">torch.manual_seed(<span class="number">1337</span>)</span><br><span class="line">module = LayerNorm1d(<span class="number">100</span>)</span><br><span class="line">x = torch.randn(<span class="number">32</span>, <span class="number">100</span>) <span class="comment"># batch size 32 of 100-dimensional vectors</span></span><br><span class="line">x = module(x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x.shape</span><br><span class="line">torch.Size([<span class="number">32</span>, <span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">x[:,<span class="number">0</span>].mean(), x[:,<span class="number">0</span>].std() <span class="comment"># mean,std of one feature across all batch inputs</span></span><br><span class="line">Loading...</span><br><span class="line">(tensor(<span class="number">0.1469</span>), tensor(<span class="number">0.8803</span>))</span><br><span class="line"></span><br><span class="line">x[<span class="number">0</span>,:].mean(), x[<span class="number">0</span>,:].std() <span class="comment"># mean,std of a single input from the batch, of its features</span></span><br><span class="line">(tensor(-<span class="number">9.5367e-09</span>), tensor(<span class="number">1.0000</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="对比batchnorm">对比batchNorm</h4>
+<ul>
+<li>训练和推理，layernorm的均值和方差自己算自己的就可以；但是batch会存入一个全局的，推理的时候用训练集的均值方差。（推理单个sample没有什么均值和方差）</li>
+</ul>
+<p>https://gemini.google.com/app/9546f77378803c34</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm1d</span>(nn.Module): <span class="comment"># 继承 nn.Module</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, eps=<span class="number">1e-5</span></span>):</span><br><span class="line">    <span class="built_in">super</span>().__init__()</span><br><span class="line">    self.eps = eps</span><br><span class="line">    <span class="comment"># 使用 nn.Parameter 包裹，PyTorch 会自动将其识别为需要计算梯度的参数</span></span><br><span class="line">    self.gamma = nn.Parameter(torch.ones(dim))</span><br><span class="line">    self.beta = nn.Parameter(torch.zeros(dim))</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>): <span class="comment"># 习惯上用 forward 代替 __call__</span></span><br><span class="line">    xmean = x.mean(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">    xvar = x.var(<span class="number">1</span>, keepdim=<span class="literal">True</span>, unbiased=<span class="literal">False</span>) <span class="comment"># 这里的方差通常用有偏估计</span></span><br><span class="line">    xhat = (x - xmean) / torch.sqrt(xvar + self.eps)</span><br><span class="line">    <span class="keyword">return</span> self.gamma * xhat + self.beta</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试可微性</span></span><br><span class="line">x = torch.randn(<span class="number">32</span>, <span class="number">100</span>, requires_grad=<span class="literal">True</span>) <span class="comment"># 让输入也需要梯度</span></span><br><span class="line">module = LayerNorm1d(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">out = module(x)</span><br><span class="line">loss = out.<span class="built_in">sum</span>() <span class="comment"># 假设一个简单的 Loss</span></span><br><span class="line">loss.backward()  <span class="comment"># 反向传播</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查梯度是否存在</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;x 的梯度 shape:&quot;</span>, x.grad.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;gamma 的梯度 shape:&quot;</span>, module.gamma.grad.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;beta 的梯度 shape:&quot;</span>, module.beta.grad.shape)</span><br></pre></td></tr></table></figure>
+<h3 id="最终代码">最终代码</h3>
+<p>https://colab.research.google.com/drive/1JMLa53HDuA-i7ZBmqV7ZnA3c_fvtXnx-?usp=sharing#scrollTo=hoelkOrFY8bN
+拉到最后</p>
+<ul>
+<li>对x做nn.Embedding: x:(B，T)-&gt;(B,T,C)
+C是embedding维度，不一定是前面的vocab_size</li>
+<li>Pos_embedding: 知道B, T 得到（T,C）</li>
+<li>相加送给transformer
+blocks-&gt;layernorm--&gt;（B,T,C）-&gt;head_linear-&gt;(B,T,vocab_size)</li>
+<li>看看一个transformer block
+<ul>
+<li>输入n_embed就是上面的C, n_heads是头的个数</li>
+<li>forward过程：
+<ul>
+<li>x-&gt;layernorm(n_embd)-&gt;multiheadattention-&gt;+x</li>
+<li>x-&gt;layernorm-&gt;feedforward-&gt;+x</li>
+</ul></li>
+</ul></li>
+<li>看一个multiHeadAttention(num_heads, head_size)
+<ul>
+<li>各自计算head
+attention-&gt;汇总消息用一个Linear(n_embed,n_embed)-&gt;dropout</li>
+</ul></li>
+<li>看one head for attention
+<ul>
+<li>这个例子是decoder架构的，因此有triangle masking</li>
+</ul></li>
+</ul>
+<p>推理：</p>
+<ul>
+<li>输入（B, T）-&gt;采集block_size的几位-》得到logins:(B,T,C) -&gt;
+取最后一个time的数值-&gt;(B,C)-&gt;进行采样-〉（B,1）-&gt;(B,T+1)</li>
+<li>循环上面的过程直到max_new_tokens个数</li>
+</ul>
+<p>gpt的得到是pre-train + finetune 才能得到assistant</p>
+<p>实际上gpt后面还会用到PPO的一些强化学习的算法去调优得到最终的GPT.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/23/3Blue1Brown-transformer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/23/3Blue1Brown-transformer/" class="post-title-link" itemprop="url">3Blue1Brown-transformer</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-23 15:06:27 / Modified: 15:07:14" itemprop="dateCreated datePublished" datetime="2026-05-23T15:06:27+08:00">2026-05-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="tokens">1. tokens</h3>
+<p><strong>To date, the cleverest thinker of all time was
+...</strong></p>
+<p>分词：<strong>To| date|,| the| cle|ve|rest| thinker| of| all| time|
+was ...</strong></p>
+<figure>
+<img data-src="/2026/05/23/3Blue1Brown-transformer/token.jpg" alt="Image" />
+<figcaption aria-hidden="true">Image</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/21/3Blue1Brown-linear-algebra/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/21/3Blue1Brown-linear-algebra/" class="post-title-link" itemprop="url">3Blue1Brown的线性代数课程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-05-21 15:30:10" itemprop="dateCreated datePublished" datetime="2026-05-21T15:30:10+08:00">2026-05-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-03 11:22:35" itemprop="dateModified" datetime="2026-06-03T11:22:35+08:00">2026-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>https://www.youtube.com/watch?v=eu6i7WJeinw&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&amp;index=10</p>
+<h4 id="chapter5-三维空间线性变换">chapter5 三维空间线性变换</h4>
+<p>1.跟踪i, j,k三个基向量的变化</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153308992.png"
+alt="image-20260521153308992" />
+<figcaption aria-hidden="true">image-20260521153308992</figcaption>
+</figure>
+<p>2.变化后的向量如何计算：还是看成在三个基向量方向上的缩放</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153413478.png"
+alt="image-20260521153413478" />
+<figcaption aria-hidden="true">image-20260521153413478</figcaption>
+</figure>
+<p>3.如何看待矩阵的相乘：从右往左，依次作用线性变换</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153456299.png"
+alt="image-20260521153456299" />
+<figcaption aria-hidden="true">image-20260521153456299</figcaption>
+</figure>
+<h4 id="chapter-6-行列式对空间的压缩对应就是矩阵的行列式为0">chapter 6:
+行列式——对空间的压缩对应就是矩阵的行列式为0</h4>
+<p><u>变换会导致空间的放大或者挤压——行列式评估对面积的变化。</u></p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153708302.png"
+alt="image-20260521153708302" />
+<figcaption aria-hidden="true">image-20260521153708302</figcaption>
+</figure>
+<p>推论一：由于网格线保持平行且等距分布，对其他网格面积变化的研究等价于对一个网格面积变化的研究。</p>
+<p>并且不规则形状可以看成很多个小方格。</p>
+<p>这种缩放就叫做行列式：</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521153937982.png"
+alt="image-20260521153937982" />
+<figcaption aria-hidden="true">image-20260521153937982</figcaption>
+</figure>
+<p>行列式的绝对值表示缩放倍数，正负表示空间定向的改变。</p>
+<h4 id="chapter7-逆矩阵零空间">chapter7: 逆矩阵，零空间</h4>
+<p>矩阵的作用之一：求解方程。</p>
+<p>Ax=v(方程数目与未知数数目相同)</p>
+<p>求解x:</p>
+<p>1.行列式不为0,A变换没有把向量压缩到一个更低维的空间上:可以进行逆向向量变换:</p>
+<p>2.行列式为0: 将空间进行了降维压缩，不存在逆变换，</p>
+<p>​ 用rank描述压缩的程度。rank=1压缩到直线上，rank=2在平面上</p>
+<p>​ 列空间：矩阵的列张成的空间</p>
+<p>​ full rank</p>
+<p><u>变换后落在原点的称作矩阵的“零空间”或者核。</u>Ax=0</p>
+<h4 id="chapter8-非方阵作为变换">chapter8 非方阵作为变换</h4>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521162347681.png"
+alt="image-20260521162347681" />
+<figcaption aria-hidden="true">image-20260521162347681</figcaption>
+</figure>
+<p>思考一个3x2的矩阵：</p>
+<ul>
+<li>将二维空间映射到三维空间</li>
+<li>矩阵有两列表明输入有两个基向量</li>
+<li>有三行表明每一个基向量在变换后都用三个独立的坐标来描述</li>
+</ul>
+<p>2x3的矩阵：</p>
+<ul>
+<li>从三维到二维</li>
+<li>原始空间是三维的 ，输入有三个基向量</li>
+<li>有2行表明每一个基向量在变换后都用2个独立的坐标来描述</li>
+</ul>
+<h4 id="chapter9-点积和对偶">chapter9: 点积和对偶</h4>
+<p>点积的定义：</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521164415347.png"
+alt="image-20260521164415347" />
+<figcaption aria-hidden="true">image-20260521164415347</figcaption>
+</figure>
+<p>第二个问题：</p>
+<p>为什么对应相乘可以反应在投影——对偶性</p>
+<ul>
+<li><p>看看多维空间到一维空间的线性变换：</p></li>
+<li><p>线性变换是要满足一些条件的，这里我们没有进行复杂的探索，但是有一个直观的等价描述：如果原来空间有一系列等距的点，变换后应该还是等距的，否则就不是线性变换。</p></li>
+<li><figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521165159102.png"
+alt="image-20260521165159102" />
+<figcaption aria-hidden="true">image-20260521165159102</figcaption>
+</figure></li>
+<li><p>多维空间到一维空间的线性变换类似于之前，主要研究对基向量的变换</p></li>
+</ul>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521165340920.png"
+alt="image-20260521165340920" />
+<figcaption aria-hidden="true">image-20260521165340920</figcaption>
+</figure>
+<p>看一个向量【4，3】变换之后</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521165446997.png"
+alt="image-20260521165446997" />
+<figcaption aria-hidden="true">image-20260521165446997</figcaption>
+</figure>
+<p>思考一个二维空间到数轴的线性变换由投影定义，因为这个变换是线性的，所以肯定可以用一个1x2矩阵描述</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521170712983.png"
+alt="image-20260521170712983" />
+<figcaption aria-hidden="true">image-20260521170712983</figcaption>
+</figure>
+<p>那么描述任意一个向量</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521170734497.png"
+alt="image-20260521170734497" />
+<figcaption aria-hidden="true">image-20260521170734497</figcaption>
+</figure>
+<h4 id="chapter10-叉积">chapter10: 叉积</h4>
+<p>叉积的定义：</p>
+<p>叉积是一个向量</p>
+<p>大小是v和w向量围成的平行四边形的面积；正负表示方向（ixj是正）</p>
+<p>方向是与平行四边形垂直</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521171809023.png"
+alt="image-20260521171809023" />
+<figcaption aria-hidden="true">image-20260521171809023</figcaption>
+</figure>
+<p>叉积和线性变换的关系：</p>
+<p>把叉乘的两个向量放在矩阵中各为一列然后求矩阵的行列式就是叉积的大小也就是平行四边形的面积。why,矩阵每一列就可以表示基向量i和基向量j变换后的向量位置，我们之前又说行列式表示面积的缩放，原来i和j构成的小正方形面积为1，现在的平行四边形面积就是缩放后的面积啦。</p>
+<p>计算公式：</p>
+<p>看作一个大小等于平行四边形面积的标量乘以三维基（其中只有最后一维基是1）</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521171939913.png"
+alt="image-20260521171939913" />
+<figcaption aria-hidden="true">image-20260521171939913</figcaption>
+</figure>
+<p>为什么会把i,j,k当作矩阵的一列然后算行列式这样去定义得到叉积</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521172154777.png"
+alt="image-20260521172154777" />
+<figcaption aria-hidden="true">image-20260521172154777</figcaption>
+</figure>
+<h4 id="chapter11-以线性变换的眼光看叉积">chapter11:
+以线性变换的眼光看叉积</h4>
+<p>定义一个三维空间到数轴的线性变换：</p>
+<p>并且它是根据向量v和w来定义的</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521173827228.png"
+alt="image-20260521173827228" />
+<figcaption aria-hidden="true">image-20260521173827228</figcaption>
+</figure>
+<p>去寻找对偶向量使得——应用这个变换和与对偶向量点乘等价</p>
+<p>两个三维向量的点积结果等于一个由(x,y,z)和v和w确定的平行六面体的有向体积</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260521173443635.png"
+alt="image-20260521173443635" />
+<figcaption aria-hidden="true">image-20260521173443635</figcaption>
+</figure>
+<p>向量p和其他向量的点积=把其他向量投影到p上：</p>
+<h4 id="chapter12-克莱默规则求解线性方程组">Chapter12:
+克莱默规则求解线性方程组</h4>
+<p>克莱默规则解决线性方程组不是最好的方法（高斯消元），但是对于我们了解线性代数的概念很有用。</p>
+<p>保留了点积的变换：正交变换。——通常对应于旋转变换（刚性，没有变形）</p>
+<ul>
+<li>此时x求解是输出与第一个基向量的点积</li>
+<li><figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522110246482.png"
+alt="image-20260522110246482" />
+<figcaption aria-hidden="true">image-20260522110246482</figcaption>
+</figure></li>
+</ul>
+<p>我们讨论的求解是行列式不为0的：</p>
+<p>克莱默法则</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522112810880.png"
+alt="image-20260522112810880" />
+<figcaption aria-hidden="true">image-20260522112810880</figcaption>
+</figure>
+<h4 id="chapter13-不同坐标系之间的转换和表示">Chapter13
+不同坐标系之间的转换和表示</h4>
+<h4 id="chapter14-特征向量和特征值">Chapter14 特征向量和特征值</h4>
+<p>空间压缩——对应行列式为0</p>
+<p>特征向量：经过矩阵A变换依然停留在它长成的空间里</p>
+<p>特征值：表示对应特征向量的缩放</p>
+<p>不是所有的矩阵都有特征向量（比如逆时针旋转90度）</p>
+<p>特征基：如果我们的基向量正好是特征向量</p>
+<p>变换是一个对角阵，对角元是特征值；</p>
+<p>对角矩阵在很多情况下都更好处理（算矩阵相乘，比如自己和自己相乘，相比计算一个非对角的矩阵幂乘就很噩梦了）</p>
+<p>如果能找到特征基矩阵运算就会特别轻松</p>
+<h4 id="chapter15-快速求解特征值的方法">Chapter15:
+快速求解特征值的方法</h4>
+<p>利用两个特性：</p>
+<p><strong>1.矩阵的迹的一半等于特征值均值</strong></p>
+<p><strong>2.行列式等于特征值乘积</strong></p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522144535341.png"
+alt="image-20260522144535341" />
+<figcaption aria-hidden="true">image-20260522144535341</figcaption>
+</figure>
+<p>快速求解特征值的方法</p>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522144643242.png"
+alt="image-20260522144643242" />
+<figcaption aria-hidden="true">image-20260522144643242</figcaption>
+</figure>
+<figure>
+<img
+src="/2026/05/21/3Blue1Brown-linear-algebra/image-20260522144703742.png"
+alt="image-20260522144703742" />
+<figcaption aria-hidden="true">image-20260522144703742</figcaption>
+</figure>
+<h4 id="chapter16-线性变换的定义">Chapter16: 线性变换的定义</h4>
+<p>可加性，线性scaling(数乘)</p>
+<p>还有类似的例子，函数求导（满足可加和可成比例）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -911,461 +1441,6 @@ PCIe 机器上跑 TP，通信延迟会彻底拖垮 TFLOPS。</li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/12/active-vision/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/05/12/active-vision/" class="post-title-link" itemprop="url">主动vision&action</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-05-12 11:14:57" itemprop="dateCreated datePublished" datetime="2026-05-12T11:14:57+08:00">2026-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-05-15 10:26:34" itemprop="dateModified" datetime="2026-05-15T10:26:34+08:00">2026-05-15</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="主动视觉">主动视觉</h3>
-<p>主动视觉的概念主要由 <strong>阿洛伊蒙纳斯（John (Yiannis)
-Aloimonos）</strong> 及其同事在 <strong>1987年</strong>
-左右明确提出。</p>
-<p>几乎在同一时期，其他研究者也从不同角度贡献了类似的理论：</p>
-<ul>
-<li><strong>John Aloimonos:</strong> 在其论文 <em>Active Vision</em>
-中首次正式确立了这一学术术语。</li>
-<li><strong>Dana Ballard:</strong> 提出了 <strong>“拟人视觉”（Animate
-Vision）</strong>，强调视觉系统应模仿人类的眼球运动和注意力机制。</li>
-<li><strong>Ruzena Bajcsy:</strong> 提出了 <strong>“感知控制”</strong>
-的思想，认为感知不应是被动的数据收集，而是一个受控的过程。</li>
-</ul>
-<h3 id="定义主动视觉">定义主动视觉</h3>
-<p>​ <a
-target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=68186923&amp;content_type=Answer&amp;match_order=1&amp;q=View+Path+Planing&amp;zhida_source=entity">View
-Path Planing</a>(VPP)或者Next-Best-View(NBV)</p>
-<p>​
-主动视觉是指观测者（相机或机器人）根据任务需求，<strong>主动、有目的地改变其传感器（镜头）的参数</strong>（如位置、方向、焦距、光圈等），从而获取更优质、更易处理的视觉信息流。</p>
-<h3 id="核心任务三维重建和主动感知">核心任务——三维重建和主动感知</h3>
-<h4 id="主动三维重建active-3d-reconstruction">主动三维重建(active 3D
-reconstruction)</h4>
-<p>获取物体<strong>全局、完整、高精度</strong>的三维几何表征（如点云、Mesh、3DGS）。</p>
-<p>全局信息增益（Information
-Gain）。机器人需要规划一条路径，把物体所有的死角、阴影、凹槽全部扫干净。</p>
-<p>主动三维重建目前的发展感觉是不是已经sota了，主要是精度的问题。</p>
-<p>2026的一篇工作：https://drive.google.com/file/d/1qA3WS7Z3KPYxNYwlfsfKqLNi5yddjg9Q/view?pli=1</p>
-<h4
-id="边操作边转换视角active-manipulation-in-hand-visual-servoing">边操作边转换视角(Active
-Manipulation / In-hand Visual Servoing)</h4>
-<p><strong>目标：</strong>
-服务于当前的<strong>操作任务</strong>（如抓取、装配、插拔）。</p>
-<p>局部关键特征的可见性。算法不需要知道整个物体长什么样，它只关心操作点（ROI）有没有被遮挡、有没有对齐、有没有放大到足够清晰的程度。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>我们主要要解决的是第二个任务。</p>
-<p>两种思路：</p>
-<p>1.局部重建为操作服务：机器人在边操作边转换视角时，往往也会在后台实时构建一个局部的、精细的神经辐射场（如
-<strong>Live-3DGS</strong>）。它通过快速的视角转换，瞬间脑补出操作区域的局部
-3D 结构，从而辅助计算接触力学。</p>
-<p>2.统一的policy网络，比如pi-0之类的端到端模型已经不再区分“我现在是在看，还是在动”。</p>
-</blockquote>
-<p>思路一：基于vla模型做微调整</p>
-<p>任务目标：“桌面级操作”（Desktop Manipulation）。<em>"Pick up the DB
-connector and show its pins to the camera"</em>。</p>
-<p>模型选择：</p>
-<ul>
-<li>Openvla: 把动作离散化（Quantization）成一个个像单词一样的
-Token（比如 0-256
-之间的整数）。泛化能力极强，控制频率低，不够细。几hz</li>
-<li>Act（丝滑速度）: 有action chunk,用
-CVAE（条件变分自编码器）来建模人类演示的多样性。频率高，适合丝滑高难度动态任务。20hz~50hz,但是几乎没有泛化能力，它不认识什么是“DB接口”，如果你把桌子换个颜色，或者把接口挪远了
-20 厘米，它可能就完全抓瞎，需要重新采集数据。</li>
-<li>diffusion policy（多峰分布）:
-它把机器人的动作轨迹看作是一张“噪声图像”。模型输入当前的视觉特征，然后通过多轮“去噪（Denoising）”。擅长处理多峰分布。和
-ACT
-一样，属于端到端策略网络，<strong>缺乏高层的语义理解和跨物体的通用泛化能力</strong>。此外，由于需要多步去噪迭代，在算力较弱的设备上可能会带来轻微的推理延迟。</li>
-<li>目前：VLA + Policy Head（强强联合）
-<ul>
-<li>把 OpenVLA 当作眼睛和脑袋，把 ACT 或 Diffusion Policy
-当作小脑。</li>
-</ul></li>
-</ul>
-<p>思路二：局部重建</p>
-<h3
-id="边操作边转换视角主动视觉vla的几个work">边操作边转换视角——主动视觉vla的几个work</h3>
-<h4 id="vision-in-action">Vision in Action</h4>
-<h5 id="tldr">TL;DR</h5>
-<p>​ 主要还是通过异步的方式解决主动视觉用human
-demonstration的方法模仿学习的时候，vr眼镜遥操会眩晕的问题。选取了一个中间的3d表示来让人看到的和机器执行反馈回来的过程异步，从而克服延迟的问题。训练本身没变，就是vla的思路。加了个脖子6自由度的输入，动作用的diffusion
-policy进行的学习。</p>
-<h5 id="url">url:</h5>
-<p>https://www.alphaxiv.org/overview/2506.15666</p>
-<p>双手操作+主动视觉策略，通过真实世界人类演示学习，不需要特别的任务相关的假设。</p>
-<h5 id="硬件设置">硬件设置</h5>
-<p>颈部用的是现成的6自由度手臂。</p>
-<figure>
-<img data-src="/2026/05/12/active-vision/image-20260514151423179.png"
-alt="image-20260514151423179" />
-<figcaption aria-hidden="true">image-20260514151423179</figcaption>
-</figure>
-<h5 id="methods">methods:</h5>
-<ul>
-<li>从人类演示中学习主动感知策略的手动操作系统</li>
-<li>让机器人“看到的”和人“看到的”同步需要快速的电机控制和低延迟的数据流，目前硬件还达不到。通过中间3d表示来解耦vr远程操作中的人类和机器人运动。使用中间的3d场景表示，而不是直接镜像人类头部运动和直播机器人的camera试图。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">https://www.alphaxiv.org/abs/2506.15666?chatId=019e2560-bce9-7a94-9aef-c819e6e090a9</span><br><span class="line"></span><br><span class="line">在 Vision in Action (ViA) 系统中，“使用中间 3D 表示来解耦人类与机器人的运动”是一个核心的工程设计，旨在解决远程操控（Teleoperation）中常见的视觉延迟和**晕动症（Motion Sickness）**问题。</span><br><span class="line"></span><br><span class="line">核心挑战：物理运动的延迟</span><br><span class="line">在传统的 VR 远程操控中，机器人通常直接将相机拍摄的 RGB 画面流传回人类的 VR 头显。如果人类转动头部，机器人也必须立即转动其机械“脖子”来更新画面。</span><br><span class="line"></span><br><span class="line">问题： 机械控制、数据传输和视频编解码都会产生延迟（Motion-to-photon latency）。当人类转头但看到的画面却“慢半拍”时，大脑会产生严重的眩晕感。</span><br><span class="line"></span><br><span class="line">解决方案：3D 点云作为“中转站”</span><br><span class="line">ViA 系统不再直接通过视频流进行镜像操作，而是引入了一个中间 3D 场景表示（点云）：</span><br><span class="line"></span><br><span class="line">实时构建 3D 场景： 机器人通过 RGB-D 相机（如 iPhone）捕捉环境的颜色和深度信息，并在世界坐标系中构建一个 3D 点云。</span><br><span class="line">本地渲染（解耦的关键）： VR 头显根据人类当前的头部姿态，直接在本地从这个 3D 点云中渲染出对应的视角。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. 为什么叫“解耦（Decouple）”？</span><br><span class="line">这里的“解耦”是指将人类看到的画面更新速度与机器人的物理运动速度分离开来：</span><br><span class="line"></span><br><span class="line">视觉上的即时性： 即使机器人的脖子还没转过去，人类只要在 VR 里转头，系统就能利用已有的点云数据渲染出那个方向的画面。这保证了视觉刷新率极高（约 150 Hz），延迟极低（&lt; 7 ms）。</span><br><span class="line">动作上的异步性： 机器人不再需要跟随人类头部的每一个细微抖动，而是可以“异步”地接收人类头部的平均/汇总动作，以较低的频率（10 Hz）平滑地移动到目标位置。</span><br><span class="line"></span><br><span class="line">这种设计的优劣</span><br><span class="line">优点： 极大降低了操作者的运动感知延迟，用户研究显示这能显著减轻晕动症，让长时间的示教和数据采集变得可行。</span><br><span class="line">代价： 由于点云是基于单帧或有限帧生成的，当人类转头看到机器人尚未覆盖的区域时，画面中可能会出现空洞或遮挡（缺少信息）。但作者认为，维持视觉连续性比画面的绝对完整对减少眩晕更重要。</span><br></pre></td></tr></table></figure>
-<h5 id="训练基于diffusion-policy">训练：基于diffusion policy</h5>
-<p>策略学习框架基于 Diffusion
-Policy，这是一种最先进的视觉运动控制方法。在每个时间步，策略都会接收来自主动头部摄像头的
-RGB 图像以及包括末端执行器姿态和夹爪状态在内的本体感受信息。预训练的
-DINOv2 视觉 Transformer 作为视觉编码器，提供语义丰富的 384
-维特征表示，无需进行任务特定的微调。</p>
-<p>策略输出 16
-步预测范围的动作序列，控制颈部和双臂的未来姿态以及夹爪指令。系统在生成新的预测之前执行其中
-8 个预测动作，以 10 Hz
-的频率运行。通过对人类演示进行行为克隆，机器人学会将视觉观察与人类操作员自然采用的主动感知策略进行隐式关联。</p>
-<h4 id="avr框架2025">AVR框架（2025）</h4>
-<h5 id="tldr-1">TL;DR</h5>
-<p>​ 硬件是2自由度的云台。仿真训练学习视角变化。</p>
-<p>https://avr-robot.github.io/</p>
-<p>2025 年的 AVR
-框架）不仅调整相机的空间位置，还加入了<strong>动态焦距（Zooming）</strong>的控制。这模拟了人类在精细操作（如插螺丝、穿针）时“凑近看”和“聚焦”的行为。</p>
-<ul>
-<li><strong>动态跟踪</strong>：通过控制机械臂末端的相机，使目标始终保持在画面中心。</li>
-<li><strong>多尺度感知</strong>：在操作距离较远时使用广角视角，在接近操作点时自动“变焦”放大局部细节，显著提升了螺丝插入等高精度任务的成功率。</li>
-</ul>
-<figure>
-<img data-src="/2026/05/12/active-vision/image-20260514203015381.png"
-alt="image-20260514203015381" />
-<figcaption aria-hidden="true">image-20260514203015381</figcaption>
-</figure>
-<ul>
-<li><strong>仿真训练（RoboTwin）</strong>：为了解决数据采集成本高的问题，AVR
-利用了 <strong>RoboTwin</strong>
-仿真平台，并开发了一个实时图像处理插件，能够模拟真实物理环境下的视角切换和变焦效果。</li>
-<li><strong>学习策略</strong>：该框架通过模仿学习（Imitation
-Learning）将“视觉调整动作”与“机械臂操作动作”联合编码，让机器人在执行任务时自动学会“在什么时候该看哪里”以及“什么时候该放大看”。</li>
-</ul>
-<h4 id="sapave">SaPaVe</h4>
-<p>当指令是“找到桌底的杯子”时，机器人会自动规划弯腰、倾斜相机的动作。</p>
-<table>
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 20%" />
-<col style="width: 32%" />
-<col style="width: 32%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">阶段</th>
-<th style="text-align: left;">目标</th>
-<th style="text-align: left;">数据集</th>
-<th style="text-align: left;">优化重点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">第一阶段：语义主动感知对齐</td>
-<td
-style="text-align: left;">训练机器人具备寻找目标物的“摄影师”能力</td>
-<td
-style="text-align: left;">ActiveViewPose-200K（包含20万对图像-语言-相机运动）</td>
-<td style="text-align: left;">专注于训练相机适配器</td>
-</tr>
-<tr>
-<td style="text-align: left;">第二阶段：主动操控微调</td>
-<td style="text-align: left;">防止遗忘感知技能，实现复杂操控</td>
-<td
-style="text-align: left;">混合数据集（相机运动数据、机器人操控仿真数据、真实世界演示数据）</td>
-<td
-style="text-align: left;">使用加权损失函数，对26自由度操控空间和相机运动空间进行联合监督</td>
-</tr>
-</tbody>
-</table>
-<h3 id="三维重建nbv">三维重建——nbv</h3>
-<blockquote>
-<p>[!NOTE]</p>
-<p>这部分对于机器人具体操作去转换视角不一定有用，但是对于slam建图，数字孪生，检测，远程监控和memory机制可能有用。</p>
-</blockquote>
-<p>在 Next-Best-View (NBV) 和主动视觉领域，很难定义一个单一的“绝对
-SOTA”，因为性能高度依赖于任务目标（如<strong>纯几何重建</strong>、<strong>物体
-6D 位姿估计</strong>或<strong>抓取操作</strong>）。</p>
-<p>根据 2024-2025
-年的最前沿进展，以下是各细分方向公认的顶尖（SOTA）算法或框架：</p>
-<h4 id="纯物体-3d-重建与视角规划dm-osvp">1.纯物体 3D
-重建与视角规划：DM-OSVP++</h4>
-<p>2025年4月 德国波恩大学人形机器人实验室</p>
-<figure>
-<img data-src="/2026/05/12/active-vision/image-20260515102144260.png"
-alt="image-20260515102144260" />
-<figcaption aria-hidden="true">image-20260515102144260</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/05/12/active-vision/image-20260515102150296.png"
-alt="image-20260515102150296" />
-<figcaption aria-hidden="true">image-20260515102150296</figcaption>
-</figure>
-<p>方法：one-shot view planning
-代码暂时未开源：https://github.com/psc0628/DM-OSVPplusplus demo:
-https://www.youtube.com/watch?v=GBBCn28v-lQ</p>
-<h4 id="实时感知决策-gauss-mi">2.实时感知决策：## GauSS-MI</h4>
-<p>3D Gaussian Splatting <strong>与</strong> 香农互信息 (Shannon Mutual
-Information)** 结合。 2025年7月
-开源：https://github.com/JohannaXie/GauSS-MI</p>
-<figure>
-<img data-src="/2026/05/12/active-vision/image-20260515102222939.png"
-alt="image-20260515102222939" />
-<figcaption aria-hidden="true">image-20260515102222939</figcaption>
-</figure>
-<p>demo:https://www.bilibili.com/video/BV1rVNUziEFy/?vd_source=db693e375cf7809ea90067d2fd609b51</p>
-<p>CUDA模块代码：https://github.com/JohannaXie/diff-gaussian-rasterization-gaussmi</p>
-<h4
-id="针对无纹理物体的-6d-位姿估计active-6d-pose-多伦多大学航空航天研究所和机器人研究所">3.针对无纹理物体的
-6D 位姿估计：Active 6D Pose 多伦多大学航空航天研究所和机器人研究所</h4>
-<p>2025年3月 未开源
-在工业场景或处理反光、无纹理物体（这是位姿估计最难的部分） 通过
-<strong>多视角 RGB 融合</strong>
-来消除单视角下的对称性歧义。它通过主动移动相机来寻找能最大程度降低位姿估计熵（Entropy）的视角。
-机械臂在杂乱堆叠（Clutter）中抓取金属零件或塑料制品。</p>
-<h4 id="任务为导向ac-nbv">4.任务为导向：AC-NBV</h4>
-<p>23年11月</p>
-<ul>
-<li><strong>核心优势</strong>：它是<strong>示能引导（Affordance-driven）</strong>的。它不追求物体表面的
-100%
-重建，而是优先寻找对“成功抓取”最有帮助的视角（例如物体的边缘、手柄、开口处）。</li>
-<li><strong>结果</strong>：在抓取成功率（Success
-Rate）和效率上优于纯几何重建的 NBV。</li>
-</ul>
-<h4
-id="如果要追求精度亚毫米级的位姿和形状恢复">如果要追求精度：亚毫米级的位姿和形状恢复**：</h4>
-<p>1.投影引导的 NBV 规划：PB-NBV
-https://www.alphaxiv.org/assistant/019d6696-d258-7fd3-bb8e-2c2e824d5a87</p>
-<ul>
-<li><strong>核心优势</strong>：通过高效的投影映射机制，快速计算下一视角对“表面精细度”的贡献，而不仅仅是覆盖范围。它能确保扫描仪始终在最佳测量距离和角度（工作距离范围内）运行。</li>
-<li><strong>工业表现</strong>：在未知物体的自动三维建模中，它比传统基于体素（Voxel）的方法效率提高
-30% 以上，且点云密度和完整性更高。</li>
-</ul>
-<ol start="2" type="1">
-<li></li>
-<li>高保真主动探索：Active3D (Hierarchical Uncertainty)</li>
-</ol>
-<p>引入了<strong>分层不确定性量化（Hierarchical Uncertainty
-Quantification）</strong>。算法不仅看哪里没扫到，还看哪里扫得“不够准”。通过多层级的不确定性空间，引导机器人对细节复杂的区域进行多次、多角度的精细扫描。
-2025年11月 https://yanyan-li.github.io/project/vlx/active3d <img
-src="/2026/05/12/active-vision/image-20260515102630375.png"
-alt="image-20260515102630375" /></p>
-<p>https://github.com/yanyan-li/4DGS-SLAM</p>
-<h3 id="实现">实现：</h3>
-<p>https://www.alphaxiv.org/assistant/019d6696-d258-7fd3-bb8e-2c2e824d5a87</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/11/gemini-cli/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/05/11/gemini-cli/" class="post-title-link" itemprop="url">gemini-cli</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-05-11 15:07:34 / Modified: 15:08:53" itemprop="dateCreated datePublished" datetime="2026-05-11T15:07:34+08:00">2026-05-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="安装gemini">安装gemini</h3>
-<h3 id="在ai-studio申请api-key">在ai studio申请api key</h3>
-<p>https://aistudio.google.com/app/api-keys</p>
-<h3 id="终端使用">终端使用</h3>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/05/11/one-shot-prompt-manipulation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/05/11/one-shot-prompt-manipulation/" class="post-title-link" itemprop="url">one-shot-prompt-manipulation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-05-11 11:17:37" itemprop="dateCreated datePublished" datetime="2026-05-11T11:17:37+08:00">2026-05-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-05-12 10:13:08" itemprop="dateModified" datetime="2026-05-12T10:13:08+08:00">2026-05-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="topic-单论抓取目标物体这个动作">topic:
-单论抓取目标物体这个动作</h3>
-<p>“一次提示，持久操作”：One-shot Visual Prompting for Persistent
-Manipulation。</p>
-<p>核心在于将视觉引导（Visual
-Prompting）<strong>与</strong>时序一致性（Temporal
-Consistency）结合。</p>
-<h3 id="方案一稳健派-sam2anygrasp">方案一（稳健派）： sam2+anygrasp</h3>
-<h3 id="方案二vla">方案二：vla</h3>
-<p>把视觉prompt通过不同的方式注入进去</p>
-<h5 id="vp-vla">Vp-vla:</h5>
-<p>https://www.alphaxiv.org/zh/overview/2603.22003</p>
-<figure>
-<img
-src="/2026/05/11/one-shot-prompt-manipulation/image-20260512101151350.png"
-alt="image-20260512101151350" />
-<figcaption aria-hidden="true">image-20260512101151350</figcaption>
-</figure>
-<h5 id="tracevla">tracevla</h5>
-<p>https://tracevla.github.io/</p>
-<figure>
-<img
-src="/2026/05/11/one-shot-prompt-manipulation/image-20260512101236627.png"
-alt="image-20260512101236627" />
-<figcaption aria-hidden="true">image-20260512101236627</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1437,13 +1512,15 @@ alt="image-20260512101236627" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">147</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
