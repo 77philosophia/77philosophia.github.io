@@ -22,14 +22,16 @@
 
   <meta name="description" content="topic: 单论抓取目标物体这个动作 “一次提示，持久操作”：One-shot Visual Prompting for Persistent Manipulation。 核心在于将视觉引导（Visual Prompting）与时序一致性（Temporal Consistency）结合。 方案一（稳健派）： sam2+anygrasp 方案二：vla 把视觉prompt通过不同的方式注入进去 V">
 <meta property="og:type" content="article">
-<meta property="og:title" content="one-shot-prompt-manipulation">
+<meta property="og:title" content="一次提示，持久操作的机器人操作算法调研">
 <meta property="og:url" content="http://77philosophia.github.io/2026/05/11/one-shot-prompt-manipulation/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
 <meta property="og:description" content="topic: 单论抓取目标物体这个动作 “一次提示，持久操作”：One-shot Visual Prompting for Persistent Manipulation。 核心在于将视觉引导（Visual Prompting）与时序一致性（Temporal Consistency）结合。 方案一（稳健派）： sam2+anygrasp 方案二：vla 把视觉prompt通过不同的方式注入进去 V">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-05-11T03:17:37.000Z">
-<meta property="article:modified_time" content="2026-05-12T02:13:08.600Z">
+<meta property="article:modified_time" content="2026-06-11T06:37:02.438Z">
 <meta property="article:author" content="philosophia">
+<meta property="article:tag" content="vla">
+<meta property="article:tag" content="robot">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://77philosophia.github.io/2026/05/11/one-shot-prompt-manipulation/">
@@ -45,7 +47,7 @@
   };
 </script>
 
-  <title>one-shot-prompt-manipulation | Garfield's blog</title>
+  <title>一次提示，持久操作的机器人操作算法调研 | Garfield's blog</title>
   
 
 
@@ -139,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-books">
 
-    <a href="/books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+    <a href="/categories/Books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -198,7 +200,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          one-shot-prompt-manipulation
+          一次提示，持久操作的机器人操作算法调研
         </h1>
 
         <div class="post-meta">
@@ -215,8 +217,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-05-12 10:13:08" itemprop="dateModified" datetime="2026-05-12T10:13:08+08:00">2026-05-12</time>
+                <time title="Modified: 2026-06-11 14:37:02" itemprop="dateModified" datetime="2026-06-11T14:37:02+08:00">2026-06-11</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
+                </span>
+            </span>
 
           
 
@@ -263,6 +274,10 @@ alt="image-20260512101236627" />
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vla/" rel="tag"># vla</a>
+              <a href="/tags/robot/" rel="tag"># robot</a>
+          </div>
 
         
 
@@ -352,20 +367,20 @@ alt="image-20260512101236627" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">147</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">110</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
