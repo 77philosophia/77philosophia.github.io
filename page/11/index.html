@@ -182,6 +182,390 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/13/python-warmup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/13/python-warmup/" class="post-title-link" itemprop="url">python代码快速复习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-13 10:20:10" itemprop="dateCreated datePublished" datetime="2025-05-13T10:20:10+08:00">2025-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-11 14:33:00" itemprop="dateModified" datetime="2026-06-11T14:33:00+08:00">2026-06-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>经常有段时间不用python就会忘记一点，所以记录一下基本的下次用之前快速过一下。</p>
+<p>source 1:
+https://martinxpn.medium.com/100-days-of-python-9dd04d0995f1
+里面的初级https://profound.academy/python-introduction/advanced-arithmetic-sHlEzpi1Optpv3mdSgKX和中级https://profound.academy/python-mid</p>
+<p>source
+2:https://labex.io/tutorials/python-how-to-use-init-files-in-python-420195</p>
+<h1 id="part-1-初级"><strong>Part 1: 初级</strong></h1>
+<ol type="1">
+<li>def func(<em>numbers):
+</em>numbers可变参数，作为一个元组传进去。</li>
+<li>func可以作为参数传给另外一个func</li>
+<li>d = defaultdict(lambda:[]) defaultdict</li>
+<li>lambda function, 或者叫匿名函数。 one line a function. a=lambda x:
+x*x;</li>
+<li>reduce函数,reduce(f,list,total)</li>
+</ol>
+<h4 id="python-files"><strong>python files:</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">f = open(xxx)</span><br><span class="line">print(f.read())</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">// python里面用with statement来避免明确指明文件的打开和关闭</span><br><span class="line">with open(&#x27;document.txt&#x27;) as f:   # Previously f = open(&#x27;document.txt&#x27;)</span><br><span class="line">    print(f.read())</span><br><span class="line">print(&#x27;Done!&#x27;)</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="/2025/05/13/python-warmup/5eecdaf48460cde541b943ed5586533823bc6c56c68146b775b8339e1c4c24831f739168b2e59d878d68742cd653602a0524375348f90ffd7a9d4f8b8169e3acf09614e75b59f030b0f7dee906a4eed339b3b2768ed99f5343f996cce854141b.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="part-2-进阶"><strong>Part 2: 进阶</strong></h1>
+<p>https://profound.academy/python-mid/positional-and-keyword-arguments-5LvKxDSUICCBH7Z96b1n</p>
+<h2 id="advanced-functions"><strong>1.advanced functions</strong></h2>
+<ul>
+<li>positional and keyword arguments. positional要在keyword的前面，</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Default values for tax and discount are set to 0</span><br><span class="line">def calculate_total_cost(price, tax=0.0, discount=0.0):</span><br><span class="line">    return price + price * tax - discount</span><br><span class="line"></span><br><span class="line">print(calculate_total_cost(100, tax=0.05))                # 105.0</span><br><span class="line">print(calculate_total_cost(100, discount=10))             # 90.0</span><br><span class="line">print(calculate_total_cost(100, tax=0.05, discount=10))   # 95.0</span><br></pre></td></tr></table></figure>
+<ul>
+<li>positional only</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def add_numbers(a, b, /, c):</span><br><span class="line">    return a + b + c</span><br><span class="line"></span><br><span class="line">print(add_numbers(10, 20, 30))         # 60</span><br><span class="line">print(add_numbers(a=10, b=20, c=30))   # TypeError</span><br><span class="line">print(add_numbers(10, 20, c=30))       # 60</span><br></pre></td></tr></table></figure>
+<ul>
+<li>keyword-only arguments</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def rectangle_area(length, width, *, rounded=False):</span><br><span class="line">    area = length * width</span><br><span class="line">    return round(area) if rounded else area</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(rectangle_area(5.3, 4.2))                # Prints 22.26, `rounded` is not provided so it defaults to False</span><br><span class="line">print(rectangle_area(5.3, 4.2, rounded=True))  # Prints 22, `rounded` is provided and set to True</span><br><span class="line">print(rectangle_area(5.3, 4.2, True))          # Error! `rounded` must be provided by keyword.</span><br><span class="line">print(rectangle_area(5.3, 4.2, False))         # Error! `rounded` must be provided by keyword.</span><br><span class="line">print(rectangle_area(length=5.3, width=4.2, rounded=True))  # Prints 22</span><br></pre></td></tr></table></figure>
+<ul>
+<li>*args,**kwargs
+<ul>
+<li>*args传入参数不需要keyword</li>
+<li>**kwargs是dict的传参形式</li>
+<li>两者可以叠加使用</li>
+</ul></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">def combined_example(*args, **kwargs):</span><br><span class="line">    print(args)    # prints the tuple of arguments</span><br><span class="line">    print(kwargs)  # prints the dictionary of keyword arguments</span><br><span class="line"></span><br><span class="line">combined_example(1, 2, 3, Name=&#x27;Alice&#x27;, Age=25)  </span><br><span class="line"># (1, 2, 3)</span><br><span class="line"># &#123;&#x27;Name&#x27;: &#x27;Alice&#x27;, &#x27;Age&#x27;: 25&#125;</span><br><span class="line"></span><br><span class="line">def function_example(a, b, *args, **kwargs):</span><br><span class="line">    print(a)       # print the first standard argument</span><br><span class="line">    print(b)       # print the second standard argument</span><br><span class="line">    print(args)    # print additional non-keyworded arguments</span><br><span class="line">    print(kwargs)  # print keyworded arguments</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function_example(1, 2, 3, 4, 5, Name=&#x27;Alice&#x27;, Age=25)</span><br><span class="line"># 1</span><br><span class="line"># 2</span><br><span class="line"># (3, 4, 5)</span><br><span class="line"># &#123;&#x27;Name&#x27;: &#x27;Alice&#x27;, &#x27;Age&#x27;: 25&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mutable types和immutable types
+<ul>
+<li>mutable types比如list, immutable types比如tuple,str</li>
+<li>如果在函数里my_list.append 这个改动是恒久的, my_list =
+xxx相当于在func内部新定义了一个局部变量，改动是无效的。</li>
+</ul></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def add_item(my_list):</span><br><span class="line">    my_list.append(&#x27;added item&#x27;)  # Append a new item to the list</span><br><span class="line"></span><br><span class="line">shopping_list = [&#x27;apples&#x27;, &#x27;bananas&#x27;, &#x27;cherries&#x27;]</span><br><span class="line">print(shopping_list)  # Prints: [&#x27;apples&#x27;, &#x27;bananas&#x27;, &#x27;cherries&#x27;]</span><br><span class="line"></span><br><span class="line"># Now we use the function to add an item to our shopping list</span><br><span class="line">add_item(shopping_list)</span><br><span class="line">print(shopping_list)  # Prints: [&#x27;apples&#x27;, &#x27;bananas&#x27;, &#x27;cherries&#x27;, &#x27;added item&#x27;]</span><br><span class="line"></span><br><span class="line">def change_list(my_list):</span><br><span class="line">    my_list = [&#x27;entirely&#x27;, &#x27;new&#x27;, &#x27;list&#x27;]  # This won&#x27;t affect the original list</span><br><span class="line"></span><br><span class="line">shopping_list = [&#x27;apples&#x27;, &#x27;bananas&#x27;, &#x27;cherries&#x27;]</span><br><span class="line">change_list(shopping_list)</span><br><span class="line">print(shopping_list)  # Still prints: [&#x27;apples&#x27;, &#x27;bananas&#x27;, &#x27;cherries&#x27;]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用None为mutable default
+arguments赋值，然后判断None进行置空赋初值。（https://profound.academy/python-mid/mutable-default-arguments-4ekYwsMn95O8UEi1p8wf
+值得好好看一遍）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def record_score(new_score, score_list=[]):</span><br><span class="line">    score_list.append(new_score)</span><br><span class="line">    return score_list</span><br><span class="line"></span><br><span class="line">print(record_score(95))  # [95]</span><br><span class="line">print(record_score(85))  # [95, 85]</span><br><span class="line"></span><br><span class="line">def record_score(new_score, score_list=None):</span><br><span class="line">    if score_list is None:  # If no list was provided,</span><br><span class="line">        score_list = []     # create a new one</span><br><span class="line">    score_list.append(new_score)</span><br><span class="line">    return score_list</span><br><span class="line"></span><br><span class="line">print(record_score(95))  # [95]</span><br><span class="line">print(record_score(85))  # [85]</span><br></pre></td></tr></table></figure>
+<p>简而言之：mutable default
+arguments可以导致一些unexpected行为，因为python的func只会为default
+mutable arguments创建一次object,然后每次func
+called都会用到这一个object;</p>
+<p>因此推荐的行为是default值设置为None,然后在每次func内部手动置空。</p>
+<p>think:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def extend_list(x, lst=[]):</span><br><span class="line">    lst.append(x)</span><br><span class="line">    return lst</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">list1 = extend_list(1)</span><br><span class="line">list2 = extend_list(2, [])</span><br><span class="line">list3 = extend_list(&#x27;3&#x27;)</span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line">print(list2)</span><br><span class="line">print(list3)</span><br><span class="line"></span><br><span class="line">// answer:</span><br><span class="line">[1,&quot;3&quot;],[2],[1,&quot;3&quot;]</span><br></pre></td></tr></table></figure>
+<h2 id="recursion-递归"><strong>2.Recursion 递归</strong></h2>
+<h2 id="class"><strong>4.class</strong></h2>
+<ol type="1">
+<li>magic method</li>
+<li><figure>
+<img
+src="/2025/05/13/python-warmup/5eecdaf48460cde541b943ed5586533823bc6c56c68146b775b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4af96392d72de4e62995cad84f5e7321daa62fb496bd7686b4cfb346e552565eda00ad6c24acde30700.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure></li>
+</ol>
+<h2 id="继承"><strong>5.继承</strong></h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class Animal:                                         # Defining a base class `Animal`</span><br><span class="line">    def __init__(self, name, age):                    # Constructor method with parameters `name` and `age`</span><br><span class="line">        self.name = name                              # Assigning `name` attribute</span><br><span class="line">        self.age = age                                # Assigning `age` attribute</span><br><span class="line"></span><br><span class="line">    def eat(self):                                    # Common method `eat`</span><br><span class="line">        return f&#x27;&#123;self.name&#125; is eating.&#x27;</span><br><span class="line"></span><br><span class="line">    def make_sound(self):                             # Common method `make_sound`</span><br><span class="line">        return f&#x27;&#123;self.name&#125; makes a sound.&#x27;</span><br><span class="line"></span><br><span class="line">class Dog(Animal):                                    # Defining `Dog` class that inherits from `Animal`</span><br><span class="line">    def make_sound(self):                             # Overriding the `make_sound` method</span><br><span class="line">        return f&#x27;&#123;self.name&#125; barks.&#x27;</span><br><span class="line"></span><br><span class="line">class Cat(Animal):                                    # Defining `Cat` class that inherits from `Animal`</span><br><span class="line">    def make_sound(self):                             # Overriding the `make_sound` method</span><br><span class="line">        return f&#x27;&#123;self.name&#125; meows.&#x27;</span><br><span class="line"></span><br><span class="line">class Bird(Animal):                                   # Defining `Bird` class that inherits from `Animal`</span><br><span class="line">    def eat(self):                                    # Overriding the `eat` method for `Bird`</span><br><span class="line">        return f&#x27;&#123;self.name&#125; is pecking at its food.&#x27;</span><br><span class="line"></span><br><span class="line">    def make_sound(self):                             # Overriding the `make_sound` method</span><br><span class="line">        return f&#x27;&#123;self.name&#125; chirps.&#x27;</span><br><span class="line"></span><br><span class="line"># The __init__ method is inherited from Animal</span><br><span class="line"># but you can have __init__ for any of the inherited classes as well</span><br><span class="line">dog = Dog(&#x27;Rex&#x27;, 5)                                   # Creating an instance of `Dog`</span><br><span class="line">cat = Cat(&#x27;Whiskers&#x27;, 3)                              # Creating an instance of `Cat`</span><br><span class="line">bird = Bird(&#x27;Tweety&#x27;, 2)                              # Creating an instance of `Bird`</span><br><span class="line"></span><br><span class="line">for animal in [dog, cat, bird]:                       # Iterating over instances</span><br><span class="line">    print(animal.eat())                               # Calling the inherited or overridden method `eat`</span><br><span class="line">    print(animal.make_sound())                        # Calling the overridden method `make_sound`</span><br><span class="line">    print(&#x27;-----&#x27;)</span><br></pre></td></tr></table></figure>
+<p>super()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Animal:                       # Define a class named &#x27;Animal&#x27;</span><br><span class="line">    def __init__(self, species):</span><br><span class="line">        self.species = species</span><br><span class="line"></span><br><span class="line">    def speak(self):</span><br><span class="line">        return &#x27;Sounds...&#x27;</span><br><span class="line"></span><br><span class="line">class Dog(Animal):                  # Define a subclass named &#x27;Dog&#x27; that inherits from &#x27;Animal&#x27;</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        super().__init__(&#x27;Dog&#x27;)     # Call the parent&#x27;s &#x27;__init__&#x27; method using &#x27;super()&#x27;</span><br><span class="line">        self.name = name            # Additional attribute &#x27;name&#x27; for &#x27;Dog&#x27;</span><br><span class="line">        print(self.species)         # Will print Dog</span><br><span class="line"></span><br><span class="line">    def speak(self):</span><br><span class="line">        original = super().speak()  # Call the parent&#x27;s &#x27;speak&#x27; method using &#x27;super()&#x27;</span><br><span class="line">        return original + &#x27; Woof!&#x27;</span><br><span class="line"></span><br><span class="line">class Cat(Animal):                  # Define a subclass named &#x27;Cat&#x27; that inherits from &#x27;Animal&#x27;</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        super().__init__(&#x27;Cat&#x27;)     # Call the parent&#x27;s &#x27;__init__&#x27; method using &#x27;super()&#x27;</span><br><span class="line">        self.name = name            # Additional attribute &#x27;name&#x27; for &#x27;Cat&#x27;</span><br><span class="line"></span><br><span class="line">    def speak(self):</span><br><span class="line">        original = super().speak()  # Call the parent&#x27;s &#x27;speak&#x27; method using &#x27;super()&#x27;</span><br><span class="line">        return original + &#x27; Meow!&#x27;</span><br><span class="line"></span><br><span class="line">dog = Dog(&#x27;Rex&#x27;)                              # Create an instance of the &#x27;Dog&#x27; class</span><br><span class="line">cat = Cat(&#x27;Fluffy&#x27;)                           # Create an instance of the &#x27;Cat&#x27; class</span><br><span class="line">print(dog.name, dog.species, dog.speak())     # Rex Dog Sounds... Woof!</span><br><span class="line">print(cat.name, cat.species, cat.speak())     # Fluffy Cat Sounds... Meow!</span><br></pre></td></tr></table></figure>
+<h4 id="multiple-inheritance"><strong>multiple inheritance</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Video:                               # Define a class named &#x27;Video&#x27;</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.video_codec = &#x27;H.264&#x27;</span><br><span class="line"></span><br><span class="line">    def play_video(self):</span><br><span class="line">        return &#x27;Playing video...&#x27;</span><br><span class="line"></span><br><span class="line">class Audio:                               # Define a class named &#x27;Audio&#x27;</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.audio_codec = &#x27;AAC&#x27;</span><br><span class="line"></span><br><span class="line">    def play_audio(self):</span><br><span class="line">        return &#x27;Playing audio...&#x27;</span><br><span class="line"></span><br><span class="line">class Multimedia(Video, Audio):            # Define a subclass named &#x27;Multimedia&#x27; that inherits from &#x27;Video&#x27; and &#x27;Audio&#x27;</span><br><span class="line">    def __init__(self):</span><br><span class="line">        Video.__init__(self)               # Call the parent &#x27;Video&#x27; class&#x27;s &#x27;__init__&#x27; method</span><br><span class="line">        Audio.__init__(self)               # Call the parent &#x27;Audio&#x27; class&#x27;s &#x27;__init__&#x27; method</span><br><span class="line"></span><br><span class="line">    def play(self):</span><br><span class="line">        return self.play_video() + &#x27; &#x27; + self.play_audio()   # Play both video and audio</span><br><span class="line"></span><br><span class="line">multimedia = Multimedia()                  # Create an instance of the &#x27;Multimedia&#x27; class</span><br><span class="line">print(multimedia.play())                   # Output: &#x27;Playing video... Playing audio...&#x27;</span><br></pre></td></tr></table></figure>
+<p>method resolution order:</p>
+<p>如果继承的父类里面哦有同名的成员变量，python用了一种叫C3的算法来决定最终生效的那个。但是生效的顺序可以直接通过一个mro()方法来获取。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class A:                    # Define a class named &#x27;A&#x27;</span><br><span class="line">    def process(self):</span><br><span class="line">        return &#x27;A process&#x27;</span><br><span class="line"></span><br><span class="line">class B(A):                 # Define a class named &#x27;B&#x27; that inherits from &#x27;A&#x27;</span><br><span class="line">    def process(self):</span><br><span class="line">        return &#x27;B process&#x27;</span><br><span class="line"></span><br><span class="line">class C(A):                 # Define a class named &#x27;C&#x27; that inherits from &#x27;A&#x27;</span><br><span class="line">    def process(self):</span><br><span class="line">        return &#x27;C process&#x27;</span><br><span class="line"></span><br><span class="line">class D(B, C):              # Define a class named &#x27;D&#x27; that inherits from &#x27;B&#x27; and &#x27;C&#x27;</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">print(D.mro())              # [&lt;class &#x27;__main__.D&#x27;&gt;, &lt;class &#x27;__main__.B&#x27;&gt;, &lt;class &#x27;__main__.C&#x27;&gt;, &lt;class &#x27;__main__.A&#x27;&gt;, &lt;class &#x27;object&#x27;&gt;]</span><br></pre></td></tr></table></figure>
+<p>在上面的例子里，调用D的时候，先查D里面有没有定义相关方法，没有再B,然后C,然后A.</p>
+<p>如果你想指定调用的方法，可以直接用具体父类.的方式进行访问，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class D(B, C):                  # Define a class named &#x27;D&#x27; that inherits from &#x27;B&#x27; and &#x27;C&#x27;</span><br><span class="line">    def process(self):</span><br><span class="line">        return A.process(self)</span><br><span class="line"></span><br><span class="line">d = D()                         # Create an instance of the &#x27;D&#x27; class</span><br><span class="line">print(d.process())              # A process</span><br></pre></td></tr></table></figure>
+<p>但是这种可读性不太好。</p>
+<h2 id="封装"><strong>6.封装</strong></h2>
+<p>类里的私有变量，在python里面通过变量前面加两个下划线表示。如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class PublicPrivateExample:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.public_var = &#x27;I am public!&#x27;      # Public variable</span><br><span class="line">        self.__private_var = &#x27;I am private!&#x27;  # Private variable</span><br><span class="line"></span><br><span class="line">example = PublicPrivateExample()</span><br><span class="line">print(example.public_var)                     # &#x27;I am public!&#x27;</span><br><span class="line">print(example.__private_var)                  # Raises AttributeError</span><br></pre></td></tr></table></figure>
+<p>如果访问私有变量，会报错attributeError。</p>
+<p>但是尽管python有私有变量限制访问的机制，但是并不严格，仍然可以通过下面的方式访问_ClassName__private_var：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(example._PublicPrivateExample__private_var)  # I am private!</span><br></pre></td></tr></table></figure>
+<p>如果要访问私有变量最好的方法还是提供一个方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class PublicPrivateExample:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.__private_var = &#x27;I am private!&#x27;</span><br><span class="line"></span><br><span class="line">    def get_private_var(self):      # Getter method for private variable</span><br><span class="line">        return self.__private_var   # We can access private fields inside the class</span><br><span class="line"></span><br><span class="line">example = PublicPrivateExample()</span><br><span class="line">print(example.get_private_var())    # Will print &#x27;I am private!&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="exceptions"><strong>7.Exceptions</strong></h2>
+<p>try...except...</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">    a = int(input())</span><br><span class="line">    b = int(input())</span><br><span class="line">    print(a / b)</span><br><span class="line">except ZeroDivisionError:</span><br><span class="line">    print(&#x27;Error: Division by zero is not allowed.&#x27;)</span><br><span class="line">except ValueError:</span><br><span class="line">    print(&#x27;Error: Input is not a valid integer.&#x27;)</span><br></pre></td></tr></table></figure>
+<p>raising exceptions</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def sqrt(n):</span><br><span class="line">    if n &lt; 0:</span><br><span class="line">        # raise a ValueError if n is negative</span><br><span class="line">        raise ValueError(&#x27;Square root not defined for negative numbers&#x27;)</span><br><span class="line">    return n ** 0.5</span><br><span class="line"></span><br><span class="line">print(sqrt(4))    # 2.0</span><br><span class="line">print(sqrt(-1))   # ValueError: Square root not defined for negative numbers</span><br></pre></td></tr></table></figure>
+<p>custom exceptions</p>
+<p>python有很多内置的exceptions比如indexError,
+typeError,但是也可以定义自己的exceptions</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class TooManyBooksError(Exception):  # Define a new exception class</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">def checkout_books(user, num_books):</span><br><span class="line">    if num_books &gt; 5:  </span><br><span class="line">        # Raise an exception if the user tries to check out more than 5 books</span><br><span class="line">        raise TooManyBooksError(&#x27;You cannot check out more than 5 books at a time.&#x27;)  # Raise our custom exception</span><br><span class="line">    # Otherwise, add the books to the user&#x27;s account.</span><br><span class="line">    user.books += num_books</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    checkout_books(user, 7)     # Try to check out 7 books.</span><br><span class="line">except TooManyBooksError as e:  # Catch our custom exception</span><br><span class="line">    print(e)                    # Print the error message.</span><br></pre></td></tr></table></figure>
+<p>像一般类，也可以传入参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class TooManyBooksError(Exception):  </span><br><span class="line">    def __init__(self, attempted, limit=5, checked_out=0):  </span><br><span class="line">        self.attempted = attempted</span><br><span class="line">        self.limit = limit</span><br><span class="line">        self.checked_out = checked_out</span><br><span class="line">        self.message = f&#x27;You tried to check out &#123;self.attempted&#125; books, but the limit is &#123;self.limit&#125; books.&#x27;</span><br><span class="line">        super().__init__(self.message)</span><br><span class="line">    </span><br><span class="line">    def books_to_return(self):</span><br><span class="line">        return self.checked_out + self.attempted - self.limit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    checkout_books(user, 7)</span><br><span class="line">except TooManyBooksError as e:</span><br><span class="line">    print(e)                                                   # You tried to check out 7 books, but the limit is 5 books.</span><br><span class="line">    print(f&#x27;You need to return &#123;e.books_to_return()&#125; books.&#x27;)  # You need to return 2 books.</span><br></pre></td></tr></table></figure>
+<p>定义custom
+exceptions的时候最好将其他相关信息写在变量里，不要统一扔到message里。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">class TooManyBooksError(Exception):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"># You are forced to pass the message every time</span><br><span class="line">raise TooManyBooksError(&#x27;You tried to check out 7 books, but the limit is 5!&#x27;)</span><br><span class="line"></span><br><span class="line"># This is a bad idea in the long term</span><br><span class="line"></span><br><span class="line">//good</span><br><span class="line">class TooManyBooksError(Exception):</span><br><span class="line">    def __init__(self, attempted, limit=5):</span><br><span class="line">        self.attempted = attempted</span><br><span class="line">        self.limit = limit</span><br><span class="line">        # Build the error message from the data</span><br><span class="line">        self.message = f&#x27;You tried to check out &#123;self.attempted&#125; books, but the limit is &#123;self.limit&#125;.&#x27;</span><br><span class="line">        super().__init__(self.message)</span><br><span class="line"></span><br><span class="line"># When raising the exception, just pass the relevant data</span><br><span class="line">raise TooManyBooksError(7)</span><br></pre></td></tr></table></figure>
+<p>python里的exception的层级结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">BaseException</span><br><span class="line"> ├── BaseExceptionGroup</span><br><span class="line"> ├── GeneratorExit</span><br><span class="line"> ├── KeyboardInterrupt</span><br><span class="line"> ├── SystemExit</span><br><span class="line"> └── Exception</span><br><span class="line">      ├── ArithmeticError</span><br><span class="line">      │    ├── FloatingPointError</span><br><span class="line">      │    ├── OverflowError</span><br><span class="line">      │    └── ZeroDivisionError</span><br><span class="line">      ├── AssertionError</span><br><span class="line">      ├── AttributeError</span><br><span class="line">      ├── BufferError</span><br><span class="line">      ├── EOFError</span><br><span class="line">      ├── ExceptionGroup [BaseExceptionGroup]</span><br><span class="line">      ├── ImportError</span><br><span class="line">      │    └── ModuleNotFoundError</span><br><span class="line">      ├── LookupError</span><br><span class="line">      │    ├── IndexError</span><br><span class="line">      │    └── KeyError</span><br><span class="line">      ├── MemoryError</span><br><span class="line">      ├── NameError</span><br><span class="line">      │    └── UnboundLocalError</span><br><span class="line">      ├── OSError</span><br><span class="line">      │    ├── BlockingIOError</span><br><span class="line">      │    ├── ChildProcessError</span><br><span class="line">      │    ├── ConnectionError</span><br><span class="line">      │    │    ├── BrokenPipeError</span><br><span class="line">      │    │    ├── ConnectionAbortedError</span><br><span class="line">      │    │    ├── ConnectionRefusedError</span><br><span class="line">      │    │    └── ConnectionResetError</span><br><span class="line">      │    ├── FileExistsError</span><br><span class="line">      │    ├── FileNotFoundError</span><br><span class="line">      │    ├── InterruptedError</span><br><span class="line">      │    ├── IsADirectoryError</span><br><span class="line">      │    ├── NotADirectoryError</span><br><span class="line">      │    ├── PermissionError</span><br><span class="line">      │    ├── ProcessLookupError</span><br><span class="line">      │    └── TimeoutError</span><br><span class="line">      ├── ReferenceError</span><br><span class="line">      ├── RuntimeError</span><br><span class="line">      │    ├── NotImplementedError</span><br><span class="line">      │    └── RecursionError</span><br><span class="line">      ├── StopAsyncIteration</span><br><span class="line">      ├── StopIteration</span><br><span class="line">      ├── SyntaxError</span><br><span class="line">      │    └── IndentationError</span><br><span class="line">      │         └── TabError</span><br><span class="line">      ├── SystemError</span><br><span class="line">      ├── TypeError</span><br><span class="line">      ├── ValueError</span><br><span class="line">      │    └── UnicodeError</span><br><span class="line">      │         ├── UnicodeDecodeError</span><br><span class="line">      │         ├── UnicodeEncodeError</span><br><span class="line">      │         └── UnicodeTranslateError</span><br><span class="line">      └── Warning</span><br><span class="line">           ├── BytesWarning</span><br><span class="line">           ├── DeprecationWarning</span><br><span class="line">           ├── EncodingWarning</span><br><span class="line">           ├── FutureWarning</span><br><span class="line">           ├── ImportWarning</span><br><span class="line">           ├── PendingDeprecationWarning</span><br><span class="line">           ├── ResourceWarning</span><br><span class="line">           ├── RuntimeWarning</span><br><span class="line">           ├── SyntaxWarning</span><br><span class="line">           ├── UnicodeWarning</span><br><span class="line">           └── UserWarning</span><br></pre></td></tr></table></figure>
+<h2 id="modules"><strong>8.Modules</strong></h2>
+<p>modules里面是一堆相关方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import math as m   # Importing the math module and renaming it as m</span><br><span class="line"></span><br><span class="line">print(m.pi)        # Now we can use the short alias</span><br><span class="line">print(m.sqrt(16))  # Using the sqrt function using the alias</span><br></pre></td></tr></table></figure>
+<p>当你import module的时候它是怎么起作用的：</p>
+<ol type="1">
+<li>locating the module:</li>
+</ol>
+<p>首先检查sys.path里面的内容，它包括当前的directory,内置的python
+package,包含在PYTHONPATH环境变量里的。如果python没有找到这个module,会抛出ModuleNotFoundError.</p>
+<p>2.initialization of the modele</p>
+<p>一旦定位到，python新建一个对象types.ModuleType，将module的内容加载到这个对象中，运行所有顶层代码。</p>
+<p>3.Caching the Module</p>
+<p>初始化完成后，module cached in sys.modules(a
+dictionary).它保证如果有包在脚本里二次导入，不需要重新定位和初始化。</p>
+<p>4.Adding the module to the importer's namespace</p>
+<p>将该module的名字加入到import它的脚本或者module的命名空间当中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import math</span><br><span class="line"></span><br><span class="line">print(sys.path)       # The path where Python searches for modules</span><br><span class="line">print(sys.modules)    # The cached modules</span><br><span class="line">print(math.sqrt(16))  # Accessing a function from the math module</span><br></pre></td></tr></table></figure>
+<h4 id="nested-modules"><strong>Nested modules</strong></h4>
+<p>modules可以import其他modules，从而形成嵌套modules结构。packages，将相关的modules组织在层级结构里。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">game/</span><br><span class="line">    sound/                # Subdirectory for the &#x27;sound&#x27; module</span><br><span class="line">        __init__.py       # Makes Python treat &#x27;sound&#x27; as a package</span><br><span class="line"></span><br><span class="line">game/</span><br><span class="line">    sound/</span><br><span class="line">        __init__.py</span><br><span class="line">        effects.py        # The &#x27;effects&#x27; submodule</span><br><span class="line">        filters.py        # The &#x27;filters&#x27; submodule</span><br><span class="line">        echo.py           # The &#x27;echo&#x27; submodule</span><br><span class="line"></span><br><span class="line">def echo_filter(soundwave):</span><br><span class="line">    return soundwave + &#x27;...&#x27;   # Adds echo to the soundwave</span><br><span class="line"></span><br><span class="line">def distort_filter(soundwave):</span><br><span class="line">    return soundwave[::-1]     # Reverses the soundwave for distortion</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from game.sound.effects import echo_filter, distort_filter   # Importing the functions</span><br><span class="line"></span><br><span class="line">soundwave = &#x27;pew pew&#x27;</span><br><span class="line">echoed = echo_filter(soundwave)</span><br><span class="line">distorted = distort_filter(soundwave)</span><br><span class="line"></span><br><span class="line">print(echoed, type(echoed))         # Prints &#x27;pew pew...&#x27;, &lt;class &#x27;str&#x27;&gt;</span><br><span class="line">print(distorted, type(distorted))   # Prints &#x27;wep wep&#x27;, &lt;class &#x27;str&#x27;&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="the-role-of-init"><strong>the role of
+<strong>init</strong></strong></h5>
+<p>表明是一个python
+package,python3.3后不是必须的，但是现在有别的用法。比如运行初始化代码__all__，或者为了更加方便的import。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">game/</span><br><span class="line">    __init__.py</span><br><span class="line">    sound/</span><br><span class="line">        __init__.py</span><br><span class="line">        effects.py</span><br><span class="line">        filters.py</span><br><span class="line">        echo.py</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// in game/sound/__init__.py我们可以</span><br><span class="line">from .effects import echo_filter</span><br><span class="line">from .filters import distort_filter</span><br><span class="line">from .echo import echo_sound</span><br><span class="line"></span><br><span class="line">// 然后在其他文件里：</span><br><span class="line">from game.sound import echo_filter, distort_filter</span><br><span class="line"></span><br><span class="line">soundwave = &#x27;pew pew&#x27;</span><br><span class="line">echoed = echo_filter(soundwave)</span><br><span class="line">distorted = distort_filter(soundwave)</span><br></pre></td></tr></table></figure>
+<h2 id="glob"><strong>glob</strong></h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import glob</span><br><span class="line"></span><br><span class="line">txt_files = glob.glob(&#x27;*.txt&#x27;)     # Fetches all .txt files in the current directory</span><br><span class="line">print(txt_files, type(txt_files))  # Prints the list of .txt files and its type</span><br><span class="line"></span><br><span class="line">nested_files = glob.glob(&#x27;**/*.txt&#x27;, recursive=True)  # Fetches all .txt files recursively</span><br><span class="line">print(nested_files, type(nested_files))               # Prints the list of .txt files and its type</span><br><span class="line">//[&#x27;file1.txt&#x27;, &#x27;file2.txt&#x27;, &#x27;file3.txt&#x27;, &#x27;folder1/file4.txt&#x27;, &#x27;folder1/file5.txt&#x27;] &lt;class &#x27;list&#x27;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="pathlib"><strong>pathlib</strong></h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from pathlib import Path</span><br><span class="line"></span><br><span class="line">p = Path(&#x27;.&#x27;)      # &#x27;.&#x27; represents the current directory</span><br><span class="line">print(p, type(p))  # &lt;class &#x27;pathlib.PosixPath&#x27;&gt; or &lt;class &#x27;pathlib.WindowsPath&#x27;&gt; depending on your operating system</span><br><span class="line"></span><br><span class="line">file_path = p / &#x27;example.txt&#x27;  # constructs a new path</span><br><span class="line">print(file_path)               # example.txt</span><br><span class="line"></span><br><span class="line">abs_path = file_path.absolute()  # get the absolute path</span><br><span class="line">print(abs_path)                  # prints the absolute path, like /home/user/example.txt on Unix or C:\\user\\example.txt on Windows</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="/2025/05/13/python-warmup/5eecdaf48460cde541b943ed5586533823bc6c56c68146b775b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50df7b7e310ada23aab5228a570163822c9a188efcf7f34f0639ff0ef3ea15fd23807a428bcdfe28bf66.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="其他">其他</h1>
+<p>python代码命名规范</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/09/serl-code-reading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/09/serl-code-reading/" class="post-title-link" itemprop="url">serl-code-reading</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-09 12:52:47" itemprop="dateCreated datePublished" datetime="2025-05-09T12:52:47+08:00">2025-05-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-11 14:29:00" itemprop="dateModified" datetime="2026-06-11T14:29:00+08:00">2026-06-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="serl">serl</h1>
+<figure>
+<img data-src="/2025/05/09/serl-code-reading/image-20250509125325475.png"
+alt="image-20250509125325475" />
+<figcaption aria-hidden="true">image-20250509125325475</figcaption>
+</figure>
+<h3 id="training-from-state-observation-example">1. Training from state
+observation example</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// learner</span><br><span class="line">// 从 Replay Buffer（经验回放缓冲区） 中采样数据，更新 SAC（Soft Actor-Critic）智能体 的参数，并与 // Actor（执行器） 通信以同步最新策略。</span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> tqdm.tqdm(<span class="built_in">range</span>(FLAGS.max_steps)):</span><br><span class="line">    <span class="comment"># 1. 从 Replay Buffer 采样批次数据</span></span><br><span class="line">    batch = <span class="built_in">next</span>(replay_iterator)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 更新智能体参数</span></span><br><span class="line">    agent, update_info = agent.update_high_utd(batch, utd_ratio=<span class="number">1</span>)</span><br><span class="line">    agent = jax.block_until_ready(agent)  <span class="comment"># 确保计算完成（JAX异步特性）</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 发布新参数给 Actor</span></span><br><span class="line">    server.publish_network(agent.state.params)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4. 记录日志和保存模型</span></span><br><span class="line">    <span class="keyword">if</span> update_steps % FLAGS.log_period == <span class="number">0</span>:</span><br><span class="line">        wandb_logger.log(update_info, step=update_steps)  <span class="comment"># 训练指标（如损失）</span></span><br><span class="line">        wandb_logger.log(&#123;<span class="string">&quot;timer&quot;</span>: timer.get_average_times()&#125;, step=update_steps)  <span class="comment"># 耗时</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> update_steps % FLAGS.checkpoint_period == <span class="number">0</span>:</span><br><span class="line">        checkpoints.save_checkpoint(...)  <span class="comment"># 保存模型检查点</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">// actor</span><br><span class="line"><span class="keyword">or</span> step <span class="keyword">in</span> tqdm.tqdm(<span class="built_in">range</span>(FLAGS.max_steps)):</span><br><span class="line">    <span class="comment"># 1. 采样动作</span></span><br><span class="line">    <span class="keyword">if</span> step &lt; FLAGS.random_steps:</span><br><span class="line">        actions = env.action_space.sample()  <span class="comment"># 随机探索</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sampling_rng, key = jax.random.split(sampling_rng)</span><br><span class="line">        actions = agent.sample_actions(obs, seed=key, deterministic=<span class="literal">False</span>)</span><br><span class="line">        actions = np.asarray(jax.device_get(actions))  <span class="comment"># JAX → NumPy</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 与环境交互</span></span><br><span class="line">    next_obs, reward, done, truncated, info = env.step(actions)</span><br><span class="line">    data_store.insert(&#123;</span><br><span class="line">        <span class="string">&quot;observations&quot;</span>: obs,</span><br><span class="line">        <span class="string">&quot;actions&quot;</span>: actions,</span><br><span class="line">        <span class="string">&quot;next_observations&quot;</span>: next_obs,</span><br><span class="line">        <span class="string">&quot;rewards&quot;</span>: reward,</span><br><span class="line">        <span class="string">&quot;masks&quot;</span>: <span class="number">1.0</span> - done,  <span class="comment"># 用于折扣计算</span></span><br><span class="line">        <span class="string">&quot;dones&quot;</span>: done <span class="keyword">or</span> truncated,</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 更新状态</span></span><br><span class="line">    obs = next_obs</span><br><span class="line">    <span class="keyword">if</span> done <span class="keyword">or</span> truncated:</span><br><span class="line">        obs, _ = env.reset()  <span class="comment"># 回合结束，重置环境</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/07/tmux-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/07/tmux-usage/" class="post-title-link" itemprop="url">tmux用法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-07 15:57:37" itemprop="dateCreated datePublished" datetime="2025-05-07T15:57:37+08:00">2025-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-06-11 14:25:44" itemprop="dateModified" datetime="2026-06-11T14:25:44+08:00">2026-06-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><code>Ctrl+b ;</code>：光标切换到上一个窗格。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/05/07/nvidia-cuda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1087,1327 +1471,10 @@ id="ubuntu安装nvidia显卡驱动之后没有network">ubuntu安装Nvidia显卡�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/VLM-VLA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/27/VLM-VLA/" class="post-title-link" itemprop="url">从VLM到VLA</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-04-27 17:13:02" itemprop="dateCreated datePublished" datetime="2025-04-27T17:13:02+08:00">2025-04-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-10 09:47:08" itemprop="dateModified" datetime="2026-06-10T09:47:08+08:00">2026-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0-papers/" itemprop="url" rel="index"><span itemprop="name">专业笔记 - 专业笔记 - papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>大致回顾了一下VLM的concept和结构，大概就是对image和text进行向量空间表示，通过contrastive
-learning让同一个事物的二者特征在embedding空间里相近。</p>
-<p>just like 哲学就是哲学家的历史，从paper publication
-history看一下vla/vlm的区别和发展。don't be fooled by 高大上的名词。</p>
-<h1 id="vlm"><strong>VLM</strong></h1>
-<h1 id="vlm的定义"><strong>VLM的定义</strong></h1>
-<p>多模态模型处理一种类型以上的输入，比如vision+text
-models。下面说的大概是研究多模态的一种，比如vision language
-models.需要理解和处理image和text的信息。相关的任务比如image
-captioning(e.g.CLIP), visual question
-answering(GPT-4-vision)，text-to-image(e.g.DALL-E)，或者text-to-video
-generation(sora).</p>
-<h1 id="vlm的结构"><strong>VLM的结构</strong></h1>
-<p>VLM的结构在于如何融合视觉和文本模态，不同的架构会在早期阶段、中间阶段或者最后阶段进行信息的融合或者对齐。有很多种，可以看看几种最常见的：</p>
-<h2 id="llavalarge-language-and-vision-assistant"><strong>LLaVA(Large
-Language and Vision Assistant)</strong></h2>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a6d6e809e475597e6c83b7a5467cc1b9b1b1cf35b05de7367edf29a23485286baa512d4ecd6a23dc66c64adc2a3bc0c83.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>图像经过clip并投影到embedding
-vectors，文本通过文本模型产生相应的embedding
-vectors。处在相同的维度空间里，可以进一步无缝集成。</p>
-<p>在训练LLaVA模型中有两个阶段：</p>
-<p>1.pre-training for feature alignment.
-只有投影矩阵在数据集CC3M上进行更新。</p>
-<figure>
-<img
-src="https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e84d17910d9e7d63213bffcf9a87c1aab68c6fa978b73ce9d9bddef934264e90602517809c9a88bd1?tmpCode=b2bef226-f447-45ac-8fa7-2a6efc08cd77"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ol type="1">
-<li>Fine-tuning End-to-End. 投影矩阵和LLM会在两个不同的场景进行更新：
-<ol type="1">
-<li>visual chat:LLaVA
-根据我们生成的多模式指令跟踪数据进行了微调，以适应日常面向用户的应用。</li>
-<li>Science QA:LLaVA 针对科学领域的多模态推理数据集进行了微调。</li>
-</ol></li>
-</ol>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c4ee39340545c1810032fdf6ec961d9b8280818ad1a39f1eb6c03bec04b3171c863a771ca118fcc80.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="llava-model的组成"><strong>LLaVA model的组成</strong></h3>
-<h4 id="vision-encoder"><strong>Vision Encoder</strong></h4>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a8169d9d9ddf3b83fb68af4e589ff4560e0af6934db815dd3d4873be65aacbe1f4f69c02138fa35209a0503d9106918e3.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>visual
-encoder将image划分为小的patches，比如16x16像素这样。每个patch被处理转换成数值形式，在送给image
-encoder;</p>
-<p>image
-enconder由多个blocks组成，主要目的是加强图像的视觉表示。包括feedforward
-layers,用来提取高层特征；attention layers关注图像的相关性.</p>
-<p>vision
-encoders的training目标是尽量减少images的向量表示和text描述的差异度。在训练期间，目标是开发一个模型，该模型能够将图像的嵌入转换为与文本紧密一致的表示。</p>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8968a78147832cebbe7366e02e12c7c3c233e5af64135f1de429bae9669baa2e10300bf43c4f2a3e7a4.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4 id="embedding-models"><strong>Embedding Models</strong></h4>
-<p>Embeddings认为是tokens的密集数学表示(compact numerical
-representations).根源来自分布假设，相似位置的词语有相近的meanings.</p>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dfce406188c32a716b26e334a1b4675672c7cd1c938ecf5ad9e0005879e3da24024ad4d15891f4e49e.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="llava的推理"><strong>LLaVA的推理</strong></h3>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602afc228fb22ff2c4af7ef46e557ff1e118f0fc5dee6617dc42b5443ede480f28923d2b3d49d7a1732db1f0c05db8c5a083.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>image和text都转换为embeddings之后，由attention决定关注哪一部分。</p>
-<h1 id="vla"><strong>VLA</strong></h1>
-<p>以RT-2为例</p>
-<h2 id="vla-model和vlm-model"><strong>VLA model和VLM model</strong></h2>
-<p>VLM模型是一种能处理visual和自然语言的机器学习模型，VLM
-是在互联网规模的图像和文本数据上进行训练的。比如RT-2中用到的base VLA
-model:PaLI-X PaLM-E</p>
-<p>RT-2提出了一种方法将预训练的VLA
-model用在机器人轨迹数据上，其中机器人轨迹数据用文本形式进行编码。</p>
-<h2 id="rt-2-model"><strong>RT-2 model</strong></h2>
-<p>将机器人的轨迹数据编码为text tokens，对vla模型进行fine tune.</p>
-<h2 id="效果"><strong>效果</strong></h2>
-<h3 id="泛化性"><strong>泛化性</strong></h3>
-<p>这项研究的一项重要发现是 RT-2
-模型令人印象深刻的泛化能力。该模型在处理新物体、背景和环境时展现出显著提升的性能。它可以解读机器人训练数据中未曾出现的命令，并根据用户指令进行基本的推理。这种推理能力源于底层语言模型运用思维链推理的能力。该模型的推理能力示例包括：判断哪个物体（石头）可以用来做临时锤子，或者哪种饮料最适合疲惫的人（能量饮料）。这种程度的泛化能力是机器人控制领域的一大进步。</p>
-<h3 id="新兴能力"><strong>新兴能力</strong></h3>
-<p>RT-2
-模型的另一个令人兴奋的方面是它展现出的涌现能力。通过利用从互联网规模预训练中获得的知识，该模型可以执行训练期间未明确传授的任务。例如，它可以重新利用已学技能，将物体放置在语义指示的位置附近，或解释物体之间的关系，以确定拾取哪个物体以及将其放置在何处。例如，诸如“捡起即将从桌子上掉下来的袋子”或“将香蕉移动到二加一的和”（均如图
-1
-所示）之类的命令——要求机器人对机器人数据中从未见过的物体或场景执行操作任务——需要从基于网络的数据中转化而来的知识才能运行。这些涌现能力展示了
-VLA
-模型在将知识从网络规模数据迁移到现实世界机器人控制方面的强大能力。</p>
-<figure>
-<img
-src="/2025/04/27/VLM-VLA/5eecdaf48460cde589e30c1a9ad470c9891b500d8a49637075b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e3a45c6badaef44ca130f2aa95930983137950b62161dc0f419c48d2d743c40903620870ff0d76157.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="消融实验"><strong>消融实验</strong></h3>
-<p>该研究论文还将 RT-2
-模型的性能与多个基线模型进行了比较。结果表明，RT-2
-在泛化能力和涌现能力方面均优于基线模型。此外，论文还探讨了模型规模和训练策略对泛化性能的影响。结果发现，更大的模型以及与网络数据协同微调可以带来更好的泛化性能。</p>
-<h3 id="缺点"><strong>缺点</strong></h3>
-<p>虽然 RT-2 模型展现出巨大的潜力，但仍存在一些局限性。实时运行大型 VLA
-模型的计算成本很高，需要开展更多研究来优化其推理速度。此外，目前可用于微调的开源
-VLM 模型数量有限。未来的研究应侧重于开发实现更高频率控制的技术，并使更多
-VLM 模型可用于训练 VLA 模型。</p>
-<h1 id="参考文献"><strong>参考文献：</strong></h1>
-<p>https://medium.com/<span class="citation"
-data-cites="aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07">@aydinKerem/what-are-visual-language-models-and-how-do-they-work-41fad9139d07</span></p>
-<p>https://alinlab.kaist.ac.kr/ai602_2024_fall.html</p>
-<p>https://alinlab.kaist.ac.kr/ai602_2025_spring.html</p>
-<p>https://medium.com/black-coffee-robotics/vision-language-action-vla-models-llms-for-robots-f60ba0b79579</p>
-<p>https://medium.com/<span class="citation"
-data-cites="LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249">@LawrencewleKnight/how-vision-language-action-models-are-revolutionizing-robotic-control-a627bbc0c249</span></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/04/27/RL-Basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/27/RL-Basic/" class="post-title-link" itemprop="url">RL基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-04-27 11:35:41" itemprop="dateCreated datePublished" datetime="2025-04-27T11:35:41+08:00">2025-04-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-11 14:31:44" itemprop="dateModified" datetime="2026-06-11T14:31:44+08:00">2026-06-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>Goal: 了解一下关于RL, VLA, VLM的basic concetps</p>
-</blockquote>
-<h1 id="什么是rl">什么是RL</h1>
-<blockquote>
-<p>[!NOTE]</p>
-<p>agent的终极目标是优化在环境中的行为。开始时刻，agent在环境中可能表现糟糕；随着时间推移，和环境交互试错可以不断的提高自己的表现。</p>
-<p>RL最大的美妙之处在于可以通过同一套算法让agent适应不同的未知的复杂环境。</p>
-</blockquote>
-<h3 id="应用场景"><strong>应用场景</strong></h3>
-<ul>
-<li>游戏：chess and go</li>
-<li>机器人:在家里移动、搬运、完成复杂的日常任务</li>
-<li>自动驾驶：自动驾驶汽车、控制直升机或无人机。</li>
-</ul>
-<blockquote>
-<p>[!WARNING]</p>
-<ul>
-<li>经典books:http://incompleteideas.net/book/RLbook2020.pdfrepo:https://github.com/LyWangPX/Reinforcement-Learning-2nd-Edition-by-Sutton-Exercise-Solutions</li>
-</ul>
-</blockquote>
-<h1 id="rl-framework"><strong>RL framework</strong></h1>
-<ul>
-<li><strong>Agent</strong>: 目标是学习策略来优化某个process</li>
-<li><strong>Environment</strong>:
-Agent所在的环境，由一系列状态组成。</li>
-<li>在每个时间步，agent选择一个action,会改变环境的state到新一个。agent因此会收到一个feedback评估这次choice的好坏。这个feedback叫做<strong>reward</strong>，会表示为数值形式。</li>
-<li>根据reward,agent随时间逐渐学习到优化的策略去最大化总的reward值。</li>
-</ul>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832ee62a2c00f2506431df37dcacffbf0d3f06ebb3f9035c60659af27edee83c29e87bf84bc12faa752b.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>当前环境的state和当前agent的action可能导致不同的prob让new
-state会有不同的reward,对应相应的概率。</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50dfd9389e0fb3ccd3fdf8f7f83186eccbd32f5473c651d1e4afe7af616c5e1a828a868db6307fa1a316.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h1 id="reward种类"><strong>Reward种类</strong></h1>
-<p>为了定义一个长过程中总的reward(也叫做return),有几种形式。</p>
-<h2 id="简化版本"><strong>简化版本：</strong></h2>
-<p>Ri表示i时间戳agent收到的reward,</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832ea5a092a0869b9a49251f76a8d51566dc2517977dcc83dd7f5fa09420059731be2d8a6999f18e0eb0.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h2
-id="discounted累计reward"><strong>Discounted累计reward:</strong></h2>
-<p>大多数时候会在reward前面乘以一个削减系数（0～1）。</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f8960fa2fb72871b3bf7d5de161273e1e25b88aa4a62aeff924909b53ed0480f68080407fa5ac0f59a0a.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>根本原因是agent的优化行为是更考虑短期的rewards。最终可以表示为一种递归的公式形式。</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e2752ec8e99bb261e3289026cdc391e0e12c49ec7a8e14847077fa8e1d7bd4e0e6c8dcf03add25814.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h1 id="任务的类型"><strong>任务的类型</strong></h1>
-<h2 id="episodic-tasks"><strong>episodic tasks</strong></h2>
-<p>agent和environment的交互可以包含一系列独立的episodes.这些偶然事件独立于其他并且起始状态从状态分布中采样。</p>
-<p>举个例子，我们想让agent玩一个游戏。为了达到那个目的，我们会让robot玩很多独立的游戏，或输或赢。收到的rewards会逐渐影响robot接下来在游戏中的策略。</p>
-<p>episodes也叫trials.</p>
-<h2 id="continuing-tasks"><strong>continuing tasks</strong></h2>
-<p>不是所有的tasks都是episodic，一些任务可以是连续性的，意味着没有一个最终的状态。比如（win
-or lose）。这种情况下，timestamp是无限的，因此计算cummulative
-return可能不可行。</p>
-<h1 id="策略policies和value-functions"><strong>策略(policies和value
-functions)</strong></h1>
-<p>在强化学习中，<strong>Policy（策略）</strong>和<strong>Value
-Function（价值函数）</strong>是两个最核心的概念，它们共同指导智能体的决策，但侧重点不同。它们的关系可以通过<strong>“导航”</strong>的类比直观理解：</p>
-<h2 id="policy"><strong>policy</strong></h2>
-<h3 id="policy策略-怎么做"><strong>Policy（策略）——
-‘怎么做’</strong></h3>
-<ul>
-<li><strong>直观理解</strong>：策略是智能体的<strong>行为准则</strong>，直接决定它在每个状态下应该采取什么动作。
-<ul>
-<li><strong>比如</strong>：
-<ul>
-<li>自动驾驶的Policy可能是：“看到红灯→刹车；绿灯→加速”。</li>
-<li>游戏AI的Policy可能是：“敌人靠近→攻击；血量低→逃跑”。</li>
-</ul></li>
-<li><strong>数学表示</strong>：
-<ul>
-<li><strong>确定性策略</strong>：π(s)=a<em>π</em>(<em>s</em>)=<em>a</em>
-（状态 s<em>s</em> 下固定选择动作 a<em>a</em>）。</li>
-<li><strong>随机性策略</strong>：π(a∣s)<em>π</em>(<em>a</em>∣<em>s</em>)
-（状态 s<em>s</em> 下选择动作 a<em>a</em> 的概率）。</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>策略π是从状态s ∈ S 采取各种可能的action到达概率p的mapping.</p>
-<p>如果一个agent遵从策略π，那么agent从状态s采取一个action的概率p(a|s)=π(s).</p>
-<p>任何policy可以表示成一个表大小为|s|x|A|</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a822951806323f896986c6ef4fe897b0ad315db4181a814c9ef21b11a6c8d3bfbfaa770e7d0955ef5b53ca2eef1412a53.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>最简单的策略就是random:机器人走每一步的概率是一样的，对应上面右边的表格。</p>
-<p>展示的表格也可以是episode
-task的一个例子，到达终止状态后会收获一个reward。一个新独立的game可以被初始化。</p>
-<p>除了policy之外，也会用value
-functions描述agent从一个当前state采取某种action或者在给定的state的expected
-reward(选择的好坏).</p>
-<h2 id="value-function价值函数-有多好"><strong>Value
-Function（价值函数）—— ‘有多好’</strong></h2>
-<ul>
-<li><strong>直观理解</strong>：价值函数是<strong>对状态的长期收益评估</strong>，回答“当前状态/动作对未来有多有利”。
-<ul>
-<li><strong>比如</strong>：
-<ul>
-<li>下棋时，某个棋盘状态的价值函数值高，说明胜率大。</li>
-<li>股票市场中，当前持仓的价值函数值低，说明未来可能亏损。</li>
-</ul></li>
-<li><strong>两种类型</strong>：</li>
-</ul></li>
-</ul>
-<ol type="1">
-<li><strong>状态价值函数</strong> <strong>Vπ(s)Vπ(s)</strong>：
-<ul>
-<li>表示在状态 s<em>s</em> 下，<strong>遵循策略</strong>
-<strong>ππ</strong> 能获得的期望回报。
-<ul>
-<li>公式：Vπ(s)=Eπ[Gt∣St=s]*V**π<em>(</em>s<em>)=E</em>π*[<em>G<strong>t<em>∣</em>S</strong>t</em>=<em>s</em>]。</li>
-</ul></li>
-<li><strong>动作价值函数</strong> <strong>Qπ(s,a)Qπ(s,a)</strong>：
-<ul>
-<li>表示在状态 s<em>s</em> 下<strong>执行动作</strong>
-<strong>aa</strong>，之后遵循策略 π<em>π</em> 的期望回报。</li>
-<li>公式：Qπ(s,a)=Eπ[Gt∣St=s,At=a]*Q**π<em>(</em>s<em>,</em>a<em>)=E</em>π*[<em>G<strong>t<em>∣</em>S</strong>t</em>=<em>s</em>,*A**t<em>=</em>a*]。</li>
-</ul></li>
-</ul></li>
-</ol>
-<ul>
-<li><strong>Policy</strong>是“行动派”，<strong>Value
-Function</strong>是“预言家”。</li>
-<li>Policy告诉智能体“该做什么”，Value
-Function告诉它“这么做有多好”。</li>
-<li>两者协同工作：Value
-Function评估和改进Policy，而Policy的变动又会影响Value
-Function的估计。</li>
-<li>结合两者的方法（如Actor-Critic）通常能更高效地解决复杂问题。</li>
-</ul>
-<h3 id="state-value-function"><strong>state-value
-function:</strong></h3>
-<p>state-value function
-v(s)或者简单点说叫v-function建立了映射，从环境的某种state,根据agent采取的策略<em>π</em>，到预期会收到的累积的expected
-reward.</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e7a8d57df376b356d171e81b79de6e337372cb5694f27174e4dce4c500338c37bf95253e51abbc896.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>举个例子：</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a0d50ecb3f30f832e162b031b56b6a1724b18e3afdf1b55bd225aac08a1dc52adf33423bef2f6b67708c426ff155be740.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>终止状态的v-value是0.</p>
-<h3 id="action-value-function"><strong>action-value
-function</strong></h3>
-<p>与V-function类似，也考虑agent在某个policy下考虑某个可能的action.</p>
-<p>Action-value function
-q(s,a),或者可以说是Q-function是建立一种映射，从环境的一种状态s ∈ S
-和可能的action a ∈ A,遵循某种策略<em>π</em> 收到的expected reward.</p>
-<p>Q-function可以表示为|S|x|A|的表格。</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf540e224cfc1df371c8d39a8d332128710072622a09d4cf92d8988b562c3a960af81055eb0250cfadf.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602aa3ba6b64951bcf7e35c7986ae2f87dd0b9fc1b7de33af5df9f5bcb9b3feba58e6341dabe337268f2d87ed2ce7eecb005.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>state和action functions的不同点在于action-value
-function采用了在当前state agent要采用的action的信息，state
-function只考虑了当前的state并没有考虑到agent的下一步action.</p>
-<p>V-和Q-functions都是从agent经验中学到的。</p>
-<h4 id="v--and-q-的subtility之处"><strong>V- and
-Q-的subtility之处</strong></h4>
-<p>为什么q(s,a)不等于v(s')。i.e.为什么agent在state s采取了action
-a去到了下一个state s'的expected reward不等于agent在s'的expected
-reward?</p>
-<p>答案是虽然在一个当前状态s采取一个action a会确定性leads
-to一个新状态s',agent收到的reward是Q-function考虑的而不是V-function.q(s,a)计算是<em>Rₜ
-+ αRₜ₊₁</em> … . ,v(s')是<em>Rₜ₊₁ + αRₜ₊₂ + …</em> .不包括Rt的。</p>
-<p>另外一个值得注意的是，在某些状态s采取行为a可能导致多个可能的下一个状态。比如迷宫游戏agent往右走可能有20%随机遇到障碍被自动移到别的位置。因此，agent收到的rewards即使是同样的action和state也可能不一样。这是另一个导致两者不对等的原因。</p>
-<h2 id="bellman-equation"><strong>Bellman equation</strong></h2>
-<p>Bellman
-equation是RL领域的一个基础equation.简单地来说，它递归建立起state/act
-ion的function values在当前和下个timestamp.</p>
-<h3 id="v-function"><strong>V-function</strong></h3>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098c401725b5201f203435270a1f77f4a98be0ae5e992dfa74328a3abbe119771052b7e74677826d1bd8.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="q-function"><strong>Q-function</strong></h3>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a8169d9d9ddf3b83fcb03b239e3eceb242c9c971f5314e56e72c2fde54030076fabfad3ef98bc3edb99d190f84f42e1c0.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a7a5c135778ee098cfe750a74b532a501f6cf218ac414754e2c700d28f0f271a505b79623335ef7e55c3d7f4a3444c437.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h1 id="optimal-policy"><strong>Optimal policy</strong></h1>
-<p>定义不同策略的比较</p>
-<p>π₁&gt;π2 当对于所有状态s ∈ S.π₁的reward都不小于π₂的reward</p>
-<p>policy π⁎是最优的，当不小于其他所有策略</p>
-<h2 id="bellman-optimality-equation"><strong>Bellman optimality
-equation</strong></h2>
-<p>解Bellman quations的优化问题，求max</p>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602a15464a86392b1bf55353e8fbce6a782389a0a7c7836bb44f878c060e95ba8434fcb00ab44b734ff3277216822a7d6743.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img
-src="/2025/04/27/RL-Basic/5eecdaf48460cde589e30c1a9ad470c985c7bb96130a977175b8339e1c4c24831f739168b2e59d878d68742cd653602aaac77b6f1abe50df69045fd03b3ab51cef15cc3b2788fdda90cb3bc153f71cf66390746302e9a53c842d333d629689de.png"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>求解了V-* function或者Q<em>-function，最优策略</em>π⁎
-就可以很容易被计算。*</p>
-<p>实际运用时，states的数量非常庞大，因此数学求解这个问题非常困难。因此，RL
-learning要用计算量和memory更低的近似的策略替代。</p>
-<h1 id="参考文献"><strong>参考文献：</strong></h1>
-<p>https://readmedium.com/reinforcement-learning-introduction-and-main-concepts-48ea997c850c</p>
-<p>books and repo:</p>
-<p>http://incompleteideas.net/book/RLbook2020.pdf</p>
-<p>https://github.com/LyWangPX/Reinforcement-Learning-2nd-Edition-by-Sutton-Exercise-Solutions</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2025/01/17/C-Notes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/17/C-Notes/" class="post-title-link" itemprop="url">C++_Notes</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-17 17:20:02" itemprop="dateCreated datePublished" datetime="2025-01-17T17:20:02+08:00">2025-01-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-11 13:57:17" itemprop="dateModified" datetime="2026-06-11T13:57:17+08:00">2026-06-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="lec2-types-and-structures">Lec2: types and structures</h2>
-<p>1.STL：standard template Library</p>
-<p>访问stl中的元素要用std::（IDK为什么不用stl）</p>
-<p>2.c++是一种静态类型语言：runtime之前变量、函数就被赋予了类型。</p>
-<p>与之相对应的动态类型语言：runtime时候根据变量和函数的value确认类型</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>编译型语言和解释型语言的主要区别：source code翻译成机器码的时机</p>
-</blockquote>
-<p>3.struct：绑定各种不同类型的变量</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Student s;</span><br><span class="line">s.name = <span class="string">&quot;Sarah&quot;</span>;</span><br><span class="line">s.state = <span class="string">&quot;CA&quot;</span>;</span><br><span class="line">s.age = <span class="number">21</span>;</span><br><span class="line">等价于</span><br><span class="line">Student s = &#123;<span class="string">&quot;Sarah&quot;</span>,<span class="string">&quot;CA&quot;</span>,<span class="number">21</span>&#125;;</span><br></pre></td></tr></table></figure>
-<p>4.std::pair</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::pari&lt;<span class="type">int</span>,string&gt; numSuffix = &#123;<span class="number">1</span>,<span class="string">&quot;st&quot;</span>&#125;;</span><br><span class="line">numSuffix.first</span><br></pre></td></tr></table></figure>
-<p>一般通过std::pair返回success状态+result</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::pair&lt;<span class="type">bool</span>, Student&gt; <span class="title">lookupStudent</span><span class="params">(string name)</span> </span>&#123;</span><br><span class="line">Student blank;</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">notFound</span>(name)) <span class="keyword">return</span> std::<span class="built_in">make_pair</span>(<span class="literal">false</span>, blank);</span><br><span class="line">Student result = <span class="built_in">getStudentWithName</span>(name);</span><br><span class="line"><span class="keyword">return</span> std::<span class="built_in">make_pair</span>(<span class="literal">true</span>, result);</span><br><span class="line">&#125;</span><br><span class="line">std::pair&lt;<span class="type">bool</span>, Student&gt; output = <span class="built_in">lookupStudent</span>(“Julie”)</span><br></pre></td></tr></table></figure>
-<p>5.auto:让编译器自主推导类型</p>
-<h2
-id="lec3initializationreferences">Lec3:Initialization&amp;References</h2>
-<h3 id="uniform-initialization">1. Uniform initialization</h3>
-<p>对所有类型都适用，在声明的时候立即初始化</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>&#125;;</span><br><span class="line">std::pair&lt;<span class="type">int</span>, string&gt; numSuffix1&#123;<span class="number">1</span>,<span class="string">&quot;st&quot;</span>&#125;;</span><br><span class="line">Student s&#123;<span class="string">&quot;Sarah&quot;</span></span><br><span class="line">, <span class="string">&quot;CA&quot;</span></span><br><span class="line">, <span class="number">21</span>&#125;;</span><br><span class="line"><span class="comment">// less common/nice for primitive types, but possible!</span></span><br><span class="line"><span class="type">int</span> x&#123;<span class="number">5</span>&#125;;</span><br><span class="line">string f&#123;<span class="string">&quot;Sarah&quot;</span>&#125;;</span><br></pre></td></tr></table></figure>
-<p>vector初始化的时候要注意</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">vec1</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line"><span class="comment">// makes &#123;5, 5, 5&#125;, not &#123;3, 5&#125;!</span></span><br><span class="line"><span class="comment">// uses a std::initializer_list (more later)</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec2&#123;<span class="number">3</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">// makes &#123;3, 5&#125;</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>使用uniform initialization的方式去初始化任何你的non-primitive typed
-variables,但是不要用vec(n,k)</p>
-</blockquote>
-<h3 id="auto">2. auto</h3>
-<p>编译器推断类型，用于类型名字明显而且冗长的时候用auto代替来让代码清晰。</p>
-<h3 id="structured-binding">3.Structured Binding</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># before</span></span><br><span class="line"><span class="keyword">auto</span> p =</span><br><span class="line">std::<span class="built_in">make_pair</span>(“s”, <span class="number">5</span>);</span><br><span class="line">string a = p.first;</span><br><span class="line"><span class="type">int</span> b = p.second;</span><br><span class="line"></span><br><span class="line"><span class="meta">#after</span></span><br><span class="line"><span class="keyword">auto</span> p =</span><br><span class="line">std::<span class="built_in">make_pair</span>(“s”, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">auto</span> [a, b] = p;</span><br><span class="line"><span class="comment">// a is string, b is int</span></span><br><span class="line"><span class="comment">// auto [a, b] =</span></span><br><span class="line">std::<span class="built_in">make_pair</span>(...);</span><br></pre></td></tr></table></figure>
-<p>对structs结构也适用</p>
-<h3 id="引用refrence">4.引用refrence</h3>
-<h3 id="左值和右值">5. 左值和右值</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//l-values可以出现在=的左边和右边</span></span><br><span class="line"><span class="comment">//x是一个l-value</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">3</span>;</span><br><span class="line"><span class="type">int</span> y = x;</span><br><span class="line"><span class="comment">//l-values有名字</span></span><br><span class="line"><span class="comment">//l-values不是暂时的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//r-value只出现在=的右边</span></span><br><span class="line"><span class="comment">// 3是一个r-value</span></span><br><span class="line"><span class="comment">// r-value没有名字，是暂时的</span></span><br></pre></td></tr></table></figure>
-<p>看一些错误示例</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">shift</span><span class="params">(vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [num1, num2]: nums) &#123;</span><br><span class="line">num1++;</span><br><span class="line">num2++;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">shift</span>(&#123;&#123;<span class="number">1</span>, <span class="number">1</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// &#123;&#123;1, 1&#125;&#125; is an rvalue, it can’t be referenced</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//改正：</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">shift</span><span class="params">(vector&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [num1, num2]: nums) &#123;</span><br><span class="line">num1++;</span><br><span class="line">num2++;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">auto</span> my_nums = &#123;&#123;<span class="number">1</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line"><span class="built_in">shift</span>(my_nums);</span><br></pre></td></tr></table></figure>
-<p>引用只能创建在变量上</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>&amp; thisWontWork = <span class="number">5</span>; <span class="comment">// This doesn&#x27;t work!</span></span><br></pre></td></tr></table></figure>
-<h3 id="const和const引用">6. const和const引用</h3>
-<p>const可以修饰references或者非引用变量。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt; c_vec&#123;<span class="number">7</span>, <span class="number">8</span>&#125;; <span class="comment">// a const variable</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; ref = vec; <span class="comment">// a regular reference  </span></span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; c_ref = vec; <span class="comment">// a const reference</span></span><br><span class="line">vec.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// OKAY</span></span><br><span class="line">c_vec.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// BAD - const</span></span><br><span class="line">ref.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// OKAY     </span></span><br><span class="line">c_ref.<span class="built_in">push_back</span>(<span class="number">3</span>); <span class="comment">// BAD - const</span></span><br></pre></td></tr></table></figure>
-<p>不能用non-const引用修饰一个const变量</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt; c_vec&#123;<span class="number">7</span>, <span class="number">8</span>&#125;; <span class="comment">// a const variable</span></span><br><span class="line"><span class="comment">// BAD - can&#x27;t declare non-const ref to const vector</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; bad_ref = c_vec;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fixed</span></span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; bad_ref = c_vec;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BAD - Can&#x27;t declare a non-const reference as equal</span></span><br><span class="line"><span class="comment">// to a const reference!</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; ref = c_ref;</span><br></pre></td></tr></table></figure>
-<p>加上auto(简而言之：auto自动推断类型不会推断const，auto修饰const也要加上)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt; c_vec&#123;<span class="number">7</span>, <span class="number">8</span>&#125;;</span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt;&amp; ref = vec;</span><br><span class="line"><span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; c_ref = vec;</span><br><span class="line"><span class="keyword">auto</span> copy = c_ref; <span class="comment">// a non-const copy</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> copy = c_ref; <span class="comment">// a const copy</span></span><br><span class="line"><span class="keyword">auto</span>&amp; a_ref = ref; <span class="comment">// a non-const reference</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span>&amp; c_aref = ref; <span class="comment">// a const reference</span></span><br></pre></td></tr></table></figure>
-<p>记住：c++默认会制造拷贝在做变量赋值的时候，如果需要用引用需要加&amp;</p>
-<blockquote>
-<p>[!TIP]</p>
-<p>占用内存小的没有必要用引用，比如int,double</p>
-<p>需要改变变量的可以用引用</p>
-<p>不需要调整值，但是变量大的，可以用const reference</p>
-</blockquote>
-<p>也可以返回引用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Note that the parameter must be a non-const reference to return</span></span><br><span class="line"><span class="comment">// a non-const reference to one of its elements!</span></span><br><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">front</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt;&amp; vec)</span> </span>&#123;</span><br><span class="line"><span class="comment">// assuming vec.size() &gt; 0</span></span><br><span class="line"><span class="keyword">return</span> vec[<span class="number">0</span>];</span><br><span class="line">CODE DEMO</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; numbers&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="built_in">front</span>(numbers) = <span class="number">4</span>; <span class="comment">// vec = &#123;4, 2, 3&#125;</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>返回const引用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">const</span> <span class="type">int</span>&amp; <span class="title">front</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt;&amp; vec)</span> </span>&#123;</span><br><span class="line"><span class="comment">// assuming vec.size() &gt; 0</span></span><br><span class="line"><span class="keyword">return</span> vec[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="lec7-streams">Lec7: Streams</h3>
-<p>Streams: input/output的抽象，把data和data的string表示进行转化。</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250119002648265.png"
-alt="image-20250119002648265" />
-<figcaption aria-hidden="true">image-20250119002648265</figcaption>
-</figure>
-<p>output streams</p>
-<p>类型是std::ostream</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250119231100562.png"
-alt="image-20250119231100562" />
-<figcaption aria-hidden="true">image-20250119231100562</figcaption>
-</figure>
-<p>output file streams</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250119231150353.png"
-alt="image-20250119231150353" />
-<figcaption aria-hidden="true">image-20250119231150353</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>Std:cout是一个全局的constant object，通过#include<iostream>引入</p>
-<p>其他的output stream需要先初始化</p>
-</blockquote>
-<p>Std::cin</p>
-<p>类型是std::istream</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x;</span><br><span class="line">std::cin &gt;&gt; x;</span><br></pre></td></tr></table></figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250119231451766.png"
-alt="image-20250119231451766" />
-<figcaption aria-hidden="true">image-20250119231451766</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250119231638276.png"
-alt="image-20250119231638276" />
-<figcaption aria-hidden="true">image-20250119231638276</figcaption>
-</figure>
-<p>Std::istream可以看出一个character的sequence，在遇到空格、tab、换行符的时候就会将buffer的值赋给变量。</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250120140203477.png"
-alt="image-20250120140203477" />
-<figcaption aria-hidden="true">image-20250120140203477</figcaption>
-</figure>
-<p>input streams输入类型错误的时候，继续读入的东西就无效了</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250120140418147.png"
-alt="image-20250120140418147" />
-<figcaption aria-hidden="true">image-20250120140418147</figcaption>
-</figure>
-<p>Std::get line()</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250120140526819.png"
-alt="image-20250120140526819" />
-<figcaption aria-hidden="true">image-20250120140526819</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250120140621449.png"
-alt="image-20250120140621449" />
-<figcaption aria-hidden="true">image-20250120140621449</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>"&gt;&gt;"提取single输入转换为built-in类型；如果要读入整行，需要用std::getline(istream&amp;
-stream, string&amp; line);</p>
-</blockquote>
-<p>注意std::getline(istream&amp; stream, string&amp;
-line)的参数都是传引用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::string line;</span><br><span class="line">std::<span class="built_in">getline</span>(cin, line); <span class="comment">//line changed now!</span></span><br><span class="line"><span class="comment">//say the user entered “Hello World 42!”</span></span><br><span class="line">std::cout &lt;&lt; line &lt;&lt; std::endl;</span><br><span class="line"><span class="comment">//should print out “Hello World 42!”</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>不要弄混&gt;&gt;和getline</p>
-<p>"&gt;&gt;"读直到下一个空格字符并且不会读入该空格字符</p>
-<p>getline读直到遇到下一个分隔符（默认就是）并且会读入这个换行符</p>
-</blockquote>
-<h5 id="input-file-streams">Input File Streams</h5>
-<ul>
-<li><p>类型是std::ifstream</p></li>
-<li><p>接收字符串必须用“&gt;&gt;”（从file中接收字符串并且转换为built-in类型）</p></li>
-<li><p>ifstream必须先初始化</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::ifstream <span class="title">in</span><span class="params">(“out.txt”)</span></span>;</span><br><span class="line"><span class="comment">// in is now an ifstream that reads from out.txt</span></span><br><span class="line">string str;</span><br><span class="line">in &gt;&gt; str; <span class="comment">// first word in out.txt goes into str</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="stringstreams">Stringstreams</h3>
-<p>stream读写到string对象中；</p>
-<p>目的：允许对string的输入输出按照stream来。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::string input = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="function">std::stringstream <span class="title">stream</span><span class="params">(input)</span></span>;</span><br><span class="line"><span class="type">int</span> number;</span><br><span class="line">stream &gt;&gt; number;</span><br><span class="line">std::cout &lt;&lt; number &lt;&lt; std::endl; <span class="comment">// Outputs &quot;123&quot; </span></span><br></pre></td></tr></table></figure>
-<p>总结：</p>
-<ul>
-<li>streams将data和data的字符串形式进行相互转换</li>
-<li>控制台cin/cout，文件i/ofstreams,字符串i/o stringstreams</li>
-<li>Send data to a stream用stream name &lt;&lt; data</li>
-<li>从stream提取data用stream_name &gt;&gt; data,
-并且还会将数据类型转换为data的数据类型</li>
-</ul>
-<h2 id="containers">Containers</h2>
-<p>容器种类：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250121165106294.png"
-alt="image-20250121165106294" />
-<figcaption aria-hidden="true">image-20250121165106294</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250121165136897.png"
-alt="image-20250121165136897" />
-<figcaption aria-hidden="true">image-20250121165136897</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250121170648848.png"
-alt="image-20250121170648848" />
-<figcaption aria-hidden="true">image-20250121170648848</figcaption>
-</figure>
-<h5 id="container-adaptors-容器适配器">container adaptors
-容器适配器</h5>
-<h2 id="lec6-iterators-and-pointers">Lec6: iterators and pointers</h2>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250122191923467.png"
-alt="image-20250122191923467" />
-<figcaption aria-hidden="true">image-20250122191923467</figcaption>
-</figure>
-<h2 id="lec7classes">Lec7:classes</h2>
-<p>class相关的略</p>
-<h3 id="template">template</h3>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123163820237.png"
-alt="image-20250123163820237" />
-<figcaption aria-hidden="true">image-20250123163820237</figcaption>
-</figure>
-<p>模版类：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123164006679.png"
-alt="image-20250123164006679" />
-<figcaption aria-hidden="true">image-20250123164006679</figcaption>
-</figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mypair.h</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function">First <span class="title">getFirst</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">Second <span class="title">getSecond</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> First, <span class="keyword">typename</span> Second&gt; <span class="keyword">class</span> <span class="title class_">MyPair</span> &#123;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setFirst</span><span class="params">(First f)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setSecond</span><span class="params">(Second f)</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">First first;</span><br><span class="line">Second second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>实现一个模版类：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mypair.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> “mypair.h”</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> First, <span class="keyword">typename</span> Second&gt; <span class="comment">//必须要声明每个成员函数都是模版的</span></span><br><span class="line"><span class="function">First <span class="title">MyPair::getFirst</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Second, <span class="keyword">typename</span> First&gt;</span></span><br><span class="line"><span class="function">Second <span class="title">MyPair::getSecond</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>Templates不会产生代码直到实例化，因此要将.cpp文件包含在.h文件里。</p>
-</blockquote>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123170609616.png"
-alt="image-20250123170609616" />
-<figcaption aria-hidden="true">image-20250123170609616</figcaption>
-</figure>
-<p>理解c++编译器对于非模版类做了什么</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123170737511.png"
-alt="image-20250123170737511" />
-<figcaption aria-hidden="true">image-20250123170737511</figcaption>
-</figure>
-<p>理解c++编译器对于模版类做了什么</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123170841268.png"
-alt="image-20250123170841268" />
-<figcaption aria-hidden="true">image-20250123170841268</figcaption>
-</figure>
-<p>修复：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123171745108.png"
-alt="image-20250123171745108" />
-<figcaption aria-hidden="true">image-20250123171745108</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250123171805421.png"
-alt="image-20250123171805421" />
-<figcaption aria-hidden="true">image-20250123171805421</figcaption>
-</figure>
-<h2 id="lec8-templateclassesconst">Lec8: templateclassesconst</h2>
-<p>模版的用途就是将不同类型要实现相同功能的逻辑抽象出来，</p>
-<p>将一个特定类型的类改为模版类：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyPair</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="type">int</span> <span class="title">getFirst</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getSecond</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setFirst</span><span class="params">(<span class="type">int</span> f)</span></span>;</span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setSecond</span><span class="params">(<span class="type">int</span> f)</span></span>;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	<span class="type">int</span> first;</span><br><span class="line">  	<span class="type">int</span> second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>写一个模版类：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> First，<span class="keyword">typename</span> Second&gt; <span class="keyword">class</span> <span class="title class_">MyPair</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function">First <span class="title">getFirst</span><span class="params">()</span></span>;</span><br><span class="line">  	<span class="function">Second <span class="title">getSecond</span><span class="params">()</span></span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setFirst</span><span class="params">(First f)</span></span>;</span><br><span class="line">  	<span class="function"><span class="type">void</span> <span class="title">setSecond</span><span class="params">(Second f)</span></span>;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">  	First first;</span><br><span class="line">  	Second second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>类外实现：</p>
-<p>a.要声明类的成员函数是模版函数</p>
-<p>b.要注意模版类的命名空间不是MyPair而是MyPair&lt;First, Second&gt;</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126171712040.png"
-alt="image-20250126171712040" />
-<figcaption aria-hidden="true">image-20250126171712040</figcaption>
-</figure>
-<p>模版类的成员类型：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126171841419.png"
-alt="image-20250126171841419" />
-<figcaption aria-hidden="true">image-20250126171841419</figcaption>
-</figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vector.h</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class</span> <span class="title class_">vector</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">using</span> iterator = T*</span><br><span class="line">    </span><br><span class="line">  iterator <span class="built_in">begin</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//vector.cpp</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">iterator vector&lt;T&gt;::<span class="built_in">begin</span>() &#123;...&#125;  <span class="comment">// error，iterator是类里面的一个嵌套类型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//vector.cpp 修正</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> vector&lt;T&gt;::iterator vector&lt;T&gt;::<span class="built_in">begin</span>() &#123;...&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>1.using type_name =
-type定义了一个嵌套的类型，就如同vector<T>::iterator</p>
-<p>2.使用类定义vector<T>之前要加typename</p>
-</blockquote>
-<p>总结：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126172439971.png"
-alt="image-20250126172439971" />
-<figcaption aria-hidden="true">image-20250126172439971</figcaption>
-</figure>
-<h4 id="const">const</h4>
-<p>类里，const-interface是所有标记为const的成员函数; const
-ClassName只能使用const-interface</p>
-<p>比如：const Student</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="function">std::string <span class="title">stringify</span><span class="params">(<span class="type">const</span> Student&amp; s)</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> s.<span class="built_in">getName</span>() + <span class="string">&quot; is &quot;</span> + std::<span class="built_in">to_string</span>(s.<span class="built_in">getAge</span>()) +</span><br><span class="line"><span class="string">&quot; years old.&quot;</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// With our new const-interface, this will work :)</span></span><br></pre></td></tr></table></figure>
-<p>类StrVector的at可以标记为const吗</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126182231645.png"
-alt="image-20250126182231645" />
-<figcaption aria-hidden="true">image-20250126182231645</figcaption>
-</figure>
-<p>返回的是引用，依然可以修改。从语义上来说不能标记为const</p>
-<p>需要新建立一个关于at的const版本的函数</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126182354489.png"
-alt="image-20250126182354489" />
-<figcaption aria-hidden="true">image-20250126182354489</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>不要重复造轮子，而是用static_cast和const_cast重用相关的逻辑。</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string&amp; <span class="title">StrVector::at</span><span class="params">(<span class="type">size_t</span> index)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (index &gt;= <span class="built_in">size</span>()) &#123;</span><br><span class="line">		<span class="keyword">throw</span> std::<span class="built_in">out_of_range</span>(<span class="string">&quot;Index out of range in at.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">operator</span>[](index); <span class="comment">// operator[] = return *(begin() + index)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> std::string&amp; <span class="title">StrVector::at</span><span class="params">(<span class="type">size_t</span> index)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">static_cast</span>&lt;<span class="type">const</span> std::string&amp;&gt;(<span class="built_in">const_cast</span>&lt;StrVecotr*&gt;(<span class="keyword">this</span>)-&gt;<span class="built_in">at</span>(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126182750157.png"
-alt="image-20250126182750157" />
-<figcaption aria-hidden="true">image-20250126182750157</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126182800510.png"
-alt="image-20250126182800510" />
-<figcaption aria-hidden="true">image-20250126182800510</figcaption>
-</figure>
-<p>关于类的begin()和end()类似于at，也需要一个const版本的逻辑</p>
-<p>解决方法：const_iterator</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126182947080.png"
-alt="image-20250126182947080" />
-<figcaption aria-hidden="true">image-20250126182947080</figcaption>
-</figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StrVector</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">using</span> iterator = std::string*;</span><br><span class="line"><span class="keyword">using</span> const_ iterator = <span class="type">const</span> std::string*;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line"><span class="function"><span class="type">size_t</span> <span class="title">size</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">push_back</span><span class="params">(<span class="type">const</span> std::string&amp; elem)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> std::string&amp; <span class="title">at</span><span class="params">(<span class="type">size_t</span> indx)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">begin</span><span class="params">()</span><span class="type">const</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">end</span><span class="params">()</span><span class="type">const</span></span>;</span><br><span class="line"><span class="comment">/*...*</span></span><br></pre></td></tr></table></figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250126183014764.png"
-alt="image-20250126183014764" />
-<figcaption aria-hidden="true">image-20250126183014764</figcaption>
-</figure>
-<h2 id="lec9-template-functions">Lec9: template functions</h2>
-<p>类似模版类，模版函数直到使用才会编译。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">smarterMyMin</span><span class="params">(T a, U b)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a &lt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码没有生成直到实例化，这样运行更快（<strong>生成的代码针对具体类型</strong>，没有额外的运行时检查或类型转换。）</p>
-<p>根据这个特点模版可以用在高效性方面。</p>
-<h4 id="template-metaprogramming">template metaprogramming</h4>
-<p>代码只在编译过程中运行一次。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">unsigned</span> n&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Factorial</span> &#123;</span><br><span class="line">  <span class="keyword">enum</span> &#123;value = n * Factorial&lt;n<span class="number">-1</span>&gt;::value&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Factorial</span>&lt;<span class="number">0</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">enum</span> &#123;value = <span class="number">1</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; Factorial&lt;<span class="number">10</span>&gt;::value &lt;&lt; endl; <span class="comment">// prints 3628800, but run during compile time!</span></span><br></pre></td></tr></table></figure>
-<h4 id="aside-constexpr">aside: constexpr</h4>
-<p>另一个在编译期间产生code的工具：constexpr关键字</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123; <span class="comment">// function declared as constexpn</span></span><br><span class="line"><span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">fib</span>(n-l) * n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="type">const</span> <span class="type">long</span> <span class="type">long</span> bigval = <span class="built_in">fib</span>(<span class="number">20</span>);</span><br><span class="line">std: : cout &lt;&lt; bigval &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>TMP是意外发现的，不是被发明的，使用场合也不多；可能用在加速矩阵数学运算/特殊设计/游戏图像方面。</p>
-<h2 id="lec10-functions_and_lambdas">Lec10: functions_and_lambdas</h2>
-<h4 id="predicate-functions">predicate Functions</h4>
-<p>返回true或者false的函数</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250127173135145.png"
-alt="image-20250127173135145" />
-<figcaption aria-hidden="true">image-20250127173135145</figcaption>
-</figure>
-<ul>
-<li>函数指针
-<ul>
-<li>Function pointers可以和其他指针一样被对待</li>
-<li>可以像变量一样传递</li>
-<li>可以像函数一样被call</li>
-</ul></li>
-</ul>
-<p>有个问题，泛化性比较差</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250128235600102.png"
-alt="image-20250128235600102" />
-<figcaption aria-hidden="true">image-20250128235600102</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250128235614504.png"
-alt="image-20250128235614504" />
-<figcaption aria-hidden="true">image-20250128235614504</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250128235627468.png"
-alt="image-20250128235627468" />
-<figcaption aria-hidden="true">image-20250128235627468</figcaption>
-</figure>
-<p>我们想传递更多信息，但是不允许传递两个以上的参数</p>
-<p>我们需要可以传递更多信息但是不需要传递一个以上参数的方法</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> var = [capture-clause](<span class="keyword">auto</span> praram) -&gt; <span class="type">bool</span></span><br><span class="line">&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="lambdas">lambdas</h4>
-<p>Inline,匿名函数</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250128235902715.png"
-alt="image-20250128235902715" />
-<figcaption aria-hidden="true">image-20250128235902715</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250128235916833.png"
-alt="image-20250128235916833" />
-<figcaption aria-hidden="true">image-20250128235916833</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250128235932720.png"
-alt="image-20250128235932720" />
-<figcaption aria-hidden="true">image-20250128235932720</figcaption>
-</figure>
-<p>= 通过value捕获</p>
-<p>&amp;通过引用捕获</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250129000033376.png"
-alt="image-20250129000033376" />
-<figcaption aria-hidden="true">image-20250129000033376</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>use lambda当你需要一个短的函数或者需要局部值；</p>
-<p>如果需要更多逻辑或者重载，使用函数指针</p>
-</blockquote>
-<h4 id="functor">functor</h4>
-<p>functor是实现了operator()的类；</p>
-<p>他们可以create closures对于customized functions</p>
-<ul>
-<li>Closure:一个functor object的单一实例化。（sigle instantiation）</li>
-<li>lambdas是一个换肤（reskin）of functors.</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">functor</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="type">int</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="type">int</span> arg)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> num + arg;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">auto</span> lambda = [&amp;num](<span class="type">int</span> arg)&#123;num += arg;&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203121340540.png"
-alt="image-20250203121340540" />
-<figcaption aria-hidden="true">image-20250203121340540</figcaption>
-</figure>
-<h4 id="virtual-functions">virtual functions</h4>
-<p>看一个例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="comment">// constructors and other methods go here!</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span> </span>&#123;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;I&#x27;m an animal!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125; <span class="comment">// private information and the rest of the class goes here!</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> : Animal &#123; <span class="comment">// this syntax tells us we&#x27;re a subclass of Animal!</span></span><br><span class="line"><span class="comment">// constructors and private information here!</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span> </span>&#123;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;I&#x27;m an animal!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125; <span class="comment">// private information and the rest of the class goes here!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果我们传递一个dog对象：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(Animal* animal)</span> </span>&#123; animal-&gt;<span class="built_in">speak</span>();</span><br><span class="line"><span class="comment">// can take in any animal and make it speak!</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">Animal* myAnimal = <span class="keyword">new</span> Animal;</span><br><span class="line">Dog* myDog = <span class="keyword">new</span> Dog;</span><br><span class="line"><span class="built_in">func</span>(myAnimal);</span><br><span class="line">fun</span><br></pre></td></tr></table></figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203182923379.png"
-alt="image-20250203182923379" />
-<figcaption aria-hidden="true">image-20250203182923379</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>如果指针指向一个夫类对象，不知道要使用子类的方法；</p>
-<p>同样的问题存在于将一个夫类的指针指向子类的对象；</p>
-</blockquote>
-<p>解决方法：将夫类被overriden的方法声明为virtual</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203183111810.png"
-alt="image-20250203183111810" />
-<figcaption aria-hidden="true">image-20250203183111810</figcaption>
-</figure>
-<h2 id="lec11-operators和operators-overload">Lec11 operators和operators
-overload</h2>
-<p>可以overload的operator:</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203212741087.png"
-alt="image-20250203212741087" />
-<figcaption aria-hidden="true">image-20250203212741087</figcaption>
-</figure>
-<p>不能重载的运算符：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203212810612.png"
-alt="image-20250203212810612" />
-<figcaption aria-hidden="true">image-20250203212810612</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203212856249.png"
-alt="image-20250203212856249" />
-<figcaption aria-hidden="true">image-20250203212856249</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203212905125.png"
-alt="image-20250203212905125" />
-<figcaption aria-hidden="true">image-20250203212905125</figcaption>
-</figure>
-<p>有两种重载运算符的方法：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203213204584.png"
-alt="image-20250203213204584" />
-<figcaption aria-hidden="true">image-20250203213204584</figcaption>
-</figure>
-<p>非成员函数的重载更被stl所接纳：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203213525137.png"
-alt="image-20250203213525137" />
-<figcaption aria-hidden="true">image-20250203213525137</figcaption>
-</figure>
-<p>成员函数的重载可以访问this-&gt;和私有变量</p>
-<p>对于非成员函数的重载需要通过friend访问</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203213844189.png"
-alt="image-20250203213844189" />
-<figcaption aria-hidden="true">image-20250203213844189</figcaption>
-</figure>
-<p>注意new和delete的非成员函数重载，由于不针对特定类型的输入，会影响全局。</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203214025479.png"
-alt="image-20250203214025479" />
-<figcaption aria-hidden="true">image-20250203214025479</figcaption>
-</figure>
-<h2 id="lec12-特殊的成员函数">Lec12 特殊的成员函数</h2>
-<p>六种特殊的成员函数：</p>
-<ul>
-<li>默认构造函数 default constructor</li>
-<li>析构函数 destructor</li>
-<li>拷贝构造函数 copy constructor</li>
-<li>拷贝赋值运算符copy assignment operator</li>
-<li>移动构造函数move constructor</li>
-<li>移动赋值运算符move assignment operator</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Widget</span>(); <span class="comment">// default constructor</span></span><br><span class="line">  <span class="built_in">Widget</span>(<span class="type">const</span> Widget&amp; w); <span class="comment">//copy constructor 创建了一个新的对象</span></span><br><span class="line">  Widget&amp; <span class="keyword">operator</span> = (<span class="type">const</span> Widget&amp; w); <span class="comment">//拷贝赋值运算符 copy assignment operator 将一个已经存在的对象赋值给另一个</span></span><br><span class="line">  ～<span class="built_in">Widget</span>(); <span class="comment">// destructor</span></span><br><span class="line">  <span class="built_in">Widget</span>(Widget&amp;&amp; rhs); <span class="comment">//move constructor</span></span><br><span class="line">  Widget&amp; <span class="keyword">operator</span> = (Widget&amp;&amp; rhs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>为什么需要override</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203224111121.png"
-alt="image-20250203224111121" />
-<figcaption aria-hidden="true">image-20250203224111121</figcaption>
-</figure>
-<h3 id="default-delete">default &amp; delete</h3>
-<p>想要禁止拷贝</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203224234915.png"
-alt="image-20250203224234915" />
-<figcaption aria-hidden="true">image-20250203224234915</figcaption>
-</figure>
-<blockquote>
-<p>[!IMPORTANT]</p>
-<p>应用： std::unique_ptr 只想要一份实例的拷贝</p>
-<p>实现了MoveConstructible和MoveAssignable，但是拷贝构造和拷贝赋值没有实现</p>
-</blockquote>
-<h3 id="default">=default</h3>
-<p>保持默认的构造函数的实现（用户定义构造函数编译器不会默认生成，如果要保留需要=default）</p>
-<p>原则上：</p>
-<ol type="1">
-<li>默认构造函数可以用的时候不要新定义</li>
-<li>如果不得不定义destructor, copy constructor或者copy assignment
-operator，这三个都应该被重定义</li>
-</ol>
-<h3 id="move">move</h3>
-<p>总是拷贝开销会很大；</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203225320261.png"
-alt="image-20250203225320261" />
-<figcaption aria-hidden="true">image-20250203225320261</figcaption>
-</figure>
-<h2 id="lect14-c里的move语义">Lect14 C++里的move语义</h2>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203225430293.png"
-alt="image-20250203225430293" />
-<figcaption aria-hidden="true">image-20250203225430293</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203225438211.png"
-alt="image-20250203225438211" />
-<figcaption aria-hidden="true">image-20250203225438211</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203225520653.png"
-alt="image-20250203225520653" />
-<figcaption aria-hidden="true">image-20250203225520653</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203225547927.png"
-alt="image-20250203225547927" />
-<figcaption aria-hidden="true">image-20250203225547927</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203231122204.png"
-alt="image-20250203231122204" />
-<figcaption aria-hidden="true">image-20250203231122204</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203233445459.png"
-alt="image-20250203233445459" />
-<figcaption aria-hidden="true">image-20250203233445459</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203233620968.png"
-alt="image-20250203233620968" />
-<figcaption aria-hidden="true">image-20250203233620968</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203233632186.png"
-alt="image-20250203233632186" />
-<figcaption aria-hidden="true">image-20250203233632186</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203233809478.png"
-alt="image-20250203233809478" />
-<figcaption aria-hidden="true">image-20250203233809478</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203233858206.png"
-alt="image-20250203233858206" />
-<figcaption aria-hidden="true">image-20250203233858206</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203233912300.png"
-alt="image-20250203233912300" />
-<figcaption aria-hidden="true">image-20250203233912300</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234104709.png"
-alt="image-20250203234104709" />
-<figcaption aria-hidden="true">image-20250203234104709</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234159789.png"
-alt="image-20250203234159789" />
-<figcaption aria-hidden="true">image-20250203234159789</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234259860.png"
-alt="image-20250203234259860" />
-<figcaption aria-hidden="true">image-20250203234259860</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234308018.png"
-alt="image-20250203234308018" />
-<figcaption aria-hidden="true">image-20250203234308018</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234428066.png"
-alt="image-20250203234428066" />
-<figcaption aria-hidden="true">image-20250203234428066</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234444525.png"
-alt="image-20250203234444525" />
-<figcaption aria-hidden="true">image-20250203234444525</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234501070.png"
-alt="image-20250203234501070" />
-<figcaption aria-hidden="true">image-20250203234501070</figcaption>
-</figure>
-<h3 id="heck">heck &amp;&amp;</h3>
-<p>区分拷贝赋值和移动赋值</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234545870.png"
-alt="image-20250203234545870" />
-<figcaption aria-hidden="true">image-20250203234545870</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234750833.png"
-alt="image-20250203234750833" />
-<figcaption aria-hidden="true">image-20250203234750833</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234805928.png"
-alt="image-20250203234805928" />
-<figcaption aria-hidden="true">image-20250203234805928</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234828322.png"
-alt="image-20250203234828322" />
-<figcaption aria-hidden="true">image-20250203234828322</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234916234.png"
-alt="image-20250203234916234" />
-<figcaption aria-hidden="true">image-20250203234916234</figcaption>
-</figure>
-<p>使用std::move</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234931990.png"
-alt="image-20250203234931990" />
-<figcaption aria-hidden="true">image-20250203234931990</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203234943875.png"
-alt="image-20250203234943875" />
-<figcaption aria-hidden="true">image-20250203234943875</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203235220492.png"
-alt="image-20250203235220492" />
-<figcaption aria-hidden="true">image-20250203235220492</figcaption>
-</figure>
-<p>SMFs使用规则：</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203235250464.png"
-alt="image-20250203235250464" />
-<figcaption aria-hidden="true">image-20250203235250464</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203235338280.png"
-alt="image-20250203235338280" />
-<figcaption aria-hidden="true">image-20250203235338280</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203235348312.png"
-alt="image-20250203235348312" />
-<figcaption aria-hidden="true">image-20250203235348312</figcaption>
-</figure>
-<h2 id="lec14-type-safety-and-stdoptional">Lec14: Type Safety and
-std::optional</h2>
-<p>类型检查需要检查数组是否为空和是否越界，否则会返回未定义的行为。</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250203235855513.png"
-alt="image-20250203235855513" />
-<figcaption aria-hidden="true">image-20250203235855513</figcaption>
-</figure>
-<p>通过std::pair返回返回状态和返回值</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000001279.png"
-alt="image-20250204000001279" />
-<figcaption aria-hidden="true">image-20250204000001279</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000011320.png"
-alt="image-20250204000011320" />
-<figcaption aria-hidden="true">image-20250204000011320</figcaption>
-</figure>
-<p>用std::optinal<T>返回false时候的值。</p>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000101966.png"
-alt="image-20250204000101966" />
-<figcaption aria-hidden="true">image-20250204000101966</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000140494.png"
-alt="image-20250204000140494" />
-<figcaption aria-hidden="true">image-20250204000140494</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000150587.png"
-alt="image-20250204000150587" />
-<figcaption aria-hidden="true">image-20250204000150587</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000301227.png"
-alt="image-20250204000301227" />
-<figcaption aria-hidden="true">image-20250204000301227</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000549867.png"
-alt="image-20250204000549867" />
-<figcaption aria-hidden="true">image-20250204000549867</figcaption>
-</figure>
-<figure>
-<img data-src="/2025/01/17/C-Notes/image-20250204000606798.png"
-alt="image-20250204000606798" />
-<figcaption aria-hidden="true">image-20250204000606798</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2475,7 +1542,7 @@ alt="image-20250204000606798" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-count">141</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2488,7 +1555,7 @@ alt="image-20250204000606798" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
