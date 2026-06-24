@@ -20,21 +20,66 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Basics-01 1.强化学习的目标: 最大化sum of rewards   image-20260611164714333  是一个随机过程：两个方面的不确定性a.在策略中采样动作，b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。 2.衡量一个policy有多好：  value function: 在状态s遵循策略pi的预期收益 Q-function: 在状态s采取动作a遵循策">
+  <meta name="description" content="Basics-01 1.强化学习的目标: 最大化sum of rewards   image-20260611164714333  是一个随机过程：随机主要体现在两个方面的不确定性 a.在策略中采样动作 b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。 2.衡量一个policy有多好：  value function: 在状态s遵循策略pi的预期收益（与policy有关） Q-fun">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cs224r">
 <meta property="og:url" content="http://77philosophia.github.io/2026/06/11/cs224r/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="Basics-01 1.强化学习的目标: 最大化sum of rewards   image-20260611164714333  是一个随机过程：两个方面的不确定性a.在策略中采样动作，b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。 2.衡量一个policy有多好：  value function: 在状态s遵循策略pi的预期收益 Q-function: 在状态s采取动作a遵循策">
+<meta property="og:description" content="Basics-01 1.强化学习的目标: 最大化sum of rewards   image-20260611164714333  是一个随机过程：随机主要体现在两个方面的不确定性 a.在策略中采样动作 b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。 2.衡量一个policy有多好：  value function: 在状态s遵循策略pi的预期收益（与policy有关） Q-fun">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260611164714333.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260611170814070.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260611172518824.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260611173118422.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260612150816355.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260616111230979.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260616111510326.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260616112029485.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260616233240677.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260617001940442.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622110932454.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260617002116677.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622112321812.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622113331363.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622114013529.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622161211537.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622161257995.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622161722543.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622162050356.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622164519024.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622164707815.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622165753038.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622165933718.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622170028528.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622170134033.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622170439606.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622170541910.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622174102301.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622174623468.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622174747263.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622174821286.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622174855683.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622192514698.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622193437247.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260622194651654.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623134338237.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623135619044.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623135636569.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623140934899.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623141043637.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623141106519.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623142226137.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623141920323.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623142651532.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623142719203.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623143005119.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623143027355.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260623143037718.png">
 <meta property="article:published_time" content="2026-06-11T08:29:34.000Z">
-<meta property="article:modified_time" content="2026-06-12T09:18:02.921Z">
+<meta property="article:modified_time" content="2026-06-24T03:06:30.205Z">
 <meta property="article:author" content="philosophia">
+<meta property="article:tag" content="cs224r">
+<meta property="article:tag" content="rl-notes">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260611164714333.png">
 
@@ -221,7 +266,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-12 17:18:02" itemprop="dateModified" datetime="2026-06-12T17:18:02+08:00">2026-06-12</time>
+                <time title="Modified: 2026-06-24 11:06:30" itemprop="dateModified" datetime="2026-06-24T11:06:30+08:00">2026-06-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,11 +296,14 @@
 alt="image-20260611164714333" />
 <figcaption aria-hidden="true">image-20260611164714333</figcaption>
 </figure>
-<p>是一个随机过程：两个方面的不确定性a.在策略中采样动作，b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。</p>
+<p>是一个随机过程：随机主要体现在两个方面的不确定性</p>
+<p>a.在策略中采样动作</p>
+<p>b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。</p>
 <p>2.衡量一个policy有多好：</p>
 <ul>
-<li>value function: 在状态s遵循策略pi的预期收益</li>
-<li>Q-function: 在状态s采取动作a遵循策略pi的预期收益。</li>
+<li>value function: 在状态s遵循策略pi的预期收益（与policy有关）</li>
+<li>Q-function:
+在状态s采取动作a遵循策略pi的预期收益。（与policy有关）</li>
 </ul>
 <p>3.算法的种类：</p>
 <ol type="1">
@@ -310,6 +358,422 @@ matching的原理：</p>
 alt="image-20260612150816355" />
 <figcaption aria-hidden="true">image-20260612150816355</figcaption>
 </figure>
+<h3 id="project01">project01</h3>
+<p>“愤怒的小鸟”通过木桩，做了4个exp,都用到了action chunk（20的chunk
+size每次execute10步然后要更新）；</p>
+<p>第一个用mlp+mse的方法学习expert的action(也算是sft的一种)，可以通过简单的，如图；</p>
+<p>第二个是mlp+mse的方法去做hard的任务（每一个关卡有两个口），此时就会发现撞桩，因为mlp的方法无法克服多峰分布的问题，expert
+action给的时候可选择上面那个通道，也可以选择下面的通道；</p>
+<p>第三个exp就是flow matching+mse loss(unet估计的是速度)；</p>
+<p>第四个是dagger:用bc reg的初始化policy得到states,对states采用expert
+action，但是这里也是确定性的，不能随机选</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>dagger只能解决bc中的covariance
+shift问题，不能解决多峰任务，因此你会发现在用dagger的时候依然用的是确定性策略</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 47%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Res</th>
+<th>Res_algebra(episode lenght的mean&amp;variance)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bc_reg on easy(mlp+mse)</td>
+<td><img data-src="/2026/06/11/cs224r/image-20260616111230979.png"
+alt="image-20260616111230979" /></td>
+<td>(959.2+/- 120.8)</td>
+</tr>
+<tr>
+<td>Bc_reg on hard(代码同上)</td>
+<td><img data-src="/2026/06/11/cs224r/image-20260616111510326.png"
+alt="image-20260616111510326" /></td>
+<td>346 +/- 61</td>
+</tr>
+<tr>
+<td>Bc_flow on hard</td>
+<td><img data-src="/2026/06/11/cs224r/image-20260616112029485.png"
+alt="image-20260616112029485" /></td>
+<td>1000.0 +/- 0.0</td>
+</tr>
+<tr>
+<td>Dagger</td>
+<td>a.bc reg有hard里面无法处理多峰的问题，初始化policy.
+b.对此时采集的states设置专家policy确定性的选择上面一个隘口；（为什么要确定性的选择，其实没有解决多峰分布的问题；dagger的核心还是agent运行到了之前expert
+action没有探索过的区域，现在利用dagger告诉agent处理办法）</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="policy-gradient">03-policy gradient</h3>
+<h5
+id="推导log导数性质表示称logpreward">推导：log导数性质表示称logp*reward</h5>
+<p>利用 <span class="math inline">\(\log\)</span>
+的导数性质将梯度转化为期望，通过海量采样，把表现好的动作发生概率调高，表现差的动作发生概率调低。</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260616233240677.png"
+alt="image-20260616233240677" />
+<figcaption aria-hidden="true">image-20260616233240677</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260617001940442.png"
+alt="image-20260617001940442" />
+<figcaption aria-hidden="true">image-20260617001940442</figcaption>
+</figure>
+<p>我们可以和模仿学习对比：</p>
+<p>模仿学习是从专家数据集里面采样，如果是离散损失是交叉熵(把真实的概率提到前面就是-log的期望)，连续空间是mse。求导可以发现公式如下：</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>所以policy
+gradient的梯度实际上就是模仿学习的梯度多了一个reward的权重的衡量。</p>
+</blockquote>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622110932454.png"
+alt="image-20260622110932454" />
+<figcaption aria-hidden="true">image-20260622110932454</figcaption>
+</figure>
+<h5 id="vanilla-policy-gradient高方差">vanilla policy
+gradient:高方差</h5>
+<p>有了公式了，但是我们把这种valina policy
+gradient放到一个实际的例子中去考虑：</p>
+<p>人形机器人的行走，reward = 机器人向前的速度；</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260617002116677.png"
+alt="image-20260617002116677" />
+<figcaption aria-hidden="true">image-20260617002116677</figcaption>
+</figure>
+<p>实际上最后训练出来机器人可能发现向前摔倒是最好的策略。(原因https://gemini.google.com/app/39f218a008f69f31?hl=zh)</p>
+<p>因此虽然policy gradient是理论上可行的，但是在实际上：</p>
+<p>policy gradient是noisy/high-variance/sensitive to reward scale</p>
+<p>因为强化学习我们回顾，用蒙特卡洛采样来代替期望，采样足够多的轨迹，但是实际操作我们的采样是有限的，而每一个step之间方差极大，网络容易震荡从而无法收敛学习</p>
+<blockquote>
+<p>[!WARNING]</p>
+<p>每一个时间步t的更新乘以的值都是整条轨迹的总得分 <span
+class="math inline">\(R(\tau)\)</span>，想一想中间一个动作好没用，最后reward如果不好会遏制中间好的动作；如果最后得分好，中间表现不好的动作也会被提升。风险太大。</p>
+</blockquote>
+<h5 id="如果要提升">如果要提升：</h5>
+<h6
+id="a.reward处理---减去均值引入负梯度遏制不好的行为">a.reward处理---减去均值，引入负梯度遏制不好的行为</h6>
+<p>1.sensitive to reward
+-------reward减去均值（比如现在我定了个平均线，摔倒的情况是负值，就不会奖励摔倒了）（https://gemini.google.com/app/d8dc46cc61a14342?hl=zh
+这样做是无偏的并且能降低方差）——总结：reward在现实中介于0和一个正数之间，减去baseline可以引入负梯度，从而遏制不好的行为。</p>
+<h6 id="b.dense-rewardlarge-batches缓解奖励稀疏的震荡学不到">b.dense
+reward/large batches缓解奖励稀疏的震荡学不到</h6>
+<p>2.dense rewards/large batches：</p>
+<p>拿叠衣服的例子来说：</p>
+<p>叠好衣服无可厚非，但是剩下所有情况奖励都是0，就是高方差的。（有些没有成功但是很接近成功的行为也是要被奖励的，这就是dense
+rewards）</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622112321812.png"
+alt="image-20260622112321812" />
+<figcaption aria-hidden="true">image-20260622112321812</figcaption>
+</figure>
+<p>要实现policy
+gradient的导数求解从而进行优化，可以看作一个损失函数然后调用pytorch的自动微分：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622113331363.png"
+alt="image-20260622113331363" />
+<figcaption aria-hidden="true">image-20260622113331363</figcaption>
+</figure>
+<p>也就是网络出来的数值取log然后乘以advantage值，也叫weighted maximum
+likelinhood.</p>
+<blockquote>
+<p>[!TIP]</p>
+<p>别傻傻地去循环算梯度。在代码里把 <span class="math inline">\(\log
+\pi_\theta(a|s) \cdot \text{reward}\)</span> 拼成一个
+Loss，然后像做监督学习（分类用交叉熵，回归用 MSE）那样直接调
+<code>backward()</code>，GPU 就能起飞了。</p>
+</blockquote>
+<h6
+id="c.重要性采样解决这个on-policy策略的采样效率低问题前提条件更新策略和旧策略的状态转移是一样的假设到达一个状态的概率是一样的因此更新不能太快">c.重要性采样解决这个on-policy策略的采样效率低问题（前提条件更新策略和旧策略的状态转移是一样的，假设到达一个状态的概率是一样的，因此更新不能太快）</h6>
+<p>3.policy gradient另一个麻烦的地方：</p>
+<p>E~P，假设是从当前的策略进行采样的。</p>
+<p>是on-policy策略，每次策略更新之后必须用新策略去环境中采样，这非常低效。</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622114013529.png"
+alt="image-20260622114013529" />
+<figcaption aria-hidden="true">image-20260622114013529</figcaption>
+</figure>
+<p>假设我们还想利用旧的样本：我们希望更新当前的最新策略 <span
+class="math inline">\(\pi_{\theta&#39;}\)</span>，但使用的是旧策略 <span
+class="math inline">\(\pi_\theta\)</span>（或者其他策略）之前采集好的历史样本数据。由于数据分布变了，必须使用重要性分布来修正这种分布偏差。</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622161211537.png"
+alt="image-20260622161211537" />
+<figcaption aria-hidden="true">image-20260622161211537</figcaption>
+</figure>
+<p>因此policy的梯度公式可以变为：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622161257995.png"
+alt="image-20260622161257995" />
+<figcaption aria-hidden="true">image-20260622161257995</figcaption>
+</figure>
+<p>当时间步T很大的时候，一连串概率比值连续相乘，会导致这个权重变得<strong>极大（Explode）或极小（Vanish）</strong>，导致方差爆炸，算法根本无法收敛。</p>
+<p>把轨迹拆分为时间步：</p>
+<p>近似处理：直接假装新策略 <span
+class="math inline">\(\pi_{\theta&#39;}\)</span> 和旧策略 <span
+class="math inline">\(\pi_\theta\)</span> 访问到某个状态 <span
+class="math inline">\(s_t\)</span>
+的概率是一样的。我们只去修正它们在面对这个状态时，做出不同动作 <span
+class="math inline">\(a_t\)</span> 的概率偏差。”</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622161722543.png"
+alt="image-20260622161722543" />
+<figcaption aria-hidden="true">image-20260622161722543</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>“通过引入动作重要性采样，我们终于实现了一个 Batch
+数据可以反复压榨、更新多次策略的算法（非常高效）。但是！你千万不能更新过头。如果新旧策略差异过大，我们之前做出的‘状态分布一致’的近似就会失效，导致梯度彻底算错，训练崩溃。”</p>
+</blockquote>
+<p>限制更新太快：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622162050356.png"
+alt="image-20260622162050356" />
+<figcaption aria-hidden="true">image-20260622162050356</figcaption>
+</figure>
+<h3 id="slides4--actor-critic方法">slides4- Actor Critic方法</h3>
+<h5 id="last-slide">last slide:</h5>
+<p>关于on-policy的policy gradient:</p>
+<p>Vanilla policy gradient完全是on-policy的，采样成本过大；</p>
+<p>Off-policy的policy
+gradient要利用旧数据，因此乘以一个比值；因为直接计算整条轨迹的连乘会导致数值过大，因此分散到每个时间步，假设新旧policy访问到某个state的概率是一样的，假设了一个状态转移概率是1，进行了问题简化，从而可以利用off-policy
+data</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622164519024.png"
+alt="image-20260622164519024" />
+<figcaption aria-hidden="true">image-20260622164519024</figcaption>
+</figure>
+<p>定义一个优势函数：描述在状态s采取动作a有多好</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622164707815.png"
+alt="image-20260622164707815" />
+<figcaption aria-hidden="true">image-20260622164707815</figcaption>
+</figure>
+<h6 id="policy-gradient的缺点">policy gradient的缺点：</h6>
+<p>1.不能充分利用数据（统一的reward）</p>
+<p>2.sparce reward不能优化不好的情况</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622165753038.png"
+alt="image-20260622165753038" />
+<figcaption aria-hidden="true">image-20260622165753038</figcaption>
+</figure>
+<h5 id="提升policy-gradients">提升policy gradients:</h5>
+<h6
+id="使用reward-togo-过去t-1的reward不应该此时t时刻的reward">使用reward
+togo: 过去t-1的reward不应该此时t时刻的reward</h6>
+<p>也就是把policy gradient公式中一整条轨迹的总的reward换成Q(s,a)</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>原来是“每一个轨迹每一个时间步的log乘以整条轨迹的reward”,通过reward to
+go的公式推导“每一个轨迹每一个时间步的log乘以整条轨迹的reward”=“每一个轨迹每一个时间步的log乘以该时间的reward
+to go”</p>
+</blockquote>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622165933718.png"
+alt="image-20260622165933718" />
+<figcaption aria-hidden="true">image-20260622165933718</figcaption>
+</figure>
+<p>继续推导：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622170028528.png"
+alt="image-20260622170028528" />
+<figcaption aria-hidden="true">image-20260622170028528</figcaption>
+</figure>
+<p>总结一下：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622170134033.png"
+alt="image-20260622170134033" />
+<figcaption aria-hidden="true">image-20260622170134033</figcaption>
+</figure>
+<h5 id="如何估计优势函数">如何估计优势函数：</h5>
+<p>可以近似为：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622170439606.png"
+alt="image-20260622170439606" />
+<figcaption aria-hidden="true">image-20260622170439606</figcaption>
+</figure>
+<h6 id="a.估计vpi方法一蒙特卡洛">a.估计V(pi)方法一——蒙特卡洛</h6>
+<p>就是足够多的采样求平均</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622170541910.png"
+alt="image-20260622170541910" />
+<figcaption aria-hidden="true">image-20260622170541910</figcaption>
+</figure>
+<h6 id="b.估计方法二bootstrappingtd">b.估计方法二：bootstrapping/TD</h6>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622174102301.png"
+alt="image-20260622174102301" />
+<figcaption aria-hidden="true">image-20260622174102301</figcaption>
+</figure>
+<p>蒙特卡洛高方差，bootstrap偏差大，折中——n-step</p>
+<h6 id="c.n-step">c.n-step</h6>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622174623468.png"
+alt="image-20260622174623468" />
+<figcaption aria-hidden="true">image-20260622174623468</figcaption>
+</figure>
+<p>注意reward随着时间步的累积计算有一个discount factors, 当episode
+length是无穷的时候，否则就会爆炸</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622174747263.png"
+alt="image-20260622174747263" />
+<figcaption aria-hidden="true">image-20260622174747263</figcaption>
+</figure>
+<p>总结：目前讨论的on-policy版本的actor-critic方法，有一个critic方法去估计当前策略的预期reward总值，通过这个可以算出advantage，还有一个actor网络去计算当前策略在当前state采取动作a的概率；然后就可以根据policy
+gradient的方法去进行更新。其中value
+function的估计总的有三种思路，一个是蒙特卡洛采样足够多，二个是td，当前state在当前policy的value用reward+下一个状态的value来迭代；三个是n-steps，多迭代几步；</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622174821286.png"
+alt="image-20260622174821286" />
+<figcaption aria-hidden="true">image-20260622174821286</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622174855683.png"
+alt="image-20260622174855683" />
+<figcaption aria-hidden="true">image-20260622174855683</figcaption>
+</figure>
+<h5 id="off-policy的actor-critic">off-policy的actor-critic</h5>
+<p>按照上个slide内容，就是在前面加上参数的比。当前策略的pi比上</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622192514698.png"
+alt="image-20260622192514698" />
+<figcaption aria-hidden="true">image-20260622192514698</figcaption>
+</figure>
+<p>如果更新太频繁有两个问题</p>
+<p>1.优势函数失效，因为A是基于old策略评估出来的</p>
+<p>2.重要性权重会增加在高方差行为上的probaility（而我们做rl优化的核心都是为了降低高方差）</p>
+<h6
+id="off-policy-actor-critic方法-version-1-multiple-gradient-steps">off-policy
+actor-critic方法 version 1: multiple gradient steps</h6>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622193437247.png"
+alt="image-20260622193437247" />
+<figcaption aria-hidden="true">image-20260622193437247</figcaption>
+</figure>
+<p>到目前为止，on policy的policy gradient算法是one gradient
+step，想更充分的利用旧数据。</p>
+<p>multiple gradient step是开始off-policy的，</p>
+<p>那我们可以直接用off-policy的数据吗？</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260622194651654.png"
+alt="image-20260622194651654" />
+<figcaption aria-hidden="true">image-20260622194651654</figcaption>
+</figure>
+<h6 id="version-2-replay-buffers">version 2: replay buffers</h6>
+<p>不仅使用当前策略的data,还要利用历史所有policy产生并存储在replay
+buffer的data.</p>
+<p>minibatch sampling:我们不再重新收集一条条连续轨迹，而是从replay
+buffer中随机抽取一个minibatch.本来rl中采集的数据有相关性，这种随机采样让数据变得iid.</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623134338237.png"
+alt="image-20260623134338237" />
+<figcaption aria-hidden="true">image-20260623134338237</figcaption>
+</figure>
+<p>但是会有一些问题：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623135619044.png"
+alt="image-20260623135619044" />
+<figcaption aria-hidden="true">image-20260623135619044</figcaption>
+</figure>
+<p>更新policy的梯度的时候：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623135636569.png"
+alt="image-20260623135636569" />
+<figcaption aria-hidden="true">image-20260623135636569</figcaption>
+</figure>
+<p>1.更新价值函数的时候用到的不是对当前策略的预期收益的估计</p>
+<p>2.更新policy的时候动作a是从replay
+buffer里面拿出来的，当前策略在当前状态可能不会选择这个动作。</p>
+<h5 id="解决方法">解决方法：</h5>
+<p>因此我们要:</p>
+<h6 id="fixing-value-funcion">fixing value funcion</h6>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623140934899.png"
+alt="image-20260623140934899" />
+<figcaption aria-hidden="true">image-20260623140934899</figcaption>
+</figure>
+<p><u>引入 <span class="math inline">\(Q(s, a)\)</span>
+的核心目的，是为了<strong>显式地把“动作”这个变量解耦出来</strong>，从而允许我们用<strong>当前策略的动作</strong>去替换掉<strong>历史数据中的动作</strong>。</u></p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623141043637.png"
+alt="image-20260623141043637" />
+<figcaption aria-hidden="true">image-20260623141043637</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623141106519.png"
+alt="image-20260623141106519" />
+<figcaption aria-hidden="true">image-20260623141106519</figcaption>
+</figure>
+<h6 id="fixing-policy-update">fixing policy update</h6>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623142226137.png"
+alt="image-20260623142226137" />
+<figcaption aria-hidden="true">image-20260623142226137</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623141920323.png"
+alt="image-20260623141920323" />
+<figcaption aria-hidden="true">image-20260623141920323</figcaption>
+</figure>
+<p>Sac:彻底抛弃旧动作 <span
+class="math inline">\(a_t\)</span>，只留下状态 <span
+class="math inline">\(s_t\)</span>。用当前最新的策略在 <span
+class="math inline">\(s_t\)</span> 上现做一个动作，然后让 <span
+class="math inline">\(Q\)</span>
+网络通过链式法则（梯度回传）来告诉策略该怎么改进。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>为什么sac带来的高方差问题是可以的</p>
+</blockquote>
+<h6 id="其他的">其他的：</h6>
+<p>Replay buffer的状态转移概率和此时policy也是不一样的，但是we only
+accept</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623142651532.png"
+alt="image-20260623142651532" />
+<figcaption aria-hidden="true">image-20260623142651532</figcaption>
+</figure>
+<p>采用重参数化方法帮助更好的估计梯度</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623142719203.png"
+alt="image-20260623142719203" />
+<figcaption aria-hidden="true">image-20260623142719203</figcaption>
+</figure>
+<h6 id="对比">对比</h6>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623143005119.png"
+alt="image-20260623143005119" />
+<figcaption aria-hidden="true">image-20260623143005119</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623143027355.png"
+alt="image-20260623143027355" />
+<figcaption aria-hidden="true">image-20260623143027355</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260623143037718.png"
+alt="image-20260623143037718" />
+<figcaption aria-hidden="true">image-20260623143037718</figcaption>
+</figure>
+<p><strong>Replay Buffer (Off-policy) SAC：</strong>
+<strong>必须</strong>设计 Q function 网络（而且通常是两个 <span
+class="math inline">\(Q\)</span> 网络加 Target <span
+class="math inline">\(Q\)</span> 网络）。独立的 <span
+class="math inline">\(V\)</span> 网络在现代实现中已经被取消了。</p>
+<p><strong>On-policy 强化学习：</strong> 通常以 <span
+class="math inline">\(V\)</span> function 网络为主（用于计算
+Baseline/Advantage），但如果是基于最大熵框架的 SAC
+变体，为了策略提升（Policy Improvement）的梯度传导，往往依然绕不开 <span
+class="math inline">\(Q\)</span> 的估计。</p>
 
     </div>
 
@@ -318,6 +782,10 @@ alt="image-20260612150816355" />
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cs224r/" rel="tag"># cs224r</a>
+              <a href="/tags/rl-notes/" rel="tag"># rl-notes</a>
+          </div>
 
         
 
@@ -390,7 +858,11 @@ alt="image-20260612150816355" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#basics-01"><span class="nav-number">1.</span> <span class="nav-text">Basics-01</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E4%BB%BF%E5%AD%A6%E4%B9%A0-02"><span class="nav-number">2.</span> <span class="nav-text">模仿学习-02</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#diffusion"><span class="nav-number">2.0.1.</span> <span class="nav-text">diffusion</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#basics-01"><span class="nav-number">1.</span> <span class="nav-text">Basics-01</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E4%BB%BF%E5%AD%A6%E4%B9%A0-02"><span class="nav-number">2.</span> <span class="nav-text">模仿学习-02</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#diffusion"><span class="nav-number">2.0.1.</span> <span class="nav-text">diffusion</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#project01"><span class="nav-number">3.</span> <span class="nav-text">project01</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-gradient"><span class="nav-number">4.</span> <span class="nav-text">03-policy gradient</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8E%A8%E5%AF%BClog%E5%AF%BC%E6%95%B0%E6%80%A7%E8%B4%A8%E8%A1%A8%E7%A4%BA%E7%A7%B0logpreward"><span class="nav-number">4.0.1.</span> <span class="nav-text">推导：log导数性质表示称logp*reward</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#vanilla-policy-gradient%E9%AB%98%E6%96%B9%E5%B7%AE"><span class="nav-number">4.0.2.</span> <span class="nav-text">vanilla policy
+gradient:高方差</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E8%A6%81%E6%8F%90%E5%8D%87"><span class="nav-number">4.0.3.</span> <span class="nav-text">如果要提升：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#a.reward%E5%A4%84%E7%90%86---%E5%87%8F%E5%8E%BB%E5%9D%87%E5%80%BC%E5%BC%95%E5%85%A5%E8%B4%9F%E6%A2%AF%E5%BA%A6%E9%81%8F%E5%88%B6%E4%B8%8D%E5%A5%BD%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-number">4.0.3.1.</span> <span class="nav-text">a.reward处理---减去均值，引入负梯度遏制不好的行为</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#b.dense-rewardlarge-batches%E7%BC%93%E8%A7%A3%E5%A5%96%E5%8A%B1%E7%A8%80%E7%96%8F%E7%9A%84%E9%9C%87%E8%8D%A1%E5%AD%A6%E4%B8%8D%E5%88%B0"><span class="nav-number">4.0.3.2.</span> <span class="nav-text">b.dense
+reward&#x2F;large batches缓解奖励稀疏的震荡学不到</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#c.%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AAon-policy%E7%AD%96%E7%95%A5%E7%9A%84%E9%87%87%E6%A0%B7%E6%95%88%E7%8E%87%E4%BD%8E%E9%97%AE%E9%A2%98%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5%E5%92%8C%E6%97%A7%E7%AD%96%E7%95%A5%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB%E6%98%AF%E4%B8%80%E6%A0%B7%E7%9A%84%E5%81%87%E8%AE%BE%E5%88%B0%E8%BE%BE%E4%B8%80%E4%B8%AA%E7%8A%B6%E6%80%81%E7%9A%84%E6%A6%82%E7%8E%87%E6%98%AF%E4%B8%80%E6%A0%B7%E7%9A%84%E5%9B%A0%E6%AD%A4%E6%9B%B4%E6%96%B0%E4%B8%8D%E8%83%BD%E5%A4%AA%E5%BF%AB"><span class="nav-number">4.0.3.3.</span> <span class="nav-text">c.重要性采样解决这个on-policy策略的采样效率低问题（前提条件更新策略和旧策略的状态转移是一样的，假设到达一个状态的概率是一样的，因此更新不能太快）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides4--actor-critic%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">slides4- Actor Critic方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#last-slide"><span class="nav-number">5.0.1.</span> <span class="nav-text">last slide:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#policy-gradient%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">5.0.1.1.</span> <span class="nav-text">policy gradient的缺点：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%90%E5%8D%87policy-gradients"><span class="nav-number">5.0.2.</span> <span class="nav-text">提升policy gradients:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8reward-togo-%E8%BF%87%E5%8E%BBt-1%E7%9A%84reward%E4%B8%8D%E5%BA%94%E8%AF%A5%E6%AD%A4%E6%97%B6t%E6%97%B6%E5%88%BB%E7%9A%84reward"><span class="nav-number">5.0.2.1.</span> <span class="nav-text">使用reward
+togo: 过去t-1的reward不应该此时t时刻的reward</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BC%B0%E8%AE%A1%E4%BC%98%E5%8A%BF%E5%87%BD%E6%95%B0"><span class="nav-number">5.0.3.</span> <span class="nav-text">如何估计优势函数：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#a.%E4%BC%B0%E8%AE%A1vpi%E6%96%B9%E6%B3%95%E4%B8%80%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B"><span class="nav-number">5.0.3.1.</span> <span class="nav-text">a.估计V(pi)方法一——蒙特卡洛</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#b.%E4%BC%B0%E8%AE%A1%E6%96%B9%E6%B3%95%E4%BA%8Cbootstrappingtd"><span class="nav-number">5.0.3.2.</span> <span class="nav-text">b.估计方法二：bootstrapping&#x2F;TD</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#c.n-step"><span class="nav-number">5.0.3.3.</span> <span class="nav-text">c.n-step</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#off-policy%E7%9A%84actor-critic"><span class="nav-number">5.0.4.</span> <span class="nav-text">off-policy的actor-critic</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#off-policy-actor-critic%E6%96%B9%E6%B3%95-version-1-multiple-gradient-steps"><span class="nav-number">5.0.4.1.</span> <span class="nav-text">off-policy
+actor-critic方法 version 1: multiple gradient steps</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#version-2-replay-buffers"><span class="nav-number">5.0.4.2.</span> <span class="nav-text">version 2: replay buffers</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">5.0.5.</span> <span class="nav-text">解决方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#fixing-value-funcion"><span class="nav-number">5.0.5.1.</span> <span class="nav-text">fixing value funcion</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#fixing-policy-update"><span class="nav-number">5.0.5.2.</span> <span class="nav-text">fixing policy update</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84"><span class="nav-number">5.0.5.3.</span> <span class="nav-text">其他的：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94"><span class="nav-number">5.0.5.4.</span> <span class="nav-text">对比</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -406,7 +878,7 @@ alt="image-20260612150816355" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">145</span>
+          <span class="site-state-item-count">147</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -419,7 +891,7 @@ alt="image-20260612150816355" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-count">119</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
