@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://77philosophia.github.io/2026/05/06/lerobot-startup/image-20260507151541294.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/05/06/lerobot-startup/image-20260507151752747.png">
 <meta property="article:published_time" content="2026-05-06T07:52:40.000Z">
-<meta property="article:modified_time" content="2026-06-11T06:41:43.128Z">
+<meta property="article:modified_time" content="2026-06-30T09:53:55.780Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="vla">
 <meta property="article:tag" content="robot">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-11 14:41:43" itemprop="dateModified" datetime="2026-06-11T14:41:43+08:00">2026-06-11</time>
+                <time title="Modified: 2026-06-30 17:53:55" itemprop="dateModified" datetime="2026-06-30T17:53:55+08:00">2026-06-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +302,7 @@ alt="image-20260506210702290" />
 <figcaption aria-hidden="true">image-20260506210702290</figcaption>
 </figure>
 <h4 id="校准从臂">4.2 校准从臂</h4>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lerobot-calibrate \</span><br><span class="line">    --teleop.type=so101_follower \   </span><br><span class="line">    --teleop.port=/dev/slave_arm \    ## 刚才绑定的端口</span><br><span class="line">    --teleop.id=my_awesome_follower_arm   #起个unique的名字</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lerobot-calibrate \</span><br><span class="line">    --robot.type=so101_follower \   ## 注意此时是robot.xx而不是telop.xx</span><br><span class="line">    --robot.port=/dev/slave_arm \    ## 刚才绑定的端口</span><br><span class="line">    --robot.id=my_awesome_follower_arm   #起个unique的名字</span><br></pre></td></tr></table></figure>
 <figure>
 <img data-src="/2026/05/06/lerobot-startup/image-20260506211906054.png"
 alt="image-20260506211906054" />
@@ -458,7 +458,7 @@ arm）和机械人手臂(robot arm)端口</span></a><ol class="nav-child"><li cl
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">147</span>
+          <span class="site-state-item-count">148</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
