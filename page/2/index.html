@@ -818,7 +818,7 @@ AI/机器人公司的阶段性考核指标（Milestone）是什么？是看纯�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-17 17:40:34" itemprop="dateModified" datetime="2026-07-17T17:40:34+08:00">2026-07-17</time>
+                <time title="Modified: 2026-07-21 15:15:07" itemprop="dateModified" datetime="2026-07-21T15:15:07+08:00">2026-07-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1457,11 +1457,45 @@ function-&gt;换用Q从而体现“current policy”</p>
 <h4
 id="expectile-regression-从关注平均的mse-loss到更关注表现好价值高的sample">expectile
 regression: 从关注平均的mse loss到更关注表现好价值高的sample</h4>
+<h4 id="awac算法">AWAC算法</h4>
+<p>蒙特卡洛的估计有高方差的问题。是否有衡量动作优势更好的方法。</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720110925400.png"
+alt="image-20260720110925400" />
+<figcaption aria-hidden="true">image-20260720110925400</figcaption>
+</figure>
+<p>AWAC 的解决办法是：<strong>在训练 Q
+函数时，目标值的计算不直接依赖新策略 <span
+class="math inline">\(\pi\)</span>，而是利用数据集里的动作。</strong></p>
+<p>有了训练好的 <span class="math inline">\(Q(s, a)\)</span>
+和状态价值函数 <span class="math inline">\(V(s)\)</span>
+之后，优势函数的计算就变得非常常规且低方差了：</p>
 <figure>
 <img data-src="/2026/06/11/cs224r/image-20260713154733164.png"
 alt="image-20260713154733164" />
 <figcaption aria-hidden="true">image-20260713154733164</figcaption>
 </figure>
+<h4 id="iql">IQL</h4>
+<p>如何在完全不查询 OOD
+动作的前提下，不仅估计当前行为策略的价值，还能隐式地去估计一个“更好策略”的价值。</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720111414253.png"
+alt="image-20260720111414253" />
+<figcaption aria-hidden="true">image-20260720111414253</figcaption>
+</figure>
+<p>既然直接在动作空间上做 <span class="math inline">\(\max\)</span>
+会引入 OOD
+风险，那能不能绕过动作，<strong>直接在状态价值（Value）层面去逼近比当前策略更好的上界（Upper
+Expectile）</strong>？</p>
+<p>通过将价值函数的训练从对称的 <span
+class="math inline">\(\ell_2\)</span> 损失换成非对称的 expectile
+损失（<span
+class="math inline">\(\ell_\tau\)</span>），我们<strong>不需要在动作空间里去查询任何
+OOD
+动作</strong>，就能直接在状态层面“抠”出数据集里表现较好的轨迹上限。</p>
+<p>这正是 <strong>IQL（Implicit Q-Learning）</strong>
+的核心基石：通过状态价值的非对称回归来代替复杂的策略最大化，从而彻底解决了离线强化学习中的
+OOD 动作灾难。</p>
 <figure>
 <img data-src="/2026/06/11/cs224r/image-20260713154945082.png"
 alt="image-20260713154945082" />
@@ -1575,6 +1609,271 @@ class="math inline">\(V_\psi\)</span>：</strong>
 <img data-src="/2026/06/11/cs224r/image-20260717154048808.png"
 alt="image-20260717154048808" />
 <figcaption aria-hidden="true">image-20260717154048808</figcaption>
+</figure>
+<p>核心就是学习一个simulator:</p>
+<p>但是也可能存在很多问题，比如：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720112307136.png"
+alt="image-20260720112307136" />
+<figcaption aria-hidden="true">image-20260720112307136</figcaption>
+</figure>
+<h4 id="如何学习一个好的动力学模型">如何学习一个好的动力学模型</h4>
+<ul>
+<li>大概知道数学模型：数据拟合</li>
+<li>不知道数学分布（大多数）：端到端的学习/学习一个low-rank的表示，然后学习一个基于low-rank
+representation的model.</li>
+<li>叫做dynamics model, simulator, world model, model</li>
+</ul>
+<p>学习过程：</p>
+<p>典型的<strong>基于模型的强化学习（Model-Based Reinforcement Learning,
+MBRL）*<em>算法框架，其核心精髓在于*</em>利用学习到的世界模型（World
+Model）来生成虚拟经验，从而大幅提升样本利用率</strong>。</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720150926391.png"
+alt="image-20260720150926391" />
+<figcaption aria-hidden="true">image-20260720150926391</figcaption>
+</figure>
+<p>其中planning可以通过基于gradient或者sample的方法去生成（这一部分下面这页pptyoutube视频里有，但是课件没了）</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152525950.png"
+alt="image-20260720152525950" />
+<figcaption aria-hidden="true">image-20260720152525950</figcaption>
+</figure>
+<p>可能存在的问题：分布漂移</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151249367.png"
+alt="image-20260720151249367" />
+<figcaption aria-hidden="true">image-20260720151249367</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151330709.png"
+alt="image-20260720151330709" />
+<figcaption aria-hidden="true">image-20260720151330709</figcaption>
+</figure>
+<p>两种方法：</p>
+<p>1.用model产生部分roll-out数据</p>
+<p>2.使用ensemble模型，把误差平均掉</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151442172.png"
+alt="image-20260720151442172" />
+<figcaption aria-hidden="true">image-20260720151442172</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151513774.png"
+alt="image-20260720151513774" />
+<figcaption aria-hidden="true">image-20260720151513774</figcaption>
+</figure>
+<p>另外使用model的方法：多生成动作然后采样回报高的那个</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151636937.png"
+alt="image-20260720151636937" />
+<figcaption aria-hidden="true">image-20260720151636937</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151747259.png"
+alt="image-20260720151747259" />
+<figcaption aria-hidden="true">image-20260720151747259</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151849797.png"
+alt="image-20260720151849797" />
+<figcaption aria-hidden="true">image-20260720151849797</figcaption>
+</figure>
+<p>这种方法不适用于长程任务</p>
+<p>长程任务多学习一个value function</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720151931028.png"
+alt="image-20260720151931028" />
+<figcaption aria-hidden="true">image-20260720151931028</figcaption>
+</figure>
+<p>总结：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152027409.png"
+alt="image-20260720152027409" />
+<figcaption aria-hidden="true">image-20260720152027409</figcaption>
+</figure>
+<p>举例子：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152057958.png"
+alt="image-20260720152057958" />
+<figcaption aria-hidden="true">image-20260720152057958</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152146970.png"
+alt="image-20260720152146970" />
+<figcaption aria-hidden="true">image-20260720152146970</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152159066.png"
+alt="image-20260720152159066" />
+<figcaption aria-hidden="true">image-20260720152159066</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152211055.png"
+alt="image-20260720152211055" />
+<figcaption aria-hidden="true">image-20260720152211055</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720152224249.png"
+alt="image-20260720152224249" />
+<figcaption aria-hidden="true">image-20260720152224249</figcaption>
+</figure>
+<h3 id="slides12多任务rl">slides12:多任务rl</h3>
+<p>为什么需要multi-task
+rl：我们想要通才的任务。比如机器人不仅能在水泥地走路也能在草地上走路。</p>
+<p>定义：</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720155036755.png"
+alt="image-20260720155036755" />
+<figcaption aria-hidden="true">image-20260720155036755</figcaption>
+</figure>
+<p>解决方法一：把任务task放入state中</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720155301342.png"
+alt="image-20260720155301342" />
+<figcaption aria-hidden="true">image-20260720155301342</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720163659618.png"
+alt="image-20260720163659618" />
+<figcaption aria-hidden="true">image-20260720163659618</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260720164609810.png"
+alt="image-20260720164609810" />
+<figcaption aria-hidden="true">image-20260720164609810</figcaption>
+</figure>
+<h4 id="slides13-meta-rl">slides13: meta rl</h4>
+<p>Multi-task learning</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721112354587.png"
+alt="image-20260721112354587" />
+<figcaption aria-hidden="true">image-20260721112354587</figcaption>
+</figure>
+<p>Goal-conditioned learning</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721112417131.png"
+alt="image-20260721112417131" />
+<figcaption aria-hidden="true">image-20260721112417131</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721135134223.png"
+alt="image-20260721135134223" />
+<figcaption aria-hidden="true">image-20260721135134223</figcaption>
+</figure>
+<p>黑盒rl:</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721141854638.png"
+alt="image-20260721141854638" />
+<figcaption aria-hidden="true">image-20260721141854638</figcaption>
+</figure>
+<h3 id="slides15hierarchy">slides15:hierarchy</h3>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721142904133.png"
+alt="image-20260721142904133" />
+<figcaption aria-hidden="true">image-20260721142904133</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721144411554.png"
+alt="image-20260721144411554" />
+<figcaption aria-hidden="true">image-20260721144411554</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721144640762.png"
+alt="image-20260721144640762" />
+<figcaption aria-hidden="true">image-20260721144640762</figcaption>
+</figure>
+<h3 id="slides17-rl-vla">slides17: rl-vla</h3>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721145718775.png"
+alt="image-20260721145718775" />
+<figcaption aria-hidden="true">image-20260721145718775</figcaption>
+</figure>
+<p>offline rl更合适，解决两个问题：</p>
+<ul>
+<li>学习value function</li>
+<li>用这个value function得到一个更好的policy</li>
+</ul>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721145905021.png"
+alt="image-20260721145905021" />
+<figcaption aria-hidden="true">image-20260721145905021</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721145925166.png"
+alt="image-20260721145925166" />
+<figcaption aria-hidden="true">image-20260721145925166</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721145941314.png"
+alt="image-20260721145941314" />
+<figcaption aria-hidden="true">image-20260721145941314</figcaption>
+</figure>
+<p>rl是否能提升基础vla的效果</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721150433273.png"
+alt="image-20260721150433273" />
+<figcaption aria-hidden="true">image-20260721150433273</figcaption>
+</figure>
+<p>我们能否对视觉-语言-动作模型（VLA）进行在线强化学习（Online RL）</p>
+<p>由于直接对整个庞大的 VLA
+进行端到端微调成本极高（如前一段所述），这里提出了一种核心思路：<strong>利用
+VLA 的表征，训练一个独立的、基于高斯分布的策略（Gaussian
+Policy），从而在不端到端微调 VLA 的前提下实现性能提升。</strong></p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721150634872.png"
+alt="image-20260721150634872" />
+<figcaption aria-hidden="true">image-20260721150634872</figcaption>
+</figure>
+<ol type="1">
+<li>版本 A（Version A）：将 VLA
+扩散过程的噪声视为动作空间，训练强化学习策略来控制噪声</li>
+<li>版本 B（Version B）：压缩 VLA
+的视觉表征，并在该表征之上进行强化学习</li>
+</ol>
+<p>扩散引导(diffusion
+steering)训练策略生成能产生好动作的噪声，去引导vla输出优质动作</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721150907030.png"
+alt="image-20260721150907030" />
+<figcaption aria-hidden="true">image-20260721150907030</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151033193.png"
+alt="image-20260721151033193" />
+<figcaption aria-hidden="true">image-20260721151033193</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151051164.png"
+alt="image-20260721151051164" />
+<figcaption aria-hidden="true">image-20260721151051164</figcaption>
+</figure>
+<p>学习一个高斯策略去编辑vla的动作</p>
+<p>优化更小型的高斯编辑策略以最大化 Q 值</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151333938.png"
+alt="image-20260721151333938" />
+<figcaption aria-hidden="true">image-20260721151333938</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151307727.png"
+alt="image-20260721151307727" />
+<figcaption aria-hidden="true">image-20260721151307727</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151250909.png"
+alt="image-20260721151250909" />
+<figcaption aria-hidden="true">image-20260721151250909</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151240870.png"
+alt="image-20260721151240870" />
+<figcaption aria-hidden="true">image-20260721151240870</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260721151228680.png"
+alt="image-20260721151228680" />
+<figcaption aria-hidden="true">image-20260721151228680</figcaption>
 </figure>
 
       
