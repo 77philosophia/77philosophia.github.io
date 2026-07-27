@@ -182,6 +182,554 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/27/pytorch-jit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/27/pytorch-jit/" class="post-title-link" itemprop="url">pytorch里的jit加速</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-07-27 10:43:36 / Modified: 10:51:06" itemprop="dateCreated datePublished" datetime="2026-07-27T10:43:36+08:00">2026-07-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="pytorch-with-jit">pytorch with jit</h3>
+<ul>
+<li>不使用jit:
+<ul>
+<li>cpu和gpu频繁切换。比如：在具身智能的交互循环中，CPU
+需要频繁地把观测数据（Observations）发给 GPU，等 GPU
+算完后再把动作（Actions）和奖励（Rewards）传回 CPU。</li>
+<li>使用jitting:通过 <code>@torch.jit.script</code> 或
+<code>torch.jit.trace</code>，PyTorch
+可以把整个模型或核心前向传播过程“编译”成一个独立于 Python 的静态图。这样
+GPU 就可以脱离 Python 解释器的逐行控制，大幅减少内核启动开销（Kernel
+launch overhead），从而提升推理和训练速度。</li>
+</ul></li>
+</ul>
+<h3 id="是不是都可以用jit">是不是都可以用jit</h3>
+<ul>
+<li>动态控制流的限制:对频繁的if/else等动态控制流支持不好</li>
+<li>调试困难</li>
+<li>cpu和io密集型任务不适合</li>
+</ul>
+<h3 id="最佳实践">最佳实践</h3>
+<ul>
+<li><strong>局部优化</strong>：只对 Agent
+中计算最密集、调用最频繁的<strong>神经网络核心模块</strong>（例如
+<code>policy</code> 推理函数或网络前向传播）使用
+<code>@torch.jit.script</code> 或 <code>torch.jit.trace</code>。</li>
+<li>先调通，再加速：关闭jit写代码，打开jit大规模并行</li>
+</ul>
+<h3 id="经典使用jit的例子">经典使用jit的例子</h3>
+<p>在具身智能和强化学习（例如 Dreamer
+算法或在线控制策略）中，最经典、最适合使用 JIT 的模块是
+<strong>智能体的策略网络前向推理（Policy Forward Pass / Action Sampling
+Module）</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 经典案例：一个负责根据隐状态输出动作的策略模块</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PolicyModule</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.net = torch.nn.Sequential(</span><br><span class="line">            torch.nn.Linear(<span class="number">256</span>, <span class="number">256</span>),</span><br><span class="line">            torch.nn.ReLU(),</span><br><span class="line">            torch.nn.Linear(<span class="number">256</span>, <span class="number">6</span>) <span class="comment"># 输出 6 维连续动作</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, state</span>):</span><br><span class="line">        <span class="keyword">return</span> self.net(state)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为 JIT 编译模块</span></span><br><span class="line">policy_module = PolicyModule()</span><br><span class="line">scripted_policy = torch.jit.script(policy_module)</span><br></pre></td></tr></table></figure>
+<h4 id="加速原因">加速原因</h4>
+<ul>
+<li>摆脱 Python 解释器的逐行调度开销
+<ul>
+<li><strong>普通 PyTorch</strong>：Python
+每执行一行神经网络计算，都要经过 Python 解释器，然后通过 C++
+接口去调用底层 CUDA
+算子。如果每一步交互的计算量很小（比如强化学习中单步推理），Python
+调度本身消耗的时间甚至会超过 GPU 实际计算的时间。</li>
+<li><strong>JIT 优化后</strong>：整个模型被编译成了一个纯 C++
+层的执行图（Graph），在运行大循环时<strong>完全绕过了 Python
+解释器</strong>，让 GPU 可以连续不断地全速运算。</li>
+</ul></li>
+<li>算子融合（Operator Fusion）
+<ul>
+<li><strong>普通 PyTorch</strong>：对于
+<code>Linear -&gt; ReLU -&gt; Linear</code> 这种常见组合，GPU
+通常需要执行三次独立的
+Kernel（内核启动）：先算完线性层写回显存，再启动一个 Kernel 做
+ReLU，再启动一个 Kernel 做第二个线性层。中间伴随着频繁的显存读写（Memory
+Bottleneck）。</li>
+<li><strong>JIT
+优化后</strong>：编译器会自动将这些相邻的小算子“融合”成一个单一的复合算子（Fused
+Kernel）。数据直接在 GPU
+寄存器/缓存中流转，大幅减少了显存带宽的消耗。</li>
+</ul></li>
+<li>常量折叠与死代码消除（Constant Folding &amp; Dead Code Elimination）
+<ul>
+<li>JIT
+在编译时会预先计算好那些在运行期不会改变的静态表达式（常量折叠），并剔除掉永远不会被执行的分支代码，从而精简最终的计算图。</li>
+</ul></li>
+<li>更好的底层硬件优化：TorchScript
+能够以更全局的视角审视整个计算图，产生更优的机器码</li>
+</ul>
+<h4
+id="理解原生-pytorcheager-mode即动态图模式在执行神经网络计算时python-代码和底层硬件gpucpu之间是如何交互的">理解原生
+PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Python
+代码和底层硬件（GPU/CPU）之间是如何交互的。</h4>
+<p>假设我们有这样一段简单的 PyTorch 前向传播代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 准备数据和层</span></span><br><span class="line">x = torch.randn(<span class="number">32</span>, <span class="number">128</span>, device=<span class="string">&#x27;cuda&#x27;</span>)  <span class="comment"># 在 GPU 上创建一个张量</span></span><br><span class="line">linear1 = torch.nn.Linear(<span class="number">128</span>, <span class="number">64</span>).cuda() <span class="comment"># 线性层（移到 GPU）</span></span><br><span class="line">relu = torch.nn.ReLU()                   <span class="comment"># 激活函数层</span></span><br><span class="line">linear2 = torch.nn.Linear(<span class="number">64</span>, <span class="number">10</span>).cuda()  <span class="comment"># 线性层（移到 GPU）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 下面开始逐行计算 ---</span></span><br><span class="line">out1 = linear1(x)       <span class="comment"># 第 1 步：线性变换</span></span><br><span class="line">out2 = relu(out1)       <span class="comment"># 第 2 步：ReLU 激活</span></span><br><span class="line">out3 = linear2(out2)    <span class="comment"># 第 3 步：输出层</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> 执行第一行：out1 = linear1(x)Python 解释器介入：Python 读到这一行，解释器开始解析代码，发现调用了 linear1。C++ 胶水层（Pybind11）：Python 通过底层接口把请求传给 PyTorch 的 C++ 核心。派发任务（Kernel Launch）：C++ 告诉 GPU：“请启动一个矩阵乘法的 CUDA 内核（Kernel）来算 linear1。”等待与返回：GPU 开始在显存里计算矩阵乘法。与此同时，Python 解释器在 CPU 上停下来（或者准备下一行的指令）。</span><br><span class="line"> <span class="number">2.</span> 执行第二行：out2 = relu(out1)Python 解释器再次介入：Python 读到这一行，重新唤醒解释器去解析 relu。重复调度开销：C++ 再次接收请求，向 GPU 发送第二个指令：“请启动一个 ReLU 的 CUDA 内核。”显存反复读写（Memory Round-trip）：GPU 必须先把刚才 linear1 算好的结果写回到显存里，然后重新读出来做 ReLU 运算。此时，Python 解释器和 CPU 又在处理这一行的调度逻辑。</span><br><span class="line"> <span class="number">3.</span> 执行第三行：out3 = linear2(out2)Python 解释器第三次介入：重复上述过程，Python 解析代码 $\rightarrow$ 传递给 C++ $\rightarrow$ GPU 启动第三个 CUDA 内核算第二个线性层。</span><br><span class="line">  </span><br><span class="line">带来的问题：</span><br><span class="line">调度开销大于计算开销（Overhead）：</span><br><span class="line">算子割裂，无法优化：</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/24/elite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/24/elite/" class="post-title-link" itemprop="url">elite</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-07-24 15:42:02" itemprop="dateCreated datePublished" datetime="2026-07-24T15:42:02+08:00">2026-07-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/24/dreamerv3-runnning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/24/dreamerv3-runnning/" class="post-title-link" itemprop="url">跑dreamerv3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-07-24 11:09:49 / Modified: 16:24:51" itemprop="dateCreated datePublished" datetime="2026-07-24T11:09:49+08:00">2026-07-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>[!NOTE]</p>
+<p>1.用mamba替代conda进行管理。 mambda activate dreamerv3</p>
+</blockquote>
+<h3 id="dreamer的训练过程">dreamer的训练过程</h3>
+<figure>
+<img data-src="/2026/07/24/dreamerv3-runnning/image-20260724162449389.png"
+alt="image-20260724162449389" />
+<figcaption aria-hidden="true">image-20260724162449389</figcaption>
+</figure>
+<h3 id="理解算力瓶颈">1.理解算力瓶颈</h3>
+<p>a.Baseline：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python dreamerv3/main.py \</span><br><span class="line">  --logdir ~/logdir/dreamer/crafter \</span><br><span class="line">  --configs crafter \</span><br><span class="line">  --run.train_ratio 32</span><br><span class="line">  </span><br><span class="line">另一个窗口可视化 python -m scope_viewer --basedir ~/logdir --port 8000   ## 跑了一些新的实验runs加载不出来换个端口</span><br></pre></td></tr></table></figure>
+<p>当前训练（GPU）的基线是 fps/policy ~46、fps/train ~1470。</p>
+<p>b.cpu</p>
+<p>fps/policy 0.61 / fps/train 18.69</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/23/worldmodel-liyang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/23/worldmodel-liyang/" class="post-title-link" itemprop="url">世界模型tutorial类综述from LiYang</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-07-23 13:52:19 / Modified: 14:16:09" itemprop="dateCreated datePublished" datetime="2026-07-23T13:52:19+08:00">2026-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>[!NOTE]</p>
+<p>本着无笔记，不learning的原则，记录对我自己来说比较有用的几个点吧。</p>
+</blockquote>
+<h3 id="why-wm-hot-again">why wm hot again</h3>
+<p>world model 并不是新概念。2018 年 Ha 和 Schmidhuber 的论文就叫
+<em>World Models</em>。更早的 model-based reinforcement learning
+也一直在学环境动力学。</p>
+<p>它现在重新变热，是因为三条技术线在 2024-2026 年交汇了。</p>
+<p>1.视频生成模型的变强</p>
+<p>2.具身智能的数据瓶颈：world model
+提供了一个诱人的方向：能不能用互联网视频、仿真数据、人类第一视角视频和少量机器人数据，训练一个可交互的“内部模拟器”？</p>
+<p>3.自动驾驶已经证明“反事实仿真”有巨大价值,真实道路上的 corner case
+很稀少，但安全系统恰恰要处理稀少事件。world model
+可以生成或重放危险场景，帮助 planner 和 policy 做闭环评估。</p>
+<h3 id="wm的分类">wm的分类</h3>
+<ol type="1">
+<li>预测什么
+<ul>
+<li>像素</li>
+<li>latent</li>
+<li>结构：物体，关节，occupancy, graph,keypoint</li>
+<li>Action：同时预测未来的action</li>
+</ul></li>
+<li>whether action as an input
+<ul>
+<li>no action: 视频生成</li>
+<li>Action: 控制，规划，反事实推理</li>
+<li>自己学习动作：从video抽取latent action</li>
+</ul></li>
+<li>predict for what
+<ul>
+<li>生成内容: video, 3d</li>
+<li>Evaluation: 自动驾驶，机器人闭环仿真</li>
+<li>Policy: model-based rl, imagination rollout、数据生成。</li>
+<li>理解物理：视觉表征、因果推断、常识推理。</li>
+</ul></li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/22/threat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/22/threat/" class="post-title-link" itemprop="url">威慑</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-07-22 19:16:23" itemprop="dateCreated datePublished" datetime="2026-07-22T19:16:23+08:00">2026-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-07-24 10:19:20" itemprop="dateModified" datetime="2026-07-24T10:19:20+08:00">2026-07-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="防止小人算计">防止小人算计</h4>
+<p>立威。</p>
+<p>有令人闻风丧胆的智计。</p>
+<p>有看破生死的通达。</p>
+<p>有钢铁般的信用。说几点到就是几点到，说几号交就是几号交，说给多少就是给多少。钢铁般的信用的背后其实不是什么“自尊自爱”，而是一种决绝的凶残。</p>
+<p>借口是廉价而无限供应的，无伤大雅地讨饶、找补、“投降输一半”才是人之常情。</p>
+<h4 id="女儿的反应强烈">女儿的反应强烈</h4>
+<p>强力沟通的方式要掌握</p>
+<p>没有受过良好的威慑教育，误以为威慑就是情绪绑架和伤害，是情绪恐怖主义。</p>
+<p>差别首先在于平静。不要以为大喊大叫就有更高的能量，这是错的。</p>
+<p>讨论一个纯技术问题——如果做到有效率的强硬</p>
+<p>（1）意志力的见证：减肥练字，要有意志力的见证“面对令人生畏的困难，以艰难的意志，扛过一切折磨，达成意志的贯彻”</p>
+<p>（2）耐心的见证：我下定决心攻克的目标，一定攻克。</p>
+<p>（3）勇气的见证：我很清楚一旦向你做强硬宣告，就会对你形成尖锐的挑战，会为我自己带来报复和压力的损失。我不是对此抱有侥幸和乡愿的人，这你应该有清醒的的认识，然而我还是直接向你宣告了我的强硬。</p>
+<p>（4）仁慈的见证</p>
+<h4 id="普京表示俄罗斯进入特殊战备">普京表示俄罗斯进入特殊战备</h4>
+<p>俄罗斯要打政治仗、文明仗，牢固的在占领区乌克兰人的面前树立威武之师、文明之师的深刻印象。</p>
+<p>俄罗斯直接的拿出核武器，并且展示真实的使用意愿，是对抗北约现在已趋疯狂的宣传战的对症之药。</p>
+<h4 id="总被男人骚扰">总被男人骚扰</h4>
+<p>参与对抗性运动，打出痛苦，打出血泪，打出意志，气焰，野性来。</p>
+<p>身为女性，野性是最好的祛邪避凶的镇魂神器。</p>
+<p>ta们看了你在运动场上的兽性勃发，从你的日常的言谈举止中察觉到了那种强硬、刚毅、杀伐果决而且野性未泯的迹象，就会无法预料你对冒犯会有多激烈的反应。</p>
+<h4
+id="我知道这个官司我会输但我可以找个律师陪着你们打拖个一年半年的没什么问题的社会现象">「我知道，这个官司我会输，但我可以找个律师陪着你们打，拖个一年半年的没什么问题」的社会现象</h4>
+<p>把律师费放进诉求里去，赔款要求计算利息，提前申请财产保全。</p>
+<p>然后让律师陪ta打去呗。</p>
+<p>维护自己的权益，法律只能担当顺位非常低的保障。</p>
+<p>1）做一个对方不愿意失去的人。要先能创造价值</p>
+<p>2）成为一个对方不容易施加伤害的人。为人谨慎。</p>
+<p>3）预知伤害要付出代价的人。也就是提前让人知道你有报复的意志和能力，而且不可能因为被先发制人的打击而被剥夺——比如就算提前把你消灭了，也会有人来替你复仇。</p>
+<p>4）成为一个“对方并不提前预知你有报复的意志和能力，甚至自认为你没有，只是事后会发现自己误判”的人。</p>
+<p>这种只能勉强阻止对方对你进行反复伤害，阻止不了对方的第一次侵犯的妄念。</p>
+<h4 id="为什么人需要隐私呢">为什么人需要隐私呢</h4>
+<p>作者：匿名用户
+链接：https://www.zhihu.com/question/54187061/answer/557532569
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>人类积累了大量的<a
+target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=固定策略&amp;zhida_source=entity">固定策略</a>，可以对付每一种人。每一个特定种型的人，在人类两百万年的历史里，都已经无数次的成为过攻击、欺诈、利用、操纵的对象。</p>
+<p>每一个类型的针对性技术都经过了漫长的时间洗礼而变得非常精妙而有效。</p>
+<p>并且这些策略是互相交叉、互相叠加的。人的每一个维度的每一个量度，都对应着一个<a
+target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=攻击策略集&amp;zhida_source=entity">攻击策略集</a>。你暴露的信息越多，这些选择集的交集就会越小，而合集就会越大。这交集指向最精确有效的方案，这合集指向广阔的<a
+target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=变形空间&amp;zhida_source=entity">变形空间</a>。</p>
+<p>对付有车的，对付有娃的，对付喜欢传统文化的，对付年纪小的，对付好虚荣的，对付好名声的……你泄露得越多，你越接近案板上的肉。</p>
+<p>有人对你动手时，你甚至都不会觉察到。你会误以为一切都是自愿自由的——从法律上讲，也的确都是自愿自由的。谁叫你心软？谁叫你好面子？谁叫你好色？谁叫你贪财？……</p>
+<p><strong>没有信息，你就会成为一个困难得多的目标。</strong></p>
+<p>而即使你仍然不可避免要流露信息，如果对方发觉你有高度敏感和谨慎的隐私的习惯，都会默默的在心里给你做一个“不好弄”的标记，转而把精力放在更好弄的目标上。</p>
+<p>这个在中国的语境里，叫做心有城府，<a
+target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=胸有沟壑&amp;zhida_source=entity">胸有沟壑</a>。</p>
+<p>这一点点的分别，就是你和“毕生倒霉蛋”之间的区别。</p>
+<p>不要因为你不肯泄露隐私而得罪的“朋友”感到沮丧，那种“你这人真没意思”“到底有什么见不得人”是最常用的低级试探。</p>
+<p>避开这些“朋友”，你的人生会轻松一大截。</p>
+<h4 id="人类的恐惧和动物的恐惧">人类的恐惧和动物的恐惧</h4>
+<p><strong><em>*人类独有一种快感机制，即挑战恐惧带来的额外快感。*</em></strong></p>
+<h4 id="教导孩子见人说人话">教导孩子见人说人话</h4>
+<p>你觉得我对你说的是“鬼话”，你该得出的正确的结论不是“我是鬼”，而是<strong><em>*“在我眼里你是鬼”，*</em></strong>是你该回去自我反省一下什么时候头上长了角还不知道。</p>
+<p>见鬼说鬼话是最基本的自我防御——我看出你是鬼，那么一切就自然走向“礼貌的拒绝”。拒绝进一步合作，也拒绝开放进一步合作的机会，关闭你继续窥探的窗口，威慑你侵犯的企图，拉开对你的距离……但我也肯定不会没来由的去欺骗你、激怒你，那是另一种招鬼。</p>
+<h4
+id="办公室女同事讽刺你一个三本学生如何跟我一个985的做一样的工作">办公室女同事讽刺「你一个三本学生如何跟我一个985的做一样的工作！」</h4>
+<p>#高级回怼#</p>
+<p>“充分说明我们这个工作下限很低而上限很高，我还有很多经验和理论知识需要向前辈学习。”</p>
+<p>人忌惮、敬畏、亲爱的是自控力极强、身段极柔软、朋友极多的人，而不是凶狠的人。</p>
+<p>有这些，想要“凶狠”，只需要流露出一点“这人让我有点烦”的意思，自有想要结交你的人拿ta来送礼。</p>
+<p>你要做就要做真正有效的威慑。</p>
+<p>不要搞那些四面树敌的小把戏。</p>
+<h4
+id="熊孩子性骚扰妇女导致女医生自杀">熊孩子性骚扰妇女导致女医生自杀</h4>
+<p>公权力真正会积极干预的范围是相当有限的。与大众想象的不同，利维坦并不是全知全能的神，相反，与它所要面对的千千万万问题和危机相比，它甚至可以说得上资源相当紧张、能力相当局限，时常处在焦虑和担忧之中。</p>
+<p>理解了这一点的意义在于，一些人会选择一些极其有战略优势的占位，以至于一旦受到侵犯，这些侵犯就很容易触动利维坦的敏感神经而有被召唤战略打击的可能。</p>
+<p>威慑：</p>
+<p>1.让对方顾虑失去由你而得的利益</p>
+<p>2.让对方顾虑因你而受的损失</p>
+<p>离群索居的代价问题：</p>
+<p>你造福于人，就是在对外输出利益，这是经营一个以你为核心的生态圈的良好基础。这个生态圈会自动的替你防御外来侵袭，不光是物理安全上，还有心理安全。</p>
+<p>这位受害人真正的脆弱性，<strong>在于面对这些辱骂，没有一个足够强大的生态圈去给她相称的支撑，足以让她自信“这帮傻x懂个球”</strong>。</p>
+<p><strong>不要自以为只要自己躲起来自得其乐就够了，那只是玻璃的玫瑰，一场大雨也能击碎。</strong></p>
+<p><strong>你需要同志，比你在怡然自得的时候所觉得的程度要深得多。</strong></p>
+<p>（群体的应对：不，是会有人告诉你——你不必害怕只有你一个人这样想，我们也和你想的一样。）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/19/cs224r/Tfcc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -678,409 +1226,6 @@ alt="image-20260714153602012" />
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/01/lerobot-collect-train/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/01/lerobot-collect-train/" class="post-title-link" itemprop="url">lerobot采集数据到训练</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-07-01 14:58:31" itemprop="dateCreated datePublished" datetime="2026-07-01T14:58:31+08:00">2026-07-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-03 16:58:53" itemprop="dateModified" datetime="2026-07-03T16:58:53+08:00">2026-07-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="确定camera连接和场景设置">确定camera连接和场景设置</h3>
-<p>lerobot-find-cameras opencv</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>注意有的时候只有两个相机但是检测出来三路：</p>
-<p>很多 USB
-摄像头模组不仅仅是一个“摄像头”。为了支持不同的视频格式、编码或辅助功能，驱动程序会为同一个物理设备创建多个
-<code>/dev/videoX</code> 节点。</p>
-</blockquote>
-<h3 id="采集数据">采集数据</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">采集新数据之前 <span class="built_in">rm</span> -rf ~/.cache/huggingface/lerobot/wangxin/demo_db</span></span><br><span class="line">lerobot-record   --robot.type=so101_follower   --robot.port=/dev/slave_arm   --robot.id=my_awesome_follower_arm   --robot.cameras=&quot;&#123; handeye: &#123;type: opencv,</span><br><span class="line">index_or_path: 0, width: 640, height: 480, fps: 30&#125;, front: &#123;type: opencv,</span><br><span class="line">index_or_path: 2, width: 640, height: 480, fps: 30&#125;&#125;&quot;   --teleop.type=so101_leader   --teleop.port=/dev/master_arm   --teleop.id=my_awesome_leader_arm   --display_data=true   --dataset.repo_id=wangxin/demo_db   --dataset.num_episodes=2   --dataset.single_task=&quot;find DB head points&quot;</span><br></pre></td></tr></table></figure>
-<p>点击-&gt;键结束当前episode的录制，再来一次开始下一次。可以从终端判断录制情况。</p>
-<h3 id="training-data-on-smolvla">training data on smolvla</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lerobot-train \</span><br><span class="line">  --dataset.repo_id=wangxin/demo_db \</span><br><span class="line">  --policy.type=act \</span><br><span class="line">  --output_dir=outputs/train/act_0701 \</span><br><span class="line">  --job_name=find_db \</span><br><span class="line">  --policy.device=cuda \</span><br><span class="line">  --wandb.enable=true \</span><br><span class="line">  --policy.repo_id=wangxin/act_policy_db</span><br></pre></td></tr></table></figure>
-<h3 id="training-data-on-pi05">training data on pi05</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/29/do-job-whatever-the-job/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/29/do-job-whatever-the-job/" class="post-title-link" itemprop="url">do-job-whatever-the-job</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-06-29 10:05:12" itemprop="dateCreated datePublished" datetime="2026-06-29T10:05:12+08:00">2026-06-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/24/renting-beijing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/24/renting-beijing/" class="post-title-link" itemprop="url">renting in beijing(持续更新)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-06-24 14:19:12 / Modified: 14:48:22" itemprop="dateCreated datePublished" datetime="2026-06-24T14:19:12+08:00">2026-06-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="几条原则">几条原则</h3>
-<p>都是踩过坑的：</p>
-<ul>
-<li>阳光和wind is very important，最好有穿堂风。</li>
-<li>要考察合租队友的背景
-<ul>
-<li>刚毕业的学生没有社会化的，自己不能独立做决定的，要家里同意的。能自己早早当家作主，有自己想法的舍友+有宠物&gt;还心理依赖家里+无宠物。</li>
-<li>考察对方宠物的品质，宠物猫和野性的宠物猫is very different。</li>
-</ul></li>
-<li>从租房的那一刻就开始考虑转租难度，这分几种情况
-<ul>
-<li>你是临时租到的，有得住就不错了。那就不用考虑了</li>
-<li>如果有很长时间决策时间,考虑房屋的流动性和转租难度说明你租房子的质量。</li>
-</ul></li>
-<li>提前至少大半个月开始看房。换小区不仅仅意味着换房，通勤路线，对周围环境的熟悉度都要花费时间重新建立。如果你这段时间非常疲惫那也尽量不用。</li>
-<li>每年保留一万的renting fucking money存在长钱账户里,
-不要为翻倒的牛奶哭泣.</li>
-</ul>
-<h3 id="精简">精简</h3>
-<ul>
-<li>要每段时间复盘自己的物品，精简自己的装备。用不到=没有拥有。</li>
-</ul>
-<h3 id="反而不重要的">反而不重要的</h3>
-<ul>
-<li>客厅面积。当舍友你不熟悉的时候，人不会自如的出现在公共区域。因此大客厅+小卧室
-劣于 小客厅+大卧室</li>
-</ul>
-<h3 id="反而可能重要的">反而可能重要的</h3>
-<ul>
-<li>房东和中介app的不同：app的物业维修可以帮心里的麻烦感觉完全去除，直接反应问题就好。体现在中介费算在每个月的服务费里。向房东直租以为的便宜可能会在后续维修上更有心理负担。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/24/modal-usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/24/modal-usage/" class="post-title-link" itemprop="url">modal-usage</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-06-24 11:12:17 / Modified: 11:37:12" itemprop="dateCreated datePublished" datetime="2026-06-24T11:12:17+08:00">2026-06-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="什么是modal">什么是modal</h3>
-<p>https://modal.com/</p>
-<p>一个云端gpu平台，本地的一些需要gpu跑的任务可以放到云端去跑然后拿回结果。</p>
-<p>参考指南：https://cs224r.stanford.edu/material/CS224R_compute_guide.pdf</p>
-<h3
-id="如何把本地的一个script转化为一个modal-job">如何把本地的一个script转化为一个modal
-job</h3>
-<ol type="1">
-<li>保持python的基本逻辑不变</li>
-<li>定义model.App和Image(你要用的包)</li>
-<li>cost大的任务用@app.function(...)，设置cpu, gpu和timeout</li>
-<li>设置@app.local_entrypoint(),终端里modal run之后会从这里开始运行</li>
-<li>设置.remote(),.map(),.startmap(...)使得heavy
-work在云端运行而不是你自己的本机。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/15/so-good-cannot-ignore-you/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/15/so-good-cannot-ignore-you/" class="post-title-link" itemprop="url">so-good-cannot-ignore-you</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-06-15 15:41:19" itemprop="dateCreated datePublished" datetime="2026-06-15T15:41:19+08:00">2026-06-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Books/" itemprop="url" rel="index"><span itemprop="name">Books</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1152,7 +1297,7 @@ work在云端运行而不是你自己的本机。</li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">154</span>
+          <span class="site-state-item-count">158</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1165,7 +1310,7 @@ work在云端运行而不是你自己的本机。</li>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-count">127</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="pytorch with jit  不使用jit:  cpu和gpu频繁切换。比如：在具身智能的交互循环中，CPU 需要频繁地把观测数据（Observations）发给 GPU，等 GPU 算完后再把动作（Actions）和奖励（Rewards）传回 CPU。 使用jitting:通过 @torch.jit.script 或 torch.jit.trace，PyTorch 可以把整个模型或核心前向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch里的jit加速">
+<meta property="og:url" content="http://77philosophia.github.io/2026/07/27/pytorch-jit/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="pytorch with jit  不使用jit:  cpu和gpu频繁切换。比如：在具身智能的交互循环中，CPU 需要频繁地把观测数据（Observations）发给 GPU，等 GPU 算完后再把动作（Actions）和奖励（Rewards）传回 CPU。 使用jitting:通过 @torch.jit.script 或 torch.jit.trace，PyTorch 可以把整个模型或核心前向">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-27T02:43:36.000Z">
+<meta property="article:modified_time" content="2026-07-27T02:51:06.184Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="jit">
+<meta property="article:tag" content="accelerate">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/07/27/pytorch-jit/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>pytorch里的jit加速 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/categories/Books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/27/pytorch-jit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytorch里的jit加速
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-07-27 10:43:36 / Modified: 10:51:06" itemprop="dateCreated datePublished" datetime="2026-07-27T10:43:36+08:00">2026-07-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="pytorch-with-jit">pytorch with jit</h3>
+<ul>
+<li>不使用jit:
+<ul>
+<li>cpu和gpu频繁切换。比如：在具身智能的交互循环中，CPU
+需要频繁地把观测数据（Observations）发给 GPU，等 GPU
+算完后再把动作（Actions）和奖励（Rewards）传回 CPU。</li>
+<li>使用jitting:通过 <code>@torch.jit.script</code> 或
+<code>torch.jit.trace</code>，PyTorch
+可以把整个模型或核心前向传播过程“编译”成一个独立于 Python 的静态图。这样
+GPU 就可以脱离 Python 解释器的逐行控制，大幅减少内核启动开销（Kernel
+launch overhead），从而提升推理和训练速度。</li>
+</ul></li>
+</ul>
+<h3 id="是不是都可以用jit">是不是都可以用jit</h3>
+<ul>
+<li>动态控制流的限制:对频繁的if/else等动态控制流支持不好</li>
+<li>调试困难</li>
+<li>cpu和io密集型任务不适合</li>
+</ul>
+<h3 id="最佳实践">最佳实践</h3>
+<ul>
+<li><strong>局部优化</strong>：只对 Agent
+中计算最密集、调用最频繁的<strong>神经网络核心模块</strong>（例如
+<code>policy</code> 推理函数或网络前向传播）使用
+<code>@torch.jit.script</code> 或 <code>torch.jit.trace</code>。</li>
+<li>先调通，再加速：关闭jit写代码，打开jit大规模并行</li>
+</ul>
+<h3 id="经典使用jit的例子">经典使用jit的例子</h3>
+<p>在具身智能和强化学习（例如 Dreamer
+算法或在线控制策略）中，最经典、最适合使用 JIT 的模块是
+<strong>智能体的策略网络前向推理（Policy Forward Pass / Action Sampling
+Module）</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 经典案例：一个负责根据隐状态输出动作的策略模块</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PolicyModule</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.net = torch.nn.Sequential(</span><br><span class="line">            torch.nn.Linear(<span class="number">256</span>, <span class="number">256</span>),</span><br><span class="line">            torch.nn.ReLU(),</span><br><span class="line">            torch.nn.Linear(<span class="number">256</span>, <span class="number">6</span>) <span class="comment"># 输出 6 维连续动作</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, state</span>):</span><br><span class="line">        <span class="keyword">return</span> self.net(state)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为 JIT 编译模块</span></span><br><span class="line">policy_module = PolicyModule()</span><br><span class="line">scripted_policy = torch.jit.script(policy_module)</span><br></pre></td></tr></table></figure>
+<h4 id="加速原因">加速原因</h4>
+<ul>
+<li>摆脱 Python 解释器的逐行调度开销
+<ul>
+<li><strong>普通 PyTorch</strong>：Python
+每执行一行神经网络计算，都要经过 Python 解释器，然后通过 C++
+接口去调用底层 CUDA
+算子。如果每一步交互的计算量很小（比如强化学习中单步推理），Python
+调度本身消耗的时间甚至会超过 GPU 实际计算的时间。</li>
+<li><strong>JIT 优化后</strong>：整个模型被编译成了一个纯 C++
+层的执行图（Graph），在运行大循环时<strong>完全绕过了 Python
+解释器</strong>，让 GPU 可以连续不断地全速运算。</li>
+</ul></li>
+<li>算子融合（Operator Fusion）
+<ul>
+<li><strong>普通 PyTorch</strong>：对于
+<code>Linear -&gt; ReLU -&gt; Linear</code> 这种常见组合，GPU
+通常需要执行三次独立的
+Kernel（内核启动）：先算完线性层写回显存，再启动一个 Kernel 做
+ReLU，再启动一个 Kernel 做第二个线性层。中间伴随着频繁的显存读写（Memory
+Bottleneck）。</li>
+<li><strong>JIT
+优化后</strong>：编译器会自动将这些相邻的小算子“融合”成一个单一的复合算子（Fused
+Kernel）。数据直接在 GPU
+寄存器/缓存中流转，大幅减少了显存带宽的消耗。</li>
+</ul></li>
+<li>常量折叠与死代码消除（Constant Folding &amp; Dead Code Elimination）
+<ul>
+<li>JIT
+在编译时会预先计算好那些在运行期不会改变的静态表达式（常量折叠），并剔除掉永远不会被执行的分支代码，从而精简最终的计算图。</li>
+</ul></li>
+<li>更好的底层硬件优化：TorchScript
+能够以更全局的视角审视整个计算图，产生更优的机器码</li>
+</ul>
+<h4
+id="理解原生-pytorcheager-mode即动态图模式在执行神经网络计算时python-代码和底层硬件gpucpu之间是如何交互的">理解原生
+PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Python
+代码和底层硬件（GPU/CPU）之间是如何交互的。</h4>
+<p>假设我们有这样一段简单的 PyTorch 前向传播代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 准备数据和层</span></span><br><span class="line">x = torch.randn(<span class="number">32</span>, <span class="number">128</span>, device=<span class="string">&#x27;cuda&#x27;</span>)  <span class="comment"># 在 GPU 上创建一个张量</span></span><br><span class="line">linear1 = torch.nn.Linear(<span class="number">128</span>, <span class="number">64</span>).cuda() <span class="comment"># 线性层（移到 GPU）</span></span><br><span class="line">relu = torch.nn.ReLU()                   <span class="comment"># 激活函数层</span></span><br><span class="line">linear2 = torch.nn.Linear(<span class="number">64</span>, <span class="number">10</span>).cuda()  <span class="comment"># 线性层（移到 GPU）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 下面开始逐行计算 ---</span></span><br><span class="line">out1 = linear1(x)       <span class="comment"># 第 1 步：线性变换</span></span><br><span class="line">out2 = relu(out1)       <span class="comment"># 第 2 步：ReLU 激活</span></span><br><span class="line">out3 = linear2(out2)    <span class="comment"># 第 3 步：输出层</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> 执行第一行：out1 = linear1(x)Python 解释器介入：Python 读到这一行，解释器开始解析代码，发现调用了 linear1。C++ 胶水层（Pybind11）：Python 通过底层接口把请求传给 PyTorch 的 C++ 核心。派发任务（Kernel Launch）：C++ 告诉 GPU：“请启动一个矩阵乘法的 CUDA 内核（Kernel）来算 linear1。”等待与返回：GPU 开始在显存里计算矩阵乘法。与此同时，Python 解释器在 CPU 上停下来（或者准备下一行的指令）。</span><br><span class="line"> <span class="number">2.</span> 执行第二行：out2 = relu(out1)Python 解释器再次介入：Python 读到这一行，重新唤醒解释器去解析 relu。重复调度开销：C++ 再次接收请求，向 GPU 发送第二个指令：“请启动一个 ReLU 的 CUDA 内核。”显存反复读写（Memory Round-trip）：GPU 必须先把刚才 linear1 算好的结果写回到显存里，然后重新读出来做 ReLU 运算。此时，Python 解释器和 CPU 又在处理这一行的调度逻辑。</span><br><span class="line"> <span class="number">3.</span> 执行第三行：out3 = linear2(out2)Python 解释器第三次介入：重复上述过程，Python 解析代码 $\rightarrow$ 传递给 C++ $\rightarrow$ GPU 启动第三个 CUDA 内核算第二个线性层。</span><br><span class="line">  </span><br><span class="line">带来的问题：</span><br><span class="line">调度开销大于计算开销（Overhead）：</span><br><span class="line">算子割裂，无法优化：</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jit/" rel="tag"># jit</a>
+              <a href="/tags/accelerate/" rel="tag"># accelerate</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/07/24/elite/" rel="prev" title="elite">
+      <i class="fa fa-chevron-left"></i> elite
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#pytorch-with-jit"><span class="nav-number">1.</span> <span class="nav-text">pytorch with jit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%AF%E4%B8%8D%E6%98%AF%E9%83%BD%E5%8F%AF%E4%BB%A5%E7%94%A8jit"><span class="nav-number">2.</span> <span class="nav-text">是不是都可以用jit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">3.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E4%BD%BF%E7%94%A8jit%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">经典使用jit的例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E9%80%9F%E5%8E%9F%E5%9B%A0"><span class="nav-number">4.1.</span> <span class="nav-text">加速原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E5%8E%9F%E7%94%9F-pytorcheager-mode%E5%8D%B3%E5%8A%A8%E6%80%81%E5%9B%BE%E6%A8%A1%E5%BC%8F%E5%9C%A8%E6%89%A7%E8%A1%8C%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%A1%E7%AE%97%E6%97%B6python-%E4%BB%A3%E7%A0%81%E5%92%8C%E5%BA%95%E5%B1%82%E7%A1%AC%E4%BB%B6gpucpu%E4%B9%8B%E9%97%B4%E6%98%AF%E5%A6%82%E4%BD%95%E4%BA%A4%E4%BA%92%E7%9A%84"><span class="nav-number">4.2.</span> <span class="nav-text">理解原生
+PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Python
+代码和底层硬件（GPU&#x2F;CPU）之间是如何交互的。</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">127</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
