@@ -182,6 +182,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/27/pytorch-jax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/27/pytorch-jax/" class="post-title-link" itemprop="url">用jax为rl进行加速</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-07-27 11:19:30 / Modified: 18:45:37" itemprop="dateCreated datePublished" datetime="2026-07-27T11:19:30+08:00">2026-07-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="jax函数式编程">Jax：函数式编程</h3>
+<ul>
+<li><p>jax遵循函数式编程的规则:
+不保存变量值；相同的输入一定会得到相同的输出。</p></li>
+<li><p>jax的array is immutable</p></li>
+<li><p>vmap:相当于在batch维度扩充，parallel execution</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">batched_linear_model = jax.vmap(linear_model, in_axes=(<span class="literal">None</span>,<span class="number">0</span>))</span><br></pre></td></tr></table></figure></li>
+<li><p>jax的数据结构：pyTrees, 一种嵌套(list,
+tuple,dict)的树状结构,树的叶子节点是array或者常数。jax的常用操作比如jax.grad,
+jax.jit支持这种嵌套结构；（因此定义nn.Params非常方便）</p></li>
+<li><p>jax.tree.map:允许对每一个叶子的变量运行操作，然后返回一个同样的嵌套结构</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">params_sq = jax.treee.<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, params_nn)</span><br></pre></td></tr></table></figure></li>
+<li><p>Jax.jit 开启编译，加速计算</p></li>
+<li><p>jax的随机数（Jax.random=jr）随机数生成器总是需要传递一个密钥key才能使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">key = jax.random.key(<span class="number">1234</span>)</span><br><span class="line">jax.random.normal(key)</span><br><span class="line">jax.random.normal(key, shape(<span class="number">2</span>,))  <span class="comment">###same key会得到same result,这是一个pure function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 分割密钥，得到不同的随机数</span></span><br><span class="line">key, subkey = jax.random.split(key, <span class="number">2</span>)</span><br><span class="line">jax.random.normal(key, shape=(<span class="number">2</span>,))  </span><br><span class="line">jax.random.normal(subkey, shape=(<span class="number">2</span>,))</span><br></pre></td></tr></table></figure></li>
+<li><p>jax的上层库：flax</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flax <span class="keyword">import</span> linen <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CustomRNNCell</span>(nn.Module):</span><br><span class="line">  xxx</span><br><span class="line">  </span><br><span class="line">params = f_xu.init(subkey, jnp.ones(in_size))  <span class="comment">#这里就跟pytorch不一样，params不是module的一部分</span></span><br><span class="line">f_xu.apply(params,jnp.ones(in_size))  <span class="comment">#调用方式apply</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3
+id="why加速rl中通用的gpu-cpu开销">why加速：rl中通用的gpu-cpu开销</h3>
+<p>（https://towardsdatascience.com/vectorize-and-parallelize-rl-environments-with-jax-q-learning-at-the-speed-of-light-49d07373adf5/?source=post_page-----c1e45a179b92---------------------------------------）</p>
+<p>在cpu和gpu中的通信带来的开销</p>
+<figure>
+<img data-src="/2026/07/27/pytorch-jax/image-20260727112022767.png"
+alt="image-20260727112022767" />
+<figcaption aria-hidden="true">image-20260727112022767</figcaption>
+</figure>
+<p>jax中的rl批量训练：</p>
+<figure>
+<img data-src="/2026/07/27/pytorch-jax/image-20260727142417216.png"
+alt="image-20260727142417216" />
+<figcaption aria-hidden="true">image-20260727142417216</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/27/pytorch-jit/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,7 +504,7 @@ PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Pyt
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2026/07/24/dreamerv3-runnning/" class="post-title-link" itemprop="url">跑dreamerv3</a>
+            <a href="/2026/07/24/dreamerv3-runnning/" class="post-title-link" itemprop="url">跑dreamerv3(杀千刀的代码死难读)</a>
         </h2>
 
         <div class="post-meta">
@@ -413,10 +513,16 @@ PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Pyt
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-07-24 11:09:49 / Modified: 16:24:51" itemprop="dateCreated datePublished" datetime="2026-07-24T11:09:49+08:00">2026-07-24</time>
+              <time title="Created: 2026-07-24 11:09:49" itemprop="dateCreated datePublished" datetime="2026-07-24T11:09:49+08:00">2026-07-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-07-28 16:26:54" itemprop="dateModified" datetime="2026-07-28T16:26:54+08:00">2026-07-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1100,132 +1206,6 @@ you're findin' out that one is by givin' it a shot.
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/03/evo-rl/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/03/evo-rl/" class="post-title-link" itemprop="url">evo-rl</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-07-03 14:23:42" itemprop="dateCreated datePublished" datetime="2026-07-03T14:23:42+08:00">2026-07-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-14 22:26:11" itemprop="dateModified" datetime="2026-07-14T22:26:11+08:00">2026-07-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="tldr">TL:DR</h3>
-<p>pysical
-intelligence公司的pi06<em>模型是提供了一种对基础的vla模型pi06</em> *
-适配下游任务的recap算法：</p>
-<ol type="1">
-<li>IL的预训练</li>
-<li>专家进行纠正</li>
-<li>从自动经验中学习（学习reward，根据reward进行rl post training）</li>
-</ol>
-<p>从而可以把模型的成功率提到很高，但是没有开源。国内上海交大的实验室开源了这个实现：evo-rl</p>
-<h3 id="原理">原理</h3>
-<p>Url:https://www.pi.website/blog/pistar06</p>
-<p>1.IL可以在某次任务成功，但是无法持续成功。从经验中学习的关键是能从不好的经验数据中提取好的训练信号。</p>
-<p>2.Coaching with corrections and practicing with reinforcement</p>
-<p>2.1
-专家进行纠正：需要准确判断intervention的时机并且提供高质量的纠正</p>
-<p>2.2
-让模型能持续学习，通过rl自我学习自我纠正。这个里面要解决的关键问题是credit
-assignment</p>
-<ul>
-<li><p>解决方法是train了一个value function</p>
-<figure>
-<img data-src="/2026/07/03/evo-rl/image-20260714163709453.png"
-alt="image-20260714163709453" />
-<figcaption aria-hidden="true">image-20260714163709453</figcaption>
-</figure></li>
-<li><p>condition vla: 如何利用上面的value function:</p>
-<ul>
-<li>做法是把所有好的坏的数据都加到训练里，但是会告诉vla哪些行为是好的坏的。操作也就是把这种advantage作为注释加入到vla的训练当中。然后推理的时候告诉vla执行high-advantage的行为。（好家伙...其实没有用rl去训练么。。。）</li>
-</ul></li>
-</ul>
-<h5 id="pi0.6演示">PI*0.6演示</h5>
-<ul>
-<li>折叠纸箱子</li>
-<li>做咖啡</li>
-<li>叠衣服</li>
-</ul>
-<p>https://www.youtube.com/playlist?list=PLAhKUlcpD-aRObglQ5mRhWc9757ykD_Ae</p>
-<figure>
-<img data-src="/2026/07/03/evo-rl/image-20260714153602012.png"
-alt="image-20260714153602012" />
-<figcaption aria-hidden="true">image-20260714153602012</figcaption>
-</figure>
-<p>是一套让 VLA
-在部署后继续改进的训练流程：机器人先执行任务，系统再从这批尝试中判断哪些动作值得强化，最后把这些判断重新写回策略训练中。</p>
-<p>π0.6 的核心变化不是再换一套动作头，而是给 VLA
-增加一条部署后可循环的学习回路：</p>
-<ol type="1">
-<li>在真实任务中运行当前策略，收集自主轨迹与人类纠正轨迹。</li>
-<li>用任务结果训练价值函数，估计动作优劣。</li>
-<li>把优劣信号变成策略条件，重新训练下一轮策略。</li>
-</ol>
-<p>https://github.com/datawhalechina/dive-into-embodied-ai/blob/master/docs/foundations/vla/11.pi06_online_learning.md</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1297,7 +1277,7 @@ alt="image-20260714153602012" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-count">159</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -182,6 +182,132 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/03/evo-rl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/03/evo-rl/" class="post-title-link" itemprop="url">evo-rl</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-07-03 14:23:42" itemprop="dateCreated datePublished" datetime="2026-07-03T14:23:42+08:00">2026-07-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-07-14 22:26:11" itemprop="dateModified" datetime="2026-07-14T22:26:11+08:00">2026-07-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="tldr">TL:DR</h3>
+<p>pysical
+intelligence公司的pi06<em>模型是提供了一种对基础的vla模型pi06</em> *
+适配下游任务的recap算法：</p>
+<ol type="1">
+<li>IL的预训练</li>
+<li>专家进行纠正</li>
+<li>从自动经验中学习（学习reward，根据reward进行rl post training）</li>
+</ol>
+<p>从而可以把模型的成功率提到很高，但是没有开源。国内上海交大的实验室开源了这个实现：evo-rl</p>
+<h3 id="原理">原理</h3>
+<p>Url:https://www.pi.website/blog/pistar06</p>
+<p>1.IL可以在某次任务成功，但是无法持续成功。从经验中学习的关键是能从不好的经验数据中提取好的训练信号。</p>
+<p>2.Coaching with corrections and practicing with reinforcement</p>
+<p>2.1
+专家进行纠正：需要准确判断intervention的时机并且提供高质量的纠正</p>
+<p>2.2
+让模型能持续学习，通过rl自我学习自我纠正。这个里面要解决的关键问题是credit
+assignment</p>
+<ul>
+<li><p>解决方法是train了一个value function</p>
+<figure>
+<img data-src="/2026/07/03/evo-rl/image-20260714163709453.png"
+alt="image-20260714163709453" />
+<figcaption aria-hidden="true">image-20260714163709453</figcaption>
+</figure></li>
+<li><p>condition vla: 如何利用上面的value function:</p>
+<ul>
+<li>做法是把所有好的坏的数据都加到训练里，但是会告诉vla哪些行为是好的坏的。操作也就是把这种advantage作为注释加入到vla的训练当中。然后推理的时候告诉vla执行high-advantage的行为。（好家伙...其实没有用rl去训练么。。。）</li>
+</ul></li>
+</ul>
+<h5 id="pi0.6演示">PI*0.6演示</h5>
+<ul>
+<li>折叠纸箱子</li>
+<li>做咖啡</li>
+<li>叠衣服</li>
+</ul>
+<p>https://www.youtube.com/playlist?list=PLAhKUlcpD-aRObglQ5mRhWc9757ykD_Ae</p>
+<figure>
+<img data-src="/2026/07/03/evo-rl/image-20260714153602012.png"
+alt="image-20260714153602012" />
+<figcaption aria-hidden="true">image-20260714153602012</figcaption>
+</figure>
+<p>是一套让 VLA
+在部署后继续改进的训练流程：机器人先执行任务，系统再从这批尝试中判断哪些动作值得强化，最后把这些判断重新写回策略训练中。</p>
+<p>π0.6 的核心变化不是再换一套动作头，而是给 VLA
+增加一条部署后可循环的学习回路：</p>
+<ol type="1">
+<li>在真实任务中运行当前策略，收集自主轨迹与人类纠正轨迹。</li>
+<li>用任务结果训练价值函数，估计动作优劣。</li>
+<li>把优劣信号变成策略条件，重新训练下一轮策略。</li>
+</ol>
+<p>https://github.com/datawhalechina/dive-into-embodied-ai/blob/master/docs/foundations/vla/11.pi06_online_learning.md</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/01/lerobot-collect-train/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1015,1130 +1141,6 @@ AI/机器人公司的阶段性考核指标（Milestone）是什么？是看纯�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/06/11/cs224r/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/11/cs224r/" class="post-title-link" itemprop="url">cs224r</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-06-11 16:29:34" itemprop="dateCreated datePublished" datetime="2026-06-11T16:29:34+08:00">2026-06-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-25 16:44:35" itemprop="dateModified" datetime="2026-07-25T16:44:35+08:00">2026-07-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="basics-01">Basics-01</h3>
-<p>1.强化学习的目标: 最大化sum of rewards</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260611164714333.png"
-alt="image-20260611164714333" />
-<figcaption aria-hidden="true">image-20260611164714333</figcaption>
-</figure>
-<p>是一个随机过程：随机主要体现在两个方面的不确定性</p>
-<p>a.在策略中采样动作</p>
-<p>b还有状态转移的过程中转移到下一个状态的过程中可能是不确定的。</p>
-<p>2.衡量一个policy有多好：</p>
-<ul>
-<li>value function: 在状态s遵循策略pi的预期收益（与policy有关）</li>
-<li>Q-function:
-在状态s采取动作a遵循策略pi的预期收益。（与policy有关）</li>
-</ul>
-<p>3.算法的种类：</p>
-<ol type="1">
-<li>模仿学习：模仿一个取得了high reward的策略。</li>
-<li>policy gradient: 直接微分得分最高的目标。</li>
-<li>Actor-critic:估计当前policy的value，利用它去得到更好的policy</li>
-<li>Value-based: 衡量最有策略的value值。</li>
-<li>Model-based: 学会建模动力学，利用它来提高planning或者策略提升。</li>
-</ol>
-<p>算法的选择涉及到，比如：</p>
-<ul>
-<li>利用policy收集data成本</li>
-<li>监督的形式，比如demos,detailed rewards</li>
-<li>动作空间维度：连续或者离散</li>
-<li>学习动力学模型简单吗</li>
-</ul>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260611170814070.png"
-alt="image-20260611170814070" />
-<figcaption aria-hidden="true">image-20260611170814070</figcaption>
-</figure>
-<h3 id="模仿学习-02">模仿学习-02</h3>
-<p>建模P(a|s)</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260611172518824.png"
-alt="image-20260611172518824" />
-<figcaption aria-hidden="true">image-20260611172518824</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>神经网络的表达能力(Neural Network
-Expressivity)和分布的表达能力(Distribution Expressivity /
-Learnability)一般不同，因此——<strong>“网络有能力表达一个函数”并不等于“网络在实际训练中能轻松学到这个函数的分布特征”</strong>。</p>
-<p>1.当你把网络变大，或者单纯调整loss
-时，你只是拉高了“网络表达能力”的上限，但可能会严重破坏“分布表达能力”。</p>
-<p>a.比如回归任务中的l2 loss学习的是期望，如果真实数据是一个多峰分布，l2
-loss会倾向学习一个平均值。大网络完全有学习多峰分布的能力，但是最终可能只是学到了一个平庸的单峰分布（Poor
-Distribution Expressivity）。</p>
-<p>b.隐式偏置与流形崩溃 (Implicit Bias &amp; Manifold
-Collapse)：网络偷懒去拟合低频特征</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260611173118422.png"
-alt="image-20260611173118422" />
-<figcaption aria-hidden="true">image-20260611173118422</figcaption>
-</figure>
-</blockquote>
-<h5 id="diffusion">diffusion</h5>
-<p>从高斯分布中采样很容易，但是真实数据的分布往往是复杂不规则的，那我们有没有可能从高斯分布采样，然后转换到数据分布当中。这就是diffusion的过程。看看flow
-matching的原理：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260612150816355.png"
-alt="image-20260612150816355" />
-<figcaption aria-hidden="true">image-20260612150816355</figcaption>
-</figure>
-<h3 id="project01">project01</h3>
-<p>“愤怒的小鸟”通过木桩，做了4个exp,都用到了action chunk（20的chunk
-size每次execute10步然后要更新）；</p>
-<p>第一个用mlp+mse的方法学习expert的action(也算是sft的一种)，可以通过简单的，如图；</p>
-<p>第二个是mlp+mse的方法去做hard的任务（每一个关卡有两个口），此时就会发现撞桩，因为mlp的方法无法克服多峰分布的问题，expert
-action给的时候可选择上面那个通道，也可以选择下面的通道；</p>
-<p>第三个exp就是flow matching+mse loss(unet估计的是速度)；</p>
-<p>第四个是dagger:用bc reg的初始化policy得到states,对states采用expert
-action，但是这里也是确定性的，不能随机选</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>dagger只能解决bc中的covariance
-shift问题，不能解决多峰任务，因此你会发现在用dagger的时候依然用的是确定性策略</p>
-</blockquote>
-<table>
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 47%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Res</th>
-<th>Res_algebra(episode lenght的mean&amp;variance)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Bc_reg on easy(mlp+mse)</td>
-<td><img data-src="/2026/06/11/cs224r/image-20260616111230979.png"
-alt="image-20260616111230979" /></td>
-<td>(959.2+/- 120.8)</td>
-</tr>
-<tr>
-<td>Bc_reg on hard(代码同上)</td>
-<td><img data-src="/2026/06/11/cs224r/image-20260616111510326.png"
-alt="image-20260616111510326" /></td>
-<td>346 +/- 61</td>
-</tr>
-<tr>
-<td>Bc_flow on hard</td>
-<td><img data-src="/2026/06/11/cs224r/image-20260616112029485.png"
-alt="image-20260616112029485" /></td>
-<td>1000.0 +/- 0.0</td>
-</tr>
-<tr>
-<td>Dagger</td>
-<td>a.bc reg有hard里面无法处理多峰的问题，初始化policy.
-b.对此时采集的states设置专家policy确定性的选择上面一个隘口；（为什么要确定性的选择，其实没有解决多峰分布的问题；dagger的核心还是agent运行到了之前expert
-action没有探索过的区域，现在利用dagger告诉agent处理办法）</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="policy-gradient">03-policy gradient</h3>
-<h5
-id="推导policy的梯度公式log导数性质表示称logpreward">推导policy的梯度公式：log导数性质表示称logp*reward</h5>
-<p>利用 <span class="math inline">\(\log\)</span>
-的导数性质将梯度转化为期望，通过海量采样，把表现好的动作发生概率调高，表现差的动作发生概率调低。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260616233240677.png"
-alt="image-20260616233240677" />
-<figcaption aria-hidden="true">image-20260616233240677</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260617001940442.png"
-alt="image-20260617001940442" />
-<figcaption aria-hidden="true">image-20260617001940442</figcaption>
-</figure>
-<p>我们可以和模仿学习对比：</p>
-<p>模仿学习是从专家数据集里面采样，如果是离散损失是交叉熵(把真实的概率提到前面就是-log的期望)，连续空间是mse。求导可以发现公式如下：</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>所以policy
-gradient的梯度实际上就是模仿学习的梯度多了一个reward的权重的衡量。</p>
-</blockquote>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622110932454.png"
-alt="image-20260622110932454" />
-<figcaption aria-hidden="true">image-20260622110932454</figcaption>
-</figure>
-<h5 id="vanilla-policy-gradient的问题高方差实际中灾难">vanilla policy
-gradient的问题:高方差（实际中灾难）</h5>
-<p>有了公式了，但是我们把这种valina policy
-gradient放到一个实际的例子中去考虑：</p>
-<p>人形机器人的行走，reward = 机器人向前的速度；</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260617002116677.png"
-alt="image-20260617002116677" />
-<figcaption aria-hidden="true">image-20260617002116677</figcaption>
-</figure>
-<p>实际上最后训练出来机器人可能发现向前摔倒是最好的策略。(原因https://gemini.google.com/app/39f218a008f69f31?hl=zh)</p>
-<p>因此虽然policy gradient是理论上可行的，但是在实际上：</p>
-<p>policy gradient是noisy/high-variance/sensitive to reward scale</p>
-<p>因为强化学习我们回顾，用蒙特卡洛采样来代替期望，采样足够多的轨迹，但是实际操作我们的采样是有限的，而每一个step之间方差极大，网络容易震荡从而无法收敛学习</p>
-<blockquote>
-<p>[!WARNING]</p>
-<p>每一个时间步t的更新乘以的值都是整条轨迹的总得分 <span
-class="math inline">\(R(\tau)\)</span>，想一想中间一个动作好没用，最后reward如果不好会遏制中间好的动作；如果最后得分好，中间表现不好的动作也会被提升。风险太大。</p>
-</blockquote>
-<h5 id="提升的几个思路">提升的几个思路：</h5>
-<h6
-id="a.reward处理---减去均值引入负梯度遏制不好的行为">a.reward处理---减去均值，引入负梯度遏制不好的行为</h6>
-<p>1.sensitive to reward
--------reward减去均值（比如现在我定了个平均线，摔倒的情况是负值，就不会奖励摔倒了）（https://gemini.google.com/app/d8dc46cc61a14342?hl=zh
-这样做是无偏的并且能降低方差）——总结：reward在现实中介于0和一个正数之间，减去baseline可以引入负梯度，从而遏制不好的行为。</p>
-<h6 id="b.dense-rewardlarge-batches缓解奖励稀疏的震荡学不到">b.dense
-reward/large batches缓解奖励稀疏的震荡学不到</h6>
-<p>2.dense rewards/large batches：</p>
-<p>拿叠衣服的例子来说：</p>
-<p>叠好衣服无可厚非，但是剩下所有情况奖励都是0，就是高方差的。（有些没有成功但是很接近成功的行为也是要被奖励的，这就是dense
-rewards）</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622112321812.png"
-alt="image-20260622112321812" />
-<figcaption aria-hidden="true">image-20260622112321812</figcaption>
-</figure>
-<p>要实现policy
-gradient的导数求解从而进行优化，可以看作一个损失函数然后调用pytorch的自动微分：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622113331363.png"
-alt="image-20260622113331363" />
-<figcaption aria-hidden="true">image-20260622113331363</figcaption>
-</figure>
-<p>也就是网络出来的数值取log然后乘以advantage值，也叫weighted maximum
-likelinhood.</p>
-<blockquote>
-<p>[!TIP]</p>
-<p>别傻傻地去循环算梯度。在代码里把 <span class="math inline">\(\log
-\pi_\theta(a|s) \cdot \text{reward}\)</span> 拼成一个
-Loss，然后像做监督学习（分类用交叉熵，回归用 MSE）那样直接调
-<code>backward()</code>，GPU 就能起飞了。</p>
-</blockquote>
-<h6
-id="c.重要性采样解决这个on-policy策略的采样效率低问题前提条件更新策略和旧策略的状态转移是一样的假设到达一个状态的概率是一样的因此更新不能太快">c.重要性采样解决这个on-policy策略的采样效率低问题（前提条件更新策略和旧策略的状态转移是一样的，假设到达一个状态的概率是一样的，因此更新不能太快）</h6>
-<p>3.policy gradient另一个麻烦的地方：</p>
-<p>E~P，假设是从当前的策略进行采样的。</p>
-<p>是on-policy策略，每次策略更新之后必须用新策略去环境中采样，这非常低效。</p>
-<p>也就是说每次gradient的更新旧数据就立马失效了。（举个例子，你采集了很多条数据，按照batch组织更新，一个episode可能有很多个batch，形式是(state,action,reward),一个gradient更新该episode所有数据都不能用了。）</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622114013529.png"
-alt="image-20260622114013529" />
-<figcaption aria-hidden="true">image-20260622114013529</figcaption>
-</figure>
-<p>假设我们还想利用旧的样本：我们希望更新当前的最新策略 <span
-class="math inline">\(\pi_{\theta&#39;}\)</span>，但使用的是旧策略 <span
-class="math inline">\(\pi_\theta\)</span>（或者其他策略）之前采集好的历史样本数据。由于数据分布变了，必须使用重要性分布来修正这种分布偏差。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622161211537.png"
-alt="image-20260622161211537" />
-<figcaption aria-hidden="true">image-20260622161211537</figcaption>
-</figure>
-<p>因此policy的梯度公式可以变为：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622161257995.png"
-alt="image-20260622161257995" />
-<figcaption aria-hidden="true">image-20260622161257995</figcaption>
-</figure>
-<p>看上面的公式的意思就是：如果用旧分布的数据（tao服从的旧分布的p），</p>
-<p>每个episode更新前面会乘一个连乘的策略的概率偏差。</p>
-<p>当时间步T很大的时候，一连串概率比值连续相乘，会导致这个权重变得<strong>极大（Explode）或极小（Vanish）</strong>，导致方差爆炸，算法根本无法收敛。</p>
-<p>把轨迹拆分为时间步：</p>
-<p>近似处理：直接假装新策略 <span
-class="math inline">\(\pi_{\theta&#39;}\)</span> 和旧策略 <span
-class="math inline">\(\pi_\theta\)</span> 访问到某个状态 <span
-class="math inline">\(s_t\)</span>
-的概率是一样的。我们只去修正它们在面对这个状态时，做出不同动作 <span
-class="math inline">\(a_t\)</span> 的概率偏差。”</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622161722543.png"
-alt="image-20260622161722543" />
-<figcaption aria-hidden="true">image-20260622161722543</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>“通过引入动作重要性采样，我们终于实现了一个 Batch
-数据可以反复压榨、更新多次策略的算法（非常高效）。但是！你千万不能更新过头。如果新旧策略差异过大，我们之前做出的‘状态分布一致’的近似就会失效，导致梯度彻底算错，训练崩溃。”</p>
-</blockquote>
-<p>限制更新太快：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622162050356.png"
-alt="image-20260622162050356" />
-<figcaption aria-hidden="true">image-20260622162050356</figcaption>
-</figure>
-<blockquote>
-<p>[!NOTE]</p>
-<p>总结一下：我们推导了强化学习中策略更新的梯度公式，形式上等价于权重的监督学习，权重就是reward.但是在实际更新中，这个公式使用的on-policy的场景每个batch
-gradient step
-update就要丢弃旧数据，重新采集新数据。假设我们想要至少一些数据迭代完之前不用重新采集数据，我们可以用重要性采样。假设策略分布没有非常大的情况下，模型到达各个状态的概率近似，在更新公式前面乘以一个新策略除以旧策略的概率密度。</p>
-</blockquote>
-<h3 id="slides4--actor-critic方法">slides4- Actor Critic方法</h3>
-<h5 id="last-slide">last slide:</h5>
-<p>关于on-policy的policy gradient:</p>
-<p>Vanilla policy gradient完全是on-policy的，采样成本过大；</p>
-<p>Off-policy的policy
-gradient要利用旧数据，因此乘以一个比值；因为直接计算整条轨迹的连乘会导致数值过大，因此分散到每个时间步，假设新旧policy访问到某个state的概率是一样的，假设了一个状态转移概率是1，进行了问题简化，从而可以利用off-policy
-data</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622164519024.png"
-alt="image-20260622164519024" />
-<figcaption aria-hidden="true">image-20260622164519024</figcaption>
-</figure>
-<p>定义一个优势函数：描述在状态s采取动作a有多好</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622164707815.png"
-alt="image-20260622164707815" />
-<figcaption aria-hidden="true">image-20260622164707815</figcaption>
-</figure>
-<h6 id="policy-gradient的缺点">policy gradient的缺点：</h6>
-<p>1.不能充分利用数据（统一的reward）</p>
-<p>2.sparce reward不能优化不好的情况</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622165753038.png"
-alt="image-20260622165753038" />
-<figcaption aria-hidden="true">image-20260622165753038</figcaption>
-</figure>
-<h5 id="提升policy-gradients">提升policy gradients:</h5>
-<h6
-id="使用reward-togo-过去t-1的reward不应该此时t时刻的reward">使用reward
-togo: 过去t-1的reward不应该此时t时刻的reward</h6>
-<p>也就是把policy gradient公式中一整条轨迹的总的reward换成Q(s,a)</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>原来是“每一个轨迹每一个时间步的log乘以整条轨迹的reward”,通过reward to
-go的公式推导“每一个轨迹每一个时间步的log乘以整条轨迹的reward”=“每一个轨迹每一个时间步的log乘以该时间的reward
-to go”</p>
-</blockquote>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622165933718.png"
-alt="image-20260622165933718" />
-<figcaption aria-hidden="true">image-20260622165933718</figcaption>
-</figure>
-<p>继续推导：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622170028528.png"
-alt="image-20260622170028528" />
-<figcaption aria-hidden="true">image-20260622170028528</figcaption>
-</figure>
-<p>总结一下：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622170134033.png"
-alt="image-20260622170134033" />
-<figcaption aria-hidden="true">image-20260622170134033</figcaption>
-</figure>
-<h5 id="如何估计优势函数">如何估计优势函数：</h5>
-<p>可以近似为：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622170439606.png"
-alt="image-20260622170439606" />
-<figcaption aria-hidden="true">image-20260622170439606</figcaption>
-</figure>
-<h6 id="a.估计vpi方法一蒙特卡洛">a.估计V(pi)方法一——蒙特卡洛</h6>
-<p>就是足够多的采样求平均</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622170541910.png"
-alt="image-20260622170541910" />
-<figcaption aria-hidden="true">image-20260622170541910</figcaption>
-</figure>
-<h6 id="b.估计方法二bootstrappingtd">b.估计方法二：bootstrapping/TD</h6>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622174102301.png"
-alt="image-20260622174102301" />
-<figcaption aria-hidden="true">image-20260622174102301</figcaption>
-</figure>
-<p>蒙特卡洛高方差，bootstrap偏差大，折中——n-step</p>
-<h6 id="c.n-step">c.n-step</h6>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622174623468.png"
-alt="image-20260622174623468" />
-<figcaption aria-hidden="true">image-20260622174623468</figcaption>
-</figure>
-<p>注意reward随着时间步的累积计算有一个discount factors, 当episode
-length是无穷的时候，否则就会爆炸</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622174747263.png"
-alt="image-20260622174747263" />
-<figcaption aria-hidden="true">image-20260622174747263</figcaption>
-</figure>
-<p>总结：目前讨论的on-policy版本的actor-critic方法，有一个critic方法去估计当前策略的预期reward总值，通过这个可以算出advantage，还有一个actor网络去计算当前策略在当前state采取动作a的概率；然后就可以根据policy
-gradient的方法去进行更新。其中value
-function的估计总的有三种思路，一个是蒙特卡洛采样足够多，二个是td，当前state在当前policy的value用reward+下一个状态的value来迭代；三个是n-steps，多迭代几步；</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622174821286.png"
-alt="image-20260622174821286" />
-<figcaption aria-hidden="true">image-20260622174821286</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622174855683.png"
-alt="image-20260622174855683" />
-<figcaption aria-hidden="true">image-20260622174855683</figcaption>
-</figure>
-<h5 id="off-policy的actor-critic">off-policy的actor-critic</h5>
-<p>按照上个slide内容，就是在前面加上参数的比。当前策略的pi比上</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622192514698.png"
-alt="image-20260622192514698" />
-<figcaption aria-hidden="true">image-20260622192514698</figcaption>
-</figure>
-<p>如果更新太频繁有两个问题</p>
-<p>1.优势函数失效，因为A是基于old策略评估出来的</p>
-<p>2.重要性权重会增加在高方差行为上的probaility（而我们做rl优化的核心都是为了降低高方差）</p>
-<h6
-id="off-policy-actor-critic方法-version-1-multiple-gradient-steps">off-policy
-actor-critic方法 version 1: multiple gradient steps</h6>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622193437247.png"
-alt="image-20260622193437247" />
-<figcaption aria-hidden="true">image-20260622193437247</figcaption>
-</figure>
-<p>到目前为止，on policy的policy gradient算法是one gradient
-step，想更充分的利用旧数据。</p>
-<p>multiple gradient step是开始off-policy的，</p>
-<p>那我们可以直接用off-policy的数据吗？</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260622194651654.png"
-alt="image-20260622194651654" />
-<figcaption aria-hidden="true">image-20260622194651654</figcaption>
-</figure>
-<h6 id="version-2-replay-buffers">version 2: replay buffers</h6>
-<p>不仅使用当前策略的data,还要利用历史所有policy产生并存储在replay
-buffer的data.</p>
-<p>minibatch sampling:我们不再重新收集一条条连续轨迹，而是从replay
-buffer中随机抽取一个minibatch.本来rl中采集的数据有相关性，这种随机采样让数据变得iid.</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623134338237.png"
-alt="image-20260623134338237" />
-<figcaption aria-hidden="true">image-20260623134338237</figcaption>
-</figure>
-<p>但是会有一些问题：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623135619044.png"
-alt="image-20260623135619044" />
-<figcaption aria-hidden="true">image-20260623135619044</figcaption>
-</figure>
-<p>更新policy的梯度的时候：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623135636569.png"
-alt="image-20260623135636569" />
-<figcaption aria-hidden="true">image-20260623135636569</figcaption>
-</figure>
-<p>1.更新价值函数的时候用到的不是对当前策略的预期收益的估计</p>
-<p>2.更新policy的时候动作a是从replay
-buffer里面拿出来的，当前策略在当前状态可能不会选择这个动作。</p>
-<h5 id="解决方法">解决方法：</h5>
-<p>因此我们要:</p>
-<h6 id="fixing-value-funcion">fixing value funcion</h6>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623140934899.png"
-alt="image-20260623140934899" />
-<figcaption aria-hidden="true">image-20260623140934899</figcaption>
-</figure>
-<p><u>引入 <span class="math inline">\(Q(s, a)\)</span>
-的核心目的，是为了<strong>显式地把“动作”这个变量解耦出来</strong>，从而允许我们用<strong>当前策略的动作</strong>去替换掉<strong>历史数据中的动作</strong>。</u></p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623141043637.png"
-alt="image-20260623141043637" />
-<figcaption aria-hidden="true">image-20260623141043637</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623141106519.png"
-alt="image-20260623141106519" />
-<figcaption aria-hidden="true">image-20260623141106519</figcaption>
-</figure>
-<h6 id="fixing-policy-update">fixing policy update</h6>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623142226137.png"
-alt="image-20260623142226137" />
-<figcaption aria-hidden="true">image-20260623142226137</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623141920323.png"
-alt="image-20260623141920323" />
-<figcaption aria-hidden="true">image-20260623141920323</figcaption>
-</figure>
-<p>Sac:彻底抛弃旧动作 <span
-class="math inline">\(a_t\)</span>，只留下状态 <span
-class="math inline">\(s_t\)</span>。用当前最新的策略在 <span
-class="math inline">\(s_t\)</span> 上现做一个动作，然后让 <span
-class="math inline">\(Q\)</span>
-网络通过链式法则（梯度回传）来告诉策略该怎么改进。</p>
-<blockquote>
-<p>[!NOTE]</p>
-<p>为什么sac带来的高方差问题是可以的</p>
-</blockquote>
-<h6 id="其他的">其他的：</h6>
-<p>Replay buffer的状态转移概率和此时policy也是不一样的，但是we only
-accept</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623142651532.png"
-alt="image-20260623142651532" />
-<figcaption aria-hidden="true">image-20260623142651532</figcaption>
-</figure>
-<p>采用重参数化方法帮助更好的估计梯度</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623142719203.png"
-alt="image-20260623142719203" />
-<figcaption aria-hidden="true">image-20260623142719203</figcaption>
-</figure>
-<h6 id="对比">对比</h6>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623143005119.png"
-alt="image-20260623143005119" />
-<figcaption aria-hidden="true">image-20260623143005119</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623143027355.png"
-alt="image-20260623143027355" />
-<figcaption aria-hidden="true">image-20260623143027355</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260623143037718.png"
-alt="image-20260623143037718" />
-<figcaption aria-hidden="true">image-20260623143037718</figcaption>
-</figure>
-<p><strong>Replay Buffer (Off-policy) SAC：</strong>
-<strong>必须</strong>设计 Q function 网络（而且通常是两个 <span
-class="math inline">\(Q\)</span> 网络加 Target <span
-class="math inline">\(Q\)</span> 网络）。独立的 <span
-class="math inline">\(V\)</span> 网络在现代实现中已经被取消了。</p>
-<p><strong>On-policy 强化学习：</strong> 通常以 <span
-class="math inline">\(V\)</span> function 网络为主（用于计算
-Baseline/Advantage），但如果是基于最大熵框架的 SAC
-变体，为了策略提升（Policy Improvement）的梯度传导，往往依然绕不开 <span
-class="math inline">\(Q\)</span> 的估计。</p>
-<h3 id="slides5-off-policy-actor-critic">slides5: off
-policy-actor-critic</h3>
-<p>Off-policy的actor citric 总结如下：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260703161931955.png"
-alt="image-20260703161931955" />
-<figcaption aria-hidden="true">image-20260703161931955</figcaption>
-</figure>
-<p>就是不能做大的更新</p>
-<p>PPO算法就是在此基础上做了一些tricks</p>
-<ol type="1">
-<li><p>clip</p></li>
-<li><p>min</p></li>
-<li><p>Gae</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260708112035662.png"
-alt="image-20260708112035662" />
-<figcaption aria-hidden="true">image-20260708112035662</figcaption>
-</figure></li>
-</ol>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260703162058626.png"
-alt="image-20260703162058626" />
-<figcaption aria-hidden="true">image-20260703162058626</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260703162912208.png"
-alt="image-20260703162912208" />
-<figcaption aria-hidden="true">image-20260703162912208</figcaption>
-</figure>
-<p>一些超参数的设置：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260703162943475.png"
-alt="image-20260703162943475" />
-<figcaption aria-hidden="true">image-20260703162943475</figcaption>
-</figure>
-<h3 id="slides6-q-learning">slides6 Q-learning</h3>
-<p>Value-based rl learning的方法</p>
-<p>在actor-critic方法的基础上，假设我们把policy固定下来，就是每次选择使得Q(s,a)最大的action:</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260709150311071.png"
-alt="image-20260709150311071" />
-<figcaption aria-hidden="true">image-20260709150311071</figcaption>
-</figure>
-<p>我们将不需要学习actor网络</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260709150340339.png"
-alt="image-20260709150340339" />
-<figcaption aria-hidden="true">image-20260709150340339</figcaption>
-</figure>
-<h5 id="bellman方程">Bellman方程</h5>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260709150400403.png"
-alt="image-20260709150400403" />
-<figcaption aria-hidden="true">image-20260709150400403</figcaption>
-</figure>
-<h3 id="slides7-offline-rl">slides7: offline rl</h3>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713150019639.png"
-alt="image-20260713150019639" />
-<figcaption aria-hidden="true">image-20260713150019639</figcaption>
-</figure>
-<p>为什么要研究offline rl?</p>
-<p>offline rl用的static dataset</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713150739486.png"
-alt="image-20260713150739486" />
-<figcaption aria-hidden="true">image-20260713150739486</figcaption>
-</figure>
-<p>为什么rl可以提升模仿学习的效果？</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713150828995.png"
-alt="image-20260713150828995" />
-<figcaption aria-hidden="true">image-20260713150828995</figcaption>
-</figure>
-<p>如果我们直接用off-policy算法，比如sac</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713151021152.png"
-alt="image-20260713151021152" />
-<figcaption aria-hidden="true">image-20260713151021152</figcaption>
-</figure>
-<p>Q function的估计会高估</p>
-<h4 id="offline-rl核心问题ood问题">offline rl核心问题：OOD问题</h4>
-<p>离线强化学习里，agent无法通过“试错”来修正错误。当智能体试图优化策略的时候，它会生成一些在历史数据中未曾出现过的新动作（即OOD动作）。<strong>根本原因（外推误差
-Extrapolation Error）：</strong>
-神经网络对“未见过的数据”的预测往往是极其不准确的（且通常会给出虚高的估计值）。可能一个没有见过的猜的动作获取了较高的价值，由于bootstrap的存在策略会倾向于选择这个动作，最终导致误差放大并且进一步崩溃。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713151239502.png"
-alt="image-20260713151239502" />
-<figcaption aria-hidden="true">image-20260713151239502</figcaption>
-</figure>
-<p>因此offline rl的核心goal就是解决高估问题。</p>
-<p>去找到衡量imitation learning里的动作好坏的问题：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713151505555.png"
-alt="image-20260713151505555" />
-<figcaption aria-hidden="true">image-20260713151505555</figcaption>
-</figure>
-<h4 id="解决ood问题的两种思路">解决OOD问题的两种思路</h4>
-<p>1.限制policy的学习在data中的actions</p>
-<p>2.更好的估计value functions而不用进行OOD查询（）</p>
-<h4 id="advantage-weighted-regressionawr算法">advantage-weighted
-regression：AWR算法</h4>
-<p>将策略优化问题转化为一个加权的监督学习问题：对历史经验中“表现更好”的数据赋予更高的权重，从而引导策略向更优的方向进化。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713152924466.png"
-alt="image-20260713152924466" />
-<figcaption aria-hidden="true">image-20260713152924466</figcaption>
-</figure>
-<p>先通过蒙特卡洛优化价值函数</p>
-<p>再通过优势加权策略回归</p>
-<p>(AWR算法对回放缓冲区中的现有数据进行加权更新，因此<strong>永远不会查询或在超出当前数据分布（OOD）的动作上训练</strong>。）</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713153722109.png"
-alt="image-20260713153722109" />
-<figcaption aria-hidden="true">image-20260713153722109</figcaption>
-</figure>
-<p>改进：上面的价值函数是对数据集里的策略的估计，因此得到的策略是weaker比真正的优化策略的，思考一下如何得到更好的advantage的估计：我们估计当前策略的value
-function-&gt;换用Q从而体现“current policy”</p>
-<h4
-id="expectile-regression-从关注平均的mse-loss到更关注表现好价值高的sample">expectile
-regression: 从关注平均的mse loss到更关注表现好价值高的sample</h4>
-<h4 id="awac算法">AWAC算法</h4>
-<p>蒙特卡洛的估计有高方差的问题。是否有衡量动作优势更好的方法。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720110925400.png"
-alt="image-20260720110925400" />
-<figcaption aria-hidden="true">image-20260720110925400</figcaption>
-</figure>
-<p>AWAC 的解决办法是：<strong>在训练 Q
-函数时，目标值的计算不直接依赖新策略 <span
-class="math inline">\(\pi\)</span>，而是利用数据集里的动作。</strong></p>
-<p>有了训练好的 <span class="math inline">\(Q(s, a)\)</span>
-和状态价值函数 <span class="math inline">\(V(s)\)</span>
-之后，优势函数的计算就变得非常常规且低方差了：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713154733164.png"
-alt="image-20260713154733164" />
-<figcaption aria-hidden="true">image-20260713154733164</figcaption>
-</figure>
-<h4 id="iql">IQL</h4>
-<p>如何在完全不查询 OOD
-动作的前提下，不仅估计当前行为策略的价值，还能隐式地去估计一个“更好策略”的价值。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720111414253.png"
-alt="image-20260720111414253" />
-<figcaption aria-hidden="true">image-20260720111414253</figcaption>
-</figure>
-<p>既然直接在动作空间上做 <span class="math inline">\(\max\)</span>
-会引入 OOD
-风险，那能不能绕过动作，<strong>直接在状态价值（Value）层面去逼近比当前策略更好的上界（Upper
-Expectile）</strong>？</p>
-<p>通过将价值函数的训练从对称的 <span
-class="math inline">\(\ell_2\)</span> 损失换成非对称的 expectile
-损失（<span
-class="math inline">\(\ell_\tau\)</span>），我们<strong>不需要在动作空间里去查询任何
-OOD
-动作</strong>，就能直接在状态层面“抠”出数据集里表现较好的轨迹上限。</p>
-<p>这正是 <strong>IQL（Implicit Q-Learning）</strong>
-的核心基石：通过状态价值的非对称回归来代替复杂的策略最大化，从而彻底解决了离线强化学习中的
-OOD 动作灾难。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713154945082.png"
-alt="image-20260713154945082" />
-<figcaption aria-hidden="true">image-20260713154945082</figcaption>
-</figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">https://gemini.google.com/app/2486c2a203f47b00?is_sa=1&amp;is_sa=1&amp;android-min-version=301356232&amp;ios-min-version=322.0&amp;campaign_id=bkws&amp;utm_source=sem&amp;utm_medium=paid-media&amp;utm_campaign=bkws&amp;pt=9008&amp;mt=8&amp;ct=p-growth-sem-bkws&amp;gclsrc=aw.ds&amp;gad_source=1&amp;gad_campaignid=20357620797&amp;gbraid=0AAAAApk5BhnOnf42_Yt8dyBUx7a_wH_3F&amp;gclid=CjwKCAjwmdLSBhANEiwAkREMNzRRNXxA3DGzadkBrYkASPpA10hw6SWTWtmsxsOAjTsyYwxLvPtkzhoC1SAQAvD_BwE</span><br><span class="line"></span><br><span class="line">要得到比传统蒙特卡洛（MC）估计更好的 优势（Advantage）估计，同时又想引入 TD 更新（从而利用时序差分信息的低方差特性）且避免查询 OOD 动作，核心在于将 Q 函数的学习与策略的“保守性”结合起来。你提到的思路非常关键：如何利用数据支持（Data Support）内部的信息来估计比行为策略 $\pi_\beta$ 更强的策略 $\pi$ 的价值？</span><br><span class="line">1. 核心瓶颈：为什么 TD 学习在离线环境下会遇到问题？传统的 TD 更新公式是：$$Q(s, a) \leftarrow r + \gamma Q(s&#x27;, a&#x27;)$$这里的 $a&#x27;$ 是根据“我们想要训练的目标策略”生成的。在离线环境下，如果这个 $a&#x27;$ 超出了数据集的覆盖范围（OOD），$Q(s&#x27;, a&#x27;)$ 的估计就会产生巨大的外推误差。</span><br><span class="line">优化方案：如何在不查询 OOD 的情况下实现 TD？要实现“比 $\pi_\beta$ 更强的策略”，但又“不离开数据集”，通常采用以下两种高级策略：A. 期望价值估计 (Expected SARSA 变体)既然不能确定下一时刻的 $a&#x27;$ 究竟选什么，我们可以对数据集中已知的所有动作取期望，而不是只看单一动作：$$Q(s, a) \leftarrow r + \gamma \sum_&#123;a&#x27; \in \mathcal&#123;D&#125;&#125; \pi(a&#x27;\vert&#123;&#125;s&#x27;) Q(s&#x27;, a&#x27;)$$为什么更好： 这种方式通过加权平均避免了对单一“最优”动作的过拟合，由于 $\pi(a&#x27;\vert&#123;&#125;s&#x27;)$ 只在数据集覆盖的 $a&#x27;$ 上有概率值，它天然地保持了对分布内数据的依赖。</span><br><span class="line"></span><br><span class="line">非对称损失函数 (Asymmetric Loss / Expectile Regression)这正是你提到的那个直觉点。我们可以通过 Expectile Regression（分位数回归） 来获得一个比平均值更偏向于“最优”的值函数：原理： 传统的均方误差（MSE）回归的是期望值（$V(s)$）。但通过使用 Expectile Loss，我们可以训练出一个函数，使其更接近数据集中的“上分位点”（例如 0.8 或 0.9 分位点）。效果： 这样训练出来的 $V(s)$ 不再是数据集的平均水平，而是数据集中的“优异表现”水平。数学形式：$$\mathcal&#123;L&#125;_\tau(u) = \begin&#123;cases&#125; \tau u^2 &amp; \text&#123;if &#125; u &gt; 0 \\ (1-\tau) u^2 &amp; \text&#123;if &#125; u \leq 0 \end&#123;cases&#125;$$当 $\tau &gt; 0.5$ 时，这个损失函数会“拉拽”估计值向上，直到它落在数据集中较高回报的区域。</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="implicit-q-learningiql">Implicit Q-learning(IQL)</h4>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713160744140.png"
-alt="image-20260713160744140" />
-<figcaption aria-hidden="true">image-20260713160744140</figcaption>
-</figure>
-<h3
-id="assignments3offline-rl的两个算法实现awsm和iql">assignments3:offline
-rl的两个算法实现：awsm和iql</h3>
-<p>迷宫任务reward的规定方式是达到目标是0，否则-1，全程是-700。两个衡量指标：mean
-reward和std reward.</p>
-<p>awsm在简单迷宫：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260725164317481.png"
-alt="image-20260725164317481" />
-<figcaption aria-hidden="true">image-20260725164317481</figcaption>
-</figure>
-<p>在复杂迷宫：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260725164434953.png"
-alt="image-20260725164434953" />
-<figcaption aria-hidden="true">image-20260725164434953</figcaption>
-</figure>
-<h3 id="slides8-reward-learning">slides8: reward learning</h3>
-<h4 id="recapoffline-rl无法从new-data学习">recap:offline rl无法从new
-data学习</h4>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713161022068.png"
-alt="image-20260713161022068" />
-<figcaption aria-hidden="true">image-20260713161022068</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713162320902.png"
-alt="image-20260713162320902" />
-<figcaption aria-hidden="true">image-20260713162320902</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713162333691.png"
-alt="image-20260713162333691" />
-<figcaption aria-hidden="true">image-20260713162333691</figcaption>
-</figure>
-<p>offline rl的post training in robot</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713162407440.png"
-alt="image-20260713162407440" />
-<figcaption aria-hidden="true">image-20260713162407440</figcaption>
-</figure>
-<p>总结：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260713163115900.png"
-alt="image-20260713163115900" />
-<figcaption aria-hidden="true">image-20260713163115900</figcaption>
-</figure>
-<p>rl for
-llm:https://cs224r.stanford.edu/slides/09_cs224r_rlhf_2026.pdf</p>
-<p>https://cs224r.stanford.edu/slides/10_cs224r_rl_for_llms_reasoning_2026.pdf</p>
-<p>offline rl算法总结：</p>
-<p>1.AWR算法</p>
-<p>将强化学习转化为一个“加权监督学习”问题。认为在给定离线数据集下，只需识别出表现高于平均水平的动作并加大其权重，即可实现策略改进。</p>
-<p>核心公式： <span class="math display">\[
-\hat{A}^{\pi}(s_t, a_t) = \left( \sum_{t&#39;=t}^{T} r(s_{t&#39;},
-a_{t&#39;}) \right) - \hat{V}^{\pi}(s_t)
-\]</span></p>
-<p>策略更新： <span class="math display">\[
-\theta \leftarrow \arg \max_\theta \mathbb{E}_{s, a \sim \mathcal{D}}
-\left[ \log \pi_\theta(a\vert{}s) \exp \left( \frac{1}{\beta} \hat{A}(s,
-a) \right) \right]
-\]</span></p>
-<p>需要学习/更新的网络：</p>
-<p><strong>Actor <span
-class="math inline">\(\pi_\theta\)</span>：</strong>
-输出策略概率分布。</p>
-<p><strong>Value Critic <span
-class="math inline">\(V_\phi\)</span>：</strong>
-拟合数据集内的经验回报（作为 Baseline）。</p>
-<p>2.AWAC算法</p>
-<p>在 AWR 的基础上引入 Critic（Q 网络）进行 TD
-学习，减少蒙特卡洛评估的高方差。把一个episode换成时间步的。</p>
-<p>核心公式（TD 误差）： <span class="math display">\[
-\mathcal{L}_Q(\phi) = \mathbb{E}_{s, a, r, s&#39; \sim \mathcal{D}}
-\left[ \left( Q_\phi(s, a) - (r + \gamma \bar{Q}_{\phi&#39;}(s&#39;,
-a&#39;)) \right)^2 \right]
-\]</span> 策略更新： <span class="math display">\[
-\nabla_\theta J(\theta) = \mathbb{E}_{s, a \sim \mathcal{D}} \left[
-\nabla_\theta \log \pi_\theta(a\vert{}s) \exp \left( \frac{1}{\beta}
-(Q_\phi(s, a) - V(s)) \right) \right]
-\]</span> 需学习/更新的网络：</p>
-<p><strong>Actor <span
-class="math inline">\(\pi_\theta\)</span>：</strong>
-进行加权策略梯度更新。</p>
-<p><strong>Q-Critic <span
-class="math inline">\(Q_\phi\)</span>：</strong> 通过 TD
-误差学习动作价值（需配合目标网络 <span
-class="math inline">\(\bar{Q}_{\phi&#39;}\)</span> 以稳定训练）。</p>
-<p>3.IQL算法(Implicit Q-Learning)</p>
-<p>离线 RL 的稳健派。它不进行显式的 <span
-class="math inline">\(Q\)</span> 值最大化（即不做 <span
-class="math inline">\(\max_a Q(s,
-a)\)</span>），通过分位数回归（Expectile
-Regression）隐式学习状态价值函数 <span
-class="math inline">\(V(s)\)</span>，彻底规避对 OOD 动作的查询。</p>
-<p>核心公式（分位数回归计算 <span class="math inline">\(V\)</span>）：
-<span class="math display">\[
-\mathcal{L}_V(\psi) = \mathbb{E}_{s, a \sim \mathcal{D}} \left[ L_2^\tau
-(Q_\phi(s, a) - V_\psi(s)) \right]
-(其中 $L_2^\tau$ 对 $Q-V &gt; 0$ 的部分给予更高权重，使得 $V$ 拟合出 $Q$
-的上界)
-\]</span> Q网络更新目标： <span class="math display">\[
-\mathcal{L}_Q(\phi) = \mathbb{E}_{s, a, r, s&#39; \sim \mathcal{D}}
-\left[ (Q_\phi(s, a) - (r + \gamma V_\psi(s&#39;)))^2 \right]
-\]</span> 需要学习/更新的网络：</p>
-<p><strong>Actor <span
-class="math inline">\(\pi_\theta\)</span>：</strong> 利用优势值 <span
-class="math inline">\(A(s, a) = Q_\phi - V_\psi\)</span> 更新。</p>
-<p><strong>Q-Critic <span
-class="math inline">\(Q_\phi\)</span>：</strong> 拟合 TD 目标。</p>
-<p><strong>Value Critic <span
-class="math inline">\(V_\psi\)</span>：</strong>
-通过分位数回归拟合价值边界。</p>
-<h3 id="slides11-model-based-rl">slides11: model-based rl</h3>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260717154048808.png"
-alt="image-20260717154048808" />
-<figcaption aria-hidden="true">image-20260717154048808</figcaption>
-</figure>
-<p>核心就是学习一个simulator:</p>
-<p>但是也可能存在很多问题，比如：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720112307136.png"
-alt="image-20260720112307136" />
-<figcaption aria-hidden="true">image-20260720112307136</figcaption>
-</figure>
-<h4 id="如何学习一个好的动力学模型">如何学习一个好的动力学模型</h4>
-<ul>
-<li>大概知道数学模型：数据拟合</li>
-<li>不知道数学分布（大多数）：端到端的学习/学习一个low-rank的表示，然后学习一个基于low-rank
-representation的model.</li>
-<li>叫做dynamics model, simulator, world model, model</li>
-</ul>
-<p>学习过程：</p>
-<p>典型的<strong>基于模型的强化学习（Model-Based Reinforcement Learning,
-MBRL）*<em>算法框架，其核心精髓在于*</em>利用学习到的世界模型（World
-Model）来生成虚拟经验，从而大幅提升样本利用率</strong>。</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720150926391.png"
-alt="image-20260720150926391" />
-<figcaption aria-hidden="true">image-20260720150926391</figcaption>
-</figure>
-<p>其中planning可以通过基于gradient或者sample的方法去生成（这一部分下面这页pptyoutube视频里有，但是课件没了）</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152525950.png"
-alt="image-20260720152525950" />
-<figcaption aria-hidden="true">image-20260720152525950</figcaption>
-</figure>
-<p>可能存在的问题：分布漂移</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151249367.png"
-alt="image-20260720151249367" />
-<figcaption aria-hidden="true">image-20260720151249367</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151330709.png"
-alt="image-20260720151330709" />
-<figcaption aria-hidden="true">image-20260720151330709</figcaption>
-</figure>
-<p>两种方法：</p>
-<p>1.用model产生部分roll-out数据</p>
-<p>2.使用ensemble模型，把误差平均掉</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151442172.png"
-alt="image-20260720151442172" />
-<figcaption aria-hidden="true">image-20260720151442172</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151513774.png"
-alt="image-20260720151513774" />
-<figcaption aria-hidden="true">image-20260720151513774</figcaption>
-</figure>
-<p>另外使用model的方法：多生成动作然后采样回报高的那个</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151636937.png"
-alt="image-20260720151636937" />
-<figcaption aria-hidden="true">image-20260720151636937</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151747259.png"
-alt="image-20260720151747259" />
-<figcaption aria-hidden="true">image-20260720151747259</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151849797.png"
-alt="image-20260720151849797" />
-<figcaption aria-hidden="true">image-20260720151849797</figcaption>
-</figure>
-<p>这种方法不适用于长程任务</p>
-<p>长程任务多学习一个value function</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720151931028.png"
-alt="image-20260720151931028" />
-<figcaption aria-hidden="true">image-20260720151931028</figcaption>
-</figure>
-<p>总结：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152027409.png"
-alt="image-20260720152027409" />
-<figcaption aria-hidden="true">image-20260720152027409</figcaption>
-</figure>
-<p>举例子：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152057958.png"
-alt="image-20260720152057958" />
-<figcaption aria-hidden="true">image-20260720152057958</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152146970.png"
-alt="image-20260720152146970" />
-<figcaption aria-hidden="true">image-20260720152146970</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152159066.png"
-alt="image-20260720152159066" />
-<figcaption aria-hidden="true">image-20260720152159066</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152211055.png"
-alt="image-20260720152211055" />
-<figcaption aria-hidden="true">image-20260720152211055</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720152224249.png"
-alt="image-20260720152224249" />
-<figcaption aria-hidden="true">image-20260720152224249</figcaption>
-</figure>
-<h3 id="slides12多任务rl">slides12:多任务rl</h3>
-<p>为什么需要multi-task
-rl：我们想要通才的任务。比如机器人不仅能在水泥地走路也能在草地上走路。</p>
-<p>定义：</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720155036755.png"
-alt="image-20260720155036755" />
-<figcaption aria-hidden="true">image-20260720155036755</figcaption>
-</figure>
-<p>解决方法一：把任务task放入state中</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720155301342.png"
-alt="image-20260720155301342" />
-<figcaption aria-hidden="true">image-20260720155301342</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720163659618.png"
-alt="image-20260720163659618" />
-<figcaption aria-hidden="true">image-20260720163659618</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260720164609810.png"
-alt="image-20260720164609810" />
-<figcaption aria-hidden="true">image-20260720164609810</figcaption>
-</figure>
-<h4 id="slides13-meta-rl">slides13: meta rl</h4>
-<p>Multi-task learning</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721112354587.png"
-alt="image-20260721112354587" />
-<figcaption aria-hidden="true">image-20260721112354587</figcaption>
-</figure>
-<p>Goal-conditioned learning</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721112417131.png"
-alt="image-20260721112417131" />
-<figcaption aria-hidden="true">image-20260721112417131</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721135134223.png"
-alt="image-20260721135134223" />
-<figcaption aria-hidden="true">image-20260721135134223</figcaption>
-</figure>
-<p>黑盒rl:</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721141854638.png"
-alt="image-20260721141854638" />
-<figcaption aria-hidden="true">image-20260721141854638</figcaption>
-</figure>
-<h3 id="slides15hierarchy">slides15:hierarchy</h3>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721142904133.png"
-alt="image-20260721142904133" />
-<figcaption aria-hidden="true">image-20260721142904133</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721144411554.png"
-alt="image-20260721144411554" />
-<figcaption aria-hidden="true">image-20260721144411554</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721144640762.png"
-alt="image-20260721144640762" />
-<figcaption aria-hidden="true">image-20260721144640762</figcaption>
-</figure>
-<h3 id="slides17-rl-vla">slides17: rl-vla</h3>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721145718775.png"
-alt="image-20260721145718775" />
-<figcaption aria-hidden="true">image-20260721145718775</figcaption>
-</figure>
-<p>offline rl更合适，解决两个问题：</p>
-<ul>
-<li>学习value function</li>
-<li>用这个value function得到一个更好的policy</li>
-</ul>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721145905021.png"
-alt="image-20260721145905021" />
-<figcaption aria-hidden="true">image-20260721145905021</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721145925166.png"
-alt="image-20260721145925166" />
-<figcaption aria-hidden="true">image-20260721145925166</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721145941314.png"
-alt="image-20260721145941314" />
-<figcaption aria-hidden="true">image-20260721145941314</figcaption>
-</figure>
-<p>rl是否能提升基础vla的效果</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721150433273.png"
-alt="image-20260721150433273" />
-<figcaption aria-hidden="true">image-20260721150433273</figcaption>
-</figure>
-<p>我们能否对视觉-语言-动作模型（VLA）进行在线强化学习（Online RL）</p>
-<p>由于直接对整个庞大的 VLA
-进行端到端微调成本极高（如前一段所述），这里提出了一种核心思路：<strong>利用
-VLA 的表征，训练一个独立的、基于高斯分布的策略（Gaussian
-Policy），从而在不端到端微调 VLA 的前提下实现性能提升。</strong></p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721150634872.png"
-alt="image-20260721150634872" />
-<figcaption aria-hidden="true">image-20260721150634872</figcaption>
-</figure>
-<ol type="1">
-<li>版本 A（Version A）：将 VLA
-扩散过程的噪声视为动作空间，训练强化学习策略来控制噪声</li>
-<li>版本 B（Version B）：压缩 VLA
-的视觉表征，并在该表征之上进行强化学习</li>
-</ol>
-<p>扩散引导(diffusion
-steering)训练策略生成能产生好动作的噪声，去引导vla输出优质动作</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721150907030.png"
-alt="image-20260721150907030" />
-<figcaption aria-hidden="true">image-20260721150907030</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151033193.png"
-alt="image-20260721151033193" />
-<figcaption aria-hidden="true">image-20260721151033193</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151051164.png"
-alt="image-20260721151051164" />
-<figcaption aria-hidden="true">image-20260721151051164</figcaption>
-</figure>
-<p>学习一个高斯策略去编辑vla的动作</p>
-<p>优化更小型的高斯编辑策略以最大化 Q 值</p>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151333938.png"
-alt="image-20260721151333938" />
-<figcaption aria-hidden="true">image-20260721151333938</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151307727.png"
-alt="image-20260721151307727" />
-<figcaption aria-hidden="true">image-20260721151307727</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151250909.png"
-alt="image-20260721151250909" />
-<figcaption aria-hidden="true">image-20260721151250909</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151240870.png"
-alt="image-20260721151240870" />
-<figcaption aria-hidden="true">image-20260721151240870</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/06/11/cs224r/image-20260721151228680.png"
-alt="image-20260721151228680" />
-<figcaption aria-hidden="true">image-20260721151228680</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2210,7 +1212,7 @@ alt="image-20260721151228680" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-count">159</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
