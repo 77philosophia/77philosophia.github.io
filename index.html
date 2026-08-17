@@ -182,6 +182,2152 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/13/openvla/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/13/openvla/" class="post-title-link" itemprop="url">openvla</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-13 15:37:59" itemprop="dateCreated datePublished" datetime="2026-08-13T15:37:59+08:00">2026-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-17 11:25:11" itemprop="dateModified" datetime="2026-08-17T11:25:11+08:00">2026-08-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="tlds格式数据集">tlds格式数据集</h3>
+<h4 id="数据格式">数据格式</h4>
+<figure>
+<img data-src="/2026/08/13/openvla/image-20260813154103878.png"
+alt="image-20260813154103878" />
+<figcaption aria-hidden="true">image-20260813154103878</figcaption>
+</figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">&#123;</span><br><span class="line">  &#x27;episode_metadata&#x27;: &#123;</span><br><span class="line">    &#x27;episode_id&#x27;:    Scalar(int32),</span><br><span class="line">    &#x27;file_path&#x27;:     Text,</span><br><span class="line">    &#x27;has_image_0&#x27;:   Scalar(bool),   # 原始数据是否包含 image_0（不代表 tfrecord 中是否存在）</span><br><span class="line">    &#x27;has_image_1&#x27;:   Scalar(bool),</span><br><span class="line">    &#x27;has_image_2&#x27;:   Scalar(bool),</span><br><span class="line">    &#x27;has_image_3&#x27;:   Scalar(bool),</span><br><span class="line">    &#x27;has_language&#x27;:  Scalar(bool),</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x27;steps&#x27;: Dataset(&#123;</span><br><span class="line">    &#x27;observation&#x27;: &#123;</span><br><span class="line">      &#x27;image_0&#x27;:  Image(shape=(256, 256, 3), dtype=uint8, jpeg),  # 主相机</span><br><span class="line">      &#x27;image_1&#x27;:  Image(shape=(256, 256, 3), dtype=uint8, jpeg),  # 副相机</span><br><span class="line">      &#x27;image_2&#x27;:  Image(shape=(256, 256, 3), dtype=uint8, jpeg),</span><br><span class="line">      &#x27;image_3&#x27;:  Image(shape=(256, 256, 3), dtype=uint8, jpeg),</span><br><span class="line">      &#x27;state&#x27;:    Tensor(shape=(7,), dtype=float32),              # EEF pos+quat+gripper</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x27;action&#x27;:              Tensor(shape=(7,), dtype=float32),     # 7-DoF 机器人动作</span><br><span class="line">    &#x27;reward&#x27;:              Scalar(float32),</span><br><span class="line">    &#x27;discount&#x27;:            Scalar(float32),</span><br><span class="line">    &#x27;is_first&#x27;:            Scalar(bool),</span><br><span class="line">    &#x27;is_last&#x27;:             Scalar(bool),</span><br><span class="line">    &#x27;is_terminal&#x27;:         Scalar(bool),</span><br><span class="line">    &#x27;language_instruction&#x27;: Text,                                  # 自然语言指令</span><br><span class="line">    &#x27;language_embedding&#x27;:   Tensor(shape=(512,), dtype=float32),  # USE 512-D 嵌入</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<h4 id="加载方式">加载方式:</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">```python</span><br><span class="line"><span class="keyword">import</span> tensorflow_datasets <span class="keyword">as</span> tfds</span><br><span class="line"></span><br><span class="line">builder = tfds.builder(<span class="string">&#x27;bridge_orig&#x27;</span>, data_dir=<span class="string">&#x27;/mnt/newdisk/datasets&#x27;</span>)</span><br><span class="line">ds = builder.as_dataset(split=<span class="string">&#x27;train&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> episode <span class="keyword">in</span> ds.take(<span class="number">1</span>):</span><br><span class="line">    <span class="built_in">print</span>(episode[<span class="string">&#x27;episode_metadata&#x27;</span>][<span class="string">&#x27;file_path&#x27;</span>])</span><br><span class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> episode[<span class="string">&#x27;steps&#x27;</span>].take(<span class="number">1</span>):</span><br><span class="line">        <span class="built_in">print</span>(step[<span class="string">&#x27;action&#x27;</span>].shape, step[<span class="string">&#x27;observation&#x27;</span>][<span class="string">&#x27;image_0&#x27;</span>].shape)</span><br><span class="line">        <span class="built_in">print</span>(step[<span class="string">&#x27;language_instruction&#x27;</span>].numpy().decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<h2 id="openvla-paper">openvla paper</h2>
+<h4 id="tldr">TL:DR</h4>
+<p>OpenVLA是一个在Open-X
+embodiment数据集上面训练的97万轨迹上训练的7B模型。重点是开源了。</p>
+<h4 id="methods">Methods:</h4>
+<figure>
+<img data-src="/2026/08/13/openvla/image-20260817112109972.png"
+alt="image-20260817112109972" />
+<figcaption aria-hidden="true">image-20260817112109972</figcaption>
+</figure>
+<ul>
+<li>Fused visual encoder: 结合
+<ul>
+<li>DinoV2:一个用自监督方式训练出来的vit模型</li>
+<li>sigLIP:另一个视觉模型更看重空间推理能力</li>
+<li>把两者的特征输出拼接起来</li>
+</ul></li>
+<li>Projector
+<ul>
+<li>作为一个链接visual encoder和LLM的桥梁，把从visual
+encoder输出的embeddings转换成兼容的模式。</li>
+</ul></li>
+<li>LLM
+<ul>
+<li>OpenVLA用到的Llama 2(7B)作为backbone.</li>
+</ul></li>
+</ul>
+<h4 id="results">Results:</h4>
+<figure>
+<img data-src="/2026/08/13/openvla/image-20260813160727417.png"
+alt="image-20260813160727417" />
+<figcaption aria-hidden="true">image-20260813160727417</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/13/openvla/image-20260814141421755.png"
+alt="image-20260814141421755" />
+<figcaption aria-hidden="true">image-20260814141421755</figcaption>
+</figure>
+<p>该模型在视觉变化（背景、干扰物）、运动变化（物体位置）和语义理解（新指令）方面表现出很强的泛化能力。</p>
+<h3 id="代码reading">代码reading</h3>
+<p>OpenVLA 由 <strong><em>*三大模块*</em></strong>
+串联组成：<strong><em>*视觉编码器 → 投影层 → LLM
+骨干网络*</em></strong>。整体继承自
+<code>PrismaticVLM</code>（<code>prismatic/models/vlms/prismatic.py</code>），<code>OpenVLA</code>
+类（<code>prismatic/models/vlas/openvla.py</code>）在其基础上添加了动作
+tokenization/detokenization 逻辑。</p>
+<h5 id="视觉编码器vision-backbone">1. 视觉编码器（vision backbone）</h5>
+<ul>
+<li><p>定义在
+<code>prismatic/models/backbones/vision/dinosiglip_vit.py</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">旗舰模型 `openvla-7b` 使用 **DINOv2 + SigLIP 双流融合** 编码器 (`dinosiglip-vit-so-224px`)：</span><br><span class="line"></span><br><span class="line">- **DINOv2**: `ViT-Large`（patch14, reg4），提取第二到最后一层的 patch 特征</span><br><span class="line">- **SigLIP**: `ViT-SO400M`（patch14, 224px），同样提取第二到最后一层的 patch 特征</span><br><span class="line">- **融合方式**: 将两个 ViT 的 patch 特征在**特征维度上拼接** (`torch.cat([dino_patches, siglip_patches], dim=2)`)</span><br><span class="line">- 输入图像分辨率: **224×224**</span><br><span class="line">- 输出形状: `[batch, num_patches, dino_embed_dim + siglip_embed_dim]`，其中 `num_patches = 256 + 1`（含 CLS token）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="投影层-projector">2.<strong>投影层 (Projector)</strong></h5>
+<p>定义在 <code>prismatic/util/nn_utils.py</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">对于融合视觉编码器，使用 **FusedMLPProjector**（`fused-gelu-mlp`）：</span><br><span class="line"></span><br><span class="line">```</span><br><span class="line">Linear(fused_vision_dim → fused_vision_dim * 4)</span><br><span class="line">→ GELU</span><br><span class="line">→ Linear(fused_vision_dim * 4 → llm_embed_dim)</span><br><span class="line">→ GELU</span><br><span class="line">→ Linear(llm_embed_dim → llm_embed_dim)</span><br><span class="line">```</span><br><span class="line"></span><br><span class="line">作用: 将拼接后的视觉特征投影到 LLM 的嵌入空间。</span><br></pre></td></tr></table></figure>
+<h5 id="llm-骨干网络">3.<strong>LLM 骨干网络</strong></h5>
+<p>基于 <strong><em>*Llama-2
+7B*</em></strong>（<code>transformers</code> 库的
+<code>LlamaForCausalLM</code>）。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- 嵌入维度: 4096</span><br><span class="line">- Tokenizer: `LlamaTokenizerFast`（BPE）</span><br><span class="line">- 使用 **Flash Attention 2** 加速注意力计算</span><br><span class="line">- 训练时使用 **BF16 混合精度** + 梯度检查点</span><br></pre></td></tr></table></figure>
+<h5 id="动作-tokenization">4.<strong>动作 Tokenization</strong></h5>
+<p>定义在 <code>prismatic/vla/action_tokenizer.py</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">## 编码（训练时）</span></span></span><br><span class="line"></span><br><span class="line">1. 连续动作值 ∈ [-1, 1] 被均匀分到 **256 个 bin** 中</span><br><span class="line">2. 离散化后的 bin 索引映射到 **LLM 词表末尾的 256 个 token**（BPE 词表中最低频的 token）</span><br><span class="line">3. 7-DoF 动作 → 7 个 token</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">## 解码（推理时）</span></span></span><br><span class="line"></span><br><span class="line">1. LLM 自回归生成 N 个 token（N = action_dim，默认 7）</span><br><span class="line">2. 从词表末尾映射回 bin 索引</span><br><span class="line">3. 用 bin 中心值还原为连续动作</span><br><span class="line">4. 利用数据集的归一化统计量（q01, q99 分位数）**反归一化** 为真实动作</span><br></pre></td></tr></table></figure>
+<h5 id="前向推理流程">5.<strong>前向推理流程</strong></h5>
+<p>定义在 <code>prismatic/models/vlms/prismatic.py:forward()</code> 和
+<code>prismatic/models/vlas/openvla.py:predict_action()</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">输入: 图像 + 语言指令 (&quot;What action should the robot take to &#123;instruction&#125;?&quot;)</span><br><span class="line">  │</span><br><span class="line">  ├─ 图像 → DINOv2 + SigLIP 双流 ViT → 拼接 patch 特征</span><br><span class="line">  │                                      → FusedMLPProjector → 视觉 token 嵌入</span><br><span class="line">  │</span><br><span class="line">  ├─ 指令 → LlamaTokenizer → input_ids → input_embeddings</span><br><span class="line">  │</span><br><span class="line">  └─ 拼接: [BOS_embed | 视觉_token_embeds | 指令_embeds]</span><br><span class="line">       │</span><br><span class="line">       → Llama-2 7B 自回归生成 7 个 action token</span><br><span class="line">       → ActionTokenizer 解码为连续动作</span><br><span class="line">       → 反归一化 → 输出 7-DoF 末端执行器增量动作</span><br></pre></td></tr></table></figure>
+<h5 id="训练策略">6.<strong>训练策略</strong></h5>
+<p>通过 <code>freeze_backbones(stage)</code> 支持多种冻结策略：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| Stage | Vision | Projector | LLM |</span><br><span class="line">|-------|--------|-----------|-----|</span><br><span class="line">| `vla-full-train` | 可训练 | 可训练 | 可训练 |</span><br><span class="line">| `vla-train` | 冻结 | 可训练 | 可训练 |</span><br><span class="line">| `vla-sandwich-train` | 可训练 | 可训练 | 仅最后一层 |</span><br><span class="line">| `vla-last-layer-train` | 冻结 | 冻结 | 仅最后一层 |</span><br></pre></td></tr></table></figure>
+<p>分布式训练使用 <strong><em>*PyTorch FSDP*</em></strong>
+全分片数据并行。</p>
+<h3 id="多机器人数据标准化">多机器人数据标准化</h3>
+<p>核心思想：<strong><em>*模型只认一种格式*</em></strong>（图像 + 7 维
+EEF 动作 + 语言），所有机器人的差异都被数据管道吸收，模型本身完全不感知
+embodiment。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 1. 三层机制总览</span></span></span><br><span class="line"></span><br><span class="line">```</span><br><span class="line">机器人A(关节空间) ─┐</span><br><span class="line">机器人B(EEF+二值爪) ─┼→ per-dataset transform → 统一7维格式 → per-dataset统计量归一化 → 256 bins离散化</span><br><span class="line">机器人C(相反夹爪)  ─┘                                                                        ↓</span><br><span class="line">                                                              模型眼里：全是同一种&quot;语言&quot;</span><br><span class="line">```</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 2. 第 1 层：统一目标格式</span></span></span><br><span class="line"></span><br><span class="line">每个数据集经过 transform 后必须输出相同的 step schema：</span><br><span class="line"></span><br><span class="line">```</span><br><span class="line">step = &#123;</span><br><span class="line">  &quot;image&quot;:                      主相机图像</span><br><span class="line">  &quot;observation/EEF_state&quot;:      6 维（末端位置 xyz + 姿态）</span><br><span class="line">  &quot;observation/gripper_state&quot;:  1 维（夹爪开度）</span><br><span class="line">  &quot;action&quot;:                     7 维（Δxyz + Δ旋转 + 夹爪）</span><br><span class="line">  &quot;language_instruction&quot;:       文本</span><br><span class="line">&#125;</span><br><span class="line">```</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 3. 第 2 层：per-dataset transform（关键）</span></span></span><br><span class="line"></span><br><span class="line">位置：`prismatic/vla/datasets/rlds/oxe/transforms.py`（`OXE_STANDARDIZATION_TRANSFORMS` 注册表）</span><br><span class="line"></span><br><span class="line">每个数据集一个 transform 函数，处理各种&quot;方言&quot;差异：</span><br><span class="line"></span><br><span class="line">| 差异 | 处理函数（`rlds/utils/data_utils.py`） |</span><br><span class="line">|---|---|</span><br><span class="line">| 夹爪 0=开 vs 0=关 | `invert_gripper_actions` |</span><br><span class="line">| 连续夹爪 vs 二值 | `binarize_gripper_actions` |</span><br><span class="line">| 相对 vs 绝对夹爪指令 | `rel2abs_gripper_actions` |</span><br><span class="line">| 关节空间 vs EEF 空间 | transform 内手动选取/重排（如 `state[:, :6]` 取 EEF） |</span><br><span class="line">| 首步动作异常（如 Bridge 恒为零） | transform 内直接切片去掉 |</span><br><span class="line"></span><br><span class="line">以 `bridge_orig` 为例（transforms.py:72）：</span><br><span class="line"></span><br><span class="line">1. 去掉首步（Bridge 数据第一步动作恒为零）</span><br><span class="line">2. gripper 二值化（`binarize_gripper_actions`）</span><br><span class="line">3. `state` 拆成 `EEF_state`（前 6 维）+ `gripper_state`（末 1 维）</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 4. 第 3 层：per-dataset 数值归一化</span></span></span><br><span class="line"></span><br><span class="line">位置：`prismatic/vla/datasets/rlds/utils/data_utils.py:61`（`normalize_action_and_proprio`，由 `rlds/dataset.py:244` 挂进 TF 数据管道）</span><br><span class="line"></span><br><span class="line">用**每个数据集自己的统计量**把 action/proprio 归一化：</span><br><span class="line"></span><br><span class="line">| 类型 | 公式 | 特点 |</span><br><span class="line">|---|---|---|</span><br><span class="line">| `NormalizationType.NORMAL`（微调默认） | `(x - mean) / std` | 常规标准化 |</span><br><span class="line">| `NormalizationType.BOUNDS_Q99` | `[q01, q99] → [-1, 1]` | 对离群值更鲁棒 |</span><br><span class="line"></span><br><span class="line">统计量就是 run 目录里的 `dataset_statistics.json`（训练开始时扫一遍数据集算出，含 mean/std 和 q01/q99）。**推理时用同一份统计量反归一化**回该机器人的物理单位。</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 5. 接入新机器人的步骤</span></span></span><br><span class="line"></span><br><span class="line">换机器人只需数据侧改动，模型代码零改动：</span><br><span class="line"></span><br><span class="line">1. 数据转 RLDS 格式（参考 [rlds_dataset_builder](https://github.com/kpertsch/rlds_dataset_builder)）</span><br><span class="line">2. `prismatic/vla/datasets/rlds/oxe/configs.py` → `OXE_DATASET_CONFIGS` 注册：相机选哪个、state 编码方式、动作编码</span><br><span class="line">3. `prismatic/vla/datasets/rlds/oxe/transforms.py` → `OXE_STANDARDIZATION_TRANSFORMS` 加 transform 函数，输出第 1 层的统一 schema</span><br><span class="line">4. 需要混入预训练 mixture 时再在 `oxe/mixtures.py` 注册权重；LoRA 微调则直接 `--dataset_name` 引用</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 6. 相关文档</span></span></span><br><span class="line"></span><br><span class="line">- [BridgeData V2 子集加载与微调](bridge_data_v2_dataset.md) —— 本机实际跑通的数据管道</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/10/tdmpc2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/10/tdmpc2/" class="post-title-link" itemprop="url">tdmpc2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-10 14:38:51" itemprop="dateCreated datePublished" datetime="2026-08-10T14:38:51+08:00">2026-08-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-11 17:16:14" itemprop="dateModified" datetime="2026-08-11T17:16:14+08:00">2026-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Dreamer 更像“完整 world model + policy learning 教科书”。TD-MPC2
+更接近连续控制和机器人控制：它重视 latent dynamics、value
+prediction、MPC-style planning，以及跨任务、跨 embodiment
+的可扩展性。</p>
+<p>TD-MPC2 的数据有两种来源。单任务 online RL
+时，数据来自环境交互；多任务 offline RL 时，repo 提供了 30-task 和
+80-task 数据集、模型 checkpoints。任务覆盖
+DMControl、Meta-World、ManiSkill2、MyoSuite，比较适合从仿真走向机器人。</p>
+<h3 id="复现看代码的命令">复现看代码的命令</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python train.py task=walker-walk steps=700000 enable_wandb=false</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">python evaluate.py task=walker-walk checkpoint=/mnt/newdisk/Project/world-model/tdmpc2/tdmpc2/logs/walker-walk/1/default/models/final.pt save_video=true</span><br></pre></td></tr></table></figure>
+<h3 id="训练流程onlinetrainer-vs-offlinetrainer">训练流程：OnlineTrainer
+vs OfflineTrainer</h3>
+<ul>
+<li><p>OfflineTrainer</p>
+<ul>
+<li><p>纯梯度训练，没有环境交互</p></li>
+<li><p>``` assert multitask and task in {'mt30', 'mt80'} _load_dataset()
+for i in 0..steps: train_metrics = agent.update(buffer) ##
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">- OnlineTrainer</span><br><span class="line"></span><br><span class="line">  - 边采集边学习</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    for step in 1..steps:</span><br><span class="line">        if step % eval_freq == 0: 安排评估</span><br><span class="line">        if done:</span><br><span class="line">            评估（如果安排了）+ 写 episode 到 buffer</span><br><span class="line">            reset env</span><br><span class="line">        # 采集</span><br><span class="line">        if step &gt; seed_steps:</span><br><span class="line">            action = agent.act(obs)          # 用策略</span><br><span class="line">        else:</span><br><span class="line">            action = env.rand_act()           # 随机预热</span><br><span class="line">        obs, reward, done, info = env.step(action)</span><br><span class="line">        追加 transition 到当前 episode TensorDict</span><br><span class="line">        # 更新</span><br><span class="line">        if step &gt;= seed_steps:</span><br><span class="line">            if step == seed_steps:</span><br><span class="line">                num_updates = seed_steps       # 预热期一次性补做 N 次更新</span><br><span class="line">            else:</span><br><span class="line">                num_updates = 1</span><br><span class="line">            for _ in num_updates: agent.update(buffer)</span><br></pre></td></tr></table></figure></p></li>
+</ul></li>
+</ul>
+<h3 id="latent-dynamics-隐动力学世界模型本体策略采集">1. Latent dynamics
+（隐动力学，世界模型本体）策略采集</h3>
+<p>Train 收集数据（对于onlinetrainer）：</p>
+<p>a.不管agent在进行动作采样的时候是让策略网络直接输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">z = self.model.encode(obs, task)</span><br><span class="line">action, info = self.model.pi(z, task)</span><br></pre></td></tr></table></figure>
+<p>b.还是MPC(每次决策，用一个世界模型想想未来h步，找出最优动作序列，只执行第一步；下一步重新规划（receding
+horizon / 滚动优化）)</p>
+<p>1.策略先验当种子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">z = self.model.encode(obs, task)</span><br><span class="line">复制多条估计进行rollout想象，选中topk条轨迹作为预测action</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">## 1.4 Planning（MPPI 规划，`tdmpc2.py:139-206`）</span></span></span><br><span class="line"></span><br><span class="line">入口 `act()` → `_plan()`，流程：</span><br><span class="line"></span><br><span class="line">1. **编码 + 种子**：`z = encode(obs)`；策略先验采 `num_pi_trajs` 条 H 步轨迹作为 MPPI 初始样本。</span><br><span class="line">2. **热启动**：非 episode 首步（`t0=False`）把 `_prev_mean` 左移一格（上一时刻规划的动作序列复用），存于 `torch.nn.Buffer`。</span><br><span class="line">3. **MPPI 迭代**（默认 6 次，`action_dim≥20` 时 +2，见 `tdmpc2.py:34`）：</span><br><span class="line">   - **采样**：`a ~ N(mean, std)`，截断到 [-1,1]。</span><br><span class="line">   - **评估**（`_estimate_value`，`tdmpc2.py:122`）：在 latent 空间用 dynamics rollout H 步，累加预测 reward × 折扣，最后一步用 `Q(z_H, π(z_H))` 做 bootstrap（`avg` 模式）。</span><br><span class="line">   - **选 elite**：`torch.topk` 按值排序。</span><br><span class="line">   - **更新**：`score = softmax(temperature · value)`，加权更新 `mean/std`，std 被 clamp 到 `[min_std, max_std]`。</span><br><span class="line">4. **选动作**：用 gumbel softmax 从 elites 里抽一条轨迹，返回 `actions[0]`。eval 模式取 mean，train 模式加噪声。</span><br><span class="line"></span><br><span class="line">**核心价值**：策略是&quot;快思考&quot;，MPPI 是&quot;慢思考&quot;——世界模型让规划不需要在真实环境里试错。</span><br></pre></td></tr></table></figure>
+<h3 id="agent更新联合训练世界模型-q-策略">2.agent更新：联合训练世界模型
++ Q + 策略</h3>
+<p>1.consistency_loss</p>
+<p>对于H_horizon内的轨迹：</p>
+<p>对next_obs们计算latent_z，因为是在latent空间计算的，因此没有重建损失；只有latent空间的mse损失；</p>
+<p>Q的估计用sac网络</p>
+<p>value的估计用td_target</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">buffer.sample() ──► obs[H+1,B], action[H,B], reward[H,B], terminated[H,B]</span><br><span class="line">       │</span><br><span class="line">       ├─ with no_grad:</span><br><span class="line">       │    next_z = encode(obs[1:])              # 真实下一 latent</span><br><span class="line">       │    td_targets = reward + γ·(1-term)·Q_min_target(next_z, π(next_z))</span><br><span class="line">       │</span><br><span class="line">       ├─ Latent rollout: z₀=encode(obs[0])</span><br><span class="line">       │    for t in 0..H-1:</span><br><span class="line">       │        z_&#123;t+1&#125; = dynamics(z_t, action_t)</span><br><span class="line">       │        consistency_loss += ρ^t · MSE(z_&#123;t+1&#125;, next_z_t)</span><br><span class="line">       │</span><br><span class="line">       ├─ 4 类损失 → total_loss → backward → step</span><br><span class="line">       │    (主 optimizer: encoder/dynamics/reward/Q/termination/task_emb)</span><br><span class="line">       │</span><br><span class="line">       ├─ update_pi(zs.detach()):</span><br><span class="line">       │    pi_loss = -E[ρ^t·(entropy + Q_avg_detached(z, π(z)))]</span><br><span class="line">       │    → pi_optim.step()</span><br><span class="line">       │</span><br><span class="line">       └─ soft_update_target_Q()  # Polyak τ=0.01</span><br></pre></td></tr></table></figure>
+<h4 id="总结">总结</h4>
+<ul>
+<li>在latent空间估计</li>
+<li>MPC-style plannin</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/04/cs231n-2026/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/04/cs231n-2026/" class="post-title-link" itemprop="url">cs231n-2026</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-04 13:54:20" itemprop="dateCreated datePublished" datetime="2026-08-04T13:54:20+08:00">2026-08-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-17 14:39:52" itemprop="dateModified" datetime="2026-08-17T14:39:52+08:00">2026-08-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="optimizer">optimizer</h3>
+<p>1.sgd:</p>
+<p>两个问题：a。各个方向上步长一样，如果梯度的Hessian
+矩阵条件数大明曲面在不同方向上的形态极其畸变（极度狭长）。<strong>条件数越大，标准梯度下降的震荡和低效问题就越严重。</strong>
+b.谷点梯度消失</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">  dx = compute_gradient(x)</span><br><span class="line">  x -= learning_rate * dx</span><br></pre></td></tr></table></figure>
+<p>2.sgd + momentum</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vx = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">  dx = compute_gradient(x)</span><br><span class="line">  vx = rho * vx + dx</span><br><span class="line">  x -= learning_rate * vx</span><br></pre></td></tr></table></figure>
+<p>3.RMSProp：因为分母除以了一个膜，因此平缓的方向会加速，steep的方向会放缓</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grad_squared = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	dx = compute_gradient(x)</span><br><span class="line">  grad_squared = decay_rate * grad_squared + (<span class="number">1</span>-decay_rate)*dx*dx</span><br><span class="line">  x -= learning_rate * dx / (np.sqrt(grad_squared) + <span class="number">1e-7</span>)</span><br></pre></td></tr></table></figure>
+<p>4.adam</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804143559179.png"
+alt="image-20260804143559179" />
+<figcaption aria-hidden="true">image-20260804143559179</figcaption>
+</figure>
+<p>基于momentum + rmsprop</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804143612051.png"
+alt="image-20260804143612051" />
+<figcaption aria-hidden="true">image-20260804143612051</figcaption>
+</figure>
+<p>4.adamW: 关键是怎么对待正则项</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804143729725.png"
+alt="image-20260804143729725" />
+<figcaption aria-hidden="true">image-20260804143729725</figcaption>
+</figure>
+<p>上面的所有optimizer里，learning rate都是一个超参数。</p>
+<h5 id="learning-rate-decay">learning rate decay</h5>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr>
+<th>固定衰减</th>
+<th><img data-src="cs231n-2026/image-20260804143954906.png" alt="image-20260804143954906" style="zoom:33%;" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cosine</td>
+<td><img data-src="/2026/08/04/cs231n-2026/image-20260804144058933.png"
+alt="image-20260804144058933" /></td>
+</tr>
+<tr>
+<td>Linear</td>
+<td><img data-src="/2026/08/04/cs231n-2026/image-20260804144122440.png"
+alt="image-20260804144122440" /></td>
+</tr>
+<tr>
+<td>开根号</td>
+<td><img data-src="/2026/08/04/cs231n-2026/image-20260804144138895.png"
+alt="image-20260804144138895" /></td>
+</tr>
+</tbody>
+</table>
+<h5 id="linear-warmup-针对模型开始">linear warmup: 针对模型开始</h5>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804145621773.png"
+alt="image-20260804145621773" />
+<figcaption aria-hidden="true">image-20260804145621773</figcaption>
+</figure>
+<p>一阶优化和二阶优化：</p>
+<p>Hessian has O(N^2) elements Inverting takes O(N^3) N = (Tens or
+Hundreds of) Millions</p>
+<p>二阶优化的计算量比较大</p>
+<p>总结：</p>
+<ul>
+<li>Adam(W) 默认情况下都是个不错的选择，即使learning rate固定</li>
+<li>sgd+momentum有时候能outperform Adam,但是lr需要更细致的调参。</li>
+<li>如果能接受full batch的参数更新，可以考虑2阶甚至多阶的优化。</li>
+</ul>
+<h2 id="lecture4">lecture4</h2>
+<h4 id="激活函数">激活函数</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804150724697.png"
+alt="image-20260804150724697" />
+<figcaption aria-hidden="true">image-20260804150724697</figcaption>
+</figure>
+<h2 id="lecture7">lecture7:</h2>
+<h4 id="rnn">RNN</h4>
+<p>解决的是序列问题（一对一、一对多、多对一）</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804154754041.png"
+alt="image-20260804154754041" />
+<figcaption aria-hidden="true">image-20260804154754041</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804154803224.png"
+alt="image-20260804154803224" />
+<figcaption aria-hidden="true">image-20260804154803224</figcaption>
+</figure>
+<p>举例子：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804154845745.png"
+alt="image-20260804154845745" />
+<figcaption aria-hidden="true">image-20260804154845745</figcaption>
+</figure>
+<p>RNN的梯度传播：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155613771.png"
+alt="image-20260804155613771" />
+<figcaption aria-hidden="true">image-20260804155613771</figcaption>
+</figure>
+<p>这种基于时间的连乘的梯度传播的形式会带来两个问题：</p>
+<p>由于同一套权重矩阵在时间轴上被反复相乘多次（链式法则），如果权重值偏大，梯度会随着时间步的增加呈指数级增长，导致<strong>梯度爆炸（Exploding
+Gradient）</strong>；如果权重偏小，梯度则会呈指数级缩小，导致<strong>梯度消失（Vanishing
+Gradient）</strong>，让模型无法学到较早时间步的信息。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155744806.png"
+alt="image-20260804155744806" />
+<figcaption aria-hidden="true">image-20260804155744806</figcaption>
+</figure>
+<p>梯度爆炸可以通过梯度裁剪来解决</p>
+<p>梯度消失需要调整rnn结构。</p>
+<h4 id="lstm">LSTM</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155915106.png"
+alt="image-20260804155915106" />
+<figcaption aria-hidden="true">image-20260804155915106</figcaption>
+</figure>
+<p>定义如下：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155959956.png"
+alt="image-20260804155959956" />
+<figcaption aria-hidden="true">image-20260804155959956</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804160551940.png"
+alt="image-20260804160551940" />
+<figcaption aria-hidden="true">image-20260804160551940</figcaption>
+</figure>
+<p>LSTM
+并没有从数学上彻底根除（eliminate）梯度消失或梯度爆炸问题，但它极大地缓解了这一问题，让网络在实践中更容易学习到长距离的时序依赖关系。</p>
+<p>总结：</p>
+<ul>
+<li>rnn允许在架构设计上有更多的灵活性</li>
+<li>Vanilla rnns思路很简单但是没有工作很好</li>
+<li>更复杂的架构比如lstms,mamba引入了选择性让信息通过的机制</li>
+<li>rnn里面的梯度反向传播容易vanish或者explode,其中explode的问题可以通过clipping控制，但是随着时间的梯度反向传播总是需要的。</li>
+</ul>
+<h2 id="lecture8">lecture8:</h2>
+<p>https://cs231n.stanford.edu/schedule.html</p>
+<p>先看一眼RNNs中sequence to sequence问题：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805100834917.png"
+alt="image-20260805100834917" />
+<figcaption aria-hidden="true">image-20260805100834917</figcaption>
+</figure>
+<p>这里会存在一个问题：</p>
+<p>编码的信息会被压缩到一个固定长度向量c里面用到decoder里面进行解码，相当于无论输入文本多长，信息都被压缩到一句“总结”里，这样必然导致很多细节信息丢失。也就是下图里的：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101018440.png"
+alt="image-20260805101018440" />
+<figcaption aria-hidden="true">image-20260805101018440</figcaption>
+</figure>
+<p>于是想了一个办法，让decoder去回头看input
+sequence的输入信息，根据相似度动态算出一个专属的上下文向量。这就是注意力机制的前身。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101206212.png"
+alt="image-20260805101206212" />
+<figcaption aria-hidden="true">image-20260805101206212</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101436344.png"
+alt="image-20260805101436344" />
+<figcaption aria-hidden="true">image-20260805101436344</figcaption>
+</figure>
+<p>由输入和输出一起计算一个attention的权重，整个过程都是可微的</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101557053.png"
+alt="image-20260805101557053" />
+<figcaption aria-hidden="true">image-20260805101557053</figcaption>
+</figure>
+<p>现在计算的这个context vector是一个可变的</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101639244.png"
+alt="image-20260805101639244" />
+<figcaption aria-hidden="true">image-20260805101639244</figcaption>
+</figure>
+<p>我们从这个计算过程可以提取出来一个通用的操作：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101810567.png"
+alt="image-20260805101810567" />
+<figcaption aria-hidden="true">image-20260805101810567</figcaption>
+</figure>
+<p>第一步：计算相似度：大的相似度会导致 Softmax
+饱和并引发梯度消失，假设其中一个向量维度为D,每个维度是均值0，方差1的独立随机变量，膜长大概为根号D,当你对两个维度为
+<span class="math inline">\(D\)</span> 的独立向量求点积时，点积的均值为
+<span class="math inline">\(0\)</span>，但<strong>其方差随维度 <span
+class="math inline">\(D\)</span> 线性增长</strong>（具体为 <span
+class="math inline">\(\text{Var}(a \cdot b) =
+D\)</span>）。因此，其标准差为 <span
+class="math inline">\(\sqrt{D}\)</span>。</p>
+<p>详细推导：https://gemini.google.com/app/1256c77980d088df?is_sa=1&amp;is_sa=1&amp;android-min-version=301356232&amp;ios-min-version=322.0&amp;campaign_id=bkws&amp;utm_source=sem&amp;utm_medium=paid-media&amp;utm_campaign=bkws&amp;pt=9008&amp;mt=8&amp;ct=p-growth-sem-bkws&amp;gclsrc=aw.ds&amp;gad_source=1&amp;gad_campaignid=20357620797&amp;gbraid=0AAAAApk5BhmCJ3JtA-5o5qGB1siaAnkhE&amp;gclid=Cj0KCQjwm8bTBhDWARIsAC9Hi8lCn-5O_lIAcjNawuUIdZpp4Qk4e0v0RrB9u-qFLXTZp2iBq60IPosaAoAmEALw_wcB</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102114384.png"
+alt="image-20260805102114384" />
+<figcaption aria-hidden="true">image-20260805102114384</figcaption>
+</figure>
+<p>第二步：去和输入向量进行query查询</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102604601.png"
+alt="image-20260805102604601" />
+<figcaption aria-hidden="true">image-20260805102604601</figcaption>
+</figure>
+<p>attention在这里做的改进：把query和key分开</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102643693.png"
+alt="image-20260805102643693" />
+<figcaption aria-hidden="true">image-20260805102643693</figcaption>
+</figure>
+<p>一个attention layer:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102836696.png"
+alt="image-20260805102836696" />
+<figcaption aria-hidden="true">image-20260805102836696</figcaption>
+</figure>
+<p>Cross-attention layer:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102923533.png"
+alt="image-20260805102923533" />
+<figcaption aria-hidden="true">image-20260805102923533</figcaption>
+</figure>
+<p>Self-attention: 通常让dim简化为一样的</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103121144.png"
+alt="image-20260805103121144" />
+<figcaption aria-hidden="true">image-20260805103121144</figcaption>
+</figure>
+<p>我们在计算的可以把三个q,k,v fuse到一个乘法当中：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103409241.png"
+alt="image-20260805103409241" />
+<figcaption aria-hidden="true">image-20260805103409241</figcaption>
+</figure>
+<p>最终的：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103442154.png"
+alt="image-20260805103442154" />
+<figcaption aria-hidden="true">image-20260805103442154</figcaption>
+</figure>
+<p>思考一个问题，在这个过程中我们调换输入单词的顺序，</p>
+<p>Queries, keys, and values will be the same but permuted</p>
+<p>得到的所有值不变但是顺序改变</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103528964.png"
+alt="image-20260805103528964" />
+<figcaption aria-hidden="true">image-20260805103528964</figcaption>
+</figure>
+<p>因此：单纯的self-attention计算是一个置换等变</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103634907.png"
+alt="image-20260805103634907" />
+<figcaption aria-hidden="true">image-20260805103634907</figcaption>
+</figure>
+<p>因此self-attention并不知道顺序。</p>
+<p>解决方法：对每个input增加postional encoding. 这是一个fixed function
+of the index的向量。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805104829770.png"
+alt="image-20260805104829770" />
+<figcaption aria-hidden="true">image-20260805104829770</figcaption>
+</figure>
+<p>Masked self-attention layer:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105333685.png"
+alt="image-20260805105333685" />
+<figcaption aria-hidden="true">image-20260805105333685</figcaption>
+</figure>
+<p>Multiheaded self-attention
+layer:就是把self-attention过程并行的跑H遍。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105532091.png"
+alt="image-20260805105532091" />
+<figcaption aria-hidden="true">image-20260805105532091</figcaption>
+</figure>
+<p>head dim参数：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105606291.png"
+alt="image-20260805105606291" />
+<figcaption aria-hidden="true">image-20260805105606291</figcaption>
+</figure>
+<p>实践中，通常用batched matrix multiply操作</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105634138.png"
+alt="image-20260805105634138" />
+<figcaption aria-hidden="true">image-20260805105634138</figcaption>
+</figure>
+<p>Self-attention本质是四次矩阵乘法</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105736775.png"
+alt="image-20260805105736775" />
+<figcaption aria-hidden="true">image-20260805105736775</figcaption>
+</figure>
+<p>复杂度计算：正比于输入向量的长度N^2,头的个数H</p>
+<p>随着输入向量长度的增加，这个复杂度是O(N^2)</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105821585.png"
+alt="image-20260805105821585" />
+<figcaption aria-hidden="true">image-20260805105821585</figcaption>
+</figure>
+<p><strong>Flash attention的复杂度只需要O(N)</strong></p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805110046700.png"
+alt="image-20260805110046700" />
+<figcaption aria-hidden="true">image-20260805110046700</figcaption>
+</figure>
+<p>对比几种处理sequence的方法：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805110811779.png"
+alt="image-20260805110811779" />
+<figcaption aria-hidden="true">image-20260805110811779</figcaption>
+</figure>
+<h4 id="transformer结构">transformer结构</h4>
+<p>然后来到大名鼎鼎的transformer论文：attention is all you need</p>
+<p>先是multihead self-attention，然后是residual和layer norm</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111042564.png"
+alt="image-20260805111042564" />
+<figcaption aria-hidden="true">image-20260805111042564</figcaption>
+</figure>
+<p>mlp通常是经典的两层，先升维特征变换再降维恢复还原</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111106701.png"
+alt="image-20260805111106701" />
+<figcaption aria-hidden="true">image-20260805111106701</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111131070.png"
+alt="image-20260805111131070" />
+<figcaption aria-hidden="true">image-20260805111131070</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111213299.png"
+alt="image-20260805111213299" />
+<figcaption aria-hidden="true">image-20260805111213299</figcaption>
+</figure>
+<p>Transformer：由很多堆叠的transformer blocks构成</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111515796.png"
+alt="image-20260805111515796" />
+<figcaption aria-hidden="true">image-20260805111515796</figcaption>
+</figure>
+<p>用transformer对llm建模</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111622586.png"
+alt="image-20260805111622586" />
+<figcaption aria-hidden="true">image-20260805111622586</figcaption>
+</figure>
+<p>Vit的过程：</p>
+<p>切成小patch-&gt;flatten-&gt;positional
+encoding-&gt;不需要masking-&gt;每个patch最后都输出一个vector-&gt;汇总</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111735145.png"
+alt="image-20260805111735145" />
+<figcaption aria-hidden="true">image-20260805111735145</figcaption>
+</figure>
+<h5 id="transformer的tweaking">Transformer的tweaking</h5>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805112043728.png"
+alt="image-20260805112043728" />
+<figcaption aria-hidden="true">image-20260805112043728</figcaption>
+</figure>
+<p>transformer架构自从2017年没有改变多少，但是一些变化非常常见：</p>
+<p>1.pre-norm transformer</p>
+<p>原来的论文如上图layer norm
+在residual连接的外面，这样无法学习到恒等映射。</p>
+<p>解决方法：把layer norm 移到attention和mlp前面，移到residual
+connections里面。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805140451515.png"
+alt="image-20260805140451515" />
+<figcaption aria-hidden="true">image-20260805140451515</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>QK-Norm</p>
+<p>计算attention相似度之前先对query和keys进行归一化。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805142036013.png"
+alt="image-20260805142036013" />
+<figcaption aria-hidden="true">image-20260805142036013</figcaption>
+</figure></li>
+<li><p>SwiGLU MLP</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805142355055.png"
+alt="image-20260805142355055" />
+<figcaption aria-hidden="true">image-20260805142355055</figcaption>
+</figure>
+<p>4.Mixture of Experts(MoE)</p>
+<p>准备E组MLP参数在每个block，每个MLP都是一个专家</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805152239529.png"
+alt="image-20260805152239529" />
+<figcaption aria-hidden="true">image-20260805152239529</figcaption>
+</figure>
+<p>总结：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805152303356.png"
+alt="image-20260805152303356" />
+<figcaption aria-hidden="true">image-20260805152303356</figcaption>
+</figure>
+<h3 id="lecture10-视频理解">Lecture10: 视频理解</h3>
+<p>对video的处理：</p>
+<p>1.对每一帧的2d图像cnn特征提取后到最后做特征的fusion</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805161911812.png"
+alt="image-20260805161911812" />
+<figcaption aria-hidden="true">image-20260805161911812</figcaption>
+</figure>
+<p>2.用3D的CNNs</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805161959817.png"
+alt="image-20260805161959817" />
+<figcaption aria-hidden="true">image-20260805161959817</figcaption>
+</figure>
+<p>提升视频理解的方法：</p>
+<p>思路一.提取motion里面的action信息</p>
+<p>比如用光流衡量运动信息：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805162126758.png"
+alt="image-20260805162126758" />
+<figcaption aria-hidden="true">image-20260805162126758</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805162140586.png"
+alt="image-20260805162140586" />
+<figcaption aria-hidden="true">image-20260805162140586</figcaption>
+</figure>
+<p>现在光流很少用在video理解里，主要用于其他的任务：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805162240716.png"
+alt="image-20260805162240716" />
+<figcaption aria-hidden="true">image-20260805162240716</figcaption>
+</figure></li>
+</ol>
+<p>思路二：复用image的架构到video里</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163032078.png"
+alt="image-20260805163032078" />
+<figcaption aria-hidden="true">image-20260805163032078</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163102373.png"
+alt="image-20260805163102373" />
+<figcaption aria-hidden="true">image-20260805163102373</figcaption>
+</figure>
+<p>vit的架构处理视频：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163518873.png"
+alt="image-20260805163518873" />
+<figcaption aria-hidden="true">image-20260805163518873</figcaption>
+</figure>
+<p>算力会直接爆炸</p>
+<p>两个经常使用的策略：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163603682.png"
+alt="image-20260805163603682" />
+<figcaption aria-hidden="true">image-20260805163603682</figcaption>
+</figure>
+<p>先看第一个attention的算子：</p>
+<p>joint space-time attention:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805170805476.png"
+alt="image-20260805170805476" />
+<figcaption aria-hidden="true">image-20260805170805476</figcaption>
+</figure>
+<p>改进方法：We can Divide Time and Space Attention Operators into 2
+steps</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805170838301.png"
+alt="image-20260805170838301" />
+<figcaption aria-hidden="true">image-20260805170838301</figcaption>
+</figure>
+<p>在time维度：同一个位置的token会互相关注</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805170937348.png"
+alt="image-20260805170937348" />
+<figcaption aria-hidden="true">image-20260805170937348</figcaption>
+</figure>
+<p>在space维度，同一frame内的token互相关注</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171006724.png"
+alt="image-20260805171006724" />
+<figcaption aria-hidden="true">image-20260805171006724</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171121607.png"
+alt="image-20260805171121607" />
+<figcaption aria-hidden="true">image-20260805171121607</figcaption>
+</figure>
+<p>video swin transformer</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171225733.png"
+alt="image-20260805171225733" />
+<figcaption aria-hidden="true">image-20260805171225733</figcaption>
+</figure>
+<p>MVit:压缩K和V的size</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171746921.png"
+alt="image-20260805171746921" />
+<figcaption aria-hidden="true">image-20260805171746921</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171805194.png"
+alt="image-20260805171805194" />
+<figcaption aria-hidden="true">image-20260805171805194</figcaption>
+</figure>
+<p>第二个思路，减少token数：tubelets</p>
+<p>用连续4帧代替原来vit的path的维度，那token数量相对缩小为1/4，由于attention的计算复杂度和token长度的平方成正比，因此计算复杂度降低了16倍。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171955194.png"
+alt="image-20260805171955194" />
+<figcaption aria-hidden="true">image-20260805171955194</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805172617763.png"
+alt="image-20260805172617763" />
+<figcaption aria-hidden="true">image-20260805172617763</figcaption>
+</figure>
+<p>看一些其他的视频理解的任务：</p>
+<p>temporal action localization</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805172909172.png"
+alt="image-20260805172909172" />
+<figcaption aria-hidden="true">image-20260805172909172</figcaption>
+</figure>
+<p>Spatio-temporal detection:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805172927751.png"
+alt="image-20260805172927751" />
+<figcaption aria-hidden="true">image-20260805172927751</figcaption>
+</figure>
+<p>Visually-guided audio source separation:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173334003.png"
+alt="image-20260805173334003" />
+<figcaption aria-hidden="true">image-20260805173334003</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173710122.png"
+alt="image-20260805173710122" />
+<figcaption aria-hidden="true">image-20260805173710122</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173721032.png"
+alt="image-20260805173721032" />
+<figcaption aria-hidden="true">image-20260805173721032</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173736929.png"
+alt="image-20260805173736929" />
+<figcaption aria-hidden="true">image-20260805173736929</figcaption>
+</figure>
+<h6 id="其他问题">其他问题：</h6>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260817143949980.png"
+alt="image-20260817143949980" />
+<figcaption aria-hidden="true">image-20260817143949980</figcaption>
+</figure>
+<h2 id="lecture11">lecture11:</h2>
+<p>1.以一枚NVIDIA H100为例子：</p>
+<p>有80GB的高带宽内存，每秒 3352 GB 的核心访问带宽和compute
+cores进行数据传输<img
+src="/2026/08/04/cs231n-2026/image-20260806110310109.png"
+alt="image-20260806110310109" /></p>
+<p>2.对于h100的compute cores</p>
+<p>50M的L2 cache</p>
+<p>132个sms</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806110755425.png"
+alt="image-20260806110755425" />
+<figcaption aria-hidden="true">image-20260806110755425</figcaption>
+</figure>
+<p>3.NVIDIA H100 单个 <strong>SM（流式多处理器，Streaming
+Multiprocessor）</strong></p>
+<p>H100 芯片内部 132 个独立计算单元（SM）中单个单元的详细内部配置</p>
+<ul>
+<li>256 KB L1 cache, 256 KB registers（256 KB 一级缓存，256 KB
+寄存器）</li>
+<li>128 FP32 Cores（128 个单精度浮点核心）
+<ul>
+<li>单个 FP32 核心在每个时钟周期内可以执行一次融合乘加（FMA, Fused
+Multiply-Add）运算，即形如 <span class="math inline">\(a \times x +
+b\)</span> 的计算。</li>
+<li>2 FLOPs = Floating Point Operations（2 次浮点运算）</li>
+<li>单个 SM 在一个时钟周期内通过 FP32 核心能达到的总 FP32 算力:<span
+class="math inline">\(128 \text{ (FP32核心)} \times 2 \text{
+(每核心每周期FLOPs)} = 256 \text{ FLOP/cycle}\)</span>。</li>
+</ul></li>
+<li>4 Tensor Cores（4 个张量核心）
+<ul>
+<li>每个时钟周期计算一次矩阵乘加 <span class="math inline">\(AX +
+B\)</span></li>
+<li>每个 SM 每个周期 4096 次浮点运算</li>
+<li>这种极高效率的矩阵运算是通过<strong>混合精度</strong>实现的</li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806111128675.png"
+alt="image-20260806111128675" />
+<figcaption aria-hidden="true">image-20260806111128675</figcaption>
+</figure>
+<p>grown fast</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141247646.png"
+alt="image-20260806141247646" />
+<figcaption aria-hidden="true">image-20260806141247646</figcaption>
+</figure>
+<p>举例子：</p>
+<p>以Meta的llama3集群为例：</p>
+<ul>
+<li>H100 GPU (单张显卡)，GPU 内部的显存带宽3.352TB每秒。</li>
+<li>Server = 8x GPU (单个服务器节点 = 8张 GPU)，在同一个服务器机箱内部的
+8 张 GPU 之间，通过 <strong>NVLink</strong> 技术互联，双向通信带宽高达
+<strong>900 GB/sec</strong>。</li>
+<li>Rack = 2 Servers = 16x GPU (单机柜 = 2个服务器 = 16张 GPU)</li>
+<li>Pod = 192 Racks = 3072 GPUs (单 Pod 集群 = 192个机柜 = 3072张
+GPU)，跨机柜、但在同一个 Pod（集群子网）内部的 GPU 互联带宽下降到了
+<strong>50 GB/sec</strong>（通常通过 InfiniBand 网络连接）。</li>
+<li>Cluster = 8 Pods = 24,576 GPUs (总集群 = 8个 Pod = 24,576张
+GPU)，&lt; 50GB/sec between GPUs (跨 Pod / 集群全局带宽)</li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141700281.png"
+alt="image-20260806141700281" />
+<figcaption aria-hidden="true">image-20260806141700281</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141854295.png"
+alt="image-20260806141854295" />
+<figcaption aria-hidden="true">image-20260806141854295</figcaption>
+</figure>
+<p>google的TPU:</p>
+<ul>
+<li>每颗芯片提供 <strong>3151 TFLOP/sec</strong>（每秒万亿次浮点运算）的
+<strong>BF16</strong>（16位脑浮点数）算力。</li>
+<li>每颗芯片配备 <strong>216 GB</strong> 的内存（HBM 高带宽内存）。</li>
+<li>以每 <strong>9600 颗芯片</strong>为一个
+Pod（超级集群单元）进行编排部署。</li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141955207.png"
+alt="image-20260806141955207" />
+<figcaption aria-hidden="true">image-20260806141955207</figcaption>
+</figure>
+<p>其他的训练芯片：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806142046670.png"
+alt="image-20260806142046670" />
+<figcaption aria-hidden="true">image-20260806142046670</figcaption>
+</figure>
+<p>如何在gpu上面进行训练：</p>
+<p>单张gpu内存和算力有限，模型会被拆分到成百上千张 GPU
+上同时计算。而这些 GPU
+之间需要频繁地交换数据，集合通信就是为此提供底层支持的“通信原语”。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143028442.png"
+alt="image-20260806143028442" />
+<figcaption aria-hidden="true">image-20260806143028442</figcaption>
+</figure>
+<p>All-Reduce:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143548775.png"
+alt="image-20260806143548775" />
+<figcaption aria-hidden="true">image-20260806143548775</figcaption>
+</figure>
+<p>Reduce-Scatter:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143753402.png"
+alt="image-20260806143753402" />
+<figcaption aria-hidden="true">image-20260806143753402</figcaption>
+</figure>
+<p>All-Gather:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143920019.png"
+alt="image-20260806143920019" />
+<figcaption aria-hidden="true">image-20260806143920019</figcaption>
+</figure>
+<p>All-to-All;</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806144054686.png"
+alt="image-20260806144054686" />
+<figcaption aria-hidden="true">image-20260806144054686</figcaption>
+</figure>
+<h4 id="在多张gpu上面进行训练">在多张gpu上面进行训练：</h4>
+<ul>
+<li>Data parallelism</li>
+<li>Context parallelism</li>
+<li>Pipeline parallelism</li>
+<li>Tensor parallelism</li>
+</ul>
+<p>1.数据并行</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806145808656.png"
+alt="image-20260806145808656" />
+<figcaption aria-hidden="true">image-20260806145808656</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806150010662.png"
+alt="image-20260806150010662" />
+<figcaption aria-hidden="true">image-20260806150010662</figcaption>
+</figure>
+<p>问题是模型的size受限于gpu的memory，10B的参数就把80GB内存的H100填满了。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806150351765.png"
+alt="image-20260806150351765" />
+<figcaption aria-hidden="true">image-20260806150351765</figcaption>
+</figure>
+<p>解决方法：把model权重切分到GPU上。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806153409003.png"
+alt="image-20260806153409003" />
+<figcaption aria-hidden="true">image-20260806153409003</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806154916961.png"
+alt="image-20260806154916961" />
+<figcaption aria-hidden="true">image-20260806154916961</figcaption>
+</figure>
+<p>把data和model权重分摊到各个gpu上</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155022325.png"
+alt="image-20260806155022325" />
+<figcaption aria-hidden="true">image-20260806155022325</figcaption>
+</figure>
+<h6 id="activation-checkpointing激活检查点">Activation
+Checkpointing激活检查点</h6>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155327916.png"
+alt="image-20260806155327916" />
+<figcaption aria-hidden="true">image-20260806155327916</figcaption>
+</figure>
+<p>方法：recompute</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155419068.png"
+alt="image-20260806155419068" />
+<figcaption aria-hidden="true">image-20260806155419068</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155443573.png"
+alt="image-20260806155443573" />
+<figcaption aria-hidden="true">image-20260806155443573</figcaption>
+</figure>
+<p>N平方复杂度的计算也很高</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155512649.png"
+alt="image-20260806155512649" />
+<figcaption aria-hidden="true">image-20260806155512649</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155531105.png"
+alt="image-20260806155531105" />
+<figcaption aria-hidden="true">image-20260806155531105</figcaption>
+</figure>
+<h5 id="总结工程扩展法则scaling-recipe">总结：工程扩展法则（Scaling
+Recipe）</h5>
+<p>HSDPU+梯度检查点</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155645129.png"
+alt="image-20260806155645129" />
+<figcaption aria-hidden="true">image-20260806155645129</figcaption>
+</figure>
+<h5 id="hfu-硬件算力利用率">HFU 硬件算力利用率</h5>
+<p>衡量gpu实际矩阵运算占理论值的比例</p>
+<p>但是它作为评估指标的一个重要盲区：它无法全面反映真实深度学习训练中的所有开销。</p>
+<p>比如激活检查点，数据增强等。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806162931025.png"
+alt="image-20260806162931025" />
+<figcaption aria-hidden="true">image-20260806162931025</figcaption>
+</figure>
+<h5 id="mfu-模型算力利用率">MFU 模型算力利用率</h5>
+<p>衡量整个大模型训练任务（包括所有前向、反向、优化器及辅助开销在内）最终榨取了硬件理论总算力百分之几的终极指标。</p>
+<ol type="1">
+<li>计算理论浮点运算总数 =
+前向传播加反向传播中的矩阵乘法浮点运算总次数，反向传播的计算量通常约为前向传播的
+2
+倍。忽略非线性激活函数、归一化层、以及诸如残差连接等逐元素操作。它们会在
+FP32 核心上运行</li>
+<li>查表获取硬件理论最大吞吐量，例如 H100 为 989 TFLOP/sec</li>
+<li>计算理论所需时间</li>
+<li>测量实际耗时 <span
+class="math inline">\(t_{\text{actual}}\)</span>：完成一次完整迭代（包含数据加载、前向、反向、优化器更新）的真实时间</li>
+<li><span class="math inline">\(\text{MFU} = t_{\text{theoretical}} /
+t_{\text{actual}}\)</span>（计算 MFU 效率）理论极速时间 / 真实耗时</li>
+</ol>
+<p>因为真实耗时（<span
+class="math inline">\(t_{\text{actual}}\)</span>）总是大于理论极限时间（<span
+class="math inline">\(t_{\text{theoretical}}\)</span>），所以算出来的
+MFU 是一个百分比（例如 40% 或
+50%）。比例越高，说明你的大模型并行架构和代码工程优化得越好，硬件被压榨得越彻底。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806165041429.png"
+alt="image-20260806165041429" />
+<figcaption aria-hidden="true">image-20260806165041429</figcaption>
+</figure>
+<p>现在会出现的一个情况是：</p>
+<p>根据 MLPerf 和多家大厂（如 Google、Meta）披露的数据：</p>
+<ul>
+<li>A100 训练 175B GPT 类模型，MFU 经常能达到 <strong>50% -
+55%</strong>。</li>
+<li>H100 训练相同模型，虽然绝对时间变快了（约 2x），但 MFU 往往回落到
+<strong>40% - 45%</strong> 左右。</li>
+<li><strong>结论就是</strong>：绝对性能（Tokens/秒）是提升的，但<strong>能效比</strong>和<strong>硬件利用率</strong>（MFU）确实下降了。因为硬件设计者（NVIDIA）优先选择了堆算力来“刷榜”，而内存带宽的物理提升（HBM3）远慢于晶体管密度带来的算力提升。</li>
+</ul>
+<p>原因：</p>
+<p><strong>Transformer 架构上。</strong>
+大模型推理和训练中，除了矩阵乘法，还有大量
+<strong>“访存密集型”操作</strong>，包括：</p>
+<ul>
+<li>归一化（Layer Norm）</li>
+<li>激活函数（GeLU/SiLU）</li>
+<li>Dropout</li>
+<li>注意力机制中的 Softmax + Mask</li>
+<li><strong>所有逐元素操作（Element-wise ops）</strong></li>
+</ul>
+<p>这些操作几乎不做计算（FLOPs很低），但需要频繁读写显存（HBM）。</p>
+<hr />
+<p><strong>MFU（Model FLOPs Utilization）</strong>
+衡量的不是“理论峰值跑了多少”，而是<strong>“实际有效计算”占理论峰值的百分比</strong>。</p>
+<p>当算力增长（3.1x）远快于带宽增长（2.1x）时，会发生经典的
+<strong>“内存墙”效应</strong>：</p>
+<ul>
+<li><strong>计算密集型任务（大矩阵乘）</strong>：算力变强，跑得飞快，耗时极短。</li>
+<li><strong>访存密集型任务（小操作）</strong>：算力再强也没用，因为数据在
+HBM 和 SRAM（片上缓存）之间搬运的速度只快了 2.1 倍。</li>
+</ul>
+<p><strong>后果是</strong>：在 H100 上，矩阵乘法瞬间算完，但 GPU
+不得不“空转”（Stall）等待数据从显存搬过来做下一次归一化。这部分等待时间没有产生任何有效
+FLOPs。</p>
+<hr />
+<p>H100 为了达到 3.1 倍算力，极大依赖 <strong>Tensor Core</strong> 和
+<strong>稀疏性（Sparsity）</strong>。</p>
+<ul>
+<li>当矩阵维度不够大（比如小批次推理、MoE 模型的小专家网络）时，Tensor
+Core 的利用率极低。</li>
+<li>A100 时代，算力没那么高，矩阵乘法刚好能把计算单元喂饱。到了
+H100，因为带宽不够快，喂不饱这些更强大的计算单元，<strong>“大炮打蚊子”</strong>，MFU
+自然更难看。</li>
+</ul>
+<hr />
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806171354613.png"
+alt="image-20260806171354613" />
+<figcaption aria-hidden="true">image-20260806171354613</figcaption>
+</figure>
+<h4 id="context-parallelism">context Parallelism</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172320512.png"
+alt="image-20260806172320512" />
+<figcaption aria-hidden="true">image-20260806172320512</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172345478.png"
+alt="image-20260806172345478" />
+<figcaption aria-hidden="true">image-20260806172345478</figcaption>
+</figure>
+<p>attention的计算更复杂，需要针对性的看</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172458847.png"
+alt="image-20260806172458847" />
+<figcaption aria-hidden="true">image-20260806172458847</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172548468.png"
+alt="image-20260806172548468" />
+<figcaption aria-hidden="true">image-20260806172548468</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172621494.png"
+alt="image-20260806172621494" />
+<figcaption aria-hidden="true">image-20260806172621494</figcaption>
+</figure>
+<h4 id="pipeline-parallelismpp">Pipeline Parallelism(PP)</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174119946.png"
+alt="image-20260806174119946" />
+<figcaption aria-hidden="true">image-20260806174119946</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174142414.png"
+alt="image-20260806174142414" />
+<figcaption aria-hidden="true">image-20260806174142414</figcaption>
+</figure>
+<h4 id="tensor-parallelismtp">Tensor Parallelism(TP)</h4>
+<p>根据矩阵乘法的原理做列的切分，第一次矩阵乘法之后要合到一起</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174949859.png"
+alt="image-20260806174949859" />
+<figcaption aria-hidden="true">image-20260806174949859</figcaption>
+</figure>
+<p>改进：如果第一个矩阵乘法做列的切分，第二个就做行的切分</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174959987.png"
+alt="image-20260806174959987" />
+<figcaption aria-hidden="true">image-20260806174959987</figcaption>
+</figure>
+<h4 id="expert-parallelism">Expert Parallelism</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806175138066.png"
+alt="image-20260806175138066" />
+<figcaption aria-hidden="true">image-20260806175138066</figcaption>
+</figure>
+<p>上述所有技巧几乎都被使用在大模型中。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806175219272.png"
+alt="image-20260806175219272" />
+<figcaption aria-hidden="true">image-20260806175219272</figcaption>
+</figure>
+<h3 id="总结">总结：</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806175243502.png"
+alt="image-20260806175243502" />
+<figcaption aria-hidden="true">image-20260806175243502</figcaption>
+</figure>
+<h2 id="lecture12-自监督学习">lecture12: 自监督学习</h2>
+<p>pretext task 和 downstream objective</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810101919079.png"
+alt="image-20260810101919079" />
+<figcaption aria-hidden="true">image-20260810101919079</figcaption>
+</figure>
+<p>自监督学习任务举例：
+比如预测缺失图像，图像的旋转角度，拼拼图，给灰色图像上色</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810102214140.png"
+alt="image-20260810102214140" />
+<figcaption aria-hidden="true">image-20260810102214140</figcaption>
+</figure>
+<p>如何衡量一个自监督模型pretext task的好坏：</p>
+<ul>
+<li>表现质量的衡量</li>
+<li>鲁棒性</li>
+<li>计算复杂度</li>
+<li>下游任务的表现</li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810102919050.png"
+alt="image-20260810102919050" />
+<figcaption aria-hidden="true">image-20260810102919050</figcaption>
+</figure>
+<p>举例子：pretext
+task在一堆图像训练出一个特征提取的算子，然后接一个shallow
+network做监督学习的任务。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103025049.png"
+alt="image-20260810103025049" />
+<figcaption aria-hidden="true">image-20260810103025049</figcaption>
+</figure>
+<h3 id="pretext-task-预测旋转">pretext task: 预测旋转</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103609364.png"
+alt="image-20260810103609364" />
+<figcaption aria-hidden="true">image-20260810103609364</figcaption>
+</figure>
+<p>可视化attention:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103713387.png"
+alt="image-20260810103713387" />
+<figcaption aria-hidden="true">image-20260810103713387</figcaption>
+</figure>
+<p>预测图块的位置：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103740263.png"
+alt="image-20260810103740263" />
+<figcaption aria-hidden="true">image-20260810103740263</figcaption>
+</figure>
+<p>拼拼图：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103836311.png"
+alt="image-20260810103836311" />
+<figcaption aria-hidden="true">image-20260810103836311</figcaption>
+</figure>
+<p>预测缺失像素：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103852784.png"
+alt="image-20260810103852784" />
+<figcaption aria-hidden="true">image-20260810103852784</figcaption>
+</figure>
+<p>通过reconstruction进行inpaint</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103928979.png"
+alt="image-20260810103928979" />
+<figcaption aria-hidden="true">image-20260810103928979</figcaption>
+</figure>
+<p>像素级别的图像重建需要增加对抗损失，否则模型会倾向于学习一个平均值。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104038858.png"
+alt="image-20260810104038858" />
+<figcaption aria-hidden="true">image-20260810104038858</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104049357.png"
+alt="image-20260810104049357" />
+<figcaption aria-hidden="true">image-20260810104049357</figcaption>
+</figure>
+<p>上色：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104116729.png"
+alt="image-20260810104116729" />
+<figcaption aria-hidden="true">image-20260810104116729</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104159659.png"
+alt="image-20260810104159659" />
+<figcaption aria-hidden="true">image-20260810104159659</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104207696.png"
+alt="image-20260810104207696" />
+<figcaption aria-hidden="true">image-20260810104207696</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104222313.png"
+alt="image-20260810104222313" />
+<figcaption aria-hidden="true">image-20260810104222313</figcaption>
+</figure>
+<p>Pretext task: 视频上色：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104300302.png"
+alt="image-20260810104300302" />
+<figcaption aria-hidden="true">image-20260810104300302</figcaption>
+</figure>
+<h3 id="mae">MAE:</h3>
+<p>mae的任务：打掩码然后进行预测</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110427528.png"
+alt="image-20260810110427528" />
+<figcaption aria-hidden="true">image-20260810110427528</figcaption>
+</figure>
+<p>架构类似vit:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110507801.png"
+alt="image-20260810110507801" />
+<figcaption aria-hidden="true">image-20260810110507801</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110521214.png"
+alt="image-20260810110521214" />
+<figcaption aria-hidden="true">image-20260810110521214</figcaption>
+</figure>
+<p>大编码器+小解码器：训练完解码器就被扔掉，而编码器已经学习到了很多图像特征</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110714585.png"
+alt="image-20260810110714585" />
+<figcaption aria-hidden="true">image-20260810110714585</figcaption>
+</figure>
+<p>损失设计：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110755954.png"
+alt="image-20260810110755954" />
+<figcaption aria-hidden="true">image-20260810110755954</figcaption>
+</figure>
+<h3 id="下游任务linear-probing和full-fine-tuning">下游任务：linear
+probing和full fine-tuning</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810111519636.png"
+alt="image-20260810111519636" />
+<figcaption aria-hidden="true">image-20260810111519636</figcaption>
+</figure>
+<h3 id="总结pretext-tasks">总结:pretext tasks</h3>
+<ul>
+<li>pretext tasks是聚焦于"visual common
+sense":比如预测旋转，inplating等等</li>
+<li>模型通过完成pretext任务强迫学习图像的自然特征，比如一个object
+category的语义表示。</li>
+<li>我们通常不关注pretext
+tasks的表现而是学习到的特征如何帮助了下有任务（分类，检测，分割）</li>
+<li>存在的问题
+<ul>
+<li>a.想到一个单独的pretext tasks任务是麻烦的</li>
+<li>b.学到的特征可能不够general(学到的特征可能被绑定到了某个特定的pretext任务)</li>
+</ul></li>
+</ul>
+<p>由此想到一个更general的pretext任务：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112145031.png"
+alt="image-20260810112145031" />
+<figcaption aria-hidden="true">image-20260810112145031</figcaption>
+</figure>
+<h4 id="constrastive任务的ituition">constrastive任务的ituition</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112223570.png"
+alt="image-20260810112223570" />
+<figcaption aria-hidden="true">image-20260810112223570</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112238515.png"
+alt="image-20260810112238515" />
+<figcaption aria-hidden="true">image-20260810112238515</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112252829.png"
+alt="image-20260810112252829" />
+<figcaption aria-hidden="true">image-20260810112252829</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112313619.png"
+alt="image-20260810112313619" />
+<figcaption aria-hidden="true">image-20260810112313619</figcaption>
+</figure>
+<p>InfoNCE loss:</p>
+<p>对比学习的核心思想是：<strong>拉近相似的样本（正样本 <span
+class="math inline">\(x^+\)</span>），推开不同的样本（负样本 <span
+class="math inline">\(x^-\)</span>）</strong>。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810134709930.png"
+alt="image-20260810134709930" />
+<figcaption aria-hidden="true">image-20260810134709930</figcaption>
+</figure>
+<p>SimCLR：对比学习的一个简单框架</p>
+<p><strong>SimCLR</strong>（Simple Framework for Contrastive Learning of
+Visual Representations）是深度学习自监督学习（Self-Supervised
+Learning）领域的里程碑式工作，由 Google Research 团队于 2020
+年提出。它以极其简洁的架构设计，打破了当时自监督学习与监督学习在准确率上的差距。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810135738399.png"
+alt="image-20260810135738399" />
+<figcaption aria-hidden="true">image-20260810135738399</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810140008651.png"
+alt="image-20260810140008651" />
+<figcaption aria-hidden="true">image-20260810140008651</figcaption>
+</figure>
+<p>奠定了之后自监督学习的一个学习范式：要有projection head</p>
+<p><strong>线性或非线性的投影头（Projection
+Head）能够提升表征学习的效果。</strong></p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810140349057.png"
+alt="image-20260810140349057" />
+<figcaption aria-hidden="true">image-20260810140349057</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810140408249.png"
+alt="image-20260810140408249" />
+<figcaption aria-hidden="true">image-20260810140408249</figcaption>
+</figure>
+<p>MoCo: 动量对比学习</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141457821.png"
+alt="image-20260810141457821" />
+<figcaption aria-hidden="true">image-20260810141457821</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141524105.png"
+alt="image-20260810141524105" />
+<figcaption aria-hidden="true">image-20260810141524105</figcaption>
+</figure>
+<p>MoCoV2</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141604462.png"
+alt="image-20260810141604462" />
+<figcaption aria-hidden="true">image-20260810141604462</figcaption>
+</figure>
+<p>通过这篇论文总结：<strong>MoCo V2 通过消融实验证明</strong>：</p>
+<ul>
+<li><strong>非线性投影头</strong>和<strong>强数据增强</strong>对于对比学习来说是<strong>至关重要的</strong>（决定性因素）。
+<ul>
+<li>投影头：2层mlp</li>
+<li>数据增强必须包含<strong>强色彩抖动（Color
+Jitter）</strong>和<strong>高斯模糊</strong>。</li>
+</ul></li>
+<li>通过<strong>将“批次大小（mini-batch size）”与“负样本数量（negative
+sample size）”解耦</strong>，使得 <strong>MoCo-V2</strong>
+能够以<strong>小得多的批次大小（256 vs. 8192）</strong> 实现超越
+<strong>SimCLR</strong> 的性能。</li>
+<li>……而且所有这些都<strong>只需要极小的显存占用</strong>！</li>
+</ul>
+<h4 id="instance-vs-sequence-cotrastive-learning">instance vs sequence
+cotrastive learning</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141954002.png"
+alt="image-20260810141954002" />
+<figcaption aria-hidden="true">image-20260810141954002</figcaption>
+</figure>
+<p>CPC:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810142821854.png"
+alt="image-20260810142821854" />
+<figcaption aria-hidden="true">image-20260810142821854</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810142844400.png"
+alt="image-20260810142844400" />
+<figcaption aria-hidden="true">image-20260810142844400</figcaption>
+</figure>
+<p>DINO: Self-Distillation with No Labels</p>
+<p>这篇文章在2021年轰动一时，因为它首次揭示了 <strong>Vision
+Transformer（ViT）</strong>
+在自监督训练下，居然能<strong>无师自通</strong>地学会分割物体轮廓，甚至比有监督训练的效果还好！</p>
+<p><strong>DINO
+是一种“师生自蒸馏”框架：学生负责用所有局部细节去模仿教师对整体全局的判断，教师则通过动量更新缓慢进化。它无需负样本，且首次证明无监督训练的
+Vision Transformer 能够自动涌现出精准的物体分割能力</strong></p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143059881.png"
+alt="image-20260810143059881" />
+<figcaption aria-hidden="true">image-20260810143059881</figcaption>
+</figure>
+<p>取 ViT 最后一层输出的 <strong>K 个类别注意力（[CLS] Token
+的注意力图）</strong>，居然能<strong>自动勾勒出</strong>图像中物体的完整轮廓（比如狗的形状、马的腿），不需要任何人工标注！</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143323192.png"
+alt="image-20260810143323192" />
+<figcaption aria-hidden="true">image-20260810143323192</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143340598.png"
+alt="image-20260810143340598" />
+<figcaption aria-hidden="true">image-20260810143340598</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143422124.png"
+alt="image-20260810143422124" />
+<figcaption aria-hidden="true">image-20260810143422124</figcaption>
+</figure>
+<h3 id="总结contrastive-representation-learning">总结contrastive
+representation learning</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143503754.png"
+alt="image-20260810143503754" />
+<figcaption aria-hidden="true">image-20260810143503754</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143546088.png"
+alt="image-20260810143546088" />
+<figcaption aria-hidden="true">image-20260810143546088</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143554484.png"
+alt="image-20260810143554484" />
+<figcaption aria-hidden="true">image-20260810143554484</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143603979.png"
+alt="image-20260810143603979" />
+<figcaption aria-hidden="true">image-20260810143603979</figcaption>
+</figure>
+<h2 id="lec13-生成模型">lec13: 生成模型</h2>
+<p>对比判别模型和生成模型：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812141911715.png"
+alt="image-20260812141911715" />
+<figcaption aria-hidden="true">image-20260812141911715</figcaption>
+</figure>
+<p>生成模型的分类：</p>
+<ul>
+<li><p>是否可以直接估计概率密度/师傅可以直接采样</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812142514259.png"
+alt="image-20260812142514259" />
+<figcaption aria-hidden="true">image-20260812142514259</figcaption>
+</figure></li>
+</ul>
+<p>用最大似然估计建模生成模型的概率密度函数的估计</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812142632994.png"
+alt="image-20260812142632994" />
+<figcaption aria-hidden="true">image-20260812142632994</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812142717723.png"
+alt="image-20260812142717723" />
+<figcaption aria-hidden="true">image-20260812142717723</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812143129291.png"
+alt="image-20260812143129291" />
+<figcaption aria-hidden="true">image-20260812143129291</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812143156604.png"
+alt="image-20260812143156604" />
+<figcaption aria-hidden="true">image-20260812143156604</figcaption>
+</figure>
+<h3 id="vae">vae</h3>
+<p>早期两种主流的生成式模型（自回归模型 vs.
+变分自编码器）在<strong>概率密度建模</strong>和<strong>优化方法</strong>上的根本区别：</p>
+<ul>
+<li><strong>PixelRNN /
+PixelCNN（显式密度模型，可直接优化）</strong>：它们属于自回归模型。正如前面讨论的，它们利用链式法则将联合概率分解为条件概率的连乘；以直接使用<strong>最大似然估计（Maximum
+Likelihood Estimation,
+MLE）</strong>，通过梯度下降去最大化真实图像出现的概率。</li>
+<li>Variational Autoencoders / VAE（隐变量模型，难以直接计算）
+<ul>
+<li>VAE 引入了不可见的隐变量（Latent Variables <span
+class="math inline">\(z\)</span>）来捕捉图像的底层特征。</li>
+<li>VAE
+的创造者们想出了一种数学技巧：通过引入一个近似后验分布，推导出一个关于对数似然的<strong>下界（Lower
+Bound，通常称为 ELBO - Evidence Lower Bound）</strong>。</li>
+</ul></li>
+</ul>
+<p>没有variational的autoencoder:</p>
+<p>Auto encoder:用无监督的方式提取特征，没有labels:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144020677.png"
+alt="image-20260812144020677" />
+<figcaption aria-hidden="true">image-20260812144020677</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812143921804.png"
+alt="image-20260812143921804" />
+<figcaption aria-hidden="true">image-20260812143921804</figcaption>
+</figure>
+<p>因为没有labels,如果学习呢？——答案：加上decoder</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144105603.png"
+alt="image-20260812144105603" />
+<figcaption aria-hidden="true">image-20260812144105603</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144137649.png"
+alt="image-20260812144137649" />
+<figcaption aria-hidden="true">image-20260812144137649</figcaption>
+</figure>
+<p>训练完成后，我们就可以拿到训练完成的encoder去做下游任务</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144252471.png"
+alt="image-20260812144252471" />
+<figcaption aria-hidden="true">image-20260812144252471</figcaption>
+</figure>
+<p>如果我们可以产生新的z,就可以用decoder去产生新的图像：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144347633.png"
+alt="image-20260812144347633" />
+<figcaption aria-hidden="true">image-20260812144347633</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144958437.png"
+alt="image-20260812144958437" />
+<figcaption aria-hidden="true">image-20260812144958437</figcaption>
+</figure>
+<p>训练思路：用极大似然估计</p>
+<p>If we had a dataset of (x, z) then train a conditional generative
+model p(x | z)</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145136272.png"
+alt="image-20260812145136272" />
+<figcaption aria-hidden="true">image-20260812145136272</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145144535.png"
+alt="image-20260812145144535" />
+<figcaption aria-hidden="true">image-20260812145144535</figcaption>
+</figure>
+<p>问题是我们无法迭代所有z</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145210074.png"
+alt="image-20260812145210074" />
+<figcaption aria-hidden="true">image-20260812145210074</figcaption>
+</figure>
+<p>换个方法：用贝叶斯</p>
+<p>分子的两项依然可以用decoder和假定z服从高斯分布解决</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145316618.png"
+alt="image-20260812145316618" />
+<figcaption aria-hidden="true">image-20260812145316618</figcaption>
+</figure>
+<p>解决方法：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145333981.png"
+alt="image-20260812145333981" />
+<figcaption aria-hidden="true">image-20260812145333981</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145406789.png"
+alt="image-20260812145406789" />
+<figcaption aria-hidden="true">image-20260812145406789</figcaption>
+</figure>
+<p>神经网络怎么输出一个分布：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145423410.png"
+alt="image-20260812145423410" />
+<figcaption aria-hidden="true">image-20260812145423410</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145832448.png"
+alt="image-20260812145832448" />
+<figcaption aria-hidden="true">image-20260812145832448</figcaption>
+</figure>
+<h3 id="vae-elbo">vae-elbo</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812150849437.png"
+alt="image-20260812150849437" />
+<figcaption aria-hidden="true">image-20260812150849437</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151215486.png"
+alt="image-20260812151215486" />
+<figcaption aria-hidden="true">image-20260812151215486</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151258658.png"
+alt="image-20260812151258658" />
+<figcaption aria-hidden="true">image-20260812151258658</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151306605.png"
+alt="image-20260812151306605" />
+<figcaption aria-hidden="true">image-20260812151306605</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151315998.png"
+alt="image-20260812151315998" />
+<figcaption aria-hidden="true">image-20260812151315998</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151334719.png"
+alt="image-20260812151334719" />
+<figcaption aria-hidden="true">image-20260812151334719</figcaption>
+</figure>
+<p>Vae training:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151529821.png"
+alt="image-20260812151529821" />
+<figcaption aria-hidden="true">image-20260812151529821</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151550288.png"
+alt="image-20260812151550288" />
+<figcaption aria-hidden="true">image-20260812151550288</figcaption>
+</figure>
+<p>vae的作用：解耦</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155039601.png"
+alt="image-20260812155039601" />
+<figcaption aria-hidden="true">image-20260812155039601</figcaption>
+</figure>
+<h2 id="lec14">lec14:</h2>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155241611.png"
+alt="image-20260812155241611" />
+<figcaption aria-hidden="true">image-20260812155241611</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155640191.png"
+alt="image-20260812155640191" />
+<figcaption aria-hidden="true">image-20260812155640191</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155919773.png"
+alt="image-20260812155919773" />
+<figcaption aria-hidden="true">image-20260812155919773</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155935329.png"
+alt="image-20260812155935329" />
+<figcaption aria-hidden="true">image-20260812155935329</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812160028334.png"
+alt="image-20260812160028334" />
+<figcaption aria-hidden="true">image-20260812160028334</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812160205608.png"
+alt="image-20260812160205608" />
+<figcaption aria-hidden="true">image-20260812160205608</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812161728894.png"
+alt="image-20260812161728894" />
+<figcaption aria-hidden="true">image-20260812161728894</figcaption>
+</figure>
+<h4 id="举例子">举例子：</h4>
+<p>Gan:styleGAN</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812161923622.png"
+alt="image-20260812161923622" />
+<figcaption aria-hidden="true">image-20260812161923622</figcaption>
+</figure>
+<p>Gan: latent插值</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162011411.png"
+alt="image-20260812162011411" />
+<figcaption aria-hidden="true">image-20260812162011411</figcaption>
+</figure>
+<h3 id="diffusion">diffusion</h3>
+<h4 id="启发">启发：</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162121826.png"
+alt="image-20260812162121826" />
+<figcaption aria-hidden="true">image-20260812162121826</figcaption>
+</figure>
+<p>修正流：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162837858.png"
+alt="image-20260812162837858" />
+<figcaption aria-hidden="true">image-20260812162837858</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162848474.png"
+alt="image-20260812162848474" />
+<figcaption aria-hidden="true">image-20260812162848474</figcaption>
+</figure>
+<p>采样：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163029802.png"
+alt="image-20260812163029802" />
+<figcaption aria-hidden="true">image-20260812163029802</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163039054.png"
+alt="image-20260812163039054" />
+<figcaption aria-hidden="true">image-20260812163039054</figcaption>
+</figure>
+<p>条件的修正流：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163142079.png"
+alt="image-20260812163142079" />
+<figcaption aria-hidden="true">image-20260812163142079</figcaption>
+</figure>
+<h4 id="classifier-free-guidancecfg">classifier-Free Guidance(CFG)</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163359579.png"
+alt="image-20260812163359579" />
+<figcaption aria-hidden="true">image-20260812163359579</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812164545900.png"
+alt="image-20260812164545900" />
+<figcaption aria-hidden="true">image-20260812164545900</figcaption>
+</figure>
+<p>将更多权重注意力放在中间噪声上</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812170131955.png"
+alt="image-20260812170131955" />
+<figcaption aria-hidden="true">image-20260812170131955</figcaption>
+</figure>
+<h4 id="latent-diffusion-modelsldms">Latent Diffusion Models(LDMs)</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812170356019.png"
+alt="image-20260812170356019" />
+<figcaption aria-hidden="true">image-20260812170356019</figcaption>
+</figure>
+<p>如何训练这个encoder+decoder结构：</p>
+<p>1.本质上是一个vae,<strong>KL 权重的小技巧</strong>：在标准的 VAE
+中，KL 散度损失用来规范化潜空间分布。但在 LDM 中，通常会把 KL
+先验的权重设得<strong>非常小</strong>，其目的是为了让潜空间保留更多的图像细节，而不是被强行扭曲成标准正态分布。</p>
+<p>2.如果只用传统的重建损失（如 L1/L2 损失）去训练 VAE
+的解码器，输出的图像往往会缺乏高频细节，看起来雾蒙蒙的、比较<strong>模糊</strong>。引入类似
+GAN
+的<strong>判别器（Discriminator）</strong>，通过对抗训练（Adversarial
+Loss）逼迫解码器吐出纹理清晰、逼真的图像，从而彻底解决画面模糊的问题。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171020279.png"
+alt="image-20260812171020279" />
+<figcaption aria-hidden="true">image-20260812171020279</figcaption>
+</figure>
+<h4 id="diffusion-transformerdit">Diffusion Transformer(DiT)</h4>
+<ul>
+<li><p>定义：diffusion用了标准的transformer块</p></li>
+<li><p>主要问题，如何注入condition, 比如timestep t, text,</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171203007.png"
+alt="image-20260812171203007" />
+<figcaption aria-hidden="true">image-20260812171203007</figcaption>
+</figure></li>
+</ul>
+<p>举例子：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171231518.png"
+alt="image-20260812171231518" />
+<figcaption aria-hidden="true">image-20260812171231518</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171252336.png"
+alt="image-20260812171252336" />
+<figcaption aria-hidden="true">image-20260812171252336</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171306619.png"
+alt="image-20260812171306619" />
+<figcaption aria-hidden="true">image-20260812171306619</figcaption>
+</figure>
+<h4 id="diffusion蒸馏">diffusion蒸馏</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171746193.png"
+alt="image-20260812171746193" />
+<figcaption aria-hidden="true">image-20260812171746193</figcaption>
+</figure>
+<p>更通用的diffusion公式：</p>
+<p>只要通过调整 <span class="math inline">\(a, b, c, d\)</span>
+这四个函数，这个统一的框架就可以完美兼容并覆盖绝大多数主流的扩散模型（Diffusion
+Models）</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172044398.png"
+alt="image-20260812172044398" />
+<figcaption aria-hidden="true">image-20260812172044398</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172218650.png"
+alt="image-20260812172218650" />
+<figcaption aria-hidden="true">image-20260812172218650</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172226262.png"
+alt="image-20260812172226262" />
+<figcaption aria-hidden="true">image-20260812172226262</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172237600.png"
+alt="image-20260812172237600" />
+<figcaption aria-hidden="true">image-20260812172237600</figcaption>
+</figure>
+<p>diffusion是一个latent variable model</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172315851.png"
+alt="image-20260812172315851" />
+<figcaption aria-hidden="true">image-20260812172315851</figcaption>
+</figure>
+<p>diffusion学习score function:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172354037.png"
+alt="image-20260812172354037" />
+<figcaption aria-hidden="true">image-20260812172354037</figcaption>
+</figure>
+<p>解决sde:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172415731.png"
+alt="image-20260812172415731" />
+<figcaption aria-hidden="true">image-20260812172415731</figcaption>
+</figure>
+<p>自回归模型回归：</p>
+<p>之前提到处理自回归模型在raw pixels太慢了，但是可以在latnent上面work
+well</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172538577.png"
+alt="image-20260812172538577" />
+<figcaption aria-hidden="true">image-20260812172538577</figcaption>
+</figure>
+<h2 id="lec15">lec15:</h2>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/29/RSSM-dreamerv3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/29/RSSM-dreamerv3/" class="post-title-link" itemprop="url">dreamerv3-from-scratch理解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-07-29 19:04:40" itemprop="dateCreated datePublished" datetime="2026-07-29T19:04:40+08:00">2026-07-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-07-31 15:51:58" itemprop="dateModified" datetime="2026-07-31T15:51:58+08:00">2026-07-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="world-model的学习">world model的学习</h2>
+<h2 id="资料">资料</h2>
+<p>https://github.com/77philosophia/dreamer-from-scratch</p>
+<h4 id="rssm的组成">RSSM的组成</h4>
+<p>在 RSSM（Recurrent State Space Model，例如在 Dreamer
+系列中）中，当我们谈论环境的<strong>隐状态（Latent State / Hidden
+Information）*<em>时，它并不是单一的一个向量，而是由*</em>确定性部分
+<span class="math inline">\(h_t\)</span></strong> 和 <strong>随机性部分
+<span class="math inline">\(z_t\)</span></strong>（在部分文献中也记为
+<span class="math inline">\(s_t\)</span>）共同组成的复合状态：</p>
+<p><span class="math display">\[s_t = (h_t, z_t)\]</span></p>
+<ul>
+<li><p>确定性的状态h_t(GRU
+hidden),用来捕捉暂时的依赖，也就是memory</p></li>
+<li><p>随机的状态z_t(categorical):捕捉当前状态的不确定性</p></li>
+<li><p>主要的operations:</p>
+<ul>
+<li><p>Observe(): h_t, z_t = f(h_{t-1}, z_{t-1}, a_{t-1}, obs_t)
+--使用了真实的observation</p></li>
+<li><p>Imagine(): h_t, z^<em>t=f(h</em>{t-1}, z_{t-1}, a_{t-1}). -----no
+observation(纯想象)，也是dreamerv3的actor-critic工作的部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Key operations:</span><br><span class="line">- observe():  h_t, z_t = f(h_&#123;t-<span class="number">1</span>&#125;, z_&#123;t-<span class="number">1</span>&#125;, a_&#123;t-<span class="number">1</span>&#125;, obs_t)  — uses real observation</span><br><span class="line">- imagine():  h_t, ẑ_t = f(h_&#123;t-<span class="number">1</span>&#125;, z_&#123;t-<span class="number">1</span>&#125;, a_&#123;t-<span class="number">1</span>&#125;)         — no observation (dreaming!)</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ul>
+<h4 id="训练">训练</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 一次前向传播, h_states是每次更新有memory功能的hidden state, z_states则是有随机性的反映当下一帧细节的state</span></span><br><span class="line"><span class="number">1.</span>h_init, z_init = rssm.initial_state(B, device)</span><br><span class="line"><span class="number">2.</span>h_states, z_posts, prior_probs, post_probs = rssm.observe_sequence(embeds, act_onehot, h_init, z_init)</span><br><span class="line"><span class="number">3.</span>latents = rssm.get_latent(s_States, z_posts)</span><br><span class="line"></span><br><span class="line"><span class="comment">### loss的组成</span></span><br><span class="line">decoder_loss = decoder_loss(latents_valid, obs_valid)   <span class="comment">## image的重建损失</span></span><br><span class="line">reward_loss = reward_head.loss(latents_valid, rewards_valid) <span class="comment">##奖励的损失</span></span><br><span class="line">continue_loss = continue_head.loss(latents_valid, continues_valid) <span class="comment">## 任务是否完成的损失</span></span><br><span class="line">kl_loss = rssm.kl_loss(prior_prob，post_probs, free_bits = <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">### observe sequence的过程</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">observe_sequence</span>(<span class="params">self, embeds, actions, h_init, z_init</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Process a full sequence of observations for world model training.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            embeds: (B, T, embed_dim) — encoded observations</span></span><br><span class="line"><span class="string">            actions: (B, T, action_dim) — actions taken</span></span><br><span class="line"><span class="string">            h_init, z_init: Initial RSSM state</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            h_states: (B, T, gru_dim)</span></span><br><span class="line"><span class="string">            z_posts: (B, T, stoch_dim, stoch_classes)</span></span><br><span class="line"><span class="string">            prior_probs: (B, T, stoch_dim, stoch_classes)</span></span><br><span class="line"><span class="string">            post_probs: (B, T, stoch_dim, stoch_classes)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">......</span><br><span class="line">				h_list, z_list = [], []</span><br><span class="line">        prior_list, post_list = [], []</span><br><span class="line"></span><br><span class="line">        h, z = h_init, z_init</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">            h, z, prior_p, post_p = self.observe_step(</span><br><span class="line">                h, z, actions[:, t], embeds[:, t]</span><br><span class="line">            )</span><br><span class="line">            h_list.append(h)</span><br><span class="line">            z_list.append(z)</span><br><span class="line">            prior_list.append(prior_p)</span><br><span class="line">            post_list.append(post_p)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 一次observe_step的过程</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">observe_step</span>(<span class="params">self, h_prev, z_prev, action, embed</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Single observation step: advance state using real observation.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        1. Compute new deterministic state h_t via GRU</span></span><br><span class="line"><span class="string">        2. Compute prior p(z|h) — what the model predicts without seeing obs</span></span><br><span class="line"><span class="string">        3. Compute posterior q(z|h,obs) — corrected using real observation</span></span><br><span class="line"><span class="string">        4. Sample z_t from posterior (used for training) &quot;&quot;&quot;</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">       	<span class="comment"># 1. GRU step: h_t = GRU(h_&#123;t-1&#125;, [z_&#123;t-1&#125;, a_&#123;t-1&#125;]) 更新memory</span></span><br><span class="line">       	x = self.pre_gru(torch.cat([z_prev.flatten(-<span class="number">2</span>, -<span class="number">1</span>), action], dim=-<span class="number">1</span>))</span><br><span class="line">        h = self.gru(x, h_prev) <span class="comment">#（self.gru = torch.nn.GRUCell(hidden, gru_dim)）</span></span><br><span class="line">        h = self.gru_norm(h)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. Prior: p(z_t | h_t)  #先验概率</span></span><br><span class="line">        prior_logits = self.prior_net(h)  <span class="comment">#prior_net: MLP</span></span><br><span class="line">        prior_z, prior_probs = self._categorical_sample(prior_logits)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. Posterior: q(z_t | h_t, embed(obs_t))</span></span><br><span class="line">        post_logits = self.posterior_net(torch.cat([h, embed], dim=-<span class="number">1</span>))  <span class="comment">#加上embed(obs)后输入mlp估计后验</span></span><br><span class="line">        post_z, post_probs = self._categorical_sample(post_logits)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> h, post_z, prior_probs, post_probs</span><br><span class="line">      </span><br><span class="line"><span class="comment">### 如何做self._categorical_sample</span></span><br><span class="line">把(batch_size, stoch_dim=<span class="number">16</span>,stoch_classes=<span class="number">16</span>)此时刚从mlp出来维度是(batch_size, stoch_flat=stoch_dim*stoch_classes)要经过softmax得到probs</span><br><span class="line">一般softmax就可以了，这里有两步处理</span><br><span class="line"><span class="number">1.</span>unimix: blend softmax <span class="keyword">with</span> uniform distribution</span><br><span class="line">probs = (<span class="number">1</span>- self.unimax) * probs + self.unimax*uniform</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>straight-through</span><br><span class="line">probs经过torch.multinomial采样可以得到one_hot</span><br><span class="line">z= one_hot + probs - probs.detach()  <span class="comment">## one_hot无法求导，但是我们又需要反向传播，又需要one_hot的结果</span></span><br><span class="line"></span><br><span class="line">最终<span class="keyword">return</span> z, probs</span><br><span class="line"></span><br><span class="line"><span class="comment">### 回到observe_sequence</span></span><br><span class="line">最后得到h_states, z_posts， prior_probs, post_probs</span><br><span class="line"></span><br><span class="line"><span class="comment">### 看一看损失的计算过程</span></span><br><span class="line">上面的h_states和z_posts会一起拼接成latents,进行下一步的重建损失，reward损失，<span class="keyword">continue</span>损失的计算，而prior_probs和post_probs用来计算kl散度让想象尽可能准。</span><br><span class="line">latents = rssm.get_latent(h_states, z_posts)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 1.decoder loss. MLP+ mse loss</span></span><br><span class="line">不一样的处理是mse loss between symlog(real_obs)和decoder output</span><br><span class="line"></span><br><span class="line"><span class="comment">### 2.loss2:reward_loss</span></span><br><span class="line">latent-&gt;mlp-&gt;logits</span><br><span class="line">对reward进行255bins离散程度的twohot discrete处理然后计算cross-entropy</span><br><span class="line">上述对reward的处理也放到symlog/exp的空间进行处理</span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.loss3:continue_loss</span></span><br><span class="line">采用的是weighted BCE loss,因为终止信号的样本比较少，所以用<span class="number">10</span>:<span class="number">1</span>的比例平衡一下</span><br><span class="line">logits = self.forward(latent)</span><br><span class="line">weight = torch.where(target_continue&lt;<span class="number">0.5</span>, <span class="number">10.0</span>,<span class="number">1.0</span>)</span><br><span class="line"><span class="keyword">return</span> F.binary_cross_entropy_with_logits(logits, target_continue, weight=weight)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 4.kl_loss</span></span><br><span class="line">KL = <span class="built_in">max</span>(free_bits, KL_actual) 防止逼近于<span class="number">0</span>直接坍塌</span><br><span class="line">（比如前验和后验概率约定好我们俩统一都输出<span class="number">0</span>）</span><br></pre></td></tr></table></figure>
+<h2 id="actor-critic">actor-critic</h2>
+<p>dreamerv3会先在world
+model里面预热几个episodes之后再在actor-ctric框架中训练agent的动作。</p>
+<p>我们主要关注actor-critic的逻辑。</p>
+<p>Actor(latent) -&gt; action -&gt; imagine_step -&gt; next_latent
+-&gt;reward</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">imagined_latents = []</span><br><span class="line">imagined_entropies = []</span><br><span class="line"><span class="number">1.</span><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">len</span>(horizon):</span><br><span class="line">   latent(h+z)-&gt;actor网络mlp采样得到action,entropy</span><br><span class="line">                                 -&gt;上面得到的action会进入rssm.imagine_step得到下一步的h,z</span><br><span class="line">                                 -&gt; 把每一步的latent(h,z)加入imagined_latents, action网络估计的action的entropy加入到imagined_entropies</span><br><span class="line">                            </span><br><span class="line"><span class="number">2.</span>latents-&gt;wm的reward_head-&gt;imagined_Rewards</span><br><span class="line">  latents-&gt;wm的continue_head-&gt;imagined_continues</span><br><span class="line">  lantets-&gt;actor-critic的critic_target网络（no gridient, <span class="keyword">for</span> bootstrapping）-&gt;imagined_values</span><br><span class="line">  </span><br><span class="line"><span class="number">3.</span>通过gae公式输入rewards, continues, values计算returns</span><br><span class="line">latent-&gt;self.critic网络-&gt;估计value值和上面的gae计算的returns做critic_loss</span><br><span class="line">returns经过归一化最大化-》负reward最小化作为actor_loss</span><br><span class="line">encropy熵值尽可能大-》取负尽可能小作为entropy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">● 是的，dreamer/agent.py 完整体现了 actor-critic 学习过程。核心在两个方法：</span><br><span class="line"></span><br><span class="line">  Phase <span class="number">2</span>：想象中的 actor-critic（_train_actor_critic, agent.py:<span class="number">230</span>-<span class="number">361</span>）</span><br><span class="line"></span><br><span class="line">  <span class="number">1.</span> 想象前向 rollout（agent.py:<span class="number">282</span>-<span class="number">299</span>）</span><br><span class="line">  从真实 posterior 起点 h_flat, z_flat（已 detach），循环 horizon=<span class="number">15</span> 步：</span><br><span class="line">  - actor.sample(latent) 选动作，梯度流经 actor</span><br><span class="line">  - rssm.imagine_step(h, z, action) 推进动力学，梯度通过动作流入世界模型（agent.py:<span class="number">299</span>）</span><br><span class="line">  - 收集 imagined_latents 与 imagined_entropies</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span> 价值/reward 预测（agent.py:<span class="number">308</span>-<span class="number">322</span>）</span><br><span class="line">  - reward_head 在想象状态上算 reward（twohot_decode）</span><br><span class="line">  - continue_head 算 c_t</span><br><span class="line">  - critic_target（Polyak, τ=<span class="number">0.02</span>）给 bootstrap value，no_grad</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span> λ-<span class="keyword">return</span>（_compute_lambda_returns, agent.py:<span class="number">363</span>-<span class="number">384</span>）</span><br><span class="line">  GAE 风格反向递归：</span><br><span class="line">  G_t = r_t + γ·c_t·((<span class="number">1</span>-λ)·V_&#123;t+<span class="number">1</span>&#125; + λ·G_&#123;t+<span class="number">1</span>&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="number">4.</span> 两个损失（agent.py:<span class="number">332</span>-<span class="number">355</span>）</span><br><span class="line">  - Critic：critic.loss(latent.detach(), lambda_returns.detach()) —— 纯回归</span><br><span class="line">  - Actor：-normalized_returns.mean() - entropy_coef·entropy —— 通过动力学的可微链路反向，让 actor 学到<span class="string">&quot;选这个动作世界模型预测更高回报&quot;</span></span><br><span class="line"></span><br><span class="line">  关键设计</span><br><span class="line"></span><br><span class="line">  - 梯度通过动作连接 actor 与世界模型（agent.py:<span class="number">235</span>-<span class="number">244</span> 注释）：actor 参数被 actor_optimizer 更新，但计算图穿过 rssm，比纯 REINFORCE 信号丰富得多</span><br><span class="line">  - ReturnNormalizer（agent.py:<span class="number">343</span>）：百分位归一化 λ-<span class="keyword">return</span>，跨数量级 reward 也能稳</span><br><span class="line">  - 两阶段分离：train_step 先 _train_world_model 再 _train_actor_critic（agent.py:<span class="number">147</span>-<span class="number">152</span>），warmup 阶段只训世界模型</span><br></pre></td></tr></table></figure>
+<p>特别注意：actor_loss的计算用的是normalized之后的lambda_Returns值。</p>
+<p>正如前面讨论的，传统的无模型强化学习（如
+PPO）由于环境不可导，必须使用 <strong>Score Function（<span
+class="math inline">\(\text{Advantage} \times \nabla \log
+\pi\)</span>）</strong> 来估计梯度。</p>
+<p>但在拥有可导世界模型的算法（如 DreamerV3）中：</p>
+<ul>
+<li><p>策略（Actor）的更新往往<strong>不直接使用</strong>传统的 Score
+Function，而是直接利用 <strong>Pathwise Derivative（路径导数 /
+重参数化技巧）</strong>。</p>
+<h4 id="score-function-的数学本质似然比技巧-likelihood-ratio-trick">1.
+Score Function 的数学本质：似然比技巧 (Likelihood Ratio Trick)</h4>
+<ul>
+<li><strong>原理</strong>：利用对数导数恒等式 <span
+class="math inline">\(\nabla_\theta p_\theta(x) = p_\theta(x)
+\nabla_\theta \log p_\theta(x)\)</span>。<br />
+</li>
+<li><strong>作用</strong>：它允许我们在<strong>函数 <span
+class="math inline">\(f(x)\)</span>
+不可导、未知或者包含黑盒环境</strong>的情况下，仅仅通过对概率分布 <span
+class="math inline">\(p_\theta(x)\)</span>
+进行采样和求对数梯度，就能无偏地估计出期望的梯度。它是无模型强化学习（如
+REINFORCE、PPO）和变分推断（如标准的 VAE）的基石。</li>
+</ul>
+<h4
+id="pathwise-derivative-的数学本质重参数化与链式法则-reparameterization-chain-rule">2.
+Pathwise Derivative 的数学本质：重参数化与链式法则 (Reparameterization
+&amp; Chain Rule)</h4>
+<ul>
+<li><p><strong>原理</strong>：如果随机变量 <span
+class="math inline">\(x\)</span> 可以表示为参数 <span
+class="math inline">\(\theta\)</span> 和外部独立噪声 <span
+class="math inline">\(\epsilon\)</span> 的可导确定性映射 <span
+class="math inline">\(x =
+g_\theta(\epsilon)\)</span>，那么求导时可以直接穿透期望符号：</p>
+<p><span class="math display">\[\nabla_\theta \mathbb{E}[f(x)] =
+\mathbb{E}\left[ \frac{\partial f}{\partial x} \frac{\partial
+g_\theta}{\partial \theta} \right]\]</span></p></li>
+<li><p><strong>在世界模型（如
+DreamerV3）中的应用</strong>：整个世界模型（状态转移方程、观察模型）和策略网络（Actor）共同构成了一个巨大的、参数化的可微计算图。策略生成的动作
+<span class="math inline">\(a_t\)</span>
+输入给可微的世界模型得到下一状态 <span
+class="math inline">\(s_{t+1}\)</span>，再结合价值函数（Critic），最终的累积回报
+<span class="math inline">\(J\)</span> 对策略参数 <span
+class="math inline">\(\theta\)</span>
+求导时，<strong>不需要做统计意义上的似然比估计，而是直接通过时间轴（Backpropagation
+Through Time, BPTT）一路反向传播链式法则</strong>。</p></li>
+</ul></li>
+</ul>
+<h2 id="总结wm">总结wm</h2>
+<p>总而言之，对wm建模，训练想想未来horizon步数的能力，会估计未来的observation,
+rewards和continue.</p>
+<p>对wm先warm up训练一段时间。</p>
+<p>对actor-critic来说，在wm训练之后，用想象horizon步数的latents去估计采样action和对应的action_entropy，去经过mlp估计value,然后计算gae的值</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/27/pytorch-jax/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -521,7 +2667,7 @@ PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Pyt
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-28 16:26:54" itemprop="dateModified" datetime="2026-07-28T16:26:54+08:00">2026-07-28</time>
+                <time title="Modified: 2026-07-29 18:48:08" itemprop="dateModified" datetime="2026-07-29T18:48:08+08:00">2026-07-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -558,8 +2704,27 @@ alt="image-20260724162449389" />
 <p>a.Baseline：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python dreamerv3/main.py \</span><br><span class="line">  --logdir ~/logdir/dreamer/crafter \</span><br><span class="line">  --configs crafter \</span><br><span class="line">  --run.train_ratio 32</span><br><span class="line">  </span><br><span class="line">另一个窗口可视化 python -m scope_viewer --basedir ~/logdir --port 8000   ## 跑了一些新的实验runs加载不出来换个端口</span><br></pre></td></tr></table></figure>
 <p>当前训练（GPU）的基线是 fps/policy ~46、fps/train ~1470。</p>
-<p>b.cpu</p>
-<p>fps/policy 0.61 / fps/train 18.69</p>
+<h3 id="代码阅读">代码阅读</h3>
+<p>关键代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obs    --&gt;.    enc ---&gt; tokens</span><br></pre></td></tr></table></figure>
+<p>代码其实主要分为两部分：world model和actor-critic</p>
+<h4 id="world-model部分">1.world model部分</h4>
+<ul>
+<li>enc(Encoder). 图像/本体-&gt;tokens，注意在world
+model里面图像的输入是(batch_size, seq_length,
+obs_dim)，多了一个sequence_len</li>
+<li>Dyn(RSSM). tokens + action -&gt; 隐状态(deter + stoch)</li>
+<li>Dec(Decoder). 隐状态-&gt;重构观测</li>
+<li>Rew(MLPHead). 隐状态-&gt;奖励预测</li>
+<li>Con(MLPHead). 隐状态-&gt;是否继续(done预测)</li>
+</ul>
+<p>增加断点部分dramerv3/agent.py def loss()</p>
+<h4 id="actor-critic部分">2.actor-critic部分</h4>
+<ul>
+<li>Pol(MLPHead). 隐状态-&gt;动作分布</li>
+<li>Val(MLPHead). 隐状态-&gt;价值</li>
+<li>Slowval(SlowModel). val的EMA慢副本(稳定bootstrapping target)</li>
+</ul>
 
       
     </div>
@@ -832,384 +2997,10 @@ id="熊孩子性骚扰妇女导致女医生自杀">熊孩子性骚扰妇女导�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/19/cs224r/Tfcc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/19/cs224r/Tfcc/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-07-19 17:49:22" itemprop="dateCreated datePublished" datetime="2026-07-19T17:49:22+08:00">2026-07-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Tfcc:</p>
-<p>一般不用焦虑，都会好的。一般会随着时间越来越好。</p>
-<p>受伤初期：</p>
-<ul>
-<li>明确受伤区域：小拇指那一侧才是tfcc，大拇指那侧是韧带。</li>
-<li>手腕受伤的表现是手腕疼，所以前两周最好带支具。固定，避免二次受伤，但是对于恢复没有什么用。</li>
-<li>一个月之后可以用一些小重量的哑铃，5
-7.5，不用使劲儿用。如果不疼的话哪用外用的药不用特别需要，如果特别疼影响睡觉了可以吃止痛药。</li>
-</ul>
-<p>北医三院的药，扶他林或者其他，按照自己的感觉，哪个好用用哪个。</p>
-<p>胳膊上的肌肉药多松解。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/14/the-secret-of-settle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/14/the-secret-of-settle/" class="post-title-link" itemprop="url">从抑郁中走出/获得平静</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-07-14 20:24:15 / Modified: 20:25:28" itemprop="dateCreated datePublished" datetime="2026-07-14T20:24:15+08:00">2026-07-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​ 身边的一个朋友，其实也不算纯朋友，就是现在的cto，问起他的际遇</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/06/evaluate-life/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/06/evaluate-life/" class="post-title-link" itemprop="url">你要如何衡量你的人生</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-07-06 00:37:05 / Modified: 01:29:46" itemprop="dateCreated datePublished" datetime="2026-07-06T00:37:05+08:00">2026-07-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Books/" itemprop="url" rel="index"><span itemprop="name">Books</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
-<img data-src="/2026/07/06/evaluate-life/image-20260706003747990.png"
-alt="image-20260706003747990" />
-<figcaption aria-hidden="true">image-20260706003747990</figcaption>
-</figure>
-<p>作者克莱顿是哈佛商学院教授，分享自己哈佛同学毕业周年聚会，5周年的时候大家都光鲜亮丽，前景一片大好；10周年的时候却有一些同学出现了一些状况，包括好的前程没有带来快乐。为什么一些聪明的人反而做出了错误的决定。</p>
-<p>这本书探讨理论——预测——行动，注意作者强调不是教人怎么做，而是得到一些理论然后行动。回答的问题包括：</p>
-<p>我如何确定</p>
-<ul>
-<li>我将获得事业的成功和幸福</li>
-<li>我与配偶，孩子，亲戚和密友之间的关系是我永久幸福的源泉吗</li>
-<li>我过着政治的生活，从而远离犯罪？</li>
-</ul>
-<h3
-id="一如何确定你将取得事业的成功">一、如何确定你将取得事业的成功</h3>
-<p>重点（真正的激励）+根据机遇权衡+分配资源</p>
-<h4
-id="真正的激励动因成就感认可责任等而非money">1.真正的激励：动因——成就感、认可、责任等而非money</h4>
-<p>1.物质激励不是真正的“动因”（作者举例非营利组织的优秀人员）。人们想做某件事情的动因是发自内心的想去做。这样无论你身处顺境还是逆境，动因都将继续。</p>
-<p>2.“赫茨伯格”的理论，决定我们对于工作的感觉的是基础因素+动力因素。薪资等属于基础因素。动力因素是有挑战性，获得认可、责任感、个人成长。赫茨伯格的理论指出：<u>如果动力因素起作用了，你会爱上自己的工作，即使赚不到大把的钱，你也会积极起来。</u></p>
-<p>3.动力因素非常重要，作者举例子和家里的孩子一起建立游戏屋，过程大于结果。</p>
-<p>4.动因理论建议你问问题：“问自己不同类型的问题，而不是总问自己过去问过的问题。比如说，问自己：<u>这份工作对我有意义吗？这份工作将会给我带来发展机会吗？我还能继续学习新东西吗？我有机会得到认可、获得成就吗？我将会被赋予更多责任吗？这些才是真正驱动我们的动力。一旦你清楚了这点，什么是你工作中最重要的就会越来越清晰。”</u></p>
-<h4 id="周密战略意外战略的权衡">2.周密战略+意外战略的权衡</h4>
-<p>1.人生和职业生涯是不断在周密+意外战略中权衡的。作者举出本田生产小摩托车的例子来说明。很多以为的商业奇才决策都是很多偶然中浮现的。</p>
-<p>2.如果已经找到先决条件的基础因素+提供了动力因素，适合周密战略；没有找到可以采取另一种体验，从每次经历中学到的东西做出调整，再下一步体验。<u>关键是要走出去，“并行动起来，一直到你明白将自己的聪明才智、兴趣和重点放在哪里。当你真正找到了适合自己的工作，就应该立即将应急战略转化成周密战略。”</u></p>
-<p>3.有个工具可以帮助你测试你的周密战略或者应急战略是否卓有成效。“这个工具要求你说出需要得到验证的假设条件。这个过程是简·麦克米伦和瑞塔·麦格拉思创造出来的，他们把它叫作“发现—驱动计划”，但或许我们把它说成“哪些假设条件需要得到验证，才能说明这个战略有效”。作者举例了迪士尼建造第四座乐园的例子。</p>
-<p>在每次考虑更换职业时，你要先想想：需要被证实的最重要的假设条件是什么，要怎样才能对这些假设是否有效进行不昂贵的、快速的测试，从而确保你前面走的是一条现实可行的道路。”</p>
-<p>假设行验证很重要。作者举了一个自己学生的例子，公司承诺xxx却从未做到。如果提前观察迹象/实习。</p>
-<h4 id="资源配置">3.资源配置</h4>
-<p>1.看一个公司的资源配置看做了什么而不是说了什么；看人的资源配置看钱花在哪里。关于日常数百次决定如何安排时间，经历，金钱，表明你真正在乎的是什么。</p>
-<p>2.重视家人，朋友的投资关系，付出时间。如果不去培养，在你困境和挑战的时候他们就不会在那里。</p>
-<p>3.产品开发很多失败的原因就是更多关注“能卖给客户什么，而不是去考虑客户需要什么。”人际关系也如此。</p>
-<p>作者举例奶昔的例子，去思考“顾客雇佣奶昔是为什么”</p>
-<p>举例学校的例子，孩子去上学想要做的a.获得朋友b.成就感。从而得出结论：学校并没有把这项工作做好。</p>
-<p>思考“你被雇来做什么的”，角色之一是配偶。直觉和共鸣去思考对象需要什么。“要了解对你最在乎的人而言什么东西最重要，最好的方法就是从“需要完成的工作”角度去考虑，它能使你发展出真正的同情。问问自己：“我的伴侣最需要我做的是什么？”这会给你提供从正确角度分析问题的能力。”</p>
-<p>4.你的孩子还是不是你的？作者举例子戴尔不断的把自己的业务外包给华硕从而失去市场竞争力的故事——“要清楚自己的能力。你需要了解什么是能力，哪个对你的未来而言更关键，知道哪个应该自己保留，哪个不太重要。”</p>
-<p>提出一个公式：<strong>企业的核心=资源+应用流程+组织行为优先顺序（价值观）</strong>。资源体现在财报上，应用流程却无法体现出来。</p>
-<p>考虑外包：1.要对供应商的能力有认识，假设他们也会改变。2.找出未来取得成功的能力掌握在自己手中。</p>
-<p>培养孩子：“资源”是他所利用的东西，“应用流程”是他做事情的方式，价值取向是做某件事的动机。“孩子们从这些活动中培养了诸如团队精神、企业家精神，以及领悟到做事应该事先有所准备了吗？还是他们仅仅是应付了事？当我们专注于为孩子提供资源的时候，我们需要问自己一些问题：我的孩子掌握了培养新技能的方法了吗？学到发展更加深入探索知识的能力了吗？掌握了从经历中获取经验的方法了吗？这些对于培养孩子的“应用流程”能力是非常重要的。基于此，我最担心的是家庭的外包。”</p>
-<p>“当戴尔将自己一部分业务外包给华硕时，它也就把要实现的目标，以及要解决的问题交给了华硕。华硕借此机会发展出一套完成工作的流程，相反，戴尔完成相同工作的能力逐渐退化。华硕为完成更加复杂的工作，又努力将这些操作过程扩展并完善，而戴尔没有意识“到自己过于关注资源，减少了关键的实际操作过程，这实际上是在破坏自己的未来竞争力。”</p>
-<p>“许多家长也犯了跟戴尔一样的错误，只关注孩子们获得的资源，比如知识、技能以及经验。跟戴尔一样，父母认为自己的每个决定看起来似乎都是有意义的，他们希望孩子们能赢在起跑线上，也相信为孩子提供的机会和经验可以帮助他们赢在起跑线上。但是，他们却没有让孩子们深入参与进去——没有有意识地培养孩子今后获取成功需要的应用能力。”</p>
-<p>“对于家庭，外包的危害不仅仅在于使孩子失去培养自己应用能力的机会，更严重的风险是失去了我们的价值。”“关键在于即使你出于最好的目的，正在将越来越多父母应该承担的责任外包出去的时候，你就会失去越来越多为孩子们培养价值观的机会，这对孩子们来说也许是最重要的能力。”</p>
-<h4 id="经验学校">经验学校</h4>
-<p>用人错误——很多企业按照成功经验去雇佣人却犯错误。作者找到了南加州大学教授摩根·麦考尔的理论——“那不是因为他们天生具有出众的能力，而是因为他们的成长过程中，在高风险情况下如何应对挫折或强压的经验锻炼了他们的能力。”</p>
-<p><u>“在选择更加优秀的候选人时，我们使自己在资源与应用流程能力上偏向于关注资源，也就是我之前谈到的家长们常做的事，这是一种很容易犯的错误，即使是大企业也经常犯。”</u></p>
-<p>“诺兰·阿奇博尔德，世界五百强ceo做职业规划：“阿奇博尔德在毕业时心里就有着清晰的目标，即成为一家成功企业的首席执行官。许多人认为声望高的工作可以作为实现目标的跳板，他却问自己：“要成为一位有能力的、成功的首席执行官，我需要学习和掌握什么？”</p>
-<p><strong>“他选择的不是能够帮助他快速晋升到首席执行官的工作，而是有意识地选择能够为他提供经验的工作，他说，“我不会根据工作所提供的报酬和声望来做决定，相反，我会考虑某项工作能否为我带来我所需要的经验”。”</strong></p>
-<p>父母要为孩子营造合适的经验课程。“我们都知道人们在工作中的失败往往不是因为他们没有能力，而是因为他们没有足够的经验，换句话说，他们参加了错误的“课程”。”</p>
-<h4 id="家庭文化">家庭文化</h4>
-<p>文化的塑造需要坚持，要想好坚持什么并去营造和塑造，然后就会形成自动驾驶仪，指导孩子的行为。</p>
-<p>文化的强大作用——指导性，自动驾驶</p>
-<h3 id="三远离犯罪">三、远离犯罪</h3>
-<p>1.作者提出了百视达公司轻视netflix的租用从而市场被挤压的故事。“对于新出现的市场，正确的方法不是去考虑“如何保护我们的现有业务”（这是面向过去的思维模式），而是要考虑“如果我们没有现在的业务模式，将怎样才能建立一种新的模式？以什么样的方式才能更好地为我们的顾客提供服务呢？”（这是面向未来的思维模式）百视达公司没有这么考虑，而Netflix这样做了，当百视达公司在2010年宣布破产时，他们用边际理论保护的商业模式也随之而去。”</p>
-<p>——边缘思维的弊病。</p>
-<p>2.一种现象：规模庞大的企业有钱却认为改变昂贵，要组建团队；规模较小的新企业却能够勇往直前。大企业受限于边际成本和效应的思维。</p>
-<p>3.远离犯罪——破除就这一次。坚持100%的原则和底线。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/05/good-will-hunting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/05/good-will-hunting/" class="post-title-link" itemprop="url">心灵捕手-courage and experience</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2026-07-05 14:41:32 / Modified: 15:30:32" itemprop="dateCreated datePublished" datetime="2026-07-05T14:41:32+08:00">2026-07-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure>
-<img data-src="/2026/07/05/good-will-hunting/image-20260705144229680.png"
-alt="image-20260705144229680" />
-<figcaption aria-hidden="true">image-20260705144229680</figcaption>
-</figure>
-<h3 id="关于体验真正的体验">关于体验——真正的体验</h3>
-<p>如果我问你艺术，你可能会提出艺术书籍中的粗浅论调。</p>
-<p>有关米开朗琪罗，你知道很多，他的满腔政治热情，与教皇相交莫逆，耽于性爱，你对他很清楚吧？</p>
-<p>但你连西斯廷教堂的气味也不曾嗅到？你未曾站在那儿，昂首眺望天花板上的名画吧？可是我见过。</p>
-<p>如果我问关于女人的事，你大可以向我如数家珍，你可能上过几次床，但你没法说出当自己在女人身旁醒来时，那份涌自内心真正的喜欢。</p>
-<p>你年轻彪悍，我如果和你谈论战争，你会向我大抛莎士比亚，朗诵“共赴战场，亲爱的朋友”</p>
-<p>但你从未亲临敌阵，未试过把挚友的头拥入怀里，看着他吸着最后一口气，凝望着你，垂死向你求助。</p>
-<p>我问你何为爱情，你可能智慧吟风弄月，但你未试过全情投入真心倾倒，</p>
-<p>四目交投时彼此了解对方的心，好比上帝安排天使下凡只献给你，把你从地狱拯救出来。</p>
-<p>对她百般关怀的感受你也从未体会，明知她患了癌症也在所不惜；</p>
-<p>你也从未经历过在她的病床前坚定不移地陪伴，紧握着她的纤手，因为医生知道你根本就不在乎“探访时间”的明文约束。</p>
-<p>你并没有体会过“失去”的真正意义...因为只有在你爱某人甚于自身时才会领悟。我怀疑你从未付出过这样的爱。</p>
-<p>现在我看着你，眼前所见并非一位聪敏、自信的男人，而是一个无耻狂妄、内心恐惧的孩子。</p>
-<p>但是你是个天才，威尔。这是毋庸置疑的。没人可以完全认识到你的深度。</p>
-<p>但是你在我的油画上瞥过一眼、就以为了解了我的一切？你的狂言糟蹋了我的人生！</p>
-<p>You're an orphan, right? Do you think I know the first thing about
-how hard your life has been? How you feel? Who you are? Because I read
-Oliver Twist? Does that encapsulate you?
-你是个孤儿吧？但你认为我能看穿你的悲惨生活、认识你的全部，仅仅因为我读过《雾都孤儿》？莫非它能简化你的人生？</p>
-<p>Personally, I don't give a shit about all that. Because you know
-what? I can't learn anything from you I can't read in some fuckin' book.
-个人而言，我对此莫不关心。因为你知道吗？我无法通过一些破书来认识你的一点一滴。</p>
-<p>Unless, you wanna talk about you…who you are. Then I 'm fasciated.
-I'm in. But you don't want to do that, do you? You're terrified of what
-you might say.
-除非你先谈论自己，告诉我你到底是谁。于是我对此着迷，我愿意来帮助你。但是你并不想这么做，是吗？你甚至还怕你会被说出来的话吓到。</p>
-<h3 id="关于完美">关于完美</h3>
-<p>Will——This girl's, like, perfect right now. I don't wanna ruin that.
-威尔：在我眼中，这女孩现在很完美。我并不想破坏这种完美。 Sean——Maybe
-you're perfect right now. Maybe you don't wanna ruin that. But I think
-that's a super philosophy. That way, you can go through your entire life
-without ever having to really know anybody.
-肖恩：也许现在是你很完美，也许你并不想破坏你自己的完美。但我觉得这是一个极妙的哲理，因为这样你可以一辈子不用认识任何人。
-People call these things "imperfections," but they're not.That's the
-good stuff. And then we get to choose who we let into our weird little
-worlds.
-人们称之为“瑕疵”，但其实不然。“不完美”那才是好东西，能选择让谁进入我们的小世界。
-You're not perfect. And let me save you the suspense.This girl you met,
-she isn't perfect either.But the question is whether or not you're
-perfect for each other.That's the whole deal. That's what intimacy is
-all about.Now you can know everything in the world, but the only way
-you're findin' out that one is by givin' it a shot.
-你并不是完美的，我也不想吊你胃口。我想说的是，你认识的那个女孩，也不是完美的，但关键是你们能否完美的适应彼此。亲密关系就是这么回事。你可以了解世间万物，但追根溯源的唯一途径便是亲身尝试。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1277,7 +3068,7 @@ you're findin' out that one is by givin' it a shot.
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">159</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1290,7 +3081,7 @@ you're findin' out that one is by givin' it a shot.
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">127</span>
+        <span class="site-state-item-count">132</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

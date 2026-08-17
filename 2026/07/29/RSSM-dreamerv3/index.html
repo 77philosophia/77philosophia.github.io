@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="world model的学习 资料 https:&#x2F;&#x2F;github.com&#x2F;77philosophia&#x2F;dreamer-from-scratch RSSM的组成 在 RSSM（Recurrent State Space Model，例如在 Dreamer 系列中）中，当我们谈论环境的隐状态（Latent State &#x2F; Hidden Information）*时，它并不是单一的一个向量，而是由*确定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dreamerv3-from-scratch理解">
+<meta property="og:url" content="http://77philosophia.github.io/2026/07/29/RSSM-dreamerv3/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="world model的学习 资料 https:&#x2F;&#x2F;github.com&#x2F;77philosophia&#x2F;dreamer-from-scratch RSSM的组成 在 RSSM（Recurrent State Space Model，例如在 Dreamer 系列中）中，当我们谈论环境的隐状态（Latent State &#x2F; Hidden Information）*时，它并不是单一的一个向量，而是由*确定">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-29T11:04:40.000Z">
+<meta property="article:modified_time" content="2026-07-31T07:51:58.224Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="RSSM">
+<meta property="article:tag" content="world model">
+<meta property="article:tag" content="dreamerv3">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/07/29/RSSM-dreamerv3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>dreamerv3-from-scratch理解 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/categories/Books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/29/RSSM-dreamerv3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dreamerv3-from-scratch理解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-07-29 19:04:40" itemprop="dateCreated datePublished" datetime="2026-07-29T19:04:40+08:00">2026-07-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-07-31 15:51:58" itemprop="dateModified" datetime="2026-07-31T15:51:58+08:00">2026-07-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="world-model的学习">world model的学习</h2>
+<h2 id="资料">资料</h2>
+<p>https://github.com/77philosophia/dreamer-from-scratch</p>
+<h4 id="rssm的组成">RSSM的组成</h4>
+<p>在 RSSM（Recurrent State Space Model，例如在 Dreamer
+系列中）中，当我们谈论环境的<strong>隐状态（Latent State / Hidden
+Information）*<em>时，它并不是单一的一个向量，而是由*</em>确定性部分
+<span class="math inline">\(h_t\)</span></strong> 和 <strong>随机性部分
+<span class="math inline">\(z_t\)</span></strong>（在部分文献中也记为
+<span class="math inline">\(s_t\)</span>）共同组成的复合状态：</p>
+<p><span class="math display">\[s_t = (h_t, z_t)\]</span></p>
+<ul>
+<li><p>确定性的状态h_t(GRU
+hidden),用来捕捉暂时的依赖，也就是memory</p></li>
+<li><p>随机的状态z_t(categorical):捕捉当前状态的不确定性</p></li>
+<li><p>主要的operations:</p>
+<ul>
+<li><p>Observe(): h_t, z_t = f(h_{t-1}, z_{t-1}, a_{t-1}, obs_t)
+--使用了真实的observation</p></li>
+<li><p>Imagine(): h_t, z^<em>t=f(h</em>{t-1}, z_{t-1}, a_{t-1}). -----no
+observation(纯想象)，也是dreamerv3的actor-critic工作的部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Key operations:</span><br><span class="line">- observe():  h_t, z_t = f(h_&#123;t-<span class="number">1</span>&#125;, z_&#123;t-<span class="number">1</span>&#125;, a_&#123;t-<span class="number">1</span>&#125;, obs_t)  — uses real observation</span><br><span class="line">- imagine():  h_t, ẑ_t = f(h_&#123;t-<span class="number">1</span>&#125;, z_&#123;t-<span class="number">1</span>&#125;, a_&#123;t-<span class="number">1</span>&#125;)         — no observation (dreaming!)</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ul>
+<h4 id="训练">训练</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 一次前向传播, h_states是每次更新有memory功能的hidden state, z_states则是有随机性的反映当下一帧细节的state</span></span><br><span class="line"><span class="number">1.</span>h_init, z_init = rssm.initial_state(B, device)</span><br><span class="line"><span class="number">2.</span>h_states, z_posts, prior_probs, post_probs = rssm.observe_sequence(embeds, act_onehot, h_init, z_init)</span><br><span class="line"><span class="number">3.</span>latents = rssm.get_latent(s_States, z_posts)</span><br><span class="line"></span><br><span class="line"><span class="comment">### loss的组成</span></span><br><span class="line">decoder_loss = decoder_loss(latents_valid, obs_valid)   <span class="comment">## image的重建损失</span></span><br><span class="line">reward_loss = reward_head.loss(latents_valid, rewards_valid) <span class="comment">##奖励的损失</span></span><br><span class="line">continue_loss = continue_head.loss(latents_valid, continues_valid) <span class="comment">## 任务是否完成的损失</span></span><br><span class="line">kl_loss = rssm.kl_loss(prior_prob，post_probs, free_bits = <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">### observe sequence的过程</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">observe_sequence</span>(<span class="params">self, embeds, actions, h_init, z_init</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Process a full sequence of observations for world model training.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            embeds: (B, T, embed_dim) — encoded observations</span></span><br><span class="line"><span class="string">            actions: (B, T, action_dim) — actions taken</span></span><br><span class="line"><span class="string">            h_init, z_init: Initial RSSM state</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            h_states: (B, T, gru_dim)</span></span><br><span class="line"><span class="string">            z_posts: (B, T, stoch_dim, stoch_classes)</span></span><br><span class="line"><span class="string">            prior_probs: (B, T, stoch_dim, stoch_classes)</span></span><br><span class="line"><span class="string">            post_probs: (B, T, stoch_dim, stoch_classes)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">......</span><br><span class="line">				h_list, z_list = [], []</span><br><span class="line">        prior_list, post_list = [], []</span><br><span class="line"></span><br><span class="line">        h, z = h_init, z_init</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">            h, z, prior_p, post_p = self.observe_step(</span><br><span class="line">                h, z, actions[:, t], embeds[:, t]</span><br><span class="line">            )</span><br><span class="line">            h_list.append(h)</span><br><span class="line">            z_list.append(z)</span><br><span class="line">            prior_list.append(prior_p)</span><br><span class="line">            post_list.append(post_p)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 一次observe_step的过程</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">observe_step</span>(<span class="params">self, h_prev, z_prev, action, embed</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Single observation step: advance state using real observation.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        1. Compute new deterministic state h_t via GRU</span></span><br><span class="line"><span class="string">        2. Compute prior p(z|h) — what the model predicts without seeing obs</span></span><br><span class="line"><span class="string">        3. Compute posterior q(z|h,obs) — corrected using real observation</span></span><br><span class="line"><span class="string">        4. Sample z_t from posterior (used for training) &quot;&quot;&quot;</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">       	<span class="comment"># 1. GRU step: h_t = GRU(h_&#123;t-1&#125;, [z_&#123;t-1&#125;, a_&#123;t-1&#125;]) 更新memory</span></span><br><span class="line">       	x = self.pre_gru(torch.cat([z_prev.flatten(-<span class="number">2</span>, -<span class="number">1</span>), action], dim=-<span class="number">1</span>))</span><br><span class="line">        h = self.gru(x, h_prev) <span class="comment">#（self.gru = torch.nn.GRUCell(hidden, gru_dim)）</span></span><br><span class="line">        h = self.gru_norm(h)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. Prior: p(z_t | h_t)  #先验概率</span></span><br><span class="line">        prior_logits = self.prior_net(h)  <span class="comment">#prior_net: MLP</span></span><br><span class="line">        prior_z, prior_probs = self._categorical_sample(prior_logits)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. Posterior: q(z_t | h_t, embed(obs_t))</span></span><br><span class="line">        post_logits = self.posterior_net(torch.cat([h, embed], dim=-<span class="number">1</span>))  <span class="comment">#加上embed(obs)后输入mlp估计后验</span></span><br><span class="line">        post_z, post_probs = self._categorical_sample(post_logits)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> h, post_z, prior_probs, post_probs</span><br><span class="line">      </span><br><span class="line"><span class="comment">### 如何做self._categorical_sample</span></span><br><span class="line">把(batch_size, stoch_dim=<span class="number">16</span>,stoch_classes=<span class="number">16</span>)此时刚从mlp出来维度是(batch_size, stoch_flat=stoch_dim*stoch_classes)要经过softmax得到probs</span><br><span class="line">一般softmax就可以了，这里有两步处理</span><br><span class="line"><span class="number">1.</span>unimix: blend softmax <span class="keyword">with</span> uniform distribution</span><br><span class="line">probs = (<span class="number">1</span>- self.unimax) * probs + self.unimax*uniform</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>straight-through</span><br><span class="line">probs经过torch.multinomial采样可以得到one_hot</span><br><span class="line">z= one_hot + probs - probs.detach()  <span class="comment">## one_hot无法求导，但是我们又需要反向传播，又需要one_hot的结果</span></span><br><span class="line"></span><br><span class="line">最终<span class="keyword">return</span> z, probs</span><br><span class="line"></span><br><span class="line"><span class="comment">### 回到observe_sequence</span></span><br><span class="line">最后得到h_states, z_posts， prior_probs, post_probs</span><br><span class="line"></span><br><span class="line"><span class="comment">### 看一看损失的计算过程</span></span><br><span class="line">上面的h_states和z_posts会一起拼接成latents,进行下一步的重建损失，reward损失，<span class="keyword">continue</span>损失的计算，而prior_probs和post_probs用来计算kl散度让想象尽可能准。</span><br><span class="line">latents = rssm.get_latent(h_states, z_posts)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 1.decoder loss. MLP+ mse loss</span></span><br><span class="line">不一样的处理是mse loss between symlog(real_obs)和decoder output</span><br><span class="line"></span><br><span class="line"><span class="comment">### 2.loss2:reward_loss</span></span><br><span class="line">latent-&gt;mlp-&gt;logits</span><br><span class="line">对reward进行255bins离散程度的twohot discrete处理然后计算cross-entropy</span><br><span class="line">上述对reward的处理也放到symlog/exp的空间进行处理</span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.loss3:continue_loss</span></span><br><span class="line">采用的是weighted BCE loss,因为终止信号的样本比较少，所以用<span class="number">10</span>:<span class="number">1</span>的比例平衡一下</span><br><span class="line">logits = self.forward(latent)</span><br><span class="line">weight = torch.where(target_continue&lt;<span class="number">0.5</span>, <span class="number">10.0</span>,<span class="number">1.0</span>)</span><br><span class="line"><span class="keyword">return</span> F.binary_cross_entropy_with_logits(logits, target_continue, weight=weight)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 4.kl_loss</span></span><br><span class="line">KL = <span class="built_in">max</span>(free_bits, KL_actual) 防止逼近于<span class="number">0</span>直接坍塌</span><br><span class="line">（比如前验和后验概率约定好我们俩统一都输出<span class="number">0</span>）</span><br></pre></td></tr></table></figure>
+<h2 id="actor-critic">actor-critic</h2>
+<p>dreamerv3会先在world
+model里面预热几个episodes之后再在actor-ctric框架中训练agent的动作。</p>
+<p>我们主要关注actor-critic的逻辑。</p>
+<p>Actor(latent) -&gt; action -&gt; imagine_step -&gt; next_latent
+-&gt;reward</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">imagined_latents = []</span><br><span class="line">imagined_entropies = []</span><br><span class="line"><span class="number">1.</span><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">len</span>(horizon):</span><br><span class="line">   latent(h+z)-&gt;actor网络mlp采样得到action,entropy</span><br><span class="line">                                 -&gt;上面得到的action会进入rssm.imagine_step得到下一步的h,z</span><br><span class="line">                                 -&gt; 把每一步的latent(h,z)加入imagined_latents, action网络估计的action的entropy加入到imagined_entropies</span><br><span class="line">                            </span><br><span class="line"><span class="number">2.</span>latents-&gt;wm的reward_head-&gt;imagined_Rewards</span><br><span class="line">  latents-&gt;wm的continue_head-&gt;imagined_continues</span><br><span class="line">  lantets-&gt;actor-critic的critic_target网络（no gridient, <span class="keyword">for</span> bootstrapping）-&gt;imagined_values</span><br><span class="line">  </span><br><span class="line"><span class="number">3.</span>通过gae公式输入rewards, continues, values计算returns</span><br><span class="line">latent-&gt;self.critic网络-&gt;估计value值和上面的gae计算的returns做critic_loss</span><br><span class="line">returns经过归一化最大化-》负reward最小化作为actor_loss</span><br><span class="line">encropy熵值尽可能大-》取负尽可能小作为entropy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">● 是的，dreamer/agent.py 完整体现了 actor-critic 学习过程。核心在两个方法：</span><br><span class="line"></span><br><span class="line">  Phase <span class="number">2</span>：想象中的 actor-critic（_train_actor_critic, agent.py:<span class="number">230</span>-<span class="number">361</span>）</span><br><span class="line"></span><br><span class="line">  <span class="number">1.</span> 想象前向 rollout（agent.py:<span class="number">282</span>-<span class="number">299</span>）</span><br><span class="line">  从真实 posterior 起点 h_flat, z_flat（已 detach），循环 horizon=<span class="number">15</span> 步：</span><br><span class="line">  - actor.sample(latent) 选动作，梯度流经 actor</span><br><span class="line">  - rssm.imagine_step(h, z, action) 推进动力学，梯度通过动作流入世界模型（agent.py:<span class="number">299</span>）</span><br><span class="line">  - 收集 imagined_latents 与 imagined_entropies</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span> 价值/reward 预测（agent.py:<span class="number">308</span>-<span class="number">322</span>）</span><br><span class="line">  - reward_head 在想象状态上算 reward（twohot_decode）</span><br><span class="line">  - continue_head 算 c_t</span><br><span class="line">  - critic_target（Polyak, τ=<span class="number">0.02</span>）给 bootstrap value，no_grad</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span> λ-<span class="keyword">return</span>（_compute_lambda_returns, agent.py:<span class="number">363</span>-<span class="number">384</span>）</span><br><span class="line">  GAE 风格反向递归：</span><br><span class="line">  G_t = r_t + γ·c_t·((<span class="number">1</span>-λ)·V_&#123;t+<span class="number">1</span>&#125; + λ·G_&#123;t+<span class="number">1</span>&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="number">4.</span> 两个损失（agent.py:<span class="number">332</span>-<span class="number">355</span>）</span><br><span class="line">  - Critic：critic.loss(latent.detach(), lambda_returns.detach()) —— 纯回归</span><br><span class="line">  - Actor：-normalized_returns.mean() - entropy_coef·entropy —— 通过动力学的可微链路反向，让 actor 学到<span class="string">&quot;选这个动作世界模型预测更高回报&quot;</span></span><br><span class="line"></span><br><span class="line">  关键设计</span><br><span class="line"></span><br><span class="line">  - 梯度通过动作连接 actor 与世界模型（agent.py:<span class="number">235</span>-<span class="number">244</span> 注释）：actor 参数被 actor_optimizer 更新，但计算图穿过 rssm，比纯 REINFORCE 信号丰富得多</span><br><span class="line">  - ReturnNormalizer（agent.py:<span class="number">343</span>）：百分位归一化 λ-<span class="keyword">return</span>，跨数量级 reward 也能稳</span><br><span class="line">  - 两阶段分离：train_step 先 _train_world_model 再 _train_actor_critic（agent.py:<span class="number">147</span>-<span class="number">152</span>），warmup 阶段只训世界模型</span><br></pre></td></tr></table></figure>
+<p>特别注意：actor_loss的计算用的是normalized之后的lambda_Returns值。</p>
+<p>正如前面讨论的，传统的无模型强化学习（如
+PPO）由于环境不可导，必须使用 <strong>Score Function（<span
+class="math inline">\(\text{Advantage} \times \nabla \log
+\pi\)</span>）</strong> 来估计梯度。</p>
+<p>但在拥有可导世界模型的算法（如 DreamerV3）中：</p>
+<ul>
+<li><p>策略（Actor）的更新往往<strong>不直接使用</strong>传统的 Score
+Function，而是直接利用 <strong>Pathwise Derivative（路径导数 /
+重参数化技巧）</strong>。</p>
+<h4 id="score-function-的数学本质似然比技巧-likelihood-ratio-trick">1.
+Score Function 的数学本质：似然比技巧 (Likelihood Ratio Trick)</h4>
+<ul>
+<li><strong>原理</strong>：利用对数导数恒等式 <span
+class="math inline">\(\nabla_\theta p_\theta(x) = p_\theta(x)
+\nabla_\theta \log p_\theta(x)\)</span>。<br />
+</li>
+<li><strong>作用</strong>：它允许我们在<strong>函数 <span
+class="math inline">\(f(x)\)</span>
+不可导、未知或者包含黑盒环境</strong>的情况下，仅仅通过对概率分布 <span
+class="math inline">\(p_\theta(x)\)</span>
+进行采样和求对数梯度，就能无偏地估计出期望的梯度。它是无模型强化学习（如
+REINFORCE、PPO）和变分推断（如标准的 VAE）的基石。</li>
+</ul>
+<h4
+id="pathwise-derivative-的数学本质重参数化与链式法则-reparameterization-chain-rule">2.
+Pathwise Derivative 的数学本质：重参数化与链式法则 (Reparameterization
+&amp; Chain Rule)</h4>
+<ul>
+<li><p><strong>原理</strong>：如果随机变量 <span
+class="math inline">\(x\)</span> 可以表示为参数 <span
+class="math inline">\(\theta\)</span> 和外部独立噪声 <span
+class="math inline">\(\epsilon\)</span> 的可导确定性映射 <span
+class="math inline">\(x =
+g_\theta(\epsilon)\)</span>，那么求导时可以直接穿透期望符号：</p>
+<p><span class="math display">\[\nabla_\theta \mathbb{E}[f(x)] =
+\mathbb{E}\left[ \frac{\partial f}{\partial x} \frac{\partial
+g_\theta}{\partial \theta} \right]\]</span></p></li>
+<li><p><strong>在世界模型（如
+DreamerV3）中的应用</strong>：整个世界模型（状态转移方程、观察模型）和策略网络（Actor）共同构成了一个巨大的、参数化的可微计算图。策略生成的动作
+<span class="math inline">\(a_t\)</span>
+输入给可微的世界模型得到下一状态 <span
+class="math inline">\(s_{t+1}\)</span>，再结合价值函数（Critic），最终的累积回报
+<span class="math inline">\(J\)</span> 对策略参数 <span
+class="math inline">\(\theta\)</span>
+求导时，<strong>不需要做统计意义上的似然比估计，而是直接通过时间轴（Backpropagation
+Through Time, BPTT）一路反向传播链式法则</strong>。</p></li>
+</ul></li>
+</ul>
+<h2 id="总结wm">总结wm</h2>
+<p>总而言之，对wm建模，训练想想未来horizon步数的能力，会估计未来的observation,
+rewards和continue.</p>
+<p>对wm先warm up训练一段时间。</p>
+<p>对actor-critic来说，在wm训练之后，用想象horizon步数的latents去估计采样action和对应的action_entropy，去经过mlp估计value,然后计算gae的值</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RSSM/" rel="tag"># RSSM</a>
+              <a href="/tags/world-model/" rel="tag"># world model</a>
+              <a href="/tags/dreamerv3/" rel="tag"># dreamerv3</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/07/27/pytorch-jax/" rel="prev" title="用jax为rl进行加速">
+      <i class="fa fa-chevron-left"></i> 用jax为rl进行加速
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/08/04/cs231n-2026/" rel="next" title="cs231n-2026">
+      cs231n-2026 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#world-model%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">world model的学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%96%99"><span class="nav-number">2.</span> <span class="nav-text">资料</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rssm%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">2.0.1.</span> <span class="nav-text">RSSM的组成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83"><span class="nav-number">2.0.2.</span> <span class="nav-text">训练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actor-critic"><span class="nav-number">3.</span> <span class="nav-text">actor-critic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#score-function-%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%AC%E8%B4%A8%E4%BC%BC%E7%84%B6%E6%AF%94%E6%8A%80%E5%B7%A7-likelihood-ratio-trick"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.
+Score Function 的数学本质：似然比技巧 (Likelihood Ratio Trick)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pathwise-derivative-%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%AC%E8%B4%A8%E9%87%8D%E5%8F%82%E6%95%B0%E5%8C%96%E4%B8%8E%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99-reparameterization-chain-rule"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.
+Pathwise Derivative 的数学本质：重参数化与链式法则 (Reparameterization
+&amp; Chain Rule)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93wm"><span class="nav-number">4.</span> <span class="nav-text">总结wm</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

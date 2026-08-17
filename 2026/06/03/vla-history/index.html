@@ -20,16 +20,20 @@
     var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  overview of vla 来自论文https:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260603144259399  各种架构 主要是骨干架构(transform">
+  <meta name="description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  overview of vla 来自论文https:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260603144259399    image-20260814180446">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vla-history">
 <meta property="og:url" content="http://77philosophia.github.io/2026/06/03/vla-history/index.html">
 <meta property="og:site_name" content="Garfield&#39;s blog">
-<meta property="og:description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  overview of vla 来自论文https:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260603144259399  各种架构 主要是骨干架构(transform">
+<meta property="og:description" content="before vla  分层&#x2F;模块化架构:感知——规划——控制，无泛化 模仿学习：能解决一些复杂的柔性物体抓取，依然受限于“见过的场景”，无法理解人类复杂的自然语言指令。  overview of vla 来自论文https:&#x2F;&#x2F;vla-survey.github.io&#x2F;data&#x2F;paper.pdf   image-20260603144259399    image-20260814180446">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260603144259399.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260814180446738.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260817112754488.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260817143122865.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/03/vla-history/image-20260817151139857.png">
 <meta property="article:published_time" content="2026-06-03T06:41:37.000Z">
-<meta property="article:modified_time" content="2026-06-11T06:21:19.806Z">
+<meta property="article:modified_time" content="2026-08-17T07:13:06.511Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="vla">
 <meta name="twitter:card" content="summary">
@@ -218,7 +222,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-11 14:21:19" itemprop="dateModified" datetime="2026-06-11T14:21:19+08:00">2026-06-11</time>
+                <time title="Modified: 2026-08-17 15:13:06" itemprop="dateModified" datetime="2026-08-17T15:13:06+08:00">2026-08-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,6 +256,11 @@
 <img data-src="/2026/06/03/vla-history/image-20260603144259399.png"
 alt="image-20260603144259399" />
 <figcaption aria-hidden="true">image-20260603144259399</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/06/03/vla-history/image-20260814180446738.png"
+alt="image-20260814180446738" />
+<figcaption aria-hidden="true">image-20260814180446738</figcaption>
 </figure>
 <h3 id="各种架构">各种架构</h3>
 <p>主要是骨干架构(transformer, vlm) 和动作头(discrete token , diffusion
@@ -371,16 +380,116 @@ class="math inline">\(x,y,z,\text{roll},\text{pitch},\text{yaw},\text{gripper}\)
 (7B)</strong> 这一开源变体（基于 Prismatic VLM 和 Llama-2-7B
 构建）。</p></li>
 </ul>
-<h4 id="octouc-berkeley引入基于扩散的生成模型">Octo,UC
-Berkeley——引入基于扩散的生成模型</h4>
 <h4
 id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的开源视觉动作语言模型</h4>
+<p><a href="./openvla.md"></a></p>
+<figure>
+<img data-src="/2026/06/03/vla-history/image-20260817112754488.png"
+alt="image-20260817112754488" />
+<figcaption aria-hidden="true">image-20260817112754488</figcaption>
+</figure>
 <ul>
-<li><p>基于 Llam、a2、DINOv2 和 SigLIP 构建</p></li>
-<li><p>适用于 16GB 以上显存的 7B 参数模型，并可选择进一步量化。</p></li>
-<li><p>支持 LoRA 和全面的微调功能，以实现用户特定的训练适应性。</p>
-<p>#### PI0-提出flow matching</p></li>
+<li><p>OpenVLA是一个在Open-X
+embodiment数据集上面训练的97万轨迹上训练的7B模型,基于 Llam、a2、DINOv2
+和 SigLIP 构建。</p></li>
+<li><p>对动作的处理：连续动作值 ∈ [-1, 1] 被均匀分到 <strong>256 个
+bin</strong> 中，离散化后的 bin 索引映射到 <strong>LLM 词表末尾的 256 个
+token</strong>（BPE 词表中最低频的 token），7-DoF 动作 → 7 个
+token</p></li>
 </ul>
+<blockquote>
+<p>[!NOTE]</p>
+<p>自回归（Autoregressive）<strong>或</strong>分类/离散化（Tokenization）的方式来输出动作，即把连续的机器人关节角度或位姿切成离散的
+<span class="math inline">\(bins\)</span>（例如 256
+个档位），然后像大语言模型预测下一个词一样逐个预测动作
+Token。这种方式虽然能借用大模型的架构，但在处理高频、平滑、多模态（Multimodal，即同一个状态下有多种合理的运动轨迹）的连续物理控制时，往往显得僵硬或精度不足。</p>
+<p>而 <strong>Diffusion Policy</strong>
+的核心优势恰恰在于<strong>生成连续、平滑、多模态的动作轨迹（Action
+Chunking）</strong>，但它本身缺乏强大宏观语义理解和长程推理能力。因此，将两者结合（即
+<strong>VLA + Diffusion Policy</strong>）可以取长补短。</p>
+</blockquote>
+<h4 id="octouc-berkeley引入基于扩散的生成模型-diffusion-policy">Octo,UC
+Berkeley——引入基于扩散的生成模型 Diffusion Policy</h4>
+<h5 id="url-1">url:</h5>
+<p>Diffusion Policy: Visuomotor Policy Learning via Action Diffusion</p>
+<p>https://www.alphaxiv.org/abs/2303.04137v5</p>
+<h5 id="知识点回顾">知识点回顾：</h5>
+<p>回顾一下diffusion的模型，可以参考()[cs231n-2016.md]</p>
+<p>就是从一个噪声起点逐步得到数据分布中的sample的过程，其中可以加condition进行引导。</p>
+<p>扩散策略的核心思想是将这一理念应用于机器人动作：它并非直接预测下一个动作，而是从随机噪声出发，根据当前观测结果迭代地将其细化为一个合理的动作（或动作序列）。</p>
+<p>但创新远不止于此。 扩散策略不仅仅是预测行为，它还能学习……
+<strong>动作分布的梯度</strong>
+——即所谓的“评分函数”。它告诉模型，对于任何给定的动作和观察结果，应该朝哪个方向调整动作，使其在已展现行为的分布下更有可能发生。</p>
+<ul>
+<li>特点：学习过程比较稳定</li>
+<li>克服连续动作多峰分布的问题。
+<ul>
+<li><strong>现实世界的示范数据是多模态的（Multimodal）”</strong>，而“标准显式策略的数学假设是单峰的（Unimodal）”。</li>
+<li>离散的动作没法处理高维，如果不离散连续的动作估计又会出现多峰分布。</li>
+</ul></li>
+<li>扩散策略的一大进步在于它能够预测未来动作的完整序列（action
+chunk），而不仅仅是下一步动作。（每个时间步，模型能看到全部action_chunk_size长度的动作块，然后进行全局优化，就不像之前观察一步走一步，还容易出现动作之间的割裂）</li>
+<li>diffusion的网络：1D-cnn或者transformer等</li>
+</ul>
+<h5 id="methods-1">methods:</h5>
+<figure>
+<img data-src="/2026/06/03/vla-history/image-20260817143122865.png"
+alt="image-20260817143122865" />
+<figcaption aria-hidden="true">image-20260817143122865</figcaption>
+</figure>
+<ul>
+<li><p><strong>基于CNN的架构</strong>：使用一维时间卷积来处理带噪声的动作序列，并通过特征级线性调制（FiLM）层整合视觉观察和扩散时间步。FiLM机制应用逐元素仿射变换：</p>
+<p><span class="math display">\[
+\text{FiLM}(x) = \gamma \odot x + \beta
+\]</span></p>
+<p>其中 <span class="math inline">\(\gamma\)</span> 和 <span
+class="math inline">\(\beta\)</span> 是从条件信息中学习得到的。</p></li>
+<li><p><strong>基于Transformer的架构</strong>：将嘈杂的动作序列视为输入标记，由Transformer解码器块处理。视觉观测通过交叉注意力机制整合，使模型能够在预测动作时选择性地关注相关的视觉特征。</p></li>
+<li><p><strong>滚动时域控制</strong>，其中策略预测<span
+class="math inline">\(T_p\)</span>个未来动作，但在重新规划前只执行前<span
+class="math inline">\(T_a\)</span>步</p></li>
+</ul>
+<h4 id="rdt-1b-dit">RDT-1B： DiT</h4>
+<ul>
+<li><p>Octo 的核心是一个参数量较小（如 Octo-Small 为 27M，Octo-Base 为
+93M）的通用 Transformer 主干。它的架构采用“读出标记（Readout
+Tokens）”机制。在 Octo 的代码配置（如
+<code>octo/model/components/action_heads_pt.py</code>）中，动作生成通常被作为一个<strong>外挂的下游模块（Readout
+Head）</strong>。你可以通过修改配置自由切换动作头类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Octo 的动作头可以在 L1Regression（回归）或 DiffusionActionHead 之间切换</span></span><br><span class="line">meta[<span class="string">&quot;config&quot;</span>][<span class="string">&quot;model&quot;</span>][<span class="string">&quot;heads&quot;</span>][<span class="string">&quot;action&quot;</span>] = ModuleSpec.create(</span><br><span class="line">    DiffusionActionHead,  <span class="comment"># 或者 L1ActionHead</span></span><br><span class="line">    input_dim=<span class="number">384</span>,</span><br><span class="line">    action_horizon=<span class="number">4</span>,</span><br><span class="line">    action_dim=<span class="number">7</span>,</span><br><span class="line">    readout_key=<span class="string">&quot;readout_action&quot;</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这种设计意味着扩散去噪网络并不是主干本身，而是一个挂在主干末端、相对独立的轻量级网络。</p></li>
+<li><p>RDT-1B 整个模型就是围绕 <strong>Diffusion Transformer
+(DiT)</strong> 构建的，参数量达到了
+1.2B（12亿）。在它的代码中，<strong>没有“主干归主干、动作归动作”的割裂感</strong>。
+* <strong>动作头实现</strong>： 噪声动作（Noisy
+Actions）在代码中直接作为 Token
+序列的一部分，与经过编码的视觉、语言、本体状态 Token 一起送入多层
+<strong>DiT Block（包含 Self-Attention 和 Cross-Attention）</strong>
+中。整个 1.2B 的大模型直接参与联合去噪，而不是靠一个外部的轻量 Head
+去硬画动作。</p></li>
+</ul>
+<h3 id="flow-matching-pi0">Flow matching: PI0</h3>
+<h5
+id="urlhttpswww.alphaxiv.orgabs2410.24164v1">url:https://www.alphaxiv.org/abs/2410.24164v1</h5>
+<h5 id="methods-2">methods:</h5>
+<ul>
+<li><strong>视觉-语言骨干网络</strong>：基于 PaliGemma，一个预训练的
+VLM，用于处理视觉输入和语言指令。该骨干网络利用来自 SigLIP 预训练的 4
+亿张图像和来自 Gemma 语言模型的 26 亿个 token。</li>
+<li><strong>动作专家</strong>：一个专门的模块，将视觉和语言表示转换为机器人动作。该组件在大约
+3
+亿个参数上进行训练，并使用流匹配来生成适用于机器人控制的连续动作分布。</li>
+</ul>
+<figure>
+<img data-src="/2026/06/03/vla-history/image-20260817151139857.png"
+alt="image-20260817151139857" />
+<figcaption aria-hidden="true">image-20260817151139857</figcaption>
+</figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>π0 的一项重大创新是使用 flow matching
+进行动作生成。现在几乎成了主流。</p>
+</blockquote>
 
     </div>
 
@@ -467,8 +576,8 @@ id="openvla最流行的开源视觉动作语言模型">OpenVLA——最流行的
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#before-vla"><span class="nav-number">1.</span> <span class="nav-text">before vla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overview-of-vla"><span class="nav-number">2.</span> <span class="nav-text">overview of vla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">各种架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#transformer-discrete-action"><span class="nav-number">3.1.</span> <span class="nav-text">1.transformer + discrete
 action</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#transformer-diffusion-action-head"><span class="nav-number">3.2.</span> <span class="nav-text">2.Transformer + diffusion
 action head</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#diffusion-transformer"><span class="nav-number">3.3.</span> <span class="nav-text">3. diffusion transformer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vla%E5%8F%91%E5%B1%95%E7%9A%84history-line"><span class="nav-number">4.</span> <span class="nav-text">vla发展的history line</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rt-2-2023%E5%B9%B48%E6%9C%88google-mind%E6%AD%A3%E5%BC%8F%E6%8F%90%E5%87%BA%E4%BA%86vla%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.1.</span> <span class="nav-text">RT-2
-(2023年8月,google mind)——正式提出了vla的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#url"><span class="nav-number">4.1.1.</span> <span class="nav-text">url</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#methods"><span class="nav-number">4.1.2.</span> <span class="nav-text">methods:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#octouc-berkeley%E5%BC%95%E5%85%A5%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E7%9A%84%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">Octo,UC
-Berkeley——引入基于扩散的生成模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#openvla%E6%9C%80%E6%B5%81%E8%A1%8C%E7%9A%84%E5%BC%80%E6%BA%90%E8%A7%86%E8%A7%89%E5%8A%A8%E4%BD%9C%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.3.</span> <span class="nav-text">OpenVLA——最流行的开源视觉动作语言模型</span></a></li></ol></li></ol></div>
+(2023年8月,google mind)——正式提出了vla的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#url"><span class="nav-number">4.1.1.</span> <span class="nav-text">url</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#methods"><span class="nav-number">4.1.2.</span> <span class="nav-text">methods:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#openvla%E6%9C%80%E6%B5%81%E8%A1%8C%E7%9A%84%E5%BC%80%E6%BA%90%E8%A7%86%E8%A7%89%E5%8A%A8%E4%BD%9C%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">OpenVLA——最流行的开源视觉动作语言模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#octouc-berkeley%E5%BC%95%E5%85%A5%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E7%9A%84%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B-diffusion-policy"><span class="nav-number">4.3.</span> <span class="nav-text">Octo,UC
+Berkeley——引入基于扩散的生成模型 Diffusion Policy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#url-1"><span class="nav-number">4.3.1.</span> <span class="nav-text">url:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%E5%9B%9E%E9%A1%BE"><span class="nav-number">4.3.2.</span> <span class="nav-text">知识点回顾：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#methods-1"><span class="nav-number">4.3.3.</span> <span class="nav-text">methods:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rdt-1b-dit"><span class="nav-number">4.4.</span> <span class="nav-text">RDT-1B： DiT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flow-matching-pi0"><span class="nav-number">5.</span> <span class="nav-text">Flow matching: PI0</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#urlhttpswww.alphaxiv.orgabs2410.24164v1"><span class="nav-number">5.0.1.</span> <span class="nav-text">url:https:&#x2F;&#x2F;www.alphaxiv.org&#x2F;abs&#x2F;2410.24164v1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#methods-2"><span class="nav-number">5.0.2.</span> <span class="nav-text">methods:</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -484,7 +593,7 @@ Berkeley——引入基于扩散的生成模型</span></a></li><li class="nav-it
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">159</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -497,7 +606,7 @@ Berkeley——引入基于扩散的生成模型</span></a></li><li class="nav-it
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">127</span>
+        <span class="site-state-item-count">132</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

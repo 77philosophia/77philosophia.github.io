@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="optimizer 1.sgd: 两个问题：a。各个方向上步长一样，如果梯度的Hessian 矩阵条件数大明曲面在不同方向上的形态极其畸变（极度狭长）。条件数越大，标准梯度下降的震荡和低效问题就越严重。 b.谷点梯度消失 123while True:  dx &#x3D; compute_gradient(x)  x -&#x3D; learning_rate * dx 2.sgd + momentum 12345v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs231n-2026">
+<meta property="og:url" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="optimizer 1.sgd: 两个问题：a。各个方向上步长一样，如果梯度的Hessian 矩阵条件数大明曲面在不同方向上的形态极其畸变（极度狭长）。条件数越大，标准梯度下降的震荡和低效问题就越严重。 b.谷点梯度消失 123while True:  dx &#x3D; compute_gradient(x)  x -&#x3D; learning_rate * dx 2.sgd + momentum 12345v">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804143559179.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804143612051.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804143729725.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/cs231n-2026/image-20260804143954906.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804144058933.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804144122440.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804144138895.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804145621773.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804150724697.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804154754041.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804154803224.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804154845745.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804155613771.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804155744806.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804155915106.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804155959956.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804160551940.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805100834917.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805101018440.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805101206212.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805101436344.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805101557053.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805101639244.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805101810567.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805102114384.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805102604601.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805102643693.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805102836696.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805102923533.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805103121144.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805103409241.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805103442154.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805103528964.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805103634907.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805104829770.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805105333685.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805105532091.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805105606291.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805105634138.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805105736775.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805105821585.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805110046700.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805110811779.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111042564.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111106701.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111131070.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111213299.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111515796.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111622586.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805111735145.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805112043728.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805140451515.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805142036013.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805142355055.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805152239529.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805152303356.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805161911812.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805161959817.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805162126758.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805162140586.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805162240716.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805163032078.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805163102373.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805163518873.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805163603682.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805170805476.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805170838301.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805170937348.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805171006724.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805171121607.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805171225733.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805171746921.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805171805194.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805171955194.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805172617763.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805172909172.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805172927751.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805173334003.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805173710122.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805173721032.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260805173736929.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260817143949980.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806110755425.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806111128675.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806141247646.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806141700281.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806141854295.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806141955207.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806142046670.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806143028442.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806143548775.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806143753402.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806143920019.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806144054686.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806145808656.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806150010662.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806150351765.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806153409003.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806154916961.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155022325.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155327916.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155419068.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155443573.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155512649.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155531105.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806155645129.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806162931025.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806165041429.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806171354613.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806172320512.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806172345478.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806172458847.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806172548468.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806172621494.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806174119946.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806174142414.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806174949859.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806174959987.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806175138066.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806175219272.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260806175243502.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810101919079.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810102214140.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810102919050.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103025049.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103609364.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103713387.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103740263.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103836311.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103852784.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810103928979.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104038858.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104049357.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104116729.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104159659.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104207696.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104222313.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810104300302.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810110427528.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810110507801.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810110521214.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810110714585.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810110755954.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810111519636.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810112145031.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810112223570.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810112238515.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810112252829.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810112313619.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810134709930.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810135738399.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810140008651.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810140349057.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810140408249.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810141457821.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810141524105.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810141604462.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810141954002.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810142821854.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810142844400.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143059881.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143323192.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143340598.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143422124.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143503754.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143546088.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143554484.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260810143603979.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812141911715.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812142514259.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812142632994.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812142717723.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812143129291.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812143156604.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812144020677.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812143921804.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812144105603.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812144137649.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812144252471.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812144347633.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812144958437.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145136272.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145144535.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145210074.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145316618.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145333981.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145406789.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145423410.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812145832448.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812150849437.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151215486.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151258658.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151306605.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151315998.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151334719.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151529821.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812151550288.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812155039601.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812155241611.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812155640191.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812155919773.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812155935329.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812160028334.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812160205608.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812161728894.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812161923622.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812162011411.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812162121826.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812162837858.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812162848474.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812163029802.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812163039054.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812163142079.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812163359579.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812164545900.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812170131955.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812170356019.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812171020279.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812171203007.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812171231518.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812171252336.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812171306619.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812171746193.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172044398.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172218650.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172226262.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172237600.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172315851.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172354037.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172415731.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260812172538577.png">
+<meta property="article:published_time" content="2026-08-04T05:54:20.000Z">
+<meta property="article:modified_time" content="2026-08-17T06:39:52.947Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="cs231n">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/08/04/cs231n-2026/image-20260804143559179.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/08/04/cs231n-2026/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>cs231n-2026 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/categories/Books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/04/cs231n-2026/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cs231n-2026
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-04 13:54:20" itemprop="dateCreated datePublished" datetime="2026-08-04T13:54:20+08:00">2026-08-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-17 14:39:52" itemprop="dateModified" datetime="2026-08-17T14:39:52+08:00">2026-08-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="optimizer">optimizer</h3>
+<p>1.sgd:</p>
+<p>两个问题：a。各个方向上步长一样，如果梯度的Hessian
+矩阵条件数大明曲面在不同方向上的形态极其畸变（极度狭长）。<strong>条件数越大，标准梯度下降的震荡和低效问题就越严重。</strong>
+b.谷点梯度消失</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">  dx = compute_gradient(x)</span><br><span class="line">  x -= learning_rate * dx</span><br></pre></td></tr></table></figure>
+<p>2.sgd + momentum</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vx = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">  dx = compute_gradient(x)</span><br><span class="line">  vx = rho * vx + dx</span><br><span class="line">  x -= learning_rate * vx</span><br></pre></td></tr></table></figure>
+<p>3.RMSProp：因为分母除以了一个膜，因此平缓的方向会加速，steep的方向会放缓</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grad_squared = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	dx = compute_gradient(x)</span><br><span class="line">  grad_squared = decay_rate * grad_squared + (<span class="number">1</span>-decay_rate)*dx*dx</span><br><span class="line">  x -= learning_rate * dx / (np.sqrt(grad_squared) + <span class="number">1e-7</span>)</span><br></pre></td></tr></table></figure>
+<p>4.adam</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804143559179.png"
+alt="image-20260804143559179" />
+<figcaption aria-hidden="true">image-20260804143559179</figcaption>
+</figure>
+<p>基于momentum + rmsprop</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804143612051.png"
+alt="image-20260804143612051" />
+<figcaption aria-hidden="true">image-20260804143612051</figcaption>
+</figure>
+<p>4.adamW: 关键是怎么对待正则项</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804143729725.png"
+alt="image-20260804143729725" />
+<figcaption aria-hidden="true">image-20260804143729725</figcaption>
+</figure>
+<p>上面的所有optimizer里，learning rate都是一个超参数。</p>
+<h5 id="learning-rate-decay">learning rate decay</h5>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr>
+<th>固定衰减</th>
+<th><img data-src="cs231n-2026/image-20260804143954906.png" alt="image-20260804143954906" style="zoom:33%;" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cosine</td>
+<td><img data-src="/2026/08/04/cs231n-2026/image-20260804144058933.png"
+alt="image-20260804144058933" /></td>
+</tr>
+<tr>
+<td>Linear</td>
+<td><img data-src="/2026/08/04/cs231n-2026/image-20260804144122440.png"
+alt="image-20260804144122440" /></td>
+</tr>
+<tr>
+<td>开根号</td>
+<td><img data-src="/2026/08/04/cs231n-2026/image-20260804144138895.png"
+alt="image-20260804144138895" /></td>
+</tr>
+</tbody>
+</table>
+<h5 id="linear-warmup-针对模型开始">linear warmup: 针对模型开始</h5>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804145621773.png"
+alt="image-20260804145621773" />
+<figcaption aria-hidden="true">image-20260804145621773</figcaption>
+</figure>
+<p>一阶优化和二阶优化：</p>
+<p>Hessian has O(N^2) elements Inverting takes O(N^3) N = (Tens or
+Hundreds of) Millions</p>
+<p>二阶优化的计算量比较大</p>
+<p>总结：</p>
+<ul>
+<li>Adam(W) 默认情况下都是个不错的选择，即使learning rate固定</li>
+<li>sgd+momentum有时候能outperform Adam,但是lr需要更细致的调参。</li>
+<li>如果能接受full batch的参数更新，可以考虑2阶甚至多阶的优化。</li>
+</ul>
+<h2 id="lecture4">lecture4</h2>
+<h4 id="激活函数">激活函数</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804150724697.png"
+alt="image-20260804150724697" />
+<figcaption aria-hidden="true">image-20260804150724697</figcaption>
+</figure>
+<h2 id="lecture7">lecture7:</h2>
+<h4 id="rnn">RNN</h4>
+<p>解决的是序列问题（一对一、一对多、多对一）</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804154754041.png"
+alt="image-20260804154754041" />
+<figcaption aria-hidden="true">image-20260804154754041</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804154803224.png"
+alt="image-20260804154803224" />
+<figcaption aria-hidden="true">image-20260804154803224</figcaption>
+</figure>
+<p>举例子：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804154845745.png"
+alt="image-20260804154845745" />
+<figcaption aria-hidden="true">image-20260804154845745</figcaption>
+</figure>
+<p>RNN的梯度传播：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155613771.png"
+alt="image-20260804155613771" />
+<figcaption aria-hidden="true">image-20260804155613771</figcaption>
+</figure>
+<p>这种基于时间的连乘的梯度传播的形式会带来两个问题：</p>
+<p>由于同一套权重矩阵在时间轴上被反复相乘多次（链式法则），如果权重值偏大，梯度会随着时间步的增加呈指数级增长，导致<strong>梯度爆炸（Exploding
+Gradient）</strong>；如果权重偏小，梯度则会呈指数级缩小，导致<strong>梯度消失（Vanishing
+Gradient）</strong>，让模型无法学到较早时间步的信息。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155744806.png"
+alt="image-20260804155744806" />
+<figcaption aria-hidden="true">image-20260804155744806</figcaption>
+</figure>
+<p>梯度爆炸可以通过梯度裁剪来解决</p>
+<p>梯度消失需要调整rnn结构。</p>
+<h4 id="lstm">LSTM</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155915106.png"
+alt="image-20260804155915106" />
+<figcaption aria-hidden="true">image-20260804155915106</figcaption>
+</figure>
+<p>定义如下：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804155959956.png"
+alt="image-20260804155959956" />
+<figcaption aria-hidden="true">image-20260804155959956</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260804160551940.png"
+alt="image-20260804160551940" />
+<figcaption aria-hidden="true">image-20260804160551940</figcaption>
+</figure>
+<p>LSTM
+并没有从数学上彻底根除（eliminate）梯度消失或梯度爆炸问题，但它极大地缓解了这一问题，让网络在实践中更容易学习到长距离的时序依赖关系。</p>
+<p>总结：</p>
+<ul>
+<li>rnn允许在架构设计上有更多的灵活性</li>
+<li>Vanilla rnns思路很简单但是没有工作很好</li>
+<li>更复杂的架构比如lstms,mamba引入了选择性让信息通过的机制</li>
+<li>rnn里面的梯度反向传播容易vanish或者explode,其中explode的问题可以通过clipping控制，但是随着时间的梯度反向传播总是需要的。</li>
+</ul>
+<h2 id="lecture8">lecture8:</h2>
+<p>https://cs231n.stanford.edu/schedule.html</p>
+<p>先看一眼RNNs中sequence to sequence问题：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805100834917.png"
+alt="image-20260805100834917" />
+<figcaption aria-hidden="true">image-20260805100834917</figcaption>
+</figure>
+<p>这里会存在一个问题：</p>
+<p>编码的信息会被压缩到一个固定长度向量c里面用到decoder里面进行解码，相当于无论输入文本多长，信息都被压缩到一句“总结”里，这样必然导致很多细节信息丢失。也就是下图里的：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101018440.png"
+alt="image-20260805101018440" />
+<figcaption aria-hidden="true">image-20260805101018440</figcaption>
+</figure>
+<p>于是想了一个办法，让decoder去回头看input
+sequence的输入信息，根据相似度动态算出一个专属的上下文向量。这就是注意力机制的前身。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101206212.png"
+alt="image-20260805101206212" />
+<figcaption aria-hidden="true">image-20260805101206212</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101436344.png"
+alt="image-20260805101436344" />
+<figcaption aria-hidden="true">image-20260805101436344</figcaption>
+</figure>
+<p>由输入和输出一起计算一个attention的权重，整个过程都是可微的</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101557053.png"
+alt="image-20260805101557053" />
+<figcaption aria-hidden="true">image-20260805101557053</figcaption>
+</figure>
+<p>现在计算的这个context vector是一个可变的</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101639244.png"
+alt="image-20260805101639244" />
+<figcaption aria-hidden="true">image-20260805101639244</figcaption>
+</figure>
+<p>我们从这个计算过程可以提取出来一个通用的操作：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805101810567.png"
+alt="image-20260805101810567" />
+<figcaption aria-hidden="true">image-20260805101810567</figcaption>
+</figure>
+<p>第一步：计算相似度：大的相似度会导致 Softmax
+饱和并引发梯度消失，假设其中一个向量维度为D,每个维度是均值0，方差1的独立随机变量，膜长大概为根号D,当你对两个维度为
+<span class="math inline">\(D\)</span> 的独立向量求点积时，点积的均值为
+<span class="math inline">\(0\)</span>，但<strong>其方差随维度 <span
+class="math inline">\(D\)</span> 线性增长</strong>（具体为 <span
+class="math inline">\(\text{Var}(a \cdot b) =
+D\)</span>）。因此，其标准差为 <span
+class="math inline">\(\sqrt{D}\)</span>。</p>
+<p>详细推导：https://gemini.google.com/app/1256c77980d088df?is_sa=1&amp;is_sa=1&amp;android-min-version=301356232&amp;ios-min-version=322.0&amp;campaign_id=bkws&amp;utm_source=sem&amp;utm_medium=paid-media&amp;utm_campaign=bkws&amp;pt=9008&amp;mt=8&amp;ct=p-growth-sem-bkws&amp;gclsrc=aw.ds&amp;gad_source=1&amp;gad_campaignid=20357620797&amp;gbraid=0AAAAApk5BhmCJ3JtA-5o5qGB1siaAnkhE&amp;gclid=Cj0KCQjwm8bTBhDWARIsAC9Hi8lCn-5O_lIAcjNawuUIdZpp4Qk4e0v0RrB9u-qFLXTZp2iBq60IPosaAoAmEALw_wcB</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102114384.png"
+alt="image-20260805102114384" />
+<figcaption aria-hidden="true">image-20260805102114384</figcaption>
+</figure>
+<p>第二步：去和输入向量进行query查询</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102604601.png"
+alt="image-20260805102604601" />
+<figcaption aria-hidden="true">image-20260805102604601</figcaption>
+</figure>
+<p>attention在这里做的改进：把query和key分开</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102643693.png"
+alt="image-20260805102643693" />
+<figcaption aria-hidden="true">image-20260805102643693</figcaption>
+</figure>
+<p>一个attention layer:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102836696.png"
+alt="image-20260805102836696" />
+<figcaption aria-hidden="true">image-20260805102836696</figcaption>
+</figure>
+<p>Cross-attention layer:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805102923533.png"
+alt="image-20260805102923533" />
+<figcaption aria-hidden="true">image-20260805102923533</figcaption>
+</figure>
+<p>Self-attention: 通常让dim简化为一样的</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103121144.png"
+alt="image-20260805103121144" />
+<figcaption aria-hidden="true">image-20260805103121144</figcaption>
+</figure>
+<p>我们在计算的可以把三个q,k,v fuse到一个乘法当中：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103409241.png"
+alt="image-20260805103409241" />
+<figcaption aria-hidden="true">image-20260805103409241</figcaption>
+</figure>
+<p>最终的：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103442154.png"
+alt="image-20260805103442154" />
+<figcaption aria-hidden="true">image-20260805103442154</figcaption>
+</figure>
+<p>思考一个问题，在这个过程中我们调换输入单词的顺序，</p>
+<p>Queries, keys, and values will be the same but permuted</p>
+<p>得到的所有值不变但是顺序改变</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103528964.png"
+alt="image-20260805103528964" />
+<figcaption aria-hidden="true">image-20260805103528964</figcaption>
+</figure>
+<p>因此：单纯的self-attention计算是一个置换等变</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805103634907.png"
+alt="image-20260805103634907" />
+<figcaption aria-hidden="true">image-20260805103634907</figcaption>
+</figure>
+<p>因此self-attention并不知道顺序。</p>
+<p>解决方法：对每个input增加postional encoding. 这是一个fixed function
+of the index的向量。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805104829770.png"
+alt="image-20260805104829770" />
+<figcaption aria-hidden="true">image-20260805104829770</figcaption>
+</figure>
+<p>Masked self-attention layer:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105333685.png"
+alt="image-20260805105333685" />
+<figcaption aria-hidden="true">image-20260805105333685</figcaption>
+</figure>
+<p>Multiheaded self-attention
+layer:就是把self-attention过程并行的跑H遍。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105532091.png"
+alt="image-20260805105532091" />
+<figcaption aria-hidden="true">image-20260805105532091</figcaption>
+</figure>
+<p>head dim参数：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105606291.png"
+alt="image-20260805105606291" />
+<figcaption aria-hidden="true">image-20260805105606291</figcaption>
+</figure>
+<p>实践中，通常用batched matrix multiply操作</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105634138.png"
+alt="image-20260805105634138" />
+<figcaption aria-hidden="true">image-20260805105634138</figcaption>
+</figure>
+<p>Self-attention本质是四次矩阵乘法</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105736775.png"
+alt="image-20260805105736775" />
+<figcaption aria-hidden="true">image-20260805105736775</figcaption>
+</figure>
+<p>复杂度计算：正比于输入向量的长度N^2,头的个数H</p>
+<p>随着输入向量长度的增加，这个复杂度是O(N^2)</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805105821585.png"
+alt="image-20260805105821585" />
+<figcaption aria-hidden="true">image-20260805105821585</figcaption>
+</figure>
+<p><strong>Flash attention的复杂度只需要O(N)</strong></p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805110046700.png"
+alt="image-20260805110046700" />
+<figcaption aria-hidden="true">image-20260805110046700</figcaption>
+</figure>
+<p>对比几种处理sequence的方法：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805110811779.png"
+alt="image-20260805110811779" />
+<figcaption aria-hidden="true">image-20260805110811779</figcaption>
+</figure>
+<h4 id="transformer结构">transformer结构</h4>
+<p>然后来到大名鼎鼎的transformer论文：attention is all you need</p>
+<p>先是multihead self-attention，然后是residual和layer norm</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111042564.png"
+alt="image-20260805111042564" />
+<figcaption aria-hidden="true">image-20260805111042564</figcaption>
+</figure>
+<p>mlp通常是经典的两层，先升维特征变换再降维恢复还原</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111106701.png"
+alt="image-20260805111106701" />
+<figcaption aria-hidden="true">image-20260805111106701</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111131070.png"
+alt="image-20260805111131070" />
+<figcaption aria-hidden="true">image-20260805111131070</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111213299.png"
+alt="image-20260805111213299" />
+<figcaption aria-hidden="true">image-20260805111213299</figcaption>
+</figure>
+<p>Transformer：由很多堆叠的transformer blocks构成</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111515796.png"
+alt="image-20260805111515796" />
+<figcaption aria-hidden="true">image-20260805111515796</figcaption>
+</figure>
+<p>用transformer对llm建模</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111622586.png"
+alt="image-20260805111622586" />
+<figcaption aria-hidden="true">image-20260805111622586</figcaption>
+</figure>
+<p>Vit的过程：</p>
+<p>切成小patch-&gt;flatten-&gt;positional
+encoding-&gt;不需要masking-&gt;每个patch最后都输出一个vector-&gt;汇总</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805111735145.png"
+alt="image-20260805111735145" />
+<figcaption aria-hidden="true">image-20260805111735145</figcaption>
+</figure>
+<h5 id="transformer的tweaking">Transformer的tweaking</h5>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805112043728.png"
+alt="image-20260805112043728" />
+<figcaption aria-hidden="true">image-20260805112043728</figcaption>
+</figure>
+<p>transformer架构自从2017年没有改变多少，但是一些变化非常常见：</p>
+<p>1.pre-norm transformer</p>
+<p>原来的论文如上图layer norm
+在residual连接的外面，这样无法学习到恒等映射。</p>
+<p>解决方法：把layer norm 移到attention和mlp前面，移到residual
+connections里面。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805140451515.png"
+alt="image-20260805140451515" />
+<figcaption aria-hidden="true">image-20260805140451515</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>QK-Norm</p>
+<p>计算attention相似度之前先对query和keys进行归一化。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805142036013.png"
+alt="image-20260805142036013" />
+<figcaption aria-hidden="true">image-20260805142036013</figcaption>
+</figure></li>
+<li><p>SwiGLU MLP</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805142355055.png"
+alt="image-20260805142355055" />
+<figcaption aria-hidden="true">image-20260805142355055</figcaption>
+</figure>
+<p>4.Mixture of Experts(MoE)</p>
+<p>准备E组MLP参数在每个block，每个MLP都是一个专家</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805152239529.png"
+alt="image-20260805152239529" />
+<figcaption aria-hidden="true">image-20260805152239529</figcaption>
+</figure>
+<p>总结：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805152303356.png"
+alt="image-20260805152303356" />
+<figcaption aria-hidden="true">image-20260805152303356</figcaption>
+</figure>
+<h3 id="lecture10-视频理解">Lecture10: 视频理解</h3>
+<p>对video的处理：</p>
+<p>1.对每一帧的2d图像cnn特征提取后到最后做特征的fusion</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805161911812.png"
+alt="image-20260805161911812" />
+<figcaption aria-hidden="true">image-20260805161911812</figcaption>
+</figure>
+<p>2.用3D的CNNs</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805161959817.png"
+alt="image-20260805161959817" />
+<figcaption aria-hidden="true">image-20260805161959817</figcaption>
+</figure>
+<p>提升视频理解的方法：</p>
+<p>思路一.提取motion里面的action信息</p>
+<p>比如用光流衡量运动信息：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805162126758.png"
+alt="image-20260805162126758" />
+<figcaption aria-hidden="true">image-20260805162126758</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805162140586.png"
+alt="image-20260805162140586" />
+<figcaption aria-hidden="true">image-20260805162140586</figcaption>
+</figure>
+<p>现在光流很少用在video理解里，主要用于其他的任务：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805162240716.png"
+alt="image-20260805162240716" />
+<figcaption aria-hidden="true">image-20260805162240716</figcaption>
+</figure></li>
+</ol>
+<p>思路二：复用image的架构到video里</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163032078.png"
+alt="image-20260805163032078" />
+<figcaption aria-hidden="true">image-20260805163032078</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163102373.png"
+alt="image-20260805163102373" />
+<figcaption aria-hidden="true">image-20260805163102373</figcaption>
+</figure>
+<p>vit的架构处理视频：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163518873.png"
+alt="image-20260805163518873" />
+<figcaption aria-hidden="true">image-20260805163518873</figcaption>
+</figure>
+<p>算力会直接爆炸</p>
+<p>两个经常使用的策略：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805163603682.png"
+alt="image-20260805163603682" />
+<figcaption aria-hidden="true">image-20260805163603682</figcaption>
+</figure>
+<p>先看第一个attention的算子：</p>
+<p>joint space-time attention:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805170805476.png"
+alt="image-20260805170805476" />
+<figcaption aria-hidden="true">image-20260805170805476</figcaption>
+</figure>
+<p>改进方法：We can Divide Time and Space Attention Operators into 2
+steps</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805170838301.png"
+alt="image-20260805170838301" />
+<figcaption aria-hidden="true">image-20260805170838301</figcaption>
+</figure>
+<p>在time维度：同一个位置的token会互相关注</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805170937348.png"
+alt="image-20260805170937348" />
+<figcaption aria-hidden="true">image-20260805170937348</figcaption>
+</figure>
+<p>在space维度，同一frame内的token互相关注</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171006724.png"
+alt="image-20260805171006724" />
+<figcaption aria-hidden="true">image-20260805171006724</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171121607.png"
+alt="image-20260805171121607" />
+<figcaption aria-hidden="true">image-20260805171121607</figcaption>
+</figure>
+<p>video swin transformer</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171225733.png"
+alt="image-20260805171225733" />
+<figcaption aria-hidden="true">image-20260805171225733</figcaption>
+</figure>
+<p>MVit:压缩K和V的size</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171746921.png"
+alt="image-20260805171746921" />
+<figcaption aria-hidden="true">image-20260805171746921</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171805194.png"
+alt="image-20260805171805194" />
+<figcaption aria-hidden="true">image-20260805171805194</figcaption>
+</figure>
+<p>第二个思路，减少token数：tubelets</p>
+<p>用连续4帧代替原来vit的path的维度，那token数量相对缩小为1/4，由于attention的计算复杂度和token长度的平方成正比，因此计算复杂度降低了16倍。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805171955194.png"
+alt="image-20260805171955194" />
+<figcaption aria-hidden="true">image-20260805171955194</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805172617763.png"
+alt="image-20260805172617763" />
+<figcaption aria-hidden="true">image-20260805172617763</figcaption>
+</figure>
+<p>看一些其他的视频理解的任务：</p>
+<p>temporal action localization</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805172909172.png"
+alt="image-20260805172909172" />
+<figcaption aria-hidden="true">image-20260805172909172</figcaption>
+</figure>
+<p>Spatio-temporal detection:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805172927751.png"
+alt="image-20260805172927751" />
+<figcaption aria-hidden="true">image-20260805172927751</figcaption>
+</figure>
+<p>Visually-guided audio source separation:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173334003.png"
+alt="image-20260805173334003" />
+<figcaption aria-hidden="true">image-20260805173334003</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173710122.png"
+alt="image-20260805173710122" />
+<figcaption aria-hidden="true">image-20260805173710122</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173721032.png"
+alt="image-20260805173721032" />
+<figcaption aria-hidden="true">image-20260805173721032</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260805173736929.png"
+alt="image-20260805173736929" />
+<figcaption aria-hidden="true">image-20260805173736929</figcaption>
+</figure>
+<h6 id="其他问题">其他问题：</h6>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260817143949980.png"
+alt="image-20260817143949980" />
+<figcaption aria-hidden="true">image-20260817143949980</figcaption>
+</figure>
+<h2 id="lecture11">lecture11:</h2>
+<p>1.以一枚NVIDIA H100为例子：</p>
+<p>有80GB的高带宽内存，每秒 3352 GB 的核心访问带宽和compute
+cores进行数据传输<img
+src="/2026/08/04/cs231n-2026/image-20260806110310109.png"
+alt="image-20260806110310109" /></p>
+<p>2.对于h100的compute cores</p>
+<p>50M的L2 cache</p>
+<p>132个sms</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806110755425.png"
+alt="image-20260806110755425" />
+<figcaption aria-hidden="true">image-20260806110755425</figcaption>
+</figure>
+<p>3.NVIDIA H100 单个 <strong>SM（流式多处理器，Streaming
+Multiprocessor）</strong></p>
+<p>H100 芯片内部 132 个独立计算单元（SM）中单个单元的详细内部配置</p>
+<ul>
+<li>256 KB L1 cache, 256 KB registers（256 KB 一级缓存，256 KB
+寄存器）</li>
+<li>128 FP32 Cores（128 个单精度浮点核心）
+<ul>
+<li>单个 FP32 核心在每个时钟周期内可以执行一次融合乘加（FMA, Fused
+Multiply-Add）运算，即形如 <span class="math inline">\(a \times x +
+b\)</span> 的计算。</li>
+<li>2 FLOPs = Floating Point Operations（2 次浮点运算）</li>
+<li>单个 SM 在一个时钟周期内通过 FP32 核心能达到的总 FP32 算力:<span
+class="math inline">\(128 \text{ (FP32核心)} \times 2 \text{
+(每核心每周期FLOPs)} = 256 \text{ FLOP/cycle}\)</span>。</li>
+</ul></li>
+<li>4 Tensor Cores（4 个张量核心）
+<ul>
+<li>每个时钟周期计算一次矩阵乘加 <span class="math inline">\(AX +
+B\)</span></li>
+<li>每个 SM 每个周期 4096 次浮点运算</li>
+<li>这种极高效率的矩阵运算是通过<strong>混合精度</strong>实现的</li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806111128675.png"
+alt="image-20260806111128675" />
+<figcaption aria-hidden="true">image-20260806111128675</figcaption>
+</figure>
+<p>grown fast</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141247646.png"
+alt="image-20260806141247646" />
+<figcaption aria-hidden="true">image-20260806141247646</figcaption>
+</figure>
+<p>举例子：</p>
+<p>以Meta的llama3集群为例：</p>
+<ul>
+<li>H100 GPU (单张显卡)，GPU 内部的显存带宽3.352TB每秒。</li>
+<li>Server = 8x GPU (单个服务器节点 = 8张 GPU)，在同一个服务器机箱内部的
+8 张 GPU 之间，通过 <strong>NVLink</strong> 技术互联，双向通信带宽高达
+<strong>900 GB/sec</strong>。</li>
+<li>Rack = 2 Servers = 16x GPU (单机柜 = 2个服务器 = 16张 GPU)</li>
+<li>Pod = 192 Racks = 3072 GPUs (单 Pod 集群 = 192个机柜 = 3072张
+GPU)，跨机柜、但在同一个 Pod（集群子网）内部的 GPU 互联带宽下降到了
+<strong>50 GB/sec</strong>（通常通过 InfiniBand 网络连接）。</li>
+<li>Cluster = 8 Pods = 24,576 GPUs (总集群 = 8个 Pod = 24,576张
+GPU)，&lt; 50GB/sec between GPUs (跨 Pod / 集群全局带宽)</li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141700281.png"
+alt="image-20260806141700281" />
+<figcaption aria-hidden="true">image-20260806141700281</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141854295.png"
+alt="image-20260806141854295" />
+<figcaption aria-hidden="true">image-20260806141854295</figcaption>
+</figure>
+<p>google的TPU:</p>
+<ul>
+<li>每颗芯片提供 <strong>3151 TFLOP/sec</strong>（每秒万亿次浮点运算）的
+<strong>BF16</strong>（16位脑浮点数）算力。</li>
+<li>每颗芯片配备 <strong>216 GB</strong> 的内存（HBM 高带宽内存）。</li>
+<li>以每 <strong>9600 颗芯片</strong>为一个
+Pod（超级集群单元）进行编排部署。</li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806141955207.png"
+alt="image-20260806141955207" />
+<figcaption aria-hidden="true">image-20260806141955207</figcaption>
+</figure>
+<p>其他的训练芯片：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806142046670.png"
+alt="image-20260806142046670" />
+<figcaption aria-hidden="true">image-20260806142046670</figcaption>
+</figure>
+<p>如何在gpu上面进行训练：</p>
+<p>单张gpu内存和算力有限，模型会被拆分到成百上千张 GPU
+上同时计算。而这些 GPU
+之间需要频繁地交换数据，集合通信就是为此提供底层支持的“通信原语”。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143028442.png"
+alt="image-20260806143028442" />
+<figcaption aria-hidden="true">image-20260806143028442</figcaption>
+</figure>
+<p>All-Reduce:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143548775.png"
+alt="image-20260806143548775" />
+<figcaption aria-hidden="true">image-20260806143548775</figcaption>
+</figure>
+<p>Reduce-Scatter:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143753402.png"
+alt="image-20260806143753402" />
+<figcaption aria-hidden="true">image-20260806143753402</figcaption>
+</figure>
+<p>All-Gather:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806143920019.png"
+alt="image-20260806143920019" />
+<figcaption aria-hidden="true">image-20260806143920019</figcaption>
+</figure>
+<p>All-to-All;</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806144054686.png"
+alt="image-20260806144054686" />
+<figcaption aria-hidden="true">image-20260806144054686</figcaption>
+</figure>
+<h4 id="在多张gpu上面进行训练">在多张gpu上面进行训练：</h4>
+<ul>
+<li>Data parallelism</li>
+<li>Context parallelism</li>
+<li>Pipeline parallelism</li>
+<li>Tensor parallelism</li>
+</ul>
+<p>1.数据并行</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806145808656.png"
+alt="image-20260806145808656" />
+<figcaption aria-hidden="true">image-20260806145808656</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806150010662.png"
+alt="image-20260806150010662" />
+<figcaption aria-hidden="true">image-20260806150010662</figcaption>
+</figure>
+<p>问题是模型的size受限于gpu的memory，10B的参数就把80GB内存的H100填满了。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806150351765.png"
+alt="image-20260806150351765" />
+<figcaption aria-hidden="true">image-20260806150351765</figcaption>
+</figure>
+<p>解决方法：把model权重切分到GPU上。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806153409003.png"
+alt="image-20260806153409003" />
+<figcaption aria-hidden="true">image-20260806153409003</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806154916961.png"
+alt="image-20260806154916961" />
+<figcaption aria-hidden="true">image-20260806154916961</figcaption>
+</figure>
+<p>把data和model权重分摊到各个gpu上</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155022325.png"
+alt="image-20260806155022325" />
+<figcaption aria-hidden="true">image-20260806155022325</figcaption>
+</figure>
+<h6 id="activation-checkpointing激活检查点">Activation
+Checkpointing激活检查点</h6>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155327916.png"
+alt="image-20260806155327916" />
+<figcaption aria-hidden="true">image-20260806155327916</figcaption>
+</figure>
+<p>方法：recompute</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155419068.png"
+alt="image-20260806155419068" />
+<figcaption aria-hidden="true">image-20260806155419068</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155443573.png"
+alt="image-20260806155443573" />
+<figcaption aria-hidden="true">image-20260806155443573</figcaption>
+</figure>
+<p>N平方复杂度的计算也很高</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155512649.png"
+alt="image-20260806155512649" />
+<figcaption aria-hidden="true">image-20260806155512649</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155531105.png"
+alt="image-20260806155531105" />
+<figcaption aria-hidden="true">image-20260806155531105</figcaption>
+</figure>
+<h5 id="总结工程扩展法则scaling-recipe">总结：工程扩展法则（Scaling
+Recipe）</h5>
+<p>HSDPU+梯度检查点</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806155645129.png"
+alt="image-20260806155645129" />
+<figcaption aria-hidden="true">image-20260806155645129</figcaption>
+</figure>
+<h5 id="hfu-硬件算力利用率">HFU 硬件算力利用率</h5>
+<p>衡量gpu实际矩阵运算占理论值的比例</p>
+<p>但是它作为评估指标的一个重要盲区：它无法全面反映真实深度学习训练中的所有开销。</p>
+<p>比如激活检查点，数据增强等。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806162931025.png"
+alt="image-20260806162931025" />
+<figcaption aria-hidden="true">image-20260806162931025</figcaption>
+</figure>
+<h5 id="mfu-模型算力利用率">MFU 模型算力利用率</h5>
+<p>衡量整个大模型训练任务（包括所有前向、反向、优化器及辅助开销在内）最终榨取了硬件理论总算力百分之几的终极指标。</p>
+<ol type="1">
+<li>计算理论浮点运算总数 =
+前向传播加反向传播中的矩阵乘法浮点运算总次数，反向传播的计算量通常约为前向传播的
+2
+倍。忽略非线性激活函数、归一化层、以及诸如残差连接等逐元素操作。它们会在
+FP32 核心上运行</li>
+<li>查表获取硬件理论最大吞吐量，例如 H100 为 989 TFLOP/sec</li>
+<li>计算理论所需时间</li>
+<li>测量实际耗时 <span
+class="math inline">\(t_{\text{actual}}\)</span>：完成一次完整迭代（包含数据加载、前向、反向、优化器更新）的真实时间</li>
+<li><span class="math inline">\(\text{MFU} = t_{\text{theoretical}} /
+t_{\text{actual}}\)</span>（计算 MFU 效率）理论极速时间 / 真实耗时</li>
+</ol>
+<p>因为真实耗时（<span
+class="math inline">\(t_{\text{actual}}\)</span>）总是大于理论极限时间（<span
+class="math inline">\(t_{\text{theoretical}}\)</span>），所以算出来的
+MFU 是一个百分比（例如 40% 或
+50%）。比例越高，说明你的大模型并行架构和代码工程优化得越好，硬件被压榨得越彻底。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806165041429.png"
+alt="image-20260806165041429" />
+<figcaption aria-hidden="true">image-20260806165041429</figcaption>
+</figure>
+<p>现在会出现的一个情况是：</p>
+<p>根据 MLPerf 和多家大厂（如 Google、Meta）披露的数据：</p>
+<ul>
+<li>A100 训练 175B GPT 类模型，MFU 经常能达到 <strong>50% -
+55%</strong>。</li>
+<li>H100 训练相同模型，虽然绝对时间变快了（约 2x），但 MFU 往往回落到
+<strong>40% - 45%</strong> 左右。</li>
+<li><strong>结论就是</strong>：绝对性能（Tokens/秒）是提升的，但<strong>能效比</strong>和<strong>硬件利用率</strong>（MFU）确实下降了。因为硬件设计者（NVIDIA）优先选择了堆算力来“刷榜”，而内存带宽的物理提升（HBM3）远慢于晶体管密度带来的算力提升。</li>
+</ul>
+<p>原因：</p>
+<p><strong>Transformer 架构上。</strong>
+大模型推理和训练中，除了矩阵乘法，还有大量
+<strong>“访存密集型”操作</strong>，包括：</p>
+<ul>
+<li>归一化（Layer Norm）</li>
+<li>激活函数（GeLU/SiLU）</li>
+<li>Dropout</li>
+<li>注意力机制中的 Softmax + Mask</li>
+<li><strong>所有逐元素操作（Element-wise ops）</strong></li>
+</ul>
+<p>这些操作几乎不做计算（FLOPs很低），但需要频繁读写显存（HBM）。</p>
+<hr />
+<p><strong>MFU（Model FLOPs Utilization）</strong>
+衡量的不是“理论峰值跑了多少”，而是<strong>“实际有效计算”占理论峰值的百分比</strong>。</p>
+<p>当算力增长（3.1x）远快于带宽增长（2.1x）时，会发生经典的
+<strong>“内存墙”效应</strong>：</p>
+<ul>
+<li><strong>计算密集型任务（大矩阵乘）</strong>：算力变强，跑得飞快，耗时极短。</li>
+<li><strong>访存密集型任务（小操作）</strong>：算力再强也没用，因为数据在
+HBM 和 SRAM（片上缓存）之间搬运的速度只快了 2.1 倍。</li>
+</ul>
+<p><strong>后果是</strong>：在 H100 上，矩阵乘法瞬间算完，但 GPU
+不得不“空转”（Stall）等待数据从显存搬过来做下一次归一化。这部分等待时间没有产生任何有效
+FLOPs。</p>
+<hr />
+<p>H100 为了达到 3.1 倍算力，极大依赖 <strong>Tensor Core</strong> 和
+<strong>稀疏性（Sparsity）</strong>。</p>
+<ul>
+<li>当矩阵维度不够大（比如小批次推理、MoE 模型的小专家网络）时，Tensor
+Core 的利用率极低。</li>
+<li>A100 时代，算力没那么高，矩阵乘法刚好能把计算单元喂饱。到了
+H100，因为带宽不够快，喂不饱这些更强大的计算单元，<strong>“大炮打蚊子”</strong>，MFU
+自然更难看。</li>
+</ul>
+<hr />
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806171354613.png"
+alt="image-20260806171354613" />
+<figcaption aria-hidden="true">image-20260806171354613</figcaption>
+</figure>
+<h4 id="context-parallelism">context Parallelism</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172320512.png"
+alt="image-20260806172320512" />
+<figcaption aria-hidden="true">image-20260806172320512</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172345478.png"
+alt="image-20260806172345478" />
+<figcaption aria-hidden="true">image-20260806172345478</figcaption>
+</figure>
+<p>attention的计算更复杂，需要针对性的看</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172458847.png"
+alt="image-20260806172458847" />
+<figcaption aria-hidden="true">image-20260806172458847</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172548468.png"
+alt="image-20260806172548468" />
+<figcaption aria-hidden="true">image-20260806172548468</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806172621494.png"
+alt="image-20260806172621494" />
+<figcaption aria-hidden="true">image-20260806172621494</figcaption>
+</figure>
+<h4 id="pipeline-parallelismpp">Pipeline Parallelism(PP)</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174119946.png"
+alt="image-20260806174119946" />
+<figcaption aria-hidden="true">image-20260806174119946</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174142414.png"
+alt="image-20260806174142414" />
+<figcaption aria-hidden="true">image-20260806174142414</figcaption>
+</figure>
+<h4 id="tensor-parallelismtp">Tensor Parallelism(TP)</h4>
+<p>根据矩阵乘法的原理做列的切分，第一次矩阵乘法之后要合到一起</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174949859.png"
+alt="image-20260806174949859" />
+<figcaption aria-hidden="true">image-20260806174949859</figcaption>
+</figure>
+<p>改进：如果第一个矩阵乘法做列的切分，第二个就做行的切分</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806174959987.png"
+alt="image-20260806174959987" />
+<figcaption aria-hidden="true">image-20260806174959987</figcaption>
+</figure>
+<h4 id="expert-parallelism">Expert Parallelism</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806175138066.png"
+alt="image-20260806175138066" />
+<figcaption aria-hidden="true">image-20260806175138066</figcaption>
+</figure>
+<p>上述所有技巧几乎都被使用在大模型中。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806175219272.png"
+alt="image-20260806175219272" />
+<figcaption aria-hidden="true">image-20260806175219272</figcaption>
+</figure>
+<h3 id="总结">总结：</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260806175243502.png"
+alt="image-20260806175243502" />
+<figcaption aria-hidden="true">image-20260806175243502</figcaption>
+</figure>
+<h2 id="lecture12-自监督学习">lecture12: 自监督学习</h2>
+<p>pretext task 和 downstream objective</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810101919079.png"
+alt="image-20260810101919079" />
+<figcaption aria-hidden="true">image-20260810101919079</figcaption>
+</figure>
+<p>自监督学习任务举例：
+比如预测缺失图像，图像的旋转角度，拼拼图，给灰色图像上色</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810102214140.png"
+alt="image-20260810102214140" />
+<figcaption aria-hidden="true">image-20260810102214140</figcaption>
+</figure>
+<p>如何衡量一个自监督模型pretext task的好坏：</p>
+<ul>
+<li>表现质量的衡量</li>
+<li>鲁棒性</li>
+<li>计算复杂度</li>
+<li>下游任务的表现</li>
+</ul>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810102919050.png"
+alt="image-20260810102919050" />
+<figcaption aria-hidden="true">image-20260810102919050</figcaption>
+</figure>
+<p>举例子：pretext
+task在一堆图像训练出一个特征提取的算子，然后接一个shallow
+network做监督学习的任务。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103025049.png"
+alt="image-20260810103025049" />
+<figcaption aria-hidden="true">image-20260810103025049</figcaption>
+</figure>
+<h3 id="pretext-task-预测旋转">pretext task: 预测旋转</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103609364.png"
+alt="image-20260810103609364" />
+<figcaption aria-hidden="true">image-20260810103609364</figcaption>
+</figure>
+<p>可视化attention:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103713387.png"
+alt="image-20260810103713387" />
+<figcaption aria-hidden="true">image-20260810103713387</figcaption>
+</figure>
+<p>预测图块的位置：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103740263.png"
+alt="image-20260810103740263" />
+<figcaption aria-hidden="true">image-20260810103740263</figcaption>
+</figure>
+<p>拼拼图：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103836311.png"
+alt="image-20260810103836311" />
+<figcaption aria-hidden="true">image-20260810103836311</figcaption>
+</figure>
+<p>预测缺失像素：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103852784.png"
+alt="image-20260810103852784" />
+<figcaption aria-hidden="true">image-20260810103852784</figcaption>
+</figure>
+<p>通过reconstruction进行inpaint</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810103928979.png"
+alt="image-20260810103928979" />
+<figcaption aria-hidden="true">image-20260810103928979</figcaption>
+</figure>
+<p>像素级别的图像重建需要增加对抗损失，否则模型会倾向于学习一个平均值。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104038858.png"
+alt="image-20260810104038858" />
+<figcaption aria-hidden="true">image-20260810104038858</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104049357.png"
+alt="image-20260810104049357" />
+<figcaption aria-hidden="true">image-20260810104049357</figcaption>
+</figure>
+<p>上色：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104116729.png"
+alt="image-20260810104116729" />
+<figcaption aria-hidden="true">image-20260810104116729</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104159659.png"
+alt="image-20260810104159659" />
+<figcaption aria-hidden="true">image-20260810104159659</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104207696.png"
+alt="image-20260810104207696" />
+<figcaption aria-hidden="true">image-20260810104207696</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104222313.png"
+alt="image-20260810104222313" />
+<figcaption aria-hidden="true">image-20260810104222313</figcaption>
+</figure>
+<p>Pretext task: 视频上色：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810104300302.png"
+alt="image-20260810104300302" />
+<figcaption aria-hidden="true">image-20260810104300302</figcaption>
+</figure>
+<h3 id="mae">MAE:</h3>
+<p>mae的任务：打掩码然后进行预测</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110427528.png"
+alt="image-20260810110427528" />
+<figcaption aria-hidden="true">image-20260810110427528</figcaption>
+</figure>
+<p>架构类似vit:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110507801.png"
+alt="image-20260810110507801" />
+<figcaption aria-hidden="true">image-20260810110507801</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110521214.png"
+alt="image-20260810110521214" />
+<figcaption aria-hidden="true">image-20260810110521214</figcaption>
+</figure>
+<p>大编码器+小解码器：训练完解码器就被扔掉，而编码器已经学习到了很多图像特征</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110714585.png"
+alt="image-20260810110714585" />
+<figcaption aria-hidden="true">image-20260810110714585</figcaption>
+</figure>
+<p>损失设计：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810110755954.png"
+alt="image-20260810110755954" />
+<figcaption aria-hidden="true">image-20260810110755954</figcaption>
+</figure>
+<h3 id="下游任务linear-probing和full-fine-tuning">下游任务：linear
+probing和full fine-tuning</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810111519636.png"
+alt="image-20260810111519636" />
+<figcaption aria-hidden="true">image-20260810111519636</figcaption>
+</figure>
+<h3 id="总结pretext-tasks">总结:pretext tasks</h3>
+<ul>
+<li>pretext tasks是聚焦于"visual common
+sense":比如预测旋转，inplating等等</li>
+<li>模型通过完成pretext任务强迫学习图像的自然特征，比如一个object
+category的语义表示。</li>
+<li>我们通常不关注pretext
+tasks的表现而是学习到的特征如何帮助了下有任务（分类，检测，分割）</li>
+<li>存在的问题
+<ul>
+<li>a.想到一个单独的pretext tasks任务是麻烦的</li>
+<li>b.学到的特征可能不够general(学到的特征可能被绑定到了某个特定的pretext任务)</li>
+</ul></li>
+</ul>
+<p>由此想到一个更general的pretext任务：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112145031.png"
+alt="image-20260810112145031" />
+<figcaption aria-hidden="true">image-20260810112145031</figcaption>
+</figure>
+<h4 id="constrastive任务的ituition">constrastive任务的ituition</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112223570.png"
+alt="image-20260810112223570" />
+<figcaption aria-hidden="true">image-20260810112223570</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112238515.png"
+alt="image-20260810112238515" />
+<figcaption aria-hidden="true">image-20260810112238515</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112252829.png"
+alt="image-20260810112252829" />
+<figcaption aria-hidden="true">image-20260810112252829</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810112313619.png"
+alt="image-20260810112313619" />
+<figcaption aria-hidden="true">image-20260810112313619</figcaption>
+</figure>
+<p>InfoNCE loss:</p>
+<p>对比学习的核心思想是：<strong>拉近相似的样本（正样本 <span
+class="math inline">\(x^+\)</span>），推开不同的样本（负样本 <span
+class="math inline">\(x^-\)</span>）</strong>。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810134709930.png"
+alt="image-20260810134709930" />
+<figcaption aria-hidden="true">image-20260810134709930</figcaption>
+</figure>
+<p>SimCLR：对比学习的一个简单框架</p>
+<p><strong>SimCLR</strong>（Simple Framework for Contrastive Learning of
+Visual Representations）是深度学习自监督学习（Self-Supervised
+Learning）领域的里程碑式工作，由 Google Research 团队于 2020
+年提出。它以极其简洁的架构设计，打破了当时自监督学习与监督学习在准确率上的差距。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810135738399.png"
+alt="image-20260810135738399" />
+<figcaption aria-hidden="true">image-20260810135738399</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810140008651.png"
+alt="image-20260810140008651" />
+<figcaption aria-hidden="true">image-20260810140008651</figcaption>
+</figure>
+<p>奠定了之后自监督学习的一个学习范式：要有projection head</p>
+<p><strong>线性或非线性的投影头（Projection
+Head）能够提升表征学习的效果。</strong></p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810140349057.png"
+alt="image-20260810140349057" />
+<figcaption aria-hidden="true">image-20260810140349057</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810140408249.png"
+alt="image-20260810140408249" />
+<figcaption aria-hidden="true">image-20260810140408249</figcaption>
+</figure>
+<p>MoCo: 动量对比学习</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141457821.png"
+alt="image-20260810141457821" />
+<figcaption aria-hidden="true">image-20260810141457821</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141524105.png"
+alt="image-20260810141524105" />
+<figcaption aria-hidden="true">image-20260810141524105</figcaption>
+</figure>
+<p>MoCoV2</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141604462.png"
+alt="image-20260810141604462" />
+<figcaption aria-hidden="true">image-20260810141604462</figcaption>
+</figure>
+<p>通过这篇论文总结：<strong>MoCo V2 通过消融实验证明</strong>：</p>
+<ul>
+<li><strong>非线性投影头</strong>和<strong>强数据增强</strong>对于对比学习来说是<strong>至关重要的</strong>（决定性因素）。
+<ul>
+<li>投影头：2层mlp</li>
+<li>数据增强必须包含<strong>强色彩抖动（Color
+Jitter）</strong>和<strong>高斯模糊</strong>。</li>
+</ul></li>
+<li>通过<strong>将“批次大小（mini-batch size）”与“负样本数量（negative
+sample size）”解耦</strong>，使得 <strong>MoCo-V2</strong>
+能够以<strong>小得多的批次大小（256 vs. 8192）</strong> 实现超越
+<strong>SimCLR</strong> 的性能。</li>
+<li>……而且所有这些都<strong>只需要极小的显存占用</strong>！</li>
+</ul>
+<h4 id="instance-vs-sequence-cotrastive-learning">instance vs sequence
+cotrastive learning</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810141954002.png"
+alt="image-20260810141954002" />
+<figcaption aria-hidden="true">image-20260810141954002</figcaption>
+</figure>
+<p>CPC:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810142821854.png"
+alt="image-20260810142821854" />
+<figcaption aria-hidden="true">image-20260810142821854</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810142844400.png"
+alt="image-20260810142844400" />
+<figcaption aria-hidden="true">image-20260810142844400</figcaption>
+</figure>
+<p>DINO: Self-Distillation with No Labels</p>
+<p>这篇文章在2021年轰动一时，因为它首次揭示了 <strong>Vision
+Transformer（ViT）</strong>
+在自监督训练下，居然能<strong>无师自通</strong>地学会分割物体轮廓，甚至比有监督训练的效果还好！</p>
+<p><strong>DINO
+是一种“师生自蒸馏”框架：学生负责用所有局部细节去模仿教师对整体全局的判断，教师则通过动量更新缓慢进化。它无需负样本，且首次证明无监督训练的
+Vision Transformer 能够自动涌现出精准的物体分割能力</strong></p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143059881.png"
+alt="image-20260810143059881" />
+<figcaption aria-hidden="true">image-20260810143059881</figcaption>
+</figure>
+<p>取 ViT 最后一层输出的 <strong>K 个类别注意力（[CLS] Token
+的注意力图）</strong>，居然能<strong>自动勾勒出</strong>图像中物体的完整轮廓（比如狗的形状、马的腿），不需要任何人工标注！</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143323192.png"
+alt="image-20260810143323192" />
+<figcaption aria-hidden="true">image-20260810143323192</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143340598.png"
+alt="image-20260810143340598" />
+<figcaption aria-hidden="true">image-20260810143340598</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143422124.png"
+alt="image-20260810143422124" />
+<figcaption aria-hidden="true">image-20260810143422124</figcaption>
+</figure>
+<h3 id="总结contrastive-representation-learning">总结contrastive
+representation learning</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143503754.png"
+alt="image-20260810143503754" />
+<figcaption aria-hidden="true">image-20260810143503754</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143546088.png"
+alt="image-20260810143546088" />
+<figcaption aria-hidden="true">image-20260810143546088</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143554484.png"
+alt="image-20260810143554484" />
+<figcaption aria-hidden="true">image-20260810143554484</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260810143603979.png"
+alt="image-20260810143603979" />
+<figcaption aria-hidden="true">image-20260810143603979</figcaption>
+</figure>
+<h2 id="lec13-生成模型">lec13: 生成模型</h2>
+<p>对比判别模型和生成模型：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812141911715.png"
+alt="image-20260812141911715" />
+<figcaption aria-hidden="true">image-20260812141911715</figcaption>
+</figure>
+<p>生成模型的分类：</p>
+<ul>
+<li><p>是否可以直接估计概率密度/师傅可以直接采样</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812142514259.png"
+alt="image-20260812142514259" />
+<figcaption aria-hidden="true">image-20260812142514259</figcaption>
+</figure></li>
+</ul>
+<p>用最大似然估计建模生成模型的概率密度函数的估计</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812142632994.png"
+alt="image-20260812142632994" />
+<figcaption aria-hidden="true">image-20260812142632994</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812142717723.png"
+alt="image-20260812142717723" />
+<figcaption aria-hidden="true">image-20260812142717723</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812143129291.png"
+alt="image-20260812143129291" />
+<figcaption aria-hidden="true">image-20260812143129291</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812143156604.png"
+alt="image-20260812143156604" />
+<figcaption aria-hidden="true">image-20260812143156604</figcaption>
+</figure>
+<h3 id="vae">vae</h3>
+<p>早期两种主流的生成式模型（自回归模型 vs.
+变分自编码器）在<strong>概率密度建模</strong>和<strong>优化方法</strong>上的根本区别：</p>
+<ul>
+<li><strong>PixelRNN /
+PixelCNN（显式密度模型，可直接优化）</strong>：它们属于自回归模型。正如前面讨论的，它们利用链式法则将联合概率分解为条件概率的连乘；以直接使用<strong>最大似然估计（Maximum
+Likelihood Estimation,
+MLE）</strong>，通过梯度下降去最大化真实图像出现的概率。</li>
+<li>Variational Autoencoders / VAE（隐变量模型，难以直接计算）
+<ul>
+<li>VAE 引入了不可见的隐变量（Latent Variables <span
+class="math inline">\(z\)</span>）来捕捉图像的底层特征。</li>
+<li>VAE
+的创造者们想出了一种数学技巧：通过引入一个近似后验分布，推导出一个关于对数似然的<strong>下界（Lower
+Bound，通常称为 ELBO - Evidence Lower Bound）</strong>。</li>
+</ul></li>
+</ul>
+<p>没有variational的autoencoder:</p>
+<p>Auto encoder:用无监督的方式提取特征，没有labels:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144020677.png"
+alt="image-20260812144020677" />
+<figcaption aria-hidden="true">image-20260812144020677</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812143921804.png"
+alt="image-20260812143921804" />
+<figcaption aria-hidden="true">image-20260812143921804</figcaption>
+</figure>
+<p>因为没有labels,如果学习呢？——答案：加上decoder</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144105603.png"
+alt="image-20260812144105603" />
+<figcaption aria-hidden="true">image-20260812144105603</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144137649.png"
+alt="image-20260812144137649" />
+<figcaption aria-hidden="true">image-20260812144137649</figcaption>
+</figure>
+<p>训练完成后，我们就可以拿到训练完成的encoder去做下游任务</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144252471.png"
+alt="image-20260812144252471" />
+<figcaption aria-hidden="true">image-20260812144252471</figcaption>
+</figure>
+<p>如果我们可以产生新的z,就可以用decoder去产生新的图像：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144347633.png"
+alt="image-20260812144347633" />
+<figcaption aria-hidden="true">image-20260812144347633</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812144958437.png"
+alt="image-20260812144958437" />
+<figcaption aria-hidden="true">image-20260812144958437</figcaption>
+</figure>
+<p>训练思路：用极大似然估计</p>
+<p>If we had a dataset of (x, z) then train a conditional generative
+model p(x | z)</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145136272.png"
+alt="image-20260812145136272" />
+<figcaption aria-hidden="true">image-20260812145136272</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145144535.png"
+alt="image-20260812145144535" />
+<figcaption aria-hidden="true">image-20260812145144535</figcaption>
+</figure>
+<p>问题是我们无法迭代所有z</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145210074.png"
+alt="image-20260812145210074" />
+<figcaption aria-hidden="true">image-20260812145210074</figcaption>
+</figure>
+<p>换个方法：用贝叶斯</p>
+<p>分子的两项依然可以用decoder和假定z服从高斯分布解决</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145316618.png"
+alt="image-20260812145316618" />
+<figcaption aria-hidden="true">image-20260812145316618</figcaption>
+</figure>
+<p>解决方法：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145333981.png"
+alt="image-20260812145333981" />
+<figcaption aria-hidden="true">image-20260812145333981</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145406789.png"
+alt="image-20260812145406789" />
+<figcaption aria-hidden="true">image-20260812145406789</figcaption>
+</figure>
+<p>神经网络怎么输出一个分布：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145423410.png"
+alt="image-20260812145423410" />
+<figcaption aria-hidden="true">image-20260812145423410</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812145832448.png"
+alt="image-20260812145832448" />
+<figcaption aria-hidden="true">image-20260812145832448</figcaption>
+</figure>
+<h3 id="vae-elbo">vae-elbo</h3>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812150849437.png"
+alt="image-20260812150849437" />
+<figcaption aria-hidden="true">image-20260812150849437</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151215486.png"
+alt="image-20260812151215486" />
+<figcaption aria-hidden="true">image-20260812151215486</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151258658.png"
+alt="image-20260812151258658" />
+<figcaption aria-hidden="true">image-20260812151258658</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151306605.png"
+alt="image-20260812151306605" />
+<figcaption aria-hidden="true">image-20260812151306605</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151315998.png"
+alt="image-20260812151315998" />
+<figcaption aria-hidden="true">image-20260812151315998</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151334719.png"
+alt="image-20260812151334719" />
+<figcaption aria-hidden="true">image-20260812151334719</figcaption>
+</figure>
+<p>Vae training:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151529821.png"
+alt="image-20260812151529821" />
+<figcaption aria-hidden="true">image-20260812151529821</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812151550288.png"
+alt="image-20260812151550288" />
+<figcaption aria-hidden="true">image-20260812151550288</figcaption>
+</figure>
+<p>vae的作用：解耦</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155039601.png"
+alt="image-20260812155039601" />
+<figcaption aria-hidden="true">image-20260812155039601</figcaption>
+</figure>
+<h2 id="lec14">lec14:</h2>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155241611.png"
+alt="image-20260812155241611" />
+<figcaption aria-hidden="true">image-20260812155241611</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155640191.png"
+alt="image-20260812155640191" />
+<figcaption aria-hidden="true">image-20260812155640191</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155919773.png"
+alt="image-20260812155919773" />
+<figcaption aria-hidden="true">image-20260812155919773</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812155935329.png"
+alt="image-20260812155935329" />
+<figcaption aria-hidden="true">image-20260812155935329</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812160028334.png"
+alt="image-20260812160028334" />
+<figcaption aria-hidden="true">image-20260812160028334</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812160205608.png"
+alt="image-20260812160205608" />
+<figcaption aria-hidden="true">image-20260812160205608</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812161728894.png"
+alt="image-20260812161728894" />
+<figcaption aria-hidden="true">image-20260812161728894</figcaption>
+</figure>
+<h4 id="举例子">举例子：</h4>
+<p>Gan:styleGAN</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812161923622.png"
+alt="image-20260812161923622" />
+<figcaption aria-hidden="true">image-20260812161923622</figcaption>
+</figure>
+<p>Gan: latent插值</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162011411.png"
+alt="image-20260812162011411" />
+<figcaption aria-hidden="true">image-20260812162011411</figcaption>
+</figure>
+<h3 id="diffusion">diffusion</h3>
+<h4 id="启发">启发：</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162121826.png"
+alt="image-20260812162121826" />
+<figcaption aria-hidden="true">image-20260812162121826</figcaption>
+</figure>
+<p>修正流：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162837858.png"
+alt="image-20260812162837858" />
+<figcaption aria-hidden="true">image-20260812162837858</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812162848474.png"
+alt="image-20260812162848474" />
+<figcaption aria-hidden="true">image-20260812162848474</figcaption>
+</figure>
+<p>采样：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163029802.png"
+alt="image-20260812163029802" />
+<figcaption aria-hidden="true">image-20260812163029802</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163039054.png"
+alt="image-20260812163039054" />
+<figcaption aria-hidden="true">image-20260812163039054</figcaption>
+</figure>
+<p>条件的修正流：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163142079.png"
+alt="image-20260812163142079" />
+<figcaption aria-hidden="true">image-20260812163142079</figcaption>
+</figure>
+<h4 id="classifier-free-guidancecfg">classifier-Free Guidance(CFG)</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812163359579.png"
+alt="image-20260812163359579" />
+<figcaption aria-hidden="true">image-20260812163359579</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812164545900.png"
+alt="image-20260812164545900" />
+<figcaption aria-hidden="true">image-20260812164545900</figcaption>
+</figure>
+<p>将更多权重注意力放在中间噪声上</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812170131955.png"
+alt="image-20260812170131955" />
+<figcaption aria-hidden="true">image-20260812170131955</figcaption>
+</figure>
+<h4 id="latent-diffusion-modelsldms">Latent Diffusion Models(LDMs)</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812170356019.png"
+alt="image-20260812170356019" />
+<figcaption aria-hidden="true">image-20260812170356019</figcaption>
+</figure>
+<p>如何训练这个encoder+decoder结构：</p>
+<p>1.本质上是一个vae,<strong>KL 权重的小技巧</strong>：在标准的 VAE
+中，KL 散度损失用来规范化潜空间分布。但在 LDM 中，通常会把 KL
+先验的权重设得<strong>非常小</strong>，其目的是为了让潜空间保留更多的图像细节，而不是被强行扭曲成标准正态分布。</p>
+<p>2.如果只用传统的重建损失（如 L1/L2 损失）去训练 VAE
+的解码器，输出的图像往往会缺乏高频细节，看起来雾蒙蒙的、比较<strong>模糊</strong>。引入类似
+GAN
+的<strong>判别器（Discriminator）</strong>，通过对抗训练（Adversarial
+Loss）逼迫解码器吐出纹理清晰、逼真的图像，从而彻底解决画面模糊的问题。</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171020279.png"
+alt="image-20260812171020279" />
+<figcaption aria-hidden="true">image-20260812171020279</figcaption>
+</figure>
+<h4 id="diffusion-transformerdit">Diffusion Transformer(DiT)</h4>
+<ul>
+<li><p>定义：diffusion用了标准的transformer块</p></li>
+<li><p>主要问题，如何注入condition, 比如timestep t, text,</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171203007.png"
+alt="image-20260812171203007" />
+<figcaption aria-hidden="true">image-20260812171203007</figcaption>
+</figure></li>
+</ul>
+<p>举例子：</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171231518.png"
+alt="image-20260812171231518" />
+<figcaption aria-hidden="true">image-20260812171231518</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171252336.png"
+alt="image-20260812171252336" />
+<figcaption aria-hidden="true">image-20260812171252336</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171306619.png"
+alt="image-20260812171306619" />
+<figcaption aria-hidden="true">image-20260812171306619</figcaption>
+</figure>
+<h4 id="diffusion蒸馏">diffusion蒸馏</h4>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812171746193.png"
+alt="image-20260812171746193" />
+<figcaption aria-hidden="true">image-20260812171746193</figcaption>
+</figure>
+<p>更通用的diffusion公式：</p>
+<p>只要通过调整 <span class="math inline">\(a, b, c, d\)</span>
+这四个函数，这个统一的框架就可以完美兼容并覆盖绝大多数主流的扩散模型（Diffusion
+Models）</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172044398.png"
+alt="image-20260812172044398" />
+<figcaption aria-hidden="true">image-20260812172044398</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172218650.png"
+alt="image-20260812172218650" />
+<figcaption aria-hidden="true">image-20260812172218650</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172226262.png"
+alt="image-20260812172226262" />
+<figcaption aria-hidden="true">image-20260812172226262</figcaption>
+</figure>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172237600.png"
+alt="image-20260812172237600" />
+<figcaption aria-hidden="true">image-20260812172237600</figcaption>
+</figure>
+<p>diffusion是一个latent variable model</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172315851.png"
+alt="image-20260812172315851" />
+<figcaption aria-hidden="true">image-20260812172315851</figcaption>
+</figure>
+<p>diffusion学习score function:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172354037.png"
+alt="image-20260812172354037" />
+<figcaption aria-hidden="true">image-20260812172354037</figcaption>
+</figure>
+<p>解决sde:</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172415731.png"
+alt="image-20260812172415731" />
+<figcaption aria-hidden="true">image-20260812172415731</figcaption>
+</figure>
+<p>自回归模型回归：</p>
+<p>之前提到处理自回归模型在raw pixels太慢了，但是可以在latnent上面work
+well</p>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260812172538577.png"
+alt="image-20260812172538577" />
+<figcaption aria-hidden="true">image-20260812172538577</figcaption>
+</figure>
+<h2 id="lec15">lec15:</h2>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cs231n/" rel="tag"># cs231n</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/07/29/RSSM-dreamerv3/" rel="prev" title="dreamerv3-from-scratch理解">
+      <i class="fa fa-chevron-left"></i> dreamerv3-from-scratch理解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/08/10/tdmpc2/" rel="next" title="tdmpc2">
+      tdmpc2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#optimizer"><span class="nav-number">1.</span> <span class="nav-text">optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#learning-rate-decay"><span class="nav-number">1.0.1.</span> <span class="nav-text">learning rate decay</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#linear-warmup-%E9%92%88%E5%AF%B9%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%A7%8B"><span class="nav-number">1.0.2.</span> <span class="nav-text">linear warmup: 针对模型开始</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lecture4"><span class="nav-number"></span> <span class="nav-text">lecture4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">0.1.</span> <span class="nav-text">激活函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lecture7"><span class="nav-number"></span> <span class="nav-text">lecture7:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rnn"><span class="nav-number">0.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lstm"><span class="nav-number">0.2.</span> <span class="nav-text">LSTM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lecture8"><span class="nav-number"></span> <span class="nav-text">lecture8:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#transformer%E7%BB%93%E6%9E%84"><span class="nav-number">0.1.</span> <span class="nav-text">transformer结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#transformer%E7%9A%84tweaking"><span class="nav-number">0.1.1.</span> <span class="nav-text">Transformer的tweaking</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lecture10-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">Lecture10: 视频理解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">其他问题：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lecture11"><span class="nav-number"></span> <span class="nav-text">lecture11:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E5%A4%9A%E5%BC%A0gpu%E4%B8%8A%E9%9D%A2%E8%BF%9B%E8%A1%8C%E8%AE%AD%E7%BB%83"><span class="nav-number">0.1.</span> <span class="nav-text">在多张gpu上面进行训练：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#activation-checkpointing%E6%BF%80%E6%B4%BB%E6%A3%80%E6%9F%A5%E7%82%B9"><span class="nav-number">0.1.0.1.</span> <span class="nav-text">Activation
+Checkpointing激活检查点</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E5%B7%A5%E7%A8%8B%E6%89%A9%E5%B1%95%E6%B3%95%E5%88%99scaling-recipe"><span class="nav-number">0.1.1.</span> <span class="nav-text">总结：工程扩展法则（Scaling
+Recipe）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hfu-%E7%A1%AC%E4%BB%B6%E7%AE%97%E5%8A%9B%E5%88%A9%E7%94%A8%E7%8E%87"><span class="nav-number">0.1.2.</span> <span class="nav-text">HFU 硬件算力利用率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mfu-%E6%A8%A1%E5%9E%8B%E7%AE%97%E5%8A%9B%E5%88%A9%E7%94%A8%E7%8E%87"><span class="nav-number">0.1.3.</span> <span class="nav-text">MFU 模型算力利用率</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#context-parallelism"><span class="nav-number">0.2.</span> <span class="nav-text">context Parallelism</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pipeline-parallelismpp"><span class="nav-number">0.3.</span> <span class="nav-text">Pipeline Parallelism(PP)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tensor-parallelismtp"><span class="nav-number">0.4.</span> <span class="nav-text">Tensor Parallelism(TP)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expert-parallelism"><span class="nav-number">0.5.</span> <span class="nav-text">Expert Parallelism</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lecture12-%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number"></span> <span class="nav-text">lecture12: 自监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pretext-task-%E9%A2%84%E6%B5%8B%E6%97%8B%E8%BD%AC"><span class="nav-number">1.</span> <span class="nav-text">pretext task: 预测旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mae"><span class="nav-number">2.</span> <span class="nav-text">MAE:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E6%B8%B8%E4%BB%BB%E5%8A%A1linear-probing%E5%92%8Cfull-fine-tuning"><span class="nav-number">3.</span> <span class="nav-text">下游任务：linear
+probing和full fine-tuning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93pretext-tasks"><span class="nav-number">4.</span> <span class="nav-text">总结:pretext tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#constrastive%E4%BB%BB%E5%8A%A1%E7%9A%84ituition"><span class="nav-number">4.1.</span> <span class="nav-text">constrastive任务的ituition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-vs-sequence-cotrastive-learning"><span class="nav-number">4.2.</span> <span class="nav-text">instance vs sequence
+cotrastive learning</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93contrastive-representation-learning"><span class="nav-number">5.</span> <span class="nav-text">总结contrastive
+representation learning</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lec13-%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="nav-number"></span> <span class="nav-text">lec13: 生成模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vae"><span class="nav-number">1.</span> <span class="nav-text">vae</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vae-elbo"><span class="nav-number">2.</span> <span class="nav-text">vae-elbo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lec14"><span class="nav-number"></span> <span class="nav-text">lec14:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E5%AD%90"><span class="nav-number">0.1.</span> <span class="nav-text">举例子：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#diffusion"><span class="nav-number">1.</span> <span class="nav-text">diffusion</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8F%91"><span class="nav-number">1.1.</span> <span class="nav-text">启发：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#classifier-free-guidancecfg"><span class="nav-number">1.2.</span> <span class="nav-text">classifier-Free Guidance(CFG)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#latent-diffusion-modelsldms"><span class="nav-number">1.3.</span> <span class="nav-text">Latent Diffusion Models(LDMs)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#diffusion-transformerdit"><span class="nav-number">1.4.</span> <span class="nav-text">Diffusion Transformer(DiT)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#diffusion%E8%92%B8%E9%A6%8F"><span class="nav-number">1.5.</span> <span class="nav-text">diffusion蒸馏</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lec15"><span class="nav-number"></span> <span class="nav-text">lec15:</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

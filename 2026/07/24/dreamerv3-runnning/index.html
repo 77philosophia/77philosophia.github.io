@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://77philosophia.github.io/2026/07/24/dreamerv3-runnning/image-20260724162449389.png">
 <meta property="article:published_time" content="2026-07-24T03:09:49.000Z">
-<meta property="article:modified_time" content="2026-07-28T08:26:54.469Z">
+<meta property="article:modified_time" content="2026-07-29T10:48:08.580Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="world model">
 <meta property="article:tag" content="dreamerv3">
@@ -220,7 +220,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-28 16:26:54" itemprop="dateModified" datetime="2026-07-28T16:26:54+08:00">2026-07-28</time>
+                <time title="Modified: 2026-07-29 18:48:08" itemprop="dateModified" datetime="2026-07-29T18:48:08+08:00">2026-07-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,8 +257,27 @@ alt="image-20260724162449389" />
 <p>a.Baseline：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python dreamerv3/main.py \</span><br><span class="line">  --logdir ~/logdir/dreamer/crafter \</span><br><span class="line">  --configs crafter \</span><br><span class="line">  --run.train_ratio 32</span><br><span class="line">  </span><br><span class="line">另一个窗口可视化 python -m scope_viewer --basedir ~/logdir --port 8000   ## 跑了一些新的实验runs加载不出来换个端口</span><br></pre></td></tr></table></figure>
 <p>当前训练（GPU）的基线是 fps/policy ~46、fps/train ~1470。</p>
-<p>b.cpu</p>
-<p>fps/policy 0.61 / fps/train 18.69</p>
+<h3 id="代码阅读">代码阅读</h3>
+<p>关键代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obs    --&gt;.    enc ---&gt; tokens</span><br></pre></td></tr></table></figure>
+<p>代码其实主要分为两部分：world model和actor-critic</p>
+<h4 id="world-model部分">1.world model部分</h4>
+<ul>
+<li>enc(Encoder). 图像/本体-&gt;tokens，注意在world
+model里面图像的输入是(batch_size, seq_length,
+obs_dim)，多了一个sequence_len</li>
+<li>Dyn(RSSM). tokens + action -&gt; 隐状态(deter + stoch)</li>
+<li>Dec(Decoder). 隐状态-&gt;重构观测</li>
+<li>Rew(MLPHead). 隐状态-&gt;奖励预测</li>
+<li>Con(MLPHead). 隐状态-&gt;是否继续(done预测)</li>
+</ul>
+<p>增加断点部分dramerv3/agent.py def loss()</p>
+<h4 id="actor-critic部分">2.actor-critic部分</h4>
+<ul>
+<li>Pol(MLPHead). 隐状态-&gt;动作分布</li>
+<li>Val(MLPHead). 隐状态-&gt;价值</li>
+<li>Slowval(SlowModel). val的EMA慢副本(稳定bootstrapping target)</li>
+</ul>
 
     </div>
 
@@ -344,7 +363,7 @@ alt="image-20260724162449389" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#dreamer%E7%9A%84%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">dreamer的训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E7%AE%97%E5%8A%9B%E7%93%B6%E9%A2%88"><span class="nav-number">2.</span> <span class="nav-text">1.理解算力瓶颈</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#dreamer%E7%9A%84%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">dreamer的训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E7%AE%97%E5%8A%9B%E7%93%B6%E9%A2%88"><span class="nav-number">2.</span> <span class="nav-text">1.理解算力瓶颈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">3.</span> <span class="nav-text">代码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#world-model%E9%83%A8%E5%88%86"><span class="nav-number">3.1.</span> <span class="nav-text">1.world model部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#actor-critic%E9%83%A8%E5%88%86"><span class="nav-number">3.2.</span> <span class="nav-text">2.actor-critic部分</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -360,7 +379,7 @@ alt="image-20260724162449389" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">159</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -373,7 +392,7 @@ alt="image-20260724162449389" />
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">127</span>
+        <span class="site-state-item-count">132</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
