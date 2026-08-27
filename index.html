@@ -182,6 +182,348 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/27/clip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/27/clip/" class="post-title-link" itemprop="url">clip & dino</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-08-27 11:30:43 / Modified: 15:09:42" itemprop="dateCreated datePublished" datetime="2026-08-27T11:30:43+08:00">2026-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>[!NOTE]The goal of the contrastive loss is to maximize agreement
+between the final vectors <span class="math display">\[
+z_i = g(h_i) 和 z_j = g(h_j)
+\]</span></p>
+</blockquote>
+<p>Clip: 在text和image两个模态中作对比学习。</p>
+<p>为了训练clip，openai从互联网上收集了~400M 图像-文本对</p>
+<figure>
+<img data-src="/2026/08/27/clip/image-20260827150336910.png"
+alt="image-20260827150336910" />
+<figcaption aria-hidden="true">image-20260827150336910</figcaption>
+</figure>
+<h3 id="dino">dino</h3>
+<p>simCLR和CLIP等传统对比学习方法，需要大量的负样本来拉开不同图片的距离，非常大的批次大小（Batch
+Sizes比如几千）。這使得它們在計算上成本高昂；</p>
+<p>后续研究，比如BYOL提出一种替代方法避免对大量负样本的需求。通过student-teacher框架，这种技巧被dino使用。</p>
+<p>与simclr类似，dino的训练目的是最大化来自同一张图片不同视角生成的两个向量之间的一致性。但是dino使用了两个训练方式不同的独立编码；</p>
+<p>学生网络通过反向传播更新，匹配teacher network的输出；</p>
+<p>Teacher
+network不通过反向传播更新，而是通过学生权重的指数移动平均ema来更新，这意味着老师网络更新速度比较慢，能为学生网络提供一个稳定的目标。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/24/DDPM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/24/DDPM/" class="post-title-link" itemprop="url">DDPM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-24 17:24:37" itemprop="dateCreated datePublished" datetime="2026-08-24T17:24:37+08:00">2026-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-27 11:28:10" itemprop="dateModified" datetime="2026-08-27T11:28:10+08:00">2026-08-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>来源：2020年Ho et al. introduced Denoising Diffusion Probabilistic
+Models (DDPMs)</p>
+<h3 id="forward-process">Forward process</h3>
+<p><span class="math inline">\(q(x_0)\)</span>：数据集分布</p>
+<p>定义一个前向Markov chain过程： <span class="math display">\[
+q(x_t | x_{t-1}) \sim N(x_t; \sqrt{1-\beta_t} x_{t-1} , \beta_t I) \\
+(\beta_1, ..., \beta_T)是noise schedule
+\]</span> 根据高斯分布的特性，<span class="math inline">\(q(x_t |
+x_0)\)</span>可以表示为： <span class="math display">\[
+q(x_t | x_0) \sim N(x_t; \sqrt{\bar{\alpha}_t} x_0 , (1-\bar{\alpha}_t)
+I) \\
+\alpha_t = 1-\beta_t \\
+\bar{\alpha}_t = \prod_{s=1}^{t}\alpha_t
+\]</span> 如果<span class="math inline">\((\beta_1, ...,
+\beta_T)\)</span>设置合适，最终的<span
+class="math inline">\(q(x_T)\)</span>会逼近一个纯高斯变换<span
+class="math inline">\(N(0, I)\)</span></p>
+<p>2.从高斯分布 <span class="math display">\[
+x \sim N(\mu, \sigma^2)
+\]</span> 采样的过程等价于计算： <span class="math display">\[
+\sigma * \epsilon + \mu \\其中 \epsilon \sim N(0, 1)
+\]</span> 因此从<span class="math inline">\(q(x_t | x_{t-1})\)</span>
+或者 <span class="math inline">\(q(x_t |
+x_0)\)</span>采样可以直接通过<span
+class="math inline">\(x_{t-1}\)</span> or <span
+class="math inline">\(x_0\)</span>计算得到，也是由于这个原因前向过程简单，不需要学习。</p>
+<h3 id="reverse-process">reverse process</h3>
+<p>逆向过程就是通过很多步从纯噪声<span
+class="math inline">\(x_T\)</span>重建<span
+class="math inline">\(x_0\)</span>, 我们用<span
+class="math inline">\(p(x_{t-1} | x_t)\)</span>表示reverse step of <span
+class="math inline">\(q(x_t | x_{t-1})\)</span>.</p>
+<p>1.第一个关键点就是学习reverse每个去噪步比逆转整个前向过程要简单，也就是学习<span
+class="math inline">\(p(x_{t-1} | x_t)\)</span>比直接学习<span
+class="math inline">\(p(x_0 | x_T)\)</span>要简单。</p>
+<p>但是学习<span class="math inline">\(p(x_{t-1} |
+x_t)\)</span>依然很困难，尽管<span class="math inline">\(q(x_t |
+x_{t-1})\)</span>是高斯，<span class="math inline">\(p(x_{t-1} |
+x_t)\)</span>可以是任何复杂的分布并且几乎绝对不是高斯。从一个任意采样建模和采样肯定比一个参数化的采样比如高斯分布要难。</p>
+<p>2.第二个关键点就是前向过程中每步的noise <span
+class="math inline">\(\beta_t\)</span>如果足够小，那么逆向步<span
+class="math inline">\(p(x_{t-1} |
+x_t)\)</span>也接近一个高斯分布。因此我们只需要顾及它的均值和方差。实际中，我们设置<span
+class="math inline">\(p(x_{t-1} | x_t)\)</span>的方差和前向过程中的<span
+class="math inline">\(\beta_t\)</span>。也就是，估计逆向过程的问题可以简化为学习均值<span
+class="math inline">\(\mu(x_t, t; \theta)\)</span>， 其中<span
+class="math inline">\(\theta\)</span>表示神经网络的参数。</p>
+<h3 id="denoising目标">denoising目标</h3>
+<p>1.传统生成模型的优化目标（最大似然估计）</p>
+<p>机器学习中生成模型（比如vae,
+flow）的目标，是让模型学会真实世界的数据，通过最大似然来实现。调整模型参数theta，来让模型得到真实样本x0的概率p_theta(x0)最大。</p>
+<p>对最大似然取负对数，目标就变成了最小化负对数似然。NLL <span
+class="math display">\[
+\mathbb{E}[-\log{p_\theta(x_0)}]
+\]</span>
+但是由于公式中隐含的积分或隐变量联合分布，如把图像一步步加噪到纯噪声的全概率展开
+<span class="math display">\[
+p_\theta(x_0) = p(x_T)\prod_{t=1}^T p(x_{t-1} \vert{} x_t)
+\]</span>
+，直接计算这个概率在数学上几乎是不可解的。因此传统模型会去优化它的一个替代指标——变分下界VLB。</p>
+<p>2.论文作者 Ho 等人（DDPM
+的提出者）通过数学推导发现，在对扩散模型做出特定简化后，那个复杂的变分下界（VLB）最终可以化简为一个极其直观的<strong>均方误差（MSE）损失函数</strong>。
+<span class="math display">\[
+\mathbb{E}_{t, x_0, \epsilon}\left[ \| \epsilon - \epsilon_\theta
+(\sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t ) \|^2
+\right]
+\]</span></p>
+<ul>
+<li><p><span
+class="math inline">\(x_0\)</span>：原始的干净图像。</p></li>
+<li><p><span
+class="math inline">\(\epsilon\)</span>：标准的正态分布噪声。</p></li>
+<li><p><span class="math display">\[
+\sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon
+\]</span> 这就是前向加噪过程的数学表达式（将干净图像 <span
+class="math inline">\(x_0\)</span> 和噪声 <span
+class="math inline">\(\epsilon\)</span> 按时间步 <span
+class="math inline">\(t\)</span> 的比例混合，得到加噪后的图像 <span
+class="math inline">\(x_t\)</span>）。</p></li>
+<li><p><span class="math inline">\(\epsilon_\theta(\dots,
+t)\)</span>：神经网络（如 U-Net），它的任务是输入加噪后的图像 <span
+class="math inline">\(x_t\)</span> 和时间步 <span
+class="math inline">\(t\)</span>，<strong>预测当初加进去的那个噪声 <span
+class="math inline">\(\epsilon\)</span></strong>。</p></li>
+</ul>
+<p>训练扩散模型并不需要去算什么复杂的概率，只需要让神经网络去<strong>猜噪声</strong>，猜得越准（预测噪声与真实噪声的欧氏距离平方最小），模型就学得越好。</p>
+<p>因为加噪公式是一个线性的确定性关系（已知加噪图 <span
+class="math inline">\(x_t\)</span>、噪声 <span
+class="math inline">\(\epsilon\)</span> 和系数，就可以反推出干净图 <span
+class="math inline">\(x_0\)</span>），所以<strong>预测噪声等价于预测清晰图像</strong>。
+<span class="math display">\[
+x_t = \sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon
+\]</span></p>
+<p>1.正向加噪声</p>
+<p>具体的：加噪声： <span class="math display">\[
+q(xt|x0) = N (xt;
+\sqrt{\bar{\alpha}_t} x_0,(1 - \bar{\alpha}_t)I)
+\]</span></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>在数学和统计学中，概率密度函数（PDF）的标准写法通常是 <strong><span
+class="math inline">\(p(x \mid \text{参数})\)</span></strong> 或
+<strong><span class="math inline">\(\mathcal{N}(x; \mu,
+\Sigma)\)</span></strong>。</p>
+<p>这里的第一个参数 <span class="math inline">\(x_t\)</span>
+表示的是<strong>随机变量（Random
+Variable）或当前正在观测/采样的对象</strong>，而后面的部分则是这个高斯分布的<strong>统计参数（均值和方差）</strong>。</p>
+</blockquote>
+<ul>
+<li><p><code>betas</code> (<span
+class="math inline">\(\beta_t\)</span>)：<strong>噪声方差调度（Variance
+Schedule）</strong>。表示在每个时间步 <span
+class="math inline">\(t\)</span>
+往图像里注入的噪声强度。通常从一个小值（如 <span
+class="math inline">\(10^{-4}\)</span>）随时间线性或余弦递增到一个大值（如
+<span class="math inline">\(0.02\)</span>）。</p></li>
+<li><p><strong><code>alphas</code> (<span
+class="math inline">\(\alpha_t\)</span>)</strong>：<strong>含义</strong>：<span
+class="math inline">\(\alpha_t = 1 - \beta_t\)</span>。表示在第 <span
+class="math inline">\(t\)</span>
+步，<strong>原始信号（上一时刻图像）保留了多少比例</strong>。</p></li>
+<li><p><strong><code>alphas_cumprod</code> (<span
+class="math inline">\(\bar{\alpha}_t\)</span>)</strong>：</p></li>
+<li><p><strong>含义</strong>：<strong>累积阿尔法（Alpha
+Bar）</strong>。<span class="math inline">\(\bar{\alpha}_t =
+\prod_{i=1}^{t} \alpha_i = \alpha_1 \alpha_2 \dots
+\alpha_t\)</span>。</p>
+<p><strong>作用</strong>：代表从初始状态 <span
+class="math inline">\(x_0\)</span> 经过连续 <span
+class="math inline">\(t\)</span>
+步加噪后，<strong>原图信号一共衰减剩下了多少</strong>。它就是前面我们讨论的公式中的核心变量。</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x_t = extract(self.sqrt_alphas_cumprod, t, x_start.shape) * x_start + \</span><br><span class="line">              extract(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape) * noise</span><br></pre></td></tr></table></figure>
+<p>得到：</p>
+<figure>
+<img data-src="/2026/08/24/DDPM/image-20260826155245829.png"
+alt="image-20260826155245829" />
+<figcaption aria-hidden="true">image-20260826155245829</figcaption>
+</figure>
+<p>2.知道xt,t,noise可以得到x0或者知道x_t,t,x_start可以知道noise</p>
+<p>(diffusion model可以predict原图像或者噪声，都可以) <span
+class="math display">\[
+\mathbb{E}_{t, x_0, \epsilon}\left[ \| \epsilon - \epsilon_\theta
+(\sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t ) \|^2
+\right]
+\]</span> 知道噪声 <span class="math inline">\(\epsilon\)</span> 和
+<span class="math inline">\(x_t\)</span>，求原图 <span
+class="math inline">\(x_0\)</span> <span class="math display">\[
+x_0 = \frac{x_t - \sqrt{1 - \bar{\alpha}_t}
+\epsilon}{\sqrt{\bar{\alpha}_t}}
+\]</span> 知道原图 <span class="math inline">\(x_0\)</span> 和 <span
+class="math inline">\(x_t\)</span>，求噪声 <span
+class="math inline">\(\epsilon\)</span> <span class="math display">\[
+\epsilon = \frac{x_t - \sqrt{\bar{\alpha}_t} x_0}{\sqrt{1 -
+\bar{\alpha}_t}}
+\]</span></p>
+<h3 id="训练">训练</h3>
+<p>1.利用上面的公式有x_0和noise得到中间的x_t</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># First, sample x_t from q(x_t | x_0) using the `q_sample` function.</span></span><br><span class="line"><span class="comment"># Then, get model predictions by calling self.model with appropriate args.</span></span><br><span class="line"><span class="comment"># Finally, compute the weighted MSE loss.</span></span><br><span class="line"><span class="comment"># Approximately 3-4 lines of code.</span></span><br><span class="line"><span class="comment">####################################################################</span></span><br><span class="line">x_t = self.q_sample(x_start, t, noise)  <span class="comment"># Sample x_t from q(x_t | x_0)</span></span><br><span class="line">model_output = self.model(x_t, t, model_kwargs)  <span class="comment"># Get model predictions</span></span><br><span class="line">loss = (loss_weight * (model_output - target) ** <span class="number">2</span>).mean()  <span class="comment"># Compute weighted MSE loss</span></span><br></pre></td></tr></table></figure>
+<h3 id="推理">推理</h3>
+<p>2.推理：知道t, x_t,让模型去猜x_start,
+计算xt-1,再往前继续猜x_start，这样越来越精准。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for t in tqdm(</span><br><span class="line">            reversed(range(0, self.num_timesteps)),</span><br><span class="line">            desc=&quot;sampling loop time step&quot;,</span><br><span class="line">            total=self.num_timesteps,</span><br><span class="line">        ):</span><br><span class="line">            img = self.p_sample(img, t, model_kwargs=model_kwargs)</span><br><span class="line">            imgs.append(img)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">model_output = self.model(x_t, t, model_kwargs)  # Get model prediction</span><br><span class="line">        if self.objective == &quot;pred_noise&quot;:</span><br><span class="line">            x_start = self.predict_start_from_noise(x_t, t, model_output)</span><br><span class="line">        else:</span><br><span class="line">            x_start = model_output</span><br><span class="line">        x_start = torch.clamp(x_start, -1.0, 1.0)  # Clamp to valid range</span><br><span class="line">        posterior_mean, posterior_std = self.q_posterior(x_start, x_t, t)  # Get mean and std</span><br><span class="line">        noise = torch.randn_like(x_t)  # Sample noise</span><br><span class="line">        x_tm1 = posterior_mean + posterior_std * noise  # Sample x_&#123;t-1&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="cfg">cfg</h3>
+<p>生成模型由逼真度和多样性衡量，此消彼长。cfg是手动调控“听话程度（逼真度）”与“丰富程度（多样性）”之间的平衡。</p>
+<p>在模型训练过程中：给模型输入条件 <span
+class="math inline">\(c\)</span>（例如一段文本描述），但在訓練過程中，會以
+10% 到 20% 的概率把这个条件随机抹掉（用空条件 <span
+class="math inline">\(\phi\)</span>
+代替）。这样一来，模型既学会了“有条件怎么画”，也学会了“没条件时自己盲目发挥會怎麼畫”。</p>
+<p>在生成图片的时候会让模型预测两次： <span class="math display">\[
+一次是有条件的预测：$\epsilon_\theta(x_t, t,
+c)一次是无条件的预测：\epsilon_\theta(x_t, t, \phi)
+\]</span></p>
+<p><span class="math display">\[
+{利用这个公式把两个预测结果线性组合起来。}
+利用这个公式把两个预测结果线性组合起来
+\epsilon_\theta(x_t, t, c) \leftarrow (w+1) \epsilon_\theta(x_t, t, c) -
+w \epsilon_\theta(x_t, t, \phi)
+\]</span> w高模型听话w低模型更有创意。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/13/openvla/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -490,7 +832,7 @@ horizon / 滚动优化）)</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-08-17 14:39:52" itemprop="dateModified" datetime="2026-08-17T14:39:52+08:00">2026-08-17</time>
+                <time title="Modified: 2026-08-24 15:52:51" itemprop="dateModified" datetime="2026-08-24T15:52:51+08:00">2026-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -596,6 +938,7 @@ alt="image-20260804150724697" />
 <figcaption aria-hidden="true">image-20260804150724697</figcaption>
 </figure>
 <h2 id="lecture7">lecture7:</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RNN的公式结构是两个，更新隐状态和得到输出；RNN的梯度传播机制会导致权重矩阵W乘以很多次，从而导致梯度爆炸/消失；梯度爆炸的问题可以通过gradient clip来解决，但是梯度消失不行；</span><br><span class="line">LSTM定义了四个概念，从一定程度上缓解了这种长序列的问题，但是依然没有从本质上解决问题。</span><br></pre></td></tr></table></figure>
 <h4 id="rnn">RNN</h4>
 <p>解决的是序列问题（一对一、一对多、多对一）</p>
 <figure>
@@ -650,7 +993,7 @@ alt="image-20260804160551940" />
 </figure>
 <p>LSTM
 并没有从数学上彻底根除（eliminate）梯度消失或梯度爆炸问题，但它极大地缓解了这一问题，让网络在实践中更容易学习到长距离的时序依赖关系。</p>
-<p>总结：</p>
+<h4 id="总结">总结：</h4>
 <ul>
 <li>rnn允许在架构设计上有更多的灵活性</li>
 <li>Vanilla rnns思路很简单但是没有工作很好</li>
@@ -659,6 +1002,7 @@ alt="image-20260804160551940" />
 </ul>
 <h2 id="lecture8">lecture8:</h2>
 <p>https://cs231n.stanford.edu/schedule.html</p>
+<h4 id="从rnn到attention">从rnn到attention</h4>
 <p>先看一眼RNNs中sequence to sequence问题：</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805100834917.png"
@@ -722,31 +1066,38 @@ alt="image-20260805102114384" />
 alt="image-20260805102604601" />
 <figcaption aria-hidden="true">image-20260805102604601</figcaption>
 </figure>
-<p>attention在这里做的改进：把query和key分开</p>
+<p>attention在这里做的改进：把key和value分开
+(原来是让query和data计算相似度，拿计算的相似度再去和data做加权，这里data用了两次)</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805102643693.png"
 alt="image-20260805102643693" />
 <figcaption aria-hidden="true">image-20260805102643693</figcaption>
 </figure>
-<p>一个attention layer:</p>
+<h4 id="一个attention-layer">一个attention layer:</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805102836696.png"
 alt="image-20260805102836696" />
 <figcaption aria-hidden="true">image-20260805102836696</figcaption>
 </figure>
-<p>Cross-attention layer:</p>
+<h4 id="cross-attention-layer">Cross-attention layer:</h4>
+<p>query和用于提供key和value的data是分开的。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805102923533.png"
 alt="image-20260805102923533" />
 <figcaption aria-hidden="true">image-20260805102923533</figcaption>
 </figure>
-<p>Self-attention: 通常让dim简化为一样的</p>
+<h4 id="self-attention-query此时也是data本身">Self-attention:
+query此时也是data本身</h4>
+<p>通常让dim简化为一样的</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805103121144.png"
 alt="image-20260805103121144" />
 <figcaption aria-hidden="true">image-20260805103121144</figcaption>
 </figure>
-<p>我们在计算的可以把三个q,k,v fuse到一个乘法当中：</p>
+<p>Self-attention的计算过程，我们可以看到是让输入的data分别乘以</p>
+<p>query矩阵，key矩阵,value矩阵，然后进行计算；</p>
+<p>根据计算原理，我们在计算的可以把三个q,k,v
+fuse到一个乘法当中减少矩阵乘法的次数：</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805103409241.png"
 alt="image-20260805103409241" />
@@ -772,7 +1123,8 @@ alt="image-20260805103528964" />
 alt="image-20260805103634907" />
 <figcaption aria-hidden="true">image-20260805103634907</figcaption>
 </figure>
-<p>因此self-attention并不知道顺序。</p>
+<p><strong>因此self-attention并不知道顺序。</strong></p>
+<h4 id="positional-encoding">positional encoding</h4>
 <p>解决方法：对每个input增加postional encoding. 这是一个fixed function
 of the index的向量。</p>
 <figure>
@@ -780,14 +1132,21 @@ of the index的向量。</p>
 alt="image-20260805104829770" />
 <figcaption aria-hidden="true">image-20260805104829770</figcaption>
 </figure>
-<p>Masked self-attention layer:</p>
+<p>#### Masked self-attention layer:</p>
+<p>理解这一点非常重要。</p>
+<p>首先这个mask的位置在计算attention之后进行softmax之前；评价的是当前的query
+i 对key j的关注度；</p>
+<p>所以query之间其实并没有相互看。</p>
+<p>（这里也引出只有self-attention会让input query自我审视，但是cross
+attention的query之间其实是独立去进行查询的。+位置信息，但是query之间并没有进行“关注”的计算）</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805105333685.png"
 alt="image-20260805105333685" />
 <figcaption aria-hidden="true">image-20260805105333685</figcaption>
 </figure>
-<p>Multiheaded self-attention
-layer:就是把self-attention过程并行的跑H遍。</p>
+<h4 id="multiheaded-self-attention-layer">Multiheaded self-attention
+layer:</h4>
+<p>就是把self-attention过程并行的跑H遍。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805105532091.png"
 alt="image-20260805105532091" />
@@ -799,12 +1158,13 @@ alt="image-20260805105532091" />
 alt="image-20260805105606291" />
 <figcaption aria-hidden="true">image-20260805105606291</figcaption>
 </figure>
-<p>实践中，通常用batched matrix multiply操作</p>
+<p>实践中，通常用batched matrix multiply操作，H放在最前面</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805105634138.png"
 alt="image-20260805105634138" />
 <figcaption aria-hidden="true">image-20260805105634138</figcaption>
 </figure>
+<h4 id="self-attention计算复杂度分析">self-attention计算复杂度分析</h4>
 <p>Self-attention本质是四次矩阵乘法</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805105736775.png"
@@ -819,18 +1179,29 @@ alt="image-20260805105821585" />
 <figcaption aria-hidden="true">image-20260805105821585</figcaption>
 </figure>
 <p><strong>Flash attention的复杂度只需要O(N)</strong></p>
+<p>注意理解这里的复杂度的概念，其实计算（FLOPS）复杂度还是O(N^2),要算的乘法一个字节都没少；</p>
+<p>在 FlashAttention 的语境下指的是显存空间复杂度（Memory
+Complexity）<strong>以及</strong>对高带宽内存（HBM）的访存复杂度（I/O
+Complexity）从 <span class="math inline">\(O(N^2)\)</span> 降到了 <span
+class="math inline">\(O(N)\)</span>。</p>
+<p>标准的attention计算，gpu绝大部分的时间和带宽都在每次把结果写入慢速存(HBM)，计算的时候又要读到高速的缓存(SRAM)</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805110046700.png"
 alt="image-20260805110046700" />
 <figcaption aria-hidden="true">image-20260805110046700</figcaption>
 </figure>
 <p>对比几种处理sequence的方法：</p>
+<p>Rnn:理论上适合处理序列数据，不是并行的，每个cell的hidden
+state需要顺序更新</p>
+<p>Convolution：不适合处理序列数据，但是是并行的。</p>
+<p>Self-attention:适合处理序列，也可以并行，但是计算量高</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805110811779.png"
 alt="image-20260805110811779" />
 <figcaption aria-hidden="true">image-20260805110811779</figcaption>
 </figure>
 <h4 id="transformer结构">transformer结构</h4>
+<h5 id="transformer-block">transformer block</h5>
 <p>然后来到大名鼎鼎的transformer论文：attention is all you need</p>
 <p>先是multihead self-attention，然后是residual和layer norm</p>
 <figure>
@@ -849,6 +1220,11 @@ alt="image-20260805111106701" />
 alt="image-20260805111131070" />
 <figcaption aria-hidden="true">image-20260805111131070</figcaption>
 </figure>
+<p>一个transofrmer block里面有什么：</p>
+<p>输入是一串vectors,输出是一串vectors，中间是self-attention计算，residual,layernorm,
+map,layernorm。</p>
+<p>只有self-attention计算让序列彼此attention,其他都各自前向计算。</p>
+<p>主要的计算复杂度来自于self-attention的四次矩阵乘法和mlp的两次矩阵乘法。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805111213299.png"
 alt="image-20260805111213299" />
@@ -860,15 +1236,25 @@ alt="image-20260805111213299" />
 alt="image-20260805111515796" />
 <figcaption aria-hidden="true">image-20260805111515796</figcaption>
 </figure>
-<p>用transformer对llm建模</p>
+<h5 id="用transformer对llm建模">用transformer对llm建模：</h5>
+<p>1.首先在输入的部门增加一个embedding矩阵把words转换成vectors</p>
+<p>2.语言建模的方式多一个masked attention。</p>
+<p>3.最后增加一个projection矩阵投影回词表的score得分得到输出结果。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805111622586.png"
 alt="image-20260805111622586" />
 <figcaption aria-hidden="true">image-20260805111622586</figcaption>
 </figure>
+<h5 id="对图像建模">对图像建模：</h5>
 <p>Vit的过程：</p>
-<p>切成小patch-&gt;flatten-&gt;positional
-encoding-&gt;不需要masking-&gt;每个patch最后都输出一个vector-&gt;汇总</p>
+<p>切成小patch-&gt;flatten拉平成一个一维向量，比如3通道16长度的就是3x16x16=768-&gt;把这个
+768 维的向量乘上一个可学习的权重矩阵 <span
+class="math inline">\(W\)</span>（形状是 <span class="math inline">\(768
+\times D\)</span>，其中 <span class="math inline">\(D\)</span> 是
+Transformer 隐藏层的维度，比如 768 或 1024）-&gt;(positional
+encoding-&gt;不需要masking)-&gt;汇总作为transformer的输入序列</p>
+<p>(“一个 patch 就是一个 word，这个 patch 的 vector 就对应 word 在
+embedding 空间的 vector”)</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805111735145.png"
 alt="image-20260805111735145" />
@@ -881,7 +1267,7 @@ alt="image-20260805112043728" />
 <figcaption aria-hidden="true">image-20260805112043728</figcaption>
 </figure>
 <p>transformer架构自从2017年没有改变多少，但是一些变化非常常见：</p>
-<p>1.pre-norm transformer</p>
+<h6 id="pre-norm-transformer">1.pre-norm transformer</h6>
 <p>原来的论文如上图layer norm
 在residual连接的外面，这样无法学习到恒等映射。</p>
 <p>解决方法：把layer norm 移到attention和mlp前面，移到residual
@@ -891,49 +1277,78 @@ connections里面。</p>
 alt="image-20260805140451515" />
 <figcaption aria-hidden="true">image-20260805140451515</figcaption>
 </figure>
-<ol start="2" type="1">
-<li><p>QK-Norm</p>
-<p>计算attention相似度之前先对query和keys进行归一化。</p>
+<h6 id="qk-normrms-norm">2.QK-Norm（RMS-Norm)</h6>
+<p>1.计算attention相似度之前先对query和keys进行归一化。</p>
+<p>不能对value进行归一化不然影响真值。</p>
+<p>2.normalization的方式一般用RMSnorm.</p>
+<p>rmsnorm是一种针对深度学习（特别是
+Transformer）提出的<strong>层归一化替代方案</strong>。</p>
+<p>它的核心思想非常极端且精妙：<strong>抛弃均值中心化（Mean
+Centering），只保留均方根（RMS）缩放。</strong></p>
+<p>相比layernorm减少计算量并且发现影响也不大。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805142036013.png"
 alt="image-20260805142036013" />
 <figcaption aria-hidden="true">image-20260805142036013</figcaption>
-</figure></li>
-<li><p>SwiGLU MLP</p>
+</figure>
+<h6 id="swiglu-mlp">3. SwiGLU MLP</h6>
+<p>是针对mlp的两次矩阵乘法提出的提升方案，没有直观解释。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805142355055.png"
 alt="image-20260805142355055" />
 <figcaption aria-hidden="true">image-20260805142355055</figcaption>
 </figure>
-<p>4.Mixture of Experts(MoE)</p>
-<p>准备E组MLP参数在每个block，每个MLP都是一个专家</p>
+<h6 id="mixture-of-expertsmoe">4.Mixture of Experts(MoE)</h6>
+<p>准备E组MLP参数在每个block，每个MLP都是一个专家。</p>
+<p>对transformer block里的mlp进行改造，复制E份，每份都是一个专家。</p>
+<p>增加一个路由机制，观察当前的 Token
+特征，计算出它和每一个“专家”的契合度得分（概率分布）。</p>
+<p>每次激活动态选择得分最高的 <span class="math inline">\(K\)</span>
+个专家进行处理。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805152239529.png"
 alt="image-20260805152239529" />
 <figcaption aria-hidden="true">image-20260805152239529</figcaption>
 </figure>
-<p>总结：</p>
+<h4 id="总结-1">总结：</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805152303356.png"
 alt="image-20260805152303356" />
 <figcaption aria-hidden="true">image-20260805152303356</figcaption>
 </figure>
+<h6 id="其他问题">其他问题：</h6>
+<figure>
+<img data-src="/2026/08/04/cs231n-2026/image-20260817143949980.png"
+alt="image-20260817143949980" />
+<figcaption aria-hidden="true">image-20260817143949980</figcaption>
+</figure>
+<h5 id="从代码理解transformerdecoder">从代码理解transformerDecoder</h5>
+<p>脑子里面去想翻译的那个任务：</p>
+<p>1.对于tgt来说，先和tgt_mask一起进行self-attention。此时query, key
+,value都是自身</p>
+<p>2.memocy是encoderde的最后一层
+(N,S,D),在进行crossattention的时候作为key和value</p>
+<p>3.最后一个MLP</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, tgt, memory, tgt_mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Pass the inputs (and mask) through the decoder layer.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Inputs:</span></span><br><span class="line"><span class="string">        - tgt: the sequence to the decoder layer, of shape (N, T, D)</span></span><br><span class="line"><span class="string">        - memory: the sequence from the last layer of the encoder, of shape (N, S, D)</span></span><br><span class="line"><span class="string">        - tgt_mask: the parts of the target sequence to mask, of shape (T, T)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">        - out: the Transformer features, of shape (N, T, W)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Self-attention block (reference implementation)</span></span><br><span class="line">        shortcut = tgt</span><br><span class="line">        tgt = self.self_attn(query=tgt, key=tgt, value=tgt, attn_mask=tgt_mask)</span><br><span class="line">        tgt = self.dropout_self(tgt)</span><br><span class="line">        tgt = tgt + shortcut</span><br><span class="line">        tgt = self.norm_self(tgt)</span><br><span class="line">        </span><br><span class="line">        shortcut = tgt</span><br><span class="line">        tgt = self.cross_attn(query=tgt, key=memory, value=memory)</span><br><span class="line">        tgt = self.dropout_cross(tgt)</span><br><span class="line">        tgt = tgt + shortcut</span><br><span class="line">        tgt = self.norm_cross(tgt)</span><br><span class="line">        shortcut = tgt</span><br><span class="line">        tgt = self.ffn(tgt)</span><br><span class="line">        tgt = self.dropout_ffn(tgt)</span><br><span class="line">        tgt = tgt + shortcut</span><br><span class="line">        tgt = self.norm_ffn(tgt)</span><br></pre></td></tr></table></figure>
 <h3 id="lecture10-视频理解">Lecture10: 视频理解</h3>
-<p>对video的处理：</p>
+<h3 id="对video的处理">对video的处理：</h3>
+<h4 id="方法一">方法一：</h4>
 <p>1.对每一帧的2d图像cnn特征提取后到最后做特征的fusion</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805161911812.png"
 alt="image-20260805161911812" />
 <figcaption aria-hidden="true">image-20260805161911812</figcaption>
 </figure>
+<h4 id="方法二">方法二：</h4>
 <p>2.用3D的CNNs</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805161959817.png"
 alt="image-20260805161959817" />
 <figcaption aria-hidden="true">image-20260805161959817</figcaption>
 </figure>
-<p>提升视频理解的方法：</p>
-<p>思路一.提取motion里面的action信息</p>
+<h3 id="提升视频理解的方法">提升视频理解的方法：</h3>
+<h4
+id="思路一.提取motion里面的action信息">思路一.提取motion里面的action信息</h4>
 <p>比如用光流衡量运动信息：</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805162126758.png"
@@ -950,9 +1365,9 @@ alt="image-20260805162140586" />
 <img data-src="/2026/08/04/cs231n-2026/image-20260805162240716.png"
 alt="image-20260805162240716" />
 <figcaption aria-hidden="true">image-20260805162240716</figcaption>
-</figure></li>
-</ol>
-<p>思路二：复用image的架构到video里</p>
+</figure>
+<h4
+id="思路二复用image的架构到video里">思路二：复用image的架构到video里</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805163032078.png"
 alt="image-20260805163032078" />
@@ -963,13 +1378,14 @@ alt="image-20260805163032078" />
 alt="image-20260805163102373" />
 <figcaption aria-hidden="true">image-20260805163102373</figcaption>
 </figure>
-<p>vit的架构处理视频：</p>
+<h3 id="vit的架构处理视频">vit的架构处理视频：</h3>
+<h5 id="算力爆炸问题">算力爆炸问题：</h5>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805163518873.png"
 alt="image-20260805163518873" />
 <figcaption aria-hidden="true">image-20260805163518873</figcaption>
 </figure>
-<p>算力会直接爆炸</p>
+<p>因此对于视频理解vit的算力会直接爆炸</p>
 <p>两个经常使用的策略：</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805163603682.png"
@@ -977,7 +1393,7 @@ alt="image-20260805163603682" />
 <figcaption aria-hidden="true">image-20260805163603682</figcaption>
 </figure>
 <p>先看第一个attention的算子：</p>
-<p>joint space-time attention:</p>
+<h5 id="joint-space-time-attention">joint space-time attention:</h5>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805170805476.png"
 alt="image-20260805170805476" />
@@ -1007,13 +1423,21 @@ alt="image-20260805171006724" />
 alt="image-20260805171121607" />
 <figcaption aria-hidden="true">image-20260805171121607</figcaption>
 </figure>
-<p>video swin transformer</p>
+<h5 id="video-swin-transformer全局注意力到局部注意力">video swin
+transformer：全局注意力到局部注意力</h5>
+<p>标准 ViT 的每个 Patch 都要和全图的所有 Patch 计算注意力（Global
+Attention）。而 Video Swin Transformer 借鉴了 Swin Transformer
+的思想：</p>
+<p>把视频切分成一个个不重叠的 3D 小方块窗口（例如包含 <span
+class="math inline">\(T&#39; \times H&#39; \times W&#39;\)</span> 个
+Patch）。<strong>注意力机制只在每个窗口内部发生</strong>，窗口之外的
+Patch 互不相见。</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805171225733.png"
 alt="image-20260805171225733" />
 <figcaption aria-hidden="true">image-20260805171225733</figcaption>
 </figure>
-<p>MVit:压缩K和V的size</p>
+<h5 id="mvit压缩k和v的size">MVit:压缩K和V的size</h5>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805171746921.png"
 alt="image-20260805171746921" />
@@ -1036,7 +1460,7 @@ alt="image-20260805171955194" />
 alt="image-20260805172617763" />
 <figcaption aria-hidden="true">image-20260805172617763</figcaption>
 </figure>
-<p>看一些其他的视频理解的任务：</p>
+<h3 id="看一些其他的视频理解的任务">看一些其他的视频理解的任务：</h3>
 <p>temporal action localization</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260805172909172.png"
@@ -1070,13 +1494,8 @@ alt="image-20260805173721032" />
 alt="image-20260805173736929" />
 <figcaption aria-hidden="true">image-20260805173736929</figcaption>
 </figure>
-<h6 id="其他问题">其他问题：</h6>
-<figure>
-<img data-src="/2026/08/04/cs231n-2026/image-20260817143949980.png"
-alt="image-20260817143949980" />
-<figcaption aria-hidden="true">image-20260817143949980</figcaption>
-</figure>
 <h2 id="lecture11">lecture11:</h2>
+<h3 id="单张gpu的组成以h100为例">单张gpu的组成(以H100为例：)</h3>
 <p>1.以一枚NVIDIA H100为例子：</p>
 <p>有80GB的高带宽内存，每秒 3352 GB 的核心访问带宽和compute
 cores进行数据传输<img
@@ -1100,7 +1519,9 @@ Multiprocessor）</strong></p>
 <ul>
 <li>单个 FP32 核心在每个时钟周期内可以执行一次融合乘加（FMA, Fused
 Multiply-Add）运算，即形如 <span class="math inline">\(a \times x +
-b\)</span> 的计算。</li>
+b\)</span>
+的计算。（虽然cpu,gpu经过优化可以在一次时钟周期完成一次fma，但是仍然看成2次浮点运算，因为FLOPs
+衡量的是“算法本身有多重”）</li>
 <li>2 FLOPs = Floating Point Operations（2 次浮点运算）</li>
 <li>单个 SM 在一个时钟周期内通过 FP32 核心能达到的总 FP32 算力:<span
 class="math inline">\(128 \text{ (FP32核心)} \times 2 \text{
@@ -1125,6 +1546,7 @@ alt="image-20260806111128675" />
 alt="image-20260806141247646" />
 <figcaption aria-hidden="true">image-20260806141247646</figcaption>
 </figure>
+<h3 id="gpu集群的组成">gpu集群的组成</h3>
 <p>举例子：</p>
 <p>以Meta的llama3集群为例：</p>
 <ul>
@@ -1168,7 +1590,7 @@ alt="image-20260806141955207" />
 alt="image-20260806142046670" />
 <figcaption aria-hidden="true">image-20260806142046670</figcaption>
 </figure>
-<p>如何在gpu上面进行训练：</p>
+<h3 id="如何在gpu上面进行训练">如何在gpu上面进行训练：</h3>
 <p>单张gpu内存和算力有限，模型会被拆分到成百上千张 GPU
 上同时计算。而这些 GPU
 之间需要频繁地交换数据，集合通信就是为此提供底层支持的“通信原语”。</p>
@@ -1177,25 +1599,25 @@ alt="image-20260806142046670" />
 alt="image-20260806143028442" />
 <figcaption aria-hidden="true">image-20260806143028442</figcaption>
 </figure>
-<p>All-Reduce:</p>
+<h4 id="all-reduce">All-Reduce:</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260806143548775.png"
 alt="image-20260806143548775" />
 <figcaption aria-hidden="true">image-20260806143548775</figcaption>
 </figure>
-<p>Reduce-Scatter:</p>
+<h4 id="reduce-scatter">Reduce-Scatter:</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260806143753402.png"
 alt="image-20260806143753402" />
 <figcaption aria-hidden="true">image-20260806143753402</figcaption>
 </figure>
-<p>All-Gather:</p>
+<h4 id="all-gather">All-Gather:</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260806143920019.png"
 alt="image-20260806143920019" />
 <figcaption aria-hidden="true">image-20260806143920019</figcaption>
 </figure>
-<p>All-to-All;</p>
+<h4 id="all-to-all">All-to-All</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260806144054686.png"
 alt="image-20260806144054686" />
@@ -1426,14 +1848,20 @@ alt="image-20260806175138066" />
 alt="image-20260806175219272" />
 <figcaption aria-hidden="true">image-20260806175219272</figcaption>
 </figure>
-<h3 id="总结">总结：</h3>
+<h3 id="总结-2">总结：</h3>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260806175243502.png"
 alt="image-20260806175243502" />
 <figcaption aria-hidden="true">image-20260806175243502</figcaption>
 </figure>
 <h2 id="lecture12-自监督学习">lecture12: 自监督学习</h2>
+<h3 id="定义">定义：</h3>
+<p>在自监督学习里，要区分两个概念：</p>
 <p>pretext task 和 downstream objective</p>
+<ul>
+<li>pretext task:没有标签的</li>
+<li>downstream objective: 有标签的，你想完成的任务。</li>
+</ul>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810101919079.png"
 alt="image-20260810101919079" />
@@ -1466,37 +1894,39 @@ network做监督学习的任务。</p>
 alt="image-20260810103025049" />
 <figcaption aria-hidden="true">image-20260810103025049</figcaption>
 </figure>
-<h3 id="pretext-task-预测旋转">pretext task: 预测旋转</h3>
+<h3 id="自监督学习任务举例子">自监督学习任务举例子</h3>
+<h4 id="pretext-task-预测旋转">pretext task: 预测旋转</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810103609364.png"
 alt="image-20260810103609364" />
 <figcaption aria-hidden="true">image-20260810103609364</figcaption>
 </figure>
-<p>可视化attention:</p>
+<h4 id="可视化attention">可视化attention:</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810103713387.png"
 alt="image-20260810103713387" />
 <figcaption aria-hidden="true">image-20260810103713387</figcaption>
 </figure>
-<p>预测图块的位置：</p>
+<h4 id="预测图块的位置">预测图块的位置：</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810103740263.png"
 alt="image-20260810103740263" />
 <figcaption aria-hidden="true">image-20260810103740263</figcaption>
 </figure>
-<p>拼拼图：</p>
+<h4 id="拼拼图">拼拼图：</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810103836311.png"
 alt="image-20260810103836311" />
 <figcaption aria-hidden="true">image-20260810103836311</figcaption>
 </figure>
-<p>预测缺失像素：</p>
+<h4 id="预测缺失像素">预测缺失像素：</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810103852784.png"
 alt="image-20260810103852784" />
 <figcaption aria-hidden="true">image-20260810103852784</figcaption>
 </figure>
-<p>通过reconstruction进行inpaint</p>
+<h4
+id="通过reconstruction进行inpaint">通过reconstruction进行inpaint</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810103928979.png"
 alt="image-20260810103928979" />
@@ -1513,7 +1943,7 @@ alt="image-20260810104038858" />
 alt="image-20260810104049357" />
 <figcaption aria-hidden="true">image-20260810104049357</figcaption>
 </figure>
-<p>上色：</p>
+<h4 id="上色">上色：</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810104116729.png"
 alt="image-20260810104116729" />
@@ -1534,7 +1964,7 @@ alt="image-20260810104207696" />
 alt="image-20260810104222313" />
 <figcaption aria-hidden="true">image-20260810104222313</figcaption>
 </figure>
-<p>Pretext task: 视频上色：</p>
+<h4 id="pretext-task-视频上色">Pretext task: 视频上色：</h4>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810104300302.png"
 alt="image-20260810104300302" />
@@ -1570,8 +2000,14 @@ alt="image-20260810110714585" />
 alt="image-20260810110755954" />
 <figcaption aria-hidden="true">image-20260810110755954</figcaption>
 </figure>
-<h3 id="下游任务linear-probing和full-fine-tuning">下游任务：linear
+<h3
+id="下游任务处理linear-probing和full-fine-tuning">下游任务处理：linear
 probing和full fine-tuning</h3>
+<ul>
+<li>Linear probing:保持pretrained model不变，增加一个linear
+layer,针对下游任务进行预测。</li>
+<li>Finetune：</li>
+</ul>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810111519636.png"
 alt="image-20260810111519636" />
@@ -1592,6 +2028,7 @@ tasks的表现而是学习到的特征如何帮助了下有任务（分类，检
 </ul></li>
 </ul>
 <p>由此想到一个更general的pretext任务：</p>
+<h3 id="pretext-task对比学习">pretext task：对比学习</h3>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810112145031.png"
 alt="image-20260810112145031" />
@@ -1637,6 +2074,14 @@ Learning）领域的里程碑式工作，由 Google Research 团队于 2020
 alt="image-20260810135738399" />
 <figcaption aria-hidden="true">image-20260810135738399</figcaption>
 </figure>
+<blockquote>
+<p>[!NOTE]</p>
+<p>怎么理解对比学习里的这个projection head：</p>
+<p>1.知道对比学习里projection head是非常有用的。</p>
+<p>2.在训练的时候加上，在训练下游任务的时候不加。</p>
+<p>3.可以理解为一个过渡，在前面提取图像特征，经过projection
+head计算对比损失作为一层过滤。</p>
+</blockquote>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260810140008651.png"
 alt="image-20260810140008651" />
@@ -1755,6 +2200,14 @@ alt="image-20260810143554484" />
 alt="image-20260810143603979" />
 <figcaption aria-hidden="true">image-20260810143603979</figcaption>
 </figure>
+<h5 id="其他问题-1">其他问题</h5>
+<blockquote>
+<p>[!NOTE]</p>
+<p>注意在写代码的时候新计算的向量最好和输入向量在同一个设备上，尤其是深度学习的代码device=out_left.device</p>
+<p>N = out_left.shape[0]</p>
+<p>pos_pairs = torch.zeros(N, 1, device=out_left.device,
+dtype=out_left.dtype)</p>
+</blockquote>
 <h2 id="lec13-生成模型">lec13: 生成模型</h2>
 <p>对比判别模型和生成模型：</p>
 <figure>
@@ -1792,7 +2245,7 @@ alt="image-20260812143129291" />
 alt="image-20260812143156604" />
 <figcaption aria-hidden="true">image-20260812143156604</figcaption>
 </figure>
-<h3 id="vae">vae</h3>
+<p>vae</p>
 <p>早期两种主流的生成式模型（自回归模型 vs.
 变分自编码器）在<strong>概率密度建模</strong>和<strong>优化方法</strong>上的根本区别：</p>
 <ul>
@@ -1809,8 +2262,20 @@ class="math inline">\(z\)</span>）来捕捉图像的底层特征。</li>
 Bound，通常称为 ELBO - Evidence Lower Bound）</strong>。</li>
 </ul></li>
 </ul>
+<h3 id="autoencoder">autoencoder</h3>
+<p><strong>Autoencoder（自编码器，简称 AE）</strong>
+是一种无监督的神经网络架构，核心任务是<strong>学习输入数据的压缩分布式表示（即隐空间表示，Latent
+Representation），并尝试尽可能完美地重建原始输入</strong>。</p>
+<ul>
+<li>标准ae编码器直接输出一个确定的向量；vae输出概率</li>
+<li>标准ae的latent space不连续无规则；而vae连续有规律；</li>
+<li>标准ae只有重建误差，vae还有kl散度。</li>
+<li>标准ae用于压缩降维提取特征等；vae是生成式建模；</li>
+<li>标准ae重建的时候直接将z输入decoder, vae使用重参数化技巧。</li>
+</ul>
+<h4 id="标准ae">标准ae</h4>
 <p>没有variational的autoencoder:</p>
-<p>Auto encoder:用无监督的方式提取特征，没有labels:</p>
+<p>Autoencoder:用无监督的方式提取特征，没有labels:</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260812144020677.png"
 alt="image-20260812144020677" />
@@ -1844,6 +2309,8 @@ alt="image-20260812144252471" />
 alt="image-20260812144347633" />
 <figcaption aria-hidden="true">image-20260812144347633</figcaption>
 </figure>
+<h4 id="变分自编码器vae">变分自编码器vae:</h4>
+<p>输出的是一个概率分布（由均值和方差确定）</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260812144958437.png"
 alt="image-20260812144958437" />
@@ -2047,6 +2514,7 @@ alt="image-20260812170131955" />
 <figcaption aria-hidden="true">image-20260812170131955</figcaption>
 </figure>
 <h4 id="latent-diffusion-modelsldms">Latent Diffusion Models(LDMs)</h4>
+<p>、在latent空间进行diffusion操作</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260812170356019.png"
 alt="image-20260812170356019" />
@@ -2129,6 +2597,8 @@ alt="image-20260812172315851" />
 <figcaption aria-hidden="true">image-20260812172315851</figcaption>
 </figure>
 <p>diffusion学习score function:</p>
+<h5 id="score-function">score function:</h5>
+<p>指向高概率的密度</p>
 <figure>
 <img data-src="/2026/08/04/cs231n-2026/image-20260812172354037.png"
 alt="image-20260812172354037" />
@@ -2569,73 +3039,6 @@ PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Pyt
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/24/elite/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/24/elite/" class="post-title-link" itemprop="url">elite</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-07-24 15:42:02" itemprop="dateCreated datePublished" datetime="2026-07-24T15:42:02+08:00">2026-07-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/24/dreamerv3-runnning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2846,157 +3249,6 @@ obs_dim)，多了一个sequence_len</li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/22/threat/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/22/threat/" class="post-title-link" itemprop="url">威慑</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-07-22 19:16:23" itemprop="dateCreated datePublished" datetime="2026-07-22T19:16:23+08:00">2026-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-24 10:19:20" itemprop="dateModified" datetime="2026-07-24T10:19:20+08:00">2026-07-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">个人日志</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="防止小人算计">防止小人算计</h4>
-<p>立威。</p>
-<p>有令人闻风丧胆的智计。</p>
-<p>有看破生死的通达。</p>
-<p>有钢铁般的信用。说几点到就是几点到，说几号交就是几号交，说给多少就是给多少。钢铁般的信用的背后其实不是什么“自尊自爱”，而是一种决绝的凶残。</p>
-<p>借口是廉价而无限供应的，无伤大雅地讨饶、找补、“投降输一半”才是人之常情。</p>
-<h4 id="女儿的反应强烈">女儿的反应强烈</h4>
-<p>强力沟通的方式要掌握</p>
-<p>没有受过良好的威慑教育，误以为威慑就是情绪绑架和伤害，是情绪恐怖主义。</p>
-<p>差别首先在于平静。不要以为大喊大叫就有更高的能量，这是错的。</p>
-<p>讨论一个纯技术问题——如果做到有效率的强硬</p>
-<p>（1）意志力的见证：减肥练字，要有意志力的见证“面对令人生畏的困难，以艰难的意志，扛过一切折磨，达成意志的贯彻”</p>
-<p>（2）耐心的见证：我下定决心攻克的目标，一定攻克。</p>
-<p>（3）勇气的见证：我很清楚一旦向你做强硬宣告，就会对你形成尖锐的挑战，会为我自己带来报复和压力的损失。我不是对此抱有侥幸和乡愿的人，这你应该有清醒的的认识，然而我还是直接向你宣告了我的强硬。</p>
-<p>（4）仁慈的见证</p>
-<h4 id="普京表示俄罗斯进入特殊战备">普京表示俄罗斯进入特殊战备</h4>
-<p>俄罗斯要打政治仗、文明仗，牢固的在占领区乌克兰人的面前树立威武之师、文明之师的深刻印象。</p>
-<p>俄罗斯直接的拿出核武器，并且展示真实的使用意愿，是对抗北约现在已趋疯狂的宣传战的对症之药。</p>
-<h4 id="总被男人骚扰">总被男人骚扰</h4>
-<p>参与对抗性运动，打出痛苦，打出血泪，打出意志，气焰，野性来。</p>
-<p>身为女性，野性是最好的祛邪避凶的镇魂神器。</p>
-<p>ta们看了你在运动场上的兽性勃发，从你的日常的言谈举止中察觉到了那种强硬、刚毅、杀伐果决而且野性未泯的迹象，就会无法预料你对冒犯会有多激烈的反应。</p>
-<h4
-id="我知道这个官司我会输但我可以找个律师陪着你们打拖个一年半年的没什么问题的社会现象">「我知道，这个官司我会输，但我可以找个律师陪着你们打，拖个一年半年的没什么问题」的社会现象</h4>
-<p>把律师费放进诉求里去，赔款要求计算利息，提前申请财产保全。</p>
-<p>然后让律师陪ta打去呗。</p>
-<p>维护自己的权益，法律只能担当顺位非常低的保障。</p>
-<p>1）做一个对方不愿意失去的人。要先能创造价值</p>
-<p>2）成为一个对方不容易施加伤害的人。为人谨慎。</p>
-<p>3）预知伤害要付出代价的人。也就是提前让人知道你有报复的意志和能力，而且不可能因为被先发制人的打击而被剥夺——比如就算提前把你消灭了，也会有人来替你复仇。</p>
-<p>4）成为一个“对方并不提前预知你有报复的意志和能力，甚至自认为你没有，只是事后会发现自己误判”的人。</p>
-<p>这种只能勉强阻止对方对你进行反复伤害，阻止不了对方的第一次侵犯的妄念。</p>
-<h4 id="为什么人需要隐私呢">为什么人需要隐私呢</h4>
-<p>作者：匿名用户
-链接：https://www.zhihu.com/question/54187061/answer/557532569
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<p>人类积累了大量的<a
-target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=固定策略&amp;zhida_source=entity">固定策略</a>，可以对付每一种人。每一个特定种型的人，在人类两百万年的历史里，都已经无数次的成为过攻击、欺诈、利用、操纵的对象。</p>
-<p>每一个类型的针对性技术都经过了漫长的时间洗礼而变得非常精妙而有效。</p>
-<p>并且这些策略是互相交叉、互相叠加的。人的每一个维度的每一个量度，都对应着一个<a
-target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=攻击策略集&amp;zhida_source=entity">攻击策略集</a>。你暴露的信息越多，这些选择集的交集就会越小，而合集就会越大。这交集指向最精确有效的方案，这合集指向广阔的<a
-target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=变形空间&amp;zhida_source=entity">变形空间</a>。</p>
-<p>对付有车的，对付有娃的，对付喜欢传统文化的，对付年纪小的，对付好虚荣的，对付好名声的……你泄露得越多，你越接近案板上的肉。</p>
-<p>有人对你动手时，你甚至都不会觉察到。你会误以为一切都是自愿自由的——从法律上讲，也的确都是自愿自由的。谁叫你心软？谁叫你好面子？谁叫你好色？谁叫你贪财？……</p>
-<p><strong>没有信息，你就会成为一个困难得多的目标。</strong></p>
-<p>而即使你仍然不可避免要流露信息，如果对方发觉你有高度敏感和谨慎的隐私的习惯，都会默默的在心里给你做一个“不好弄”的标记，转而把精力放在更好弄的目标上。</p>
-<p>这个在中国的语境里，叫做心有城府，<a
-target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=131438170&amp;content_type=Answer&amp;match_order=1&amp;q=胸有沟壑&amp;zhida_source=entity">胸有沟壑</a>。</p>
-<p>这一点点的分别，就是你和“毕生倒霉蛋”之间的区别。</p>
-<p>不要因为你不肯泄露隐私而得罪的“朋友”感到沮丧，那种“你这人真没意思”“到底有什么见不得人”是最常用的低级试探。</p>
-<p>避开这些“朋友”，你的人生会轻松一大截。</p>
-<h4 id="人类的恐惧和动物的恐惧">人类的恐惧和动物的恐惧</h4>
-<p><strong><em>*人类独有一种快感机制，即挑战恐惧带来的额外快感。*</em></strong></p>
-<h4 id="教导孩子见人说人话">教导孩子见人说人话</h4>
-<p>你觉得我对你说的是“鬼话”，你该得出的正确的结论不是“我是鬼”，而是<strong><em>*“在我眼里你是鬼”，*</em></strong>是你该回去自我反省一下什么时候头上长了角还不知道。</p>
-<p>见鬼说鬼话是最基本的自我防御——我看出你是鬼，那么一切就自然走向“礼貌的拒绝”。拒绝进一步合作，也拒绝开放进一步合作的机会，关闭你继续窥探的窗口，威慑你侵犯的企图，拉开对你的距离……但我也肯定不会没来由的去欺骗你、激怒你，那是另一种招鬼。</p>
-<h4
-id="办公室女同事讽刺你一个三本学生如何跟我一个985的做一样的工作">办公室女同事讽刺「你一个三本学生如何跟我一个985的做一样的工作！」</h4>
-<p>#高级回怼#</p>
-<p>“充分说明我们这个工作下限很低而上限很高，我还有很多经验和理论知识需要向前辈学习。”</p>
-<p>人忌惮、敬畏、亲爱的是自控力极强、身段极柔软、朋友极多的人，而不是凶狠的人。</p>
-<p>有这些，想要“凶狠”，只需要流露出一点“这人让我有点烦”的意思，自有想要结交你的人拿ta来送礼。</p>
-<p>你要做就要做真正有效的威慑。</p>
-<p>不要搞那些四面树敌的小把戏。</p>
-<h4
-id="熊孩子性骚扰妇女导致女医生自杀">熊孩子性骚扰妇女导致女医生自杀</h4>
-<p>公权力真正会积极干预的范围是相当有限的。与大众想象的不同，利维坦并不是全知全能的神，相反，与它所要面对的千千万万问题和危机相比，它甚至可以说得上资源相当紧张、能力相当局限，时常处在焦虑和担忧之中。</p>
-<p>理解了这一点的意义在于，一些人会选择一些极其有战略优势的占位，以至于一旦受到侵犯，这些侵犯就很容易触动利维坦的敏感神经而有被召唤战略打击的可能。</p>
-<p>威慑：</p>
-<p>1.让对方顾虑失去由你而得的利益</p>
-<p>2.让对方顾虑因你而受的损失</p>
-<p>离群索居的代价问题：</p>
-<p>你造福于人，就是在对外输出利益，这是经营一个以你为核心的生态圈的良好基础。这个生态圈会自动的替你防御外来侵袭，不光是物理安全上，还有心理安全。</p>
-<p>这位受害人真正的脆弱性，<strong>在于面对这些辱骂，没有一个足够强大的生态圈去给她相称的支撑，足以让她自信“这帮傻x懂个球”</strong>。</p>
-<p><strong>不要自以为只要自己躲起来自得其乐就够了，那只是玻璃的玫瑰，一场大雨也能击碎。</strong></p>
-<p><strong>你需要同志，比你在怡然自得的时候所觉得的程度要深得多。</strong></p>
-<p>（群体的应对：不，是会有人告诉你——你不必害怕只有你一个人这样想，我们也和你想的一样。）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3068,7 +3320,7 @@ id="熊孩子性骚扰妇女导致女医生自杀">熊孩子性骚扰妇女导�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-count">164</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -3081,7 +3333,7 @@ id="熊孩子性骚扰妇女导致女医生自杀">熊孩子性骚扰妇女导�
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-count">136</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

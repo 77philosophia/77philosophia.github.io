@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="来源：2020年Ho et al. introduced Denoising Diffusion Probabilistic Models (DDPMs) Forward process \(q(x_0)\)：数据集分布 定义一个前向Markov chain过程： \[ q(x_t | x_{t-1}) \sim N(x_t; \sqrt{1-\beta_t} x_{t-1} , \beta_t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDPM">
+<meta property="og:url" content="http://77philosophia.github.io/2026/08/24/DDPM/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="来源：2020年Ho et al. introduced Denoising Diffusion Probabilistic Models (DDPMs) Forward process \(q(x_0)\)：数据集分布 定义一个前向Markov chain过程： \[ q(x_t | x_{t-1}) \sim N(x_t; \sqrt{1-\beta_t} x_{t-1} , \beta_t">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/08/24/DDPM/image-20260826155245829.png">
+<meta property="article:published_time" content="2026-08-24T09:24:37.000Z">
+<meta property="article:modified_time" content="2026-08-27T03:28:10.523Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="ddpm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/08/24/DDPM/image-20260826155245829.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/08/24/DDPM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>DDPM | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/categories/Books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/24/DDPM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DDPM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-24 17:24:37" itemprop="dateCreated datePublished" datetime="2026-08-24T17:24:37+08:00">2026-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-27 11:28:10" itemprop="dateModified" datetime="2026-08-27T11:28:10+08:00">2026-08-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>来源：2020年Ho et al. introduced Denoising Diffusion Probabilistic
+Models (DDPMs)</p>
+<h3 id="forward-process">Forward process</h3>
+<p><span class="math inline">\(q(x_0)\)</span>：数据集分布</p>
+<p>定义一个前向Markov chain过程： <span class="math display">\[
+q(x_t | x_{t-1}) \sim N(x_t; \sqrt{1-\beta_t} x_{t-1} , \beta_t I) \\
+(\beta_1, ..., \beta_T)是noise schedule
+\]</span> 根据高斯分布的特性，<span class="math inline">\(q(x_t |
+x_0)\)</span>可以表示为： <span class="math display">\[
+q(x_t | x_0) \sim N(x_t; \sqrt{\bar{\alpha}_t} x_0 , (1-\bar{\alpha}_t)
+I) \\
+\alpha_t = 1-\beta_t \\
+\bar{\alpha}_t = \prod_{s=1}^{t}\alpha_t
+\]</span> 如果<span class="math inline">\((\beta_1, ...,
+\beta_T)\)</span>设置合适，最终的<span
+class="math inline">\(q(x_T)\)</span>会逼近一个纯高斯变换<span
+class="math inline">\(N(0, I)\)</span></p>
+<p>2.从高斯分布 <span class="math display">\[
+x \sim N(\mu, \sigma^2)
+\]</span> 采样的过程等价于计算： <span class="math display">\[
+\sigma * \epsilon + \mu \\其中 \epsilon \sim N(0, 1)
+\]</span> 因此从<span class="math inline">\(q(x_t | x_{t-1})\)</span>
+或者 <span class="math inline">\(q(x_t |
+x_0)\)</span>采样可以直接通过<span
+class="math inline">\(x_{t-1}\)</span> or <span
+class="math inline">\(x_0\)</span>计算得到，也是由于这个原因前向过程简单，不需要学习。</p>
+<h3 id="reverse-process">reverse process</h3>
+<p>逆向过程就是通过很多步从纯噪声<span
+class="math inline">\(x_T\)</span>重建<span
+class="math inline">\(x_0\)</span>, 我们用<span
+class="math inline">\(p(x_{t-1} | x_t)\)</span>表示reverse step of <span
+class="math inline">\(q(x_t | x_{t-1})\)</span>.</p>
+<p>1.第一个关键点就是学习reverse每个去噪步比逆转整个前向过程要简单，也就是学习<span
+class="math inline">\(p(x_{t-1} | x_t)\)</span>比直接学习<span
+class="math inline">\(p(x_0 | x_T)\)</span>要简单。</p>
+<p>但是学习<span class="math inline">\(p(x_{t-1} |
+x_t)\)</span>依然很困难，尽管<span class="math inline">\(q(x_t |
+x_{t-1})\)</span>是高斯，<span class="math inline">\(p(x_{t-1} |
+x_t)\)</span>可以是任何复杂的分布并且几乎绝对不是高斯。从一个任意采样建模和采样肯定比一个参数化的采样比如高斯分布要难。</p>
+<p>2.第二个关键点就是前向过程中每步的noise <span
+class="math inline">\(\beta_t\)</span>如果足够小，那么逆向步<span
+class="math inline">\(p(x_{t-1} |
+x_t)\)</span>也接近一个高斯分布。因此我们只需要顾及它的均值和方差。实际中，我们设置<span
+class="math inline">\(p(x_{t-1} | x_t)\)</span>的方差和前向过程中的<span
+class="math inline">\(\beta_t\)</span>。也就是，估计逆向过程的问题可以简化为学习均值<span
+class="math inline">\(\mu(x_t, t; \theta)\)</span>， 其中<span
+class="math inline">\(\theta\)</span>表示神经网络的参数。</p>
+<h3 id="denoising目标">denoising目标</h3>
+<p>1.传统生成模型的优化目标（最大似然估计）</p>
+<p>机器学习中生成模型（比如vae,
+flow）的目标，是让模型学会真实世界的数据，通过最大似然来实现。调整模型参数theta，来让模型得到真实样本x0的概率p_theta(x0)最大。</p>
+<p>对最大似然取负对数，目标就变成了最小化负对数似然。NLL <span
+class="math display">\[
+\mathbb{E}[-\log{p_\theta(x_0)}]
+\]</span>
+但是由于公式中隐含的积分或隐变量联合分布，如把图像一步步加噪到纯噪声的全概率展开
+<span class="math display">\[
+p_\theta(x_0) = p(x_T)\prod_{t=1}^T p(x_{t-1} \vert{} x_t)
+\]</span>
+，直接计算这个概率在数学上几乎是不可解的。因此传统模型会去优化它的一个替代指标——变分下界VLB。</p>
+<p>2.论文作者 Ho 等人（DDPM
+的提出者）通过数学推导发现，在对扩散模型做出特定简化后，那个复杂的变分下界（VLB）最终可以化简为一个极其直观的<strong>均方误差（MSE）损失函数</strong>。
+<span class="math display">\[
+\mathbb{E}_{t, x_0, \epsilon}\left[ \| \epsilon - \epsilon_\theta
+(\sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t ) \|^2
+\right]
+\]</span></p>
+<ul>
+<li><p><span
+class="math inline">\(x_0\)</span>：原始的干净图像。</p></li>
+<li><p><span
+class="math inline">\(\epsilon\)</span>：标准的正态分布噪声。</p></li>
+<li><p><span class="math display">\[
+\sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon
+\]</span> 这就是前向加噪过程的数学表达式（将干净图像 <span
+class="math inline">\(x_0\)</span> 和噪声 <span
+class="math inline">\(\epsilon\)</span> 按时间步 <span
+class="math inline">\(t\)</span> 的比例混合，得到加噪后的图像 <span
+class="math inline">\(x_t\)</span>）。</p></li>
+<li><p><span class="math inline">\(\epsilon_\theta(\dots,
+t)\)</span>：神经网络（如 U-Net），它的任务是输入加噪后的图像 <span
+class="math inline">\(x_t\)</span> 和时间步 <span
+class="math inline">\(t\)</span>，<strong>预测当初加进去的那个噪声 <span
+class="math inline">\(\epsilon\)</span></strong>。</p></li>
+</ul>
+<p>训练扩散模型并不需要去算什么复杂的概率，只需要让神经网络去<strong>猜噪声</strong>，猜得越准（预测噪声与真实噪声的欧氏距离平方最小），模型就学得越好。</p>
+<p>因为加噪公式是一个线性的确定性关系（已知加噪图 <span
+class="math inline">\(x_t\)</span>、噪声 <span
+class="math inline">\(\epsilon\)</span> 和系数，就可以反推出干净图 <span
+class="math inline">\(x_0\)</span>），所以<strong>预测噪声等价于预测清晰图像</strong>。
+<span class="math display">\[
+x_t = \sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon
+\]</span></p>
+<p>1.正向加噪声</p>
+<p>具体的：加噪声： <span class="math display">\[
+q(xt|x0) = N (xt;
+\sqrt{\bar{\alpha}_t} x_0,(1 - \bar{\alpha}_t)I)
+\]</span></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>在数学和统计学中，概率密度函数（PDF）的标准写法通常是 <strong><span
+class="math inline">\(p(x \mid \text{参数})\)</span></strong> 或
+<strong><span class="math inline">\(\mathcal{N}(x; \mu,
+\Sigma)\)</span></strong>。</p>
+<p>这里的第一个参数 <span class="math inline">\(x_t\)</span>
+表示的是<strong>随机变量（Random
+Variable）或当前正在观测/采样的对象</strong>，而后面的部分则是这个高斯分布的<strong>统计参数（均值和方差）</strong>。</p>
+</blockquote>
+<ul>
+<li><p><code>betas</code> (<span
+class="math inline">\(\beta_t\)</span>)：<strong>噪声方差调度（Variance
+Schedule）</strong>。表示在每个时间步 <span
+class="math inline">\(t\)</span>
+往图像里注入的噪声强度。通常从一个小值（如 <span
+class="math inline">\(10^{-4}\)</span>）随时间线性或余弦递增到一个大值（如
+<span class="math inline">\(0.02\)</span>）。</p></li>
+<li><p><strong><code>alphas</code> (<span
+class="math inline">\(\alpha_t\)</span>)</strong>：<strong>含义</strong>：<span
+class="math inline">\(\alpha_t = 1 - \beta_t\)</span>。表示在第 <span
+class="math inline">\(t\)</span>
+步，<strong>原始信号（上一时刻图像）保留了多少比例</strong>。</p></li>
+<li><p><strong><code>alphas_cumprod</code> (<span
+class="math inline">\(\bar{\alpha}_t\)</span>)</strong>：</p></li>
+<li><p><strong>含义</strong>：<strong>累积阿尔法（Alpha
+Bar）</strong>。<span class="math inline">\(\bar{\alpha}_t =
+\prod_{i=1}^{t} \alpha_i = \alpha_1 \alpha_2 \dots
+\alpha_t\)</span>。</p>
+<p><strong>作用</strong>：代表从初始状态 <span
+class="math inline">\(x_0\)</span> 经过连续 <span
+class="math inline">\(t\)</span>
+步加噪后，<strong>原图信号一共衰减剩下了多少</strong>。它就是前面我们讨论的公式中的核心变量。</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x_t = extract(self.sqrt_alphas_cumprod, t, x_start.shape) * x_start + \</span><br><span class="line">              extract(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape) * noise</span><br></pre></td></tr></table></figure>
+<p>得到：</p>
+<figure>
+<img data-src="/2026/08/24/DDPM/image-20260826155245829.png"
+alt="image-20260826155245829" />
+<figcaption aria-hidden="true">image-20260826155245829</figcaption>
+</figure>
+<p>2.知道xt,t,noise可以得到x0或者知道x_t,t,x_start可以知道noise</p>
+<p>(diffusion model可以predict原图像或者噪声，都可以) <span
+class="math display">\[
+\mathbb{E}_{t, x_0, \epsilon}\left[ \| \epsilon - \epsilon_\theta
+(\sqrt{\bar{\alpha}_t}x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t ) \|^2
+\right]
+\]</span> 知道噪声 <span class="math inline">\(\epsilon\)</span> 和
+<span class="math inline">\(x_t\)</span>，求原图 <span
+class="math inline">\(x_0\)</span> <span class="math display">\[
+x_0 = \frac{x_t - \sqrt{1 - \bar{\alpha}_t}
+\epsilon}{\sqrt{\bar{\alpha}_t}}
+\]</span> 知道原图 <span class="math inline">\(x_0\)</span> 和 <span
+class="math inline">\(x_t\)</span>，求噪声 <span
+class="math inline">\(\epsilon\)</span> <span class="math display">\[
+\epsilon = \frac{x_t - \sqrt{\bar{\alpha}_t} x_0}{\sqrt{1 -
+\bar{\alpha}_t}}
+\]</span></p>
+<h3 id="训练">训练</h3>
+<p>1.利用上面的公式有x_0和noise得到中间的x_t</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># First, sample x_t from q(x_t | x_0) using the `q_sample` function.</span></span><br><span class="line"><span class="comment"># Then, get model predictions by calling self.model with appropriate args.</span></span><br><span class="line"><span class="comment"># Finally, compute the weighted MSE loss.</span></span><br><span class="line"><span class="comment"># Approximately 3-4 lines of code.</span></span><br><span class="line"><span class="comment">####################################################################</span></span><br><span class="line">x_t = self.q_sample(x_start, t, noise)  <span class="comment"># Sample x_t from q(x_t | x_0)</span></span><br><span class="line">model_output = self.model(x_t, t, model_kwargs)  <span class="comment"># Get model predictions</span></span><br><span class="line">loss = (loss_weight * (model_output - target) ** <span class="number">2</span>).mean()  <span class="comment"># Compute weighted MSE loss</span></span><br></pre></td></tr></table></figure>
+<h3 id="推理">推理</h3>
+<p>2.推理：知道t, x_t,让模型去猜x_start,
+计算xt-1,再往前继续猜x_start，这样越来越精准。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for t in tqdm(</span><br><span class="line">            reversed(range(0, self.num_timesteps)),</span><br><span class="line">            desc=&quot;sampling loop time step&quot;,</span><br><span class="line">            total=self.num_timesteps,</span><br><span class="line">        ):</span><br><span class="line">            img = self.p_sample(img, t, model_kwargs=model_kwargs)</span><br><span class="line">            imgs.append(img)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">model_output = self.model(x_t, t, model_kwargs)  # Get model prediction</span><br><span class="line">        if self.objective == &quot;pred_noise&quot;:</span><br><span class="line">            x_start = self.predict_start_from_noise(x_t, t, model_output)</span><br><span class="line">        else:</span><br><span class="line">            x_start = model_output</span><br><span class="line">        x_start = torch.clamp(x_start, -1.0, 1.0)  # Clamp to valid range</span><br><span class="line">        posterior_mean, posterior_std = self.q_posterior(x_start, x_t, t)  # Get mean and std</span><br><span class="line">        noise = torch.randn_like(x_t)  # Sample noise</span><br><span class="line">        x_tm1 = posterior_mean + posterior_std * noise  # Sample x_&#123;t-1&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="cfg">cfg</h3>
+<p>生成模型由逼真度和多样性衡量，此消彼长。cfg是手动调控“听话程度（逼真度）”与“丰富程度（多样性）”之间的平衡。</p>
+<p>在模型训练过程中：给模型输入条件 <span
+class="math inline">\(c\)</span>（例如一段文本描述），但在訓練過程中，會以
+10% 到 20% 的概率把这个条件随机抹掉（用空条件 <span
+class="math inline">\(\phi\)</span>
+代替）。这样一来，模型既学会了“有条件怎么画”，也学会了“没条件时自己盲目发挥會怎麼畫”。</p>
+<p>在生成图片的时候会让模型预测两次： <span class="math display">\[
+一次是有条件的预测：$\epsilon_\theta(x_t, t,
+c)一次是无条件的预测：\epsilon_\theta(x_t, t, \phi)
+\]</span></p>
+<p><span class="math display">\[
+{利用这个公式把两个预测结果线性组合起来。}
+利用这个公式把两个预测结果线性组合起来
+\epsilon_\theta(x_t, t, c) \leftarrow (w+1) \epsilon_\theta(x_t, t, c) -
+w \epsilon_\theta(x_t, t, \phi)
+\]</span> w高模型听话w低模型更有创意。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ddpm/" rel="tag"># ddpm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/13/openvla/" rel="prev" title="openvla">
+      <i class="fa fa-chevron-left"></i> openvla
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/08/27/clip/" rel="next" title="clip & dino">
+      clip & dino <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#forward-process"><span class="nav-number">1.</span> <span class="nav-text">Forward process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reverse-process"><span class="nav-number">2.</span> <span class="nav-text">reverse process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#denoising%E7%9B%AE%E6%A0%87"><span class="nav-number">3.</span> <span class="nav-text">denoising目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83"><span class="nav-number">4.</span> <span class="nav-text">训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cfg"><span class="nav-number">6.</span> <span class="nav-text">cfg</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">164</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">136</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
