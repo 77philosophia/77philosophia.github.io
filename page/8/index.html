@@ -182,130 +182,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/17/nbv/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/04/17/nbv/" class="post-title-link" itemprop="url">主动视觉-next-best-view</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-04-17 11:28:32" itemprop="dateCreated datePublished" datetime="2026-04-17T11:28:32+08:00">2026-04-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-06-11 14:39:30" itemprop="dateModified" datetime="2026-06-11T14:39:30+08:00">2026-06-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/papers/" itemprop="url" rel="index"><span itemprop="name">papers</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="现方向根据下流任务各异">现方向根据下流任务各异</h4>
-<p>在 Next-Best-View (NBV) 和主动视觉领域，很难定义一个单一的“绝对
-SOTA”，因为性能高度依赖于任务目标（如<strong>纯几何重建</strong>、<strong>物体
-6D 位姿估计</strong>或<strong>抓取操作</strong>）。</p>
-<h4 id="sota">sota</h4>
-<p>根据 2024-2025
-年的最前沿进展，以下是各细分方向公认的顶尖（SOTA）算法或框架：</p>
-<h6 id="纯物体-3d-重建与视角规划dm-osvp">1. 纯物体 3D
-重建与视角规划：DM-OSVP++</h6>
-<p>Nerf 2025年4月 德国波恩大学人形机器人实验室</p>
-<figure>
-<img data-src="/2026/04/17/nbv/image-20260417113055149.png"
-alt="image-20260417113055149" />
-<figcaption aria-hidden="true">image-20260417113055149</figcaption>
-</figure>
-<figure>
-<img data-src="/2026/04/17/nbv/image-20260417113101905.png"
-alt="image-20260417113101905" />
-<figcaption aria-hidden="true">image-20260417113101905</figcaption>
-</figure>
-<p>方法：one-shot view planning
-代码暂时未开源：https://github.com/psc0628/DM-OSVPplusplus demo:
-https://www.youtube.com/watch?v=GBBCn28v-lQ</p>
-<h6 id="实时感知决策-gauss-mi">2.实时感知决策：## GauSS-MI</h6>
-<p><strong>3D Gaussian Splatting</strong> 与 <strong>香农互信息 (Shannon
-Mutual Information)</strong> 结合。 2025年7月
-开源：https://github.com/JohannaXie/GauSS-MI</p>
-<figure>
-<img data-src="/2026/04/17/nbv/image-20260417113131373.png"
-alt="image-20260417113131373" />
-<figcaption aria-hidden="true">image-20260417113131373</figcaption>
-</figure>
-<p>demo:https://www.bilibili.com/video/BV1rVNUziEFy/?vd_source=db693e375cf7809ea90067d2fd609b51</p>
-<p>CUDA模块代码：https://github.com/JohannaXie/diff-gaussian-rasterization-gaussmi</p>
-<h5 id="针对无纹理物体的-6d-位姿估计">3.针对无纹理物体的 6D
-位姿估计</h5>
-<p>Active 6D Pose 多伦多大学航空航天研究所和机器人研究所 2025年3月
-未开源</p>
-<p>在工业场景或处理反光、无纹理物体（这是位姿估计最难的部分） 通过
-<strong>多视角 RGB 融合</strong>
-来消除单视角下的对称性歧义。它通过主动移动相机来寻找能最大程度降低位姿估计熵（Entropy）的视角。
-机械臂在杂乱堆叠（Clutter）中抓取金属零件或塑料制品。</p>
-<h6 id="任务为导向ac-nbv">4.任务为导向：AC-NBV</h6>
-<p>23年11月</p>
-<ul>
-<li><strong>核心优势</strong>：它是<strong>示能引导（Affordance-driven）</strong>的。它不追求物体表面的
-100%
-重建，而是优先寻找对“成功抓取”最有帮助的视角（例如物体的边缘、手柄、开口处）。</li>
-<li><strong>结果</strong>：在抓取成功率（Success
-Rate）和效率上优于纯几何重建的 NBV。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/16/generalist-ai/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2053,6 +1929,71 @@ alt="image-20260409170932741" />
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/04/03/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/04/03/stable-diffusion-history/F%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-04-03 16:07:31" itemprop="dateCreated datePublished" datetime="2026-04-03T16:07:31+08:00">2026-04-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="f智能问答">F智能问答</h1>
+<p>数据库的优缺点、异同：</p>
+<p>Es,mysql,redis</p>
+<p>bm25</p>
+<p>TF-IDF</p>
+<p>milvus向量数据库</p>
+<p>Ginas.ai</p>
+<h1 id="lightrag">lightRAG</h1>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -2124,7 +2065,7 @@ alt="image-20260409170932741" />
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">164</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
