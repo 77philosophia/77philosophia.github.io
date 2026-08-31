@@ -80,6 +80,7 @@
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260703162058626.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260703162912208.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260703162943475.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260828143625035.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260709150311071.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260709150340339.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260709150400403.png">
@@ -147,7 +148,7 @@
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260721151240870.png">
 <meta property="og:image" content="http://77philosophia.github.io/2026/06/11/cs224r/image-20260721151228680.png">
 <meta property="article:published_time" content="2026-06-11T08:29:34.000Z">
-<meta property="article:modified_time" content="2026-07-25T08:44:35.825Z">
+<meta property="article:modified_time" content="2026-08-31T03:01:20.223Z">
 <meta property="article:author" content="philosophia">
 <meta property="article:tag" content="cs224r">
 <meta property="article:tag" content="rl-notes">
@@ -337,7 +338,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-25 16:44:35" itemprop="dateModified" datetime="2026-07-25T16:44:35+08:00">2026-07-25</time>
+                <time title="Modified: 2026-08-31 11:01:20" itemprop="dateModified" datetime="2026-08-31T11:01:20+08:00">2026-08-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -591,6 +592,7 @@ alt="image-20260622161257995" />
 <p>看上面的公式的意思就是：如果用旧分布的数据（tao服从的旧分布的p），</p>
 <p>每个episode更新前面会乘一个连乘的策略的概率偏差。</p>
 <p>当时间步T很大的时候，一连串概率比值连续相乘，会导致这个权重变得<strong>极大（Explode）或极小（Vanish）</strong>，导致方差爆炸，算法根本无法收敛。</p>
+<p>解决方法：</p>
 <p>把轨迹拆分为时间步：</p>
 <p>近似处理：直接假装新策略 <span
 class="math inline">\(\pi_{\theta&#39;}\)</span> 和旧策略 <span
@@ -731,6 +733,37 @@ alt="image-20260622192514698" />
 <p>如果更新太频繁有两个问题</p>
 <p>1.优势函数失效，因为A是基于old策略评估出来的</p>
 <p>2.重要性权重会增加在高方差行为上的probaility（而我们做rl优化的核心都是为了降低高方差）</p>
+<p>在 Off-policy
+算法中，我们用旧策略（或行为策略）收集的数据来更新当前策略。重要性采样比率
+$ <span class="math display">\[
+\rho_t = \frac{\pi_\theta(a_t\vert{}s_t)}{\pi_{old}(a_t\vert{}s_t)}
+\]</span> $ 用于修正数据分布的偏差。</p>
+<p>如果对同一批数据连续做了<strong>太多次梯度更新（too many gradient
+steps）</strong>，当前策略 <span
+class="math inline">\(\pi_\theta\)</span> 会变得和收集数据时的策略 <span
+class="math inline">\(\pi_{old}\)</span> 差异巨大。这会导致重要性权重
+<span class="math inline">\(\rho_t\)</span> 变得极度不稳定（可能趋近于 0
+或无穷大），引发方差爆炸和策略崩塌。</p>
+<p>“能否直接把重要性权重限制（bound）在一个安全范围内？”是对抗这种不稳定性的一种直观想法。</p>
+<p>世界约束新旧策略的kl散度计算量大，如果直接clipping，它<strong>并没有在数学上硬性禁止策略发生巨变</strong>（没有直接约束策略空间）。但是，它<strong>移除了策略过度更新的动力（removes
+incentives）</strong>：当新策略和旧策略偏离太远时，裁剪机制会让梯度变为
+0。算法发现“再往这个方向更新也换不来目标函数的增长了”，于是就失去了继续朝那个方向迈步的动力。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p><strong>没有 clipping 时（普通重要性采样）：</strong></p>
+<p>如果优势函数 <span class="math inline">\(\hat{A}_t &gt;
+0\)</span>（代表这个动作好），目标函数是 <span
+class="math inline">\(\rho_t
+\hat{A}_t\)</span>。只要策略继续更新，让新旧概率比 <span
+class="math inline">\(\rho_t\)</span>
+变得无限大，目标函数就会无限增大。这就给了优化器一个极强的动力（incentive）去猛烈修改参数，把步子迈得特别大，从而导致策略崩溃。</p>
+<p><strong>加入 clipping 后：</strong></p>
+<p>当 <span class="math inline">\(\rho_t\)</span> 超过 <span
+class="math inline">\(1 + \epsilon\)</span>（比如 1.2）之后，PPO
+的目标函数取了 <code>min</code>，导致这部分的梯度直接变成了
+<strong>0</strong>。</p>
+<p>也就是说，优化器如果再想通过“把某个好动作的概率推得更高”来获得更多的奖励增长，它发现<strong>收益为零</strong>了——梯度消失了，目标函数被锁死在常数上。</p>
+</blockquote>
 <h6
 id="off-policy-actor-critic方法-version-1-multiple-gradient-steps">off-policy
 actor-critic方法 version 1: multiple gradient steps</h6>
@@ -854,9 +887,10 @@ class="math inline">\(V\)</span> function 网络为主（用于计算
 Baseline/Advantage），但如果是基于最大熵框架的 SAC
 变体，为了策略提升（Policy Improvement）的梯度传导，往往依然绕不开 <span
 class="math inline">\(Q\)</span> 的估计。</p>
-<h3 id="slides5-off-policy-actor-critic">slides5: off
-policy-actor-critic</h3>
-<p>Off-policy的actor citric 总结如下：</p>
+<h3 id="slides5-ppo算法">slides5: PPO算法</h3>
+<p>off-policy的actor citric 总结如下：</p>
+<p>本来每个batch
+gradient更新都要重新采样，为了利用一整轮的数据我们计算重要性采样的因子来抵消分布误差的影响</p>
 <figure>
 <img data-src="/2026/06/11/cs224r/image-20260703161931955.png"
 alt="image-20260703161931955" />
@@ -890,7 +924,44 @@ alt="image-20260703162912208" />
 alt="image-20260703162943475" />
 <figcaption aria-hidden="true">image-20260703162943475</figcaption>
 </figure>
-<h3 id="slides6-q-learning">slides6 Q-learning</h3>
+<h5 id="ppo算法">PPO算法</h5>
+<p>1.actor网络</p>
+<p>2.value的估计一般用GAE算法</p>
+<figure>
+<img data-src="/2026/06/11/cs224r/image-20260828143625035.png"
+alt="image-20260828143625035" />
+<figcaption aria-hidden="true">image-20260828143625035</figcaption>
+</figure>
+<p><span class="math display">\[
+δ_t = r_t + γ (1 − d_t) Vϕ(s_{t+1}) − Vϕ(s_t)  \\
+Aˆ_{t} = δ_t + γ λ (1 − dt) Aˆ_{t+1} \\
+γ is the discount factor, λ is the GAE smoothing parameter (self.gae
+lambda),
+and dt ∈ {0, 1} is the episode-termination flag. \\
+\hat{A}_t^{\text{GAE}(\gamma, \lambda)} = \sum_{l=0}^{\infty} (\gamma
+\lambda)^l \delta_{t+l}^V \\
+一般从t = T−1, . . . , 0往前计算
+\]</span> 代码块：</p>
+<p>在epoch loop之前计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(T)):</span><br><span class="line">            td_target = rewards[t] + discounts[t] * next_values[t] * (<span class="number">1</span>-dones[t]) - values[t]</span><br><span class="line">            gae =  td_target + discounts[t]* self.gae_lambda*(<span class="number">1</span>-dones[t])*gae</span><br><span class="line">            advantages[t] = gae</span><br><span class="line">        returns = advantages + values</span><br><span class="line">        </span><br><span class="line">...</span><br><span class="line"><span class="keyword">with</span> torch.no_grad(): //重点，计算过程不backward</span><br><span class="line">  values_all = self.critic(obs_all).squeeze(-<span class="number">1</span>)</span><br><span class="line">  next_values_all = self.critic(next_obs_all).squeeze(-<span class="number">1</span>)</span><br><span class="line">  advantages_all, returns_all = self.compute_gae(rew_all, values_all, next_values...)</span><br></pre></td></tr></table></figure>
+<p>3.clipped surrogate objective （在每个minibatch计算） <span
+class="math display">\[
+\rho_t =
+\frac{\pi_\theta(a_t\vert{}s_t)}{\pi_{\theta_{old}}(a_t\vert{}s_t)} =
+\exp\left(\log \pi_\theta(a_t\vert{}s_t) - \log
+\pi_{\theta_{old}}(a_t\vert{}s_t)\right)
+\]</span> Ppo-clip loss：约束<strong>新旧策略之间的更新步长</strong>
+<span class="math display">\[
+L^{CLIP}(\theta) = -\frac{1}{B} \sum_{t} \min\left(\rho_t \hat{A}_t,
+\text{clip}(\rho_t, 1-\epsilon, 1+\epsilon)\hat{A}_t\right)
+\]</span> 4.整体ppo的损失构成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">loss = (policy_loss                       <span class="comment"># ① 主目标：策略改进</span></span><br><span class="line">        + self.value_coef  * value_loss    <span class="comment"># ② 辅助目标：价值拟合</span></span><br><span class="line">        - self.entropy_coef * entropy      <span class="comment"># ③ 探索奖励（注意负号）</span></span><br><span class="line">        + self.reverse_kl_coef * reverse_kl)  <span class="comment"># ④ BC 正则：别漂离参考策略</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">ratio = torch.exp(new_log_prob - olp_ep)              <span class="comment"># π_θ / π_θ_old</span></span><br><span class="line">surr1 = ratio * adv_ep</span><br><span class="line">surr2 = torch.clamp(ratio, <span class="number">1</span> - clip_eps, <span class="number">1</span> + clip_eps) * adv_ep</span><br><span class="line">policy_loss = -torch.<span class="built_in">min</span>(surr1, surr2).mean()</span><br><span class="line">```</span><br><span class="line">含义：最大化 PPO-Clip 目标 `E[<span class="built_in">min</span>(r·A, clip(r)·A)]`。取负号是因为优化器做的是**梯度下降**，而我们其实想**最大化**策略回报。</span><br><span class="line"></span><br><span class="line"><span class="comment">## ② `value_coef * value_loss` — Value MSE</span></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">values_pred = self.critic(obs_ep).squeeze(-<span class="number">1</span>)</span><br><span class="line">value_loss = F.mse_loss(values_pred, ret_ep)</span><br><span class="line">```</span><br><span class="line">含义：让 critic 的 `V(s)` 逼近 GAE 算出的 returns `ret_ep = advantages + values`。</span><br><span class="line">为什么重要：critic 越准 → advantage 估计越准 → 策略梯度信号越好。这是 PPO 的<span class="string">&quot;自我精化&quot;</span>循环。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## ③ `-entropy_coef * entropy` — 熵正则</span></span><br><span class="line">```python</span><br><span class="line">entropy = dist.entropy().<span class="built_in">sum</span>(-<span class="number">1</span>).mean()</span><br><span class="line">```</span><br><span class="line">含义：**最大化**策略熵（所以前面有负号——loss 是要最小化的，而熵要最大化）。</span><br><span class="line">作用：防止 actor 过早坍缩到确定性策略（`std → <span class="number">0</span>`）。熵大 = 探索多 = 不容易陷入局部最优。</span><br><span class="line">典型量级：`entropy_coef ≈ <span class="number">0.01</span>`，比 `policy_loss` 小一个数量级。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## ④ `reverse_kl_coef * reverse_kl` — 反向 KL 正则（非标准 PPO）</span></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">reverse_kl = (ratio * (new_log_prob - ref_log_prob)).mean()</span><br><span class="line">```</span><br><span class="line">这是 `D_KL(π_new ‖ π_ref)`，其中 `π_ref` 是 `set_reference_policy()` 冻结的 **BC 预训练策略**（第 <span class="number">96</span>–<span class="number">101</span> 行）。</span><br><span class="line">含义：约束 `π_θ` 不要漂离 BC 学到的初始策略太远。</span><br><span class="line">为什么需要：CS224R 这个作业里 PPO 是从 BC 起步 fine-tune 的，没有这一项 PPO 可能把 BC 学到的好策略推翻。**标准 PPO 里没有这一项**——它是这个具体作业加的 stabilization。</span><br><span class="line">注意是 **reverse KL**（`π_new || π_ref`，而不是 `π_ref || π_new`）：</span><br><span class="line"></span><br><span class="line">- reverse KL 是 mode-seeking，会让 `π_new` 集中在 `π_ref` 的某个峰附近</span><br><span class="line">- forward KL 是 mode-covering，会强迫 `π_new` 覆盖 `π_ref` 所有模式</span><br></pre></td></tr></table></figure>
+<h3 id="slides6-q-learning--offpolicy">slides6 Q-learning
+-offpolicy</h3>
+<p>它的更新目标不依赖于当前智能体实际执行的动作（即由探索策略如 <span
+class="math inline">\(\epsilon\)</span>-greedy
+产生的动作），而是直接通过最大化操作来估计未来最大的可能回报（<span
+class="math inline">\(\max_a Q(s&#39;, a)\)</span>）。</p>
 <p>Value-based rl learning的方法</p>
 <p>在actor-critic方法的基础上，假设我们把policy固定下来，就是每次选择使得Q(s,a)最大的action:</p>
 <figure>
@@ -910,6 +981,36 @@ alt="image-20260709150340339" />
 alt="image-20260709150400403" />
 <figcaption aria-hidden="true">image-20260709150400403</figcaption>
 </figure>
+<p>实践中：</p>
+<p>1.bc pretrain</p>
+<p>2.在buffer中（stat,rt,st+1,gamma）</p>
+<p>a.Sample next state actions from the policy <span
+class="math display">\[
+a_{t+1} 服从 π_θ(s_{t+1})
+\]</span> b.计算bellman targets $$ y = r_t + (
+{Q}<em>{<em>i}(s</em>{t+1}, a'</em>{t+1}), {Q}<em>{<em>j}(s</em>{t+1},
+a'</em>{t+1}) ) \</p>
+<p>其中 {Q}<em>{<em>i} 和 {Q}</em>{<em>j}
+是两个随机采样的目标评判网络（Target Critics）。 我们取这两个 Q
+值的最小值，以缓解评判网络的高估误差。 <span class="math display">\[
+c. 计算损失
+\]</span> L</em>{Q</em>{}, f_{}} = <em>{i=1}^{N} ( Q</em>{_i}(s_t, a_t)
+- (y) )^2 \ 其中 <span class="math inline">\(\text{sg}\)</span>
+代表梯度停止（stop-gradient）算子。 注意：我们为所有 <span
+class="math inline">\(N\)</span> 个评判网络计算损失。 $$ d.gradient
+step</p>
+<p>e.使用指数移动平均（EMA）更新目标评判网络（Target Critic）的参数
+<span class="math display">\[
+\bar{Q}_{\phi_i} = (1 - \rho)\bar{Q}_{\phi_i} + \rho Q_{\phi_i}
+\]</span></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">next_action = self.actor(next_obs).sample() #(256,4)</span><br><span class="line">q_value_list = self.critic(next_obs, next_action)</span><br><span class="line">q_value_sample = random.sample(q_value_list, 2)</span><br><span class="line">bellman_target = reward + discount * torch.min(q_value_sample[0], q_value_sample[1]).detach()</span><br><span class="line">self.critic_opt.zero_grad(set_to_none=True)</span><br><span class="line">critic_value_list = self.critic(obs, action)</span><br><span class="line">critic_loss = sum([F.mse_loss(critic_value, bellman_target) for critic_value in critic_value_list])</span><br><span class="line">critic_loss.backward()</span><br><span class="line">self.critic_opt.step()</span><br><span class="line">metrics[&#x27;critic_loss&#x27;] = critic_loss.item()</span><br><span class="line">utils.soft_update_params(self.critic, self.critic_target, self.critic_target_tau)</span><br></pre></td></tr></table></figure>
+<p>F.更新policy网络：让actor输出的动作使得critic的value值尽可能的大</p>
+<p>如何利用评判网络（Critics）的评估结果来指导演员网络（Actor，即策略网络
+<span class="math inline">\(\pi_\theta\)</span>）的参数优化。 <span
+class="math display">\[
+L_{\pi_\theta} = -\frac{1}{N}\sum_{i=1}^{N}Q_{\phi_i}(s_t, a&#39;_t)
+\]</span></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">action = self.actor(obs).sample()</span><br><span class="line">q_values_list = self.critic(obs, action)</span><br><span class="line">q_values = torch.min(torch.cat(q_values_list, dim=1), dim=1, keepdim=True).values</span><br><span class="line">actor_loss = -q_values.mean()</span><br><span class="line">self.actor_opt.zero_grad(set_to_none=True)</span><br><span class="line">actor_loss.backward()</span><br><span class="line">self.actor_opt.step()</span><br><span class="line">metrics[&#x27;actor_loss&#x27;] = actor_loss.item()</span><br></pre></td></tr></table></figure>
 <h3 id="slides7-offline-rl">slides7: offline rl</h3>
 <figure>
 <img data-src="/2026/06/11/cs224r/image-20260713150019639.png"
@@ -954,7 +1055,8 @@ alt="image-20260713151505555" />
 </figure>
 <h4 id="解决ood问题的两种思路">解决OOD问题的两种思路</h4>
 <p>1.限制policy的学习在data中的actions</p>
-<p>2.更好的估计value functions而不用进行OOD查询（）</p>
+<p>2.更好的估计value
+functions而不用进行OOD查询（在Q网络中查询Q(s,a)）</p>
 <h4 id="advantage-weighted-regressionawr算法">advantage-weighted
 regression：AWR算法</h4>
 <p>将策略优化问题转化为一个加权的监督学习问题：对历史经验中“表现更好”的数据赋予更高的权重，从而引导策略向更优的方向进化。</p>
@@ -1115,6 +1217,10 @@ class="math inline">\(\pi_\theta\)</span>：</strong>
 class="math inline">\(Q_\phi\)</span>：</strong> 通过 TD
 误差学习动作价值（需配合目标网络 <span
 class="math inline">\(\bar{Q}_{\phi&#39;}\)</span> 以稳定训练）。</p>
+<p>critic的更新方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">        # TD target = r + γ * min(Q1_target, Q2_target)(s&#x27;, a&#x27;) * (1 - done).</span><br><span class="line">        q1_s_a = self._get_q_value(self.q_net, ob_no, ac_na)</span><br><span class="line">        q2_s_a = self._get_q_value(self.q_net2, ob_no, ac_na)</span><br><span class="line">        with torch.no_grad():// 计算target要阻断</span><br><span class="line">            target_q = self.get_target_q(next_ob_no, next_actions)</span><br><span class="line">            td_target = reward_n + self.gamma * target_q * (1 - terminal_n)</span><br><span class="line">        loss = nn.MSELoss()(q1_s_a, td_target.detach())</span><br><span class="line">        loss2 = nn.MSELoss()(q2_s_a, td_target.detach())</span><br><span class="line">        ### YOUR CODE END HERE ###</span><br><span class="line"></span><br><span class="line">        self.optimizer.zero_grad()</span><br><span class="line">        (loss + loss2).backward()</span><br><span class="line">        </span><br><span class="line">ema更新target_target:</span><br><span class="line">    def update_target_network(self):</span><br><span class="line">        &quot;&quot;&quot;Soft EMA update: Q_target ← (1-τ)*Q_target + τ*Q_online.&quot;&quot;&quot;</span><br><span class="line">        for target_param, param in zip(</span><br><span class="line">                self.q_net_target.parameters(), self.q_net.parameters()):</span><br><span class="line">            target_param.data.mul_(1.0 - self.tau).add_(param.data * self.tau)</span><br><span class="line">        for target_param, param in zip(</span><br><span class="line">                self.q_net2_target.parameters(), self.q_net2.parameters()):</span><br><span class="line">            target_param.data.mul_(1.0 - self.tau).add_(param.data * self.tau)</span><br></pre></td></tr></table></figure>
+<p>关键是怎么计算策略更新里的优势函数的（随机采样估计了一下）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># HINT: Approximate V(s) by sampling one action a&#x27; ~ π(·|s) from</span><br><span class="line">            #     actor and evaluating Q(s, a&#x27;) with get_q.</span><br><span class="line">            ### YOUR CODE START HERE ###</span><br><span class="line">            q_s_a = self.critic.get_q(ob_no, ac_na)</span><br><span class="line">            sample_actions = self.actor(ob_no).sample() #这里要确定一下返回的是不是分布</span><br><span class="line">            q_s_a_prime = self.critic.get_q(ob_no, sample_actions)</span><br><span class="line">            adv = q_s_a - q_s_a_prime</span><br></pre></td></tr></table></figure>
 <p>3.IQL算法(Implicit Q-Learning)</p>
 <p>离线 RL 的稳健派。它不进行显式的 <span
 class="math inline">\(Q\)</span> 值最大化（即不做 <span
@@ -1499,8 +1605,8 @@ alt="image-20260721151228680" />
 gradient的问题:高方差（实际中灾难）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E7%9A%84%E5%87%A0%E4%B8%AA%E6%80%9D%E8%B7%AF"><span class="nav-number">4.0.3.</span> <span class="nav-text">提升的几个思路：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#a.reward%E5%A4%84%E7%90%86---%E5%87%8F%E5%8E%BB%E5%9D%87%E5%80%BC%E5%BC%95%E5%85%A5%E8%B4%9F%E6%A2%AF%E5%BA%A6%E9%81%8F%E5%88%B6%E4%B8%8D%E5%A5%BD%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-number">4.0.3.1.</span> <span class="nav-text">a.reward处理---减去均值，引入负梯度遏制不好的行为</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#b.dense-rewardlarge-batches%E7%BC%93%E8%A7%A3%E5%A5%96%E5%8A%B1%E7%A8%80%E7%96%8F%E7%9A%84%E9%9C%87%E8%8D%A1%E5%AD%A6%E4%B8%8D%E5%88%B0"><span class="nav-number">4.0.3.2.</span> <span class="nav-text">b.dense
 reward&#x2F;large batches缓解奖励稀疏的震荡学不到</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#c.%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AAon-policy%E7%AD%96%E7%95%A5%E7%9A%84%E9%87%87%E6%A0%B7%E6%95%88%E7%8E%87%E4%BD%8E%E9%97%AE%E9%A2%98%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5%E5%92%8C%E6%97%A7%E7%AD%96%E7%95%A5%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB%E6%98%AF%E4%B8%80%E6%A0%B7%E7%9A%84%E5%81%87%E8%AE%BE%E5%88%B0%E8%BE%BE%E4%B8%80%E4%B8%AA%E7%8A%B6%E6%80%81%E7%9A%84%E6%A6%82%E7%8E%87%E6%98%AF%E4%B8%80%E6%A0%B7%E7%9A%84%E5%9B%A0%E6%AD%A4%E6%9B%B4%E6%96%B0%E4%B8%8D%E8%83%BD%E5%A4%AA%E5%BF%AB"><span class="nav-number">4.0.3.3.</span> <span class="nav-text">c.重要性采样解决这个on-policy策略的采样效率低问题（前提条件更新策略和旧策略的状态转移是一样的，假设到达一个状态的概率是一样的，因此更新不能太快）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides4--actor-critic%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">slides4- Actor Critic方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#last-slide"><span class="nav-number">5.0.1.</span> <span class="nav-text">last slide:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#policy-gradient%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">5.0.1.1.</span> <span class="nav-text">policy gradient的缺点：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%90%E5%8D%87policy-gradients"><span class="nav-number">5.0.2.</span> <span class="nav-text">提升policy gradients:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8reward-togo-%E8%BF%87%E5%8E%BBt-1%E7%9A%84reward%E4%B8%8D%E5%BA%94%E8%AF%A5%E6%AD%A4%E6%97%B6t%E6%97%B6%E5%88%BB%E7%9A%84reward"><span class="nav-number">5.0.2.1.</span> <span class="nav-text">使用reward
 togo: 过去t-1的reward不应该此时t时刻的reward</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BC%B0%E8%AE%A1%E4%BC%98%E5%8A%BF%E5%87%BD%E6%95%B0"><span class="nav-number">5.0.3.</span> <span class="nav-text">如何估计优势函数：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#a.%E4%BC%B0%E8%AE%A1vpi%E6%96%B9%E6%B3%95%E4%B8%80%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B"><span class="nav-number">5.0.3.1.</span> <span class="nav-text">a.估计V(pi)方法一——蒙特卡洛</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#b.%E4%BC%B0%E8%AE%A1%E6%96%B9%E6%B3%95%E4%BA%8Cbootstrappingtd"><span class="nav-number">5.0.3.2.</span> <span class="nav-text">b.估计方法二：bootstrapping&#x2F;TD</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#c.n-step"><span class="nav-number">5.0.3.3.</span> <span class="nav-text">c.n-step</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#off-policy%E7%9A%84actor-critic"><span class="nav-number">5.0.4.</span> <span class="nav-text">off-policy的actor-critic</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#off-policy-actor-critic%E6%96%B9%E6%B3%95-version-1-multiple-gradient-steps"><span class="nav-number">5.0.4.1.</span> <span class="nav-text">off-policy
-actor-critic方法 version 1: multiple gradient steps</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#version-2-replay-buffers"><span class="nav-number">5.0.4.2.</span> <span class="nav-text">version 2: replay buffers</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">5.0.5.</span> <span class="nav-text">解决方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#fixing-value-funcion"><span class="nav-number">5.0.5.1.</span> <span class="nav-text">fixing value funcion</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#fixing-policy-update"><span class="nav-number">5.0.5.2.</span> <span class="nav-text">fixing policy update</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84"><span class="nav-number">5.0.5.3.</span> <span class="nav-text">其他的：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94"><span class="nav-number">5.0.5.4.</span> <span class="nav-text">对比</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides5-off-policy-actor-critic"><span class="nav-number">6.</span> <span class="nav-text">slides5: off
-policy-actor-critic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides6-q-learning"><span class="nav-number">7.</span> <span class="nav-text">slides6 Q-learning</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#bellman%E6%96%B9%E7%A8%8B"><span class="nav-number">7.0.1.</span> <span class="nav-text">Bellman方程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides7-offline-rl"><span class="nav-number">8.</span> <span class="nav-text">slides7: offline rl</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#offline-rl%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98ood%E9%97%AE%E9%A2%98"><span class="nav-number">8.1.</span> <span class="nav-text">offline rl核心问题：OOD问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3ood%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%80%9D%E8%B7%AF"><span class="nav-number">8.2.</span> <span class="nav-text">解决OOD问题的两种思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#advantage-weighted-regressionawr%E7%AE%97%E6%B3%95"><span class="nav-number">8.3.</span> <span class="nav-text">advantage-weighted
+actor-critic方法 version 1: multiple gradient steps</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#version-2-replay-buffers"><span class="nav-number">5.0.4.2.</span> <span class="nav-text">version 2: replay buffers</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">5.0.5.</span> <span class="nav-text">解决方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#fixing-value-funcion"><span class="nav-number">5.0.5.1.</span> <span class="nav-text">fixing value funcion</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#fixing-policy-update"><span class="nav-number">5.0.5.2.</span> <span class="nav-text">fixing policy update</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84"><span class="nav-number">5.0.5.3.</span> <span class="nav-text">其他的：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94"><span class="nav-number">5.0.5.4.</span> <span class="nav-text">对比</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides5-ppo%E7%AE%97%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">slides5: PPO算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ppo%E7%AE%97%E6%B3%95"><span class="nav-number">6.0.1.</span> <span class="nav-text">PPO算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides6-q-learning--offpolicy"><span class="nav-number">7.</span> <span class="nav-text">slides6 Q-learning
+-offpolicy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#bellman%E6%96%B9%E7%A8%8B"><span class="nav-number">7.0.1.</span> <span class="nav-text">Bellman方程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides7-offline-rl"><span class="nav-number">8.</span> <span class="nav-text">slides7: offline rl</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#offline-rl%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98ood%E9%97%AE%E9%A2%98"><span class="nav-number">8.1.</span> <span class="nav-text">offline rl核心问题：OOD问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3ood%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%80%9D%E8%B7%AF"><span class="nav-number">8.2.</span> <span class="nav-text">解决OOD问题的两种思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#advantage-weighted-regressionawr%E7%AE%97%E6%B3%95"><span class="nav-number">8.3.</span> <span class="nav-text">advantage-weighted
 regression：AWR算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expectile-regression-%E4%BB%8E%E5%85%B3%E6%B3%A8%E5%B9%B3%E5%9D%87%E7%9A%84mse-loss%E5%88%B0%E6%9B%B4%E5%85%B3%E6%B3%A8%E8%A1%A8%E7%8E%B0%E5%A5%BD%E4%BB%B7%E5%80%BC%E9%AB%98%E7%9A%84sample"><span class="nav-number">8.4.</span> <span class="nav-text">expectile
 regression: 从关注平均的mse loss到更关注表现好价值高的sample</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#awac%E7%AE%97%E6%B3%95"><span class="nav-number">8.5.</span> <span class="nav-text">AWAC算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iql"><span class="nav-number">8.6.</span> <span class="nav-text">IQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#implicit-q-learningiql"><span class="nav-number">8.7.</span> <span class="nav-text">Implicit Q-learning(IQL)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assignments3offline-rl%E7%9A%84%E4%B8%A4%E4%B8%AA%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0awsm%E5%92%8Ciql"><span class="nav-number">9.</span> <span class="nav-text">assignments3:offline
 rl的两个算法实现：awsm和iql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slides8-reward-learning"><span class="nav-number">10.</span> <span class="nav-text">slides8: reward learning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#recapoffline-rl%E6%97%A0%E6%B3%95%E4%BB%8Enew-data%E5%AD%A6%E4%B9%A0"><span class="nav-number">10.1.</span> <span class="nav-text">recap:offline rl无法从new
@@ -1520,7 +1626,7 @@ data学习</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="n
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">162</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
