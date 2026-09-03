@@ -182,6 +182,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/09/02/robot-inference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/09/02/robot-inference/" class="post-title-link" itemprop="url">机器人策略推理的提速方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-09-02 15:48:17" itemprop="dateCreated datePublished" datetime="2026-09-02T15:48:17+08:00">2026-09-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-09-03 16:42:35" itemprop="dateModified" datetime="2026-09-03T16:42:35+08:00">2026-09-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="异步推理">异步推理</h3>
+<p>关键词： grape, server/client架构</p>
+<figure>
+<img data-src="/2026/09/02/robot-inference/image-20260902180038931.png"
+alt="image-20260902180038931" />
+<figcaption aria-hidden="true">image-20260902180038931</figcaption>
+</figure>
+<p>以lerobot里的async为例：</p>
+<p><strong>独立的客户端/服务端分离架构*</strong>*，通过 gRPC 通信</p>
+<p><strong><em>*同步推理是串行的*</em></strong>：采观测 → 网络推理 →
+机器人空闲等待 → 执行。每个控制周期机器人都要干等一次前向传播。</p>
+<p><strong><em>*异步推理*</em></strong>利用 ACT / pi0
+等策略<strong><em>*一次输出整个 action chunk*</em></strong>
+的特性，把"执行第 N 块动作"与"用最新观测推理第 N+1
+块"在时间上重叠起来，机器人几乎不再等网络。本质上等价于 <strong><em>*MPC
+式滚动优化 + ACT 论文的 temporal
+ensemble（时间集成）*</em></strong>。</p>
+<h3 id="rtc">RTC</h3>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>论文是 Black、Galliker、Levine 的 <strong>《Real-Time Execution of
+Action Chunking Flow Policies》</strong>，2025 年发表于
+NeurIPS；它明确把 RTC 定义为一种<strong>推理时增强，而不是新的
+policy</strong>，可以直接作用于 diffusion / flow-based
+VLA，无需重新训练</p>
+</blockquote>
+<p>RTC（Real-Time Chunking）来自 Physical Intelligence 的论文 "Real-Time
+Execution of Action Chunking Flow Policies"（Black, Galliker, Levine,
+2025, arXiv 2506.07339，见
+policies/rtc/README.md）。它不是一种策略，而是 flow-matching
+类策略的推理时增强，解决的正是你上一轮问的问题：chunk
+边界处因推理延迟产生的机器人停顿和动作跳变——但它在与 temporal ensemble
+不同的层面解决（后述）</p>
+<h6 id="一言以蔽之">一言以蔽之</h6>
+<p>举例子：inference delay = 4, execution=10</p>
+<figure>
+<img data-src="/2026/09/02/robot-inference/image-20260903141921979.png"
+alt="image-20260903141921979" />
+<figcaption aria-hidden="true">image-20260903141921979</figcaption>
+</figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES=1 &lt;lerobot env&gt;/python examples/rtc/eval_dataset.py \</span><br><span class="line">    --policy.path=outputs/pi05_training_wx_debug/checkpoints/003000/pretrained_model \</span><br><span class="line">    --dataset.repo_id=wangxin/demo_pi05_260114_merged \</span><br><span class="line">    --rtc.execution_horizon=10 --device=cuda --seed=10</span><br><span class="line"></span><br><span class="line">- Step 1：生成参考块 prev_chunk [25, 14]（14 维双臂动作，取前 25 步）</span><br><span class="line">- Step 2：无 RTC 推理，动作块 [1, 50, 14]，跟踪 10 个去噪步</span><br><span class="line">- Step 3：RTC 推理（LINEAR schedule，guidance 生效），动作块 [1, 50, 14]</span><br><span class="line">- 三次模型加载/销毁顺序执行，总耗时约 2 分 40 秒，GPU1</span><br></pre></td></tr></table></figure>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">================================================================================</span></span><br><span class="line"><span class="string">                        RTC (Real-Time Control) 原理伪代码</span></span><br><span class="line"><span class="string">================================================================================</span></span><br><span class="line"><span class="string">目的：在流式生成当前 Chunk (x_t) 时，利用重叠区域对齐上一个 Chunk (prev_chunk)，</span></span><br><span class="line"><span class="string">      实现前后块的无缝平滑拼接。</span></span><br><span class="line"><span class="string">================================================================================</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rtc_sample_chunk</span>(<span class="params">model, prev_chunk_overlap, num_steps=<span class="number">50</span>, max_guidance_weight=<span class="number">5.0</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    流式生成当前 Chunk 的主函数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        model: 训练好的 Flow Matching / Diffusion 神经网络</span></span><br><span class="line"><span class="string">        prev_chunk_overlap: 上一个 Chunk 结尾留下的重叠部分 (真实/已知的目标平滑参照)</span></span><br><span class="line"><span class="string">        num_steps: 去噪迭代步数</span></span><br><span class="line"><span class="string">        max_guidance_weight: 引导权重的安全上限</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># 步骤 0: 初始化当前 Chunk 的噪声状态 x_t (t = 1.0)</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    x_t = torch.randn(chunk_shape) </span><br><span class="line">    timesteps = torch.linspace(<span class="number">1.0</span>, <span class="number">0.0</span>, num_steps + <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 构建作用在重叠接缝区域的空间/时间掩码 (Mask)，非重叠区域权重为 0</span></span><br><span class="line">    overlap_mask = create_overlap_mask(chunk_shape)  <span class="comment"># 仅接缝处为 1，其余为 0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># 步骤 1: 开始 Flow Matching 迭代去噪循环 (从 t=1.0 推进到 t=0.0)</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_steps):</span><br><span class="line">        tau = timesteps[i]        <span class="comment"># 当前归一化时间步 (1.0 -&gt; 0.0)</span></span><br><span class="line">        dt = tau - timesteps[i+<span class="number">1</span>] <span class="comment"># 时间步长 Δt</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># A. 计算动态引导权重 (Guidance Weight Schedule)</span></span><br><span class="line">        <span class="comment"># 原理: tau 越小 (越接近终点)，噪声越低，需重拳出击拉平接缝；tau 越大则自由探索。</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        inv_r2 = ((<span class="number">1</span> - tau)**<span class="number">2</span> + tau**<span class="number">2</span>) / ((<span class="number">1</span> - tau)**<span class="number">2</span> + <span class="number">1e-8</span>)</span><br><span class="line">        c = (<span class="number">1</span> - tau) / (tau + <span class="number">1e-8</span>)</span><br><span class="line">        </span><br><span class="line">        guidance_weight = c * inv_r2</span><br><span class="line">        guidance_weight = <span class="built_in">min</span>(guidance_weight, max_guidance_weight) <span class="comment"># 防止梯度爆炸</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># B. 开启计算图，推导外推终点 x1_t 并求取接缝矫正梯度 (Correction)</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="keyword">with</span> torch.enable_grad():</span><br><span class="line">            <span class="comment"># 1. 前向预测基础去噪速度 (此时 x_t 尚无梯度，v_t 被视作常数)</span></span><br><span class="line">            v_t = model(x_t, tau)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 2. 显式开启 x_t 的梯度追踪，构建自变量计算图</span></span><br><span class="line">            x_t.requires_grad_(<span class="literal">True</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 3. 预言外推：基于当前 v_t 和 x_t，计算“如果走到底，最终生成的 x1 是什么”</span></span><br><span class="line">            x1_t = x_t - tau * v_t</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 4. 计算接缝残差：当前预言的 x1_t 与上一块重叠目标的偏差</span></span><br><span class="line">            err = (prev_chunk_overlap - x1_t) * overlap_mask</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 5. 断开计算图，截断为纯数值作为目标梯度</span></span><br><span class="line">            grad_outputs = err.clone().detach()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 6. VJP 向量雅可比积：利用自动求导计算能减小残差的向量方向</span></span><br><span class="line">            <span class="comment">#    correction = (d x1_t / d x_t)^T * grad_outputs</span></span><br><span class="line">            correction = torch.autograd.grad(</span><br><span class="line">                outputs=x1_t, </span><br><span class="line">                inputs=x_t, </span><br><span class="line">                grad_outputs=grad_outputs</span><br><span class="line">            )[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># C. 速度矢量合成 (Velocity Field Fusion)</span></span><br><span class="line">        <span class="comment"># 原理: 在原速度 v_t 上，叠加一个指向“消除接缝缝隙”的偏航拉力</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        v_guided = v_t - guidance_weight * correction</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># D. 状态更新 (ODE 采样步进)</span></span><br><span class="line">        <span class="comment"># 用修正后的速度 v_guided 更新 x_t，并 detach 脱离旧的计算图</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        x_t = x_t.detach() - dt * v_guided</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># 步骤 2: 采样完成，返回生成的干净 Chunk 及其结尾重叠区 (供下一个 Chunk 使用)</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    clean_chunk = x_t</span><br><span class="line">    next_overlap_reference = clean_chunk[..., -overlap_len:] <span class="comment"># 截取尾部作为下一块的参照</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> clean_chunk, next_overlap_reference</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/08/31/live-strong/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -382,7 +498,7 @@ network不通过反向传播更新，而是通过学生权重的指数移动平�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-08-27 11:28:10" itemprop="dateModified" datetime="2026-08-27T11:28:10+08:00">2026-08-27</time>
+                <time title="Modified: 2026-08-31 17:21:30" itemprop="dateModified" datetime="2026-08-31T17:21:30+08:00">2026-08-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3116,114 +3232,6 @@ PyTorch（Eager Mode，即动态图模式）在执行神经网络计算时，Pyt
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/07/24/dreamerv3-runnning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="philosophia">
-      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Garfield's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/07/24/dreamerv3-runnning/" class="post-title-link" itemprop="url">跑dreamerv3(杀千刀的代码死难读)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2026-07-24 11:09:49" itemprop="dateCreated datePublished" datetime="2026-07-24T11:09:49+08:00">2026-07-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-07-29 18:48:08" itemprop="dateModified" datetime="2026-07-29T18:48:08+08:00">2026-07-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>[!NOTE]</p>
-<p>1.用mamba替代conda进行管理。 mambda activate dreamerv3</p>
-</blockquote>
-<h3 id="dreamer的训练过程">dreamer的训练过程</h3>
-<figure>
-<img data-src="/2026/07/24/dreamerv3-runnning/image-20260724162449389.png"
-alt="image-20260724162449389" />
-<figcaption aria-hidden="true">image-20260724162449389</figcaption>
-</figure>
-<h3 id="理解算力瓶颈">1.理解算力瓶颈</h3>
-<p>a.Baseline：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python dreamerv3/main.py \</span><br><span class="line">  --logdir ~/logdir/dreamer/crafter \</span><br><span class="line">  --configs crafter \</span><br><span class="line">  --run.train_ratio 32</span><br><span class="line">  </span><br><span class="line">另一个窗口可视化 python -m scope_viewer --basedir ~/logdir --port 8000   ## 跑了一些新的实验runs加载不出来换个端口</span><br></pre></td></tr></table></figure>
-<p>当前训练（GPU）的基线是 fps/policy ~46、fps/train ~1470。</p>
-<h3 id="代码阅读">代码阅读</h3>
-<p>关键代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obs    --&gt;.    enc ---&gt; tokens</span><br></pre></td></tr></table></figure>
-<p>代码其实主要分为两部分：world model和actor-critic</p>
-<h4 id="world-model部分">1.world model部分</h4>
-<ul>
-<li>enc(Encoder). 图像/本体-&gt;tokens，注意在world
-model里面图像的输入是(batch_size, seq_length,
-obs_dim)，多了一个sequence_len</li>
-<li>Dyn(RSSM). tokens + action -&gt; 隐状态(deter + stoch)</li>
-<li>Dec(Decoder). 隐状态-&gt;重构观测</li>
-<li>Rew(MLPHead). 隐状态-&gt;奖励预测</li>
-<li>Con(MLPHead). 隐状态-&gt;是否继续(done预测)</li>
-</ul>
-<p>增加断点部分dramerv3/agent.py def loss()</p>
-<h4 id="actor-critic部分">2.actor-critic部分</h4>
-<ul>
-<li>Pol(MLPHead). 隐状态-&gt;动作分布</li>
-<li>Val(MLPHead). 隐状态-&gt;价值</li>
-<li>Slowval(SlowModel). val的EMA慢副本(稳定bootstrapping target)</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3295,7 +3303,7 @@ obs_dim)，多了一个sequence_len</li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-count">164</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -3308,7 +3316,7 @@ obs_dim)，多了一个sequence_len</li>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">136</span>
+        <span class="site-state-item-count">138</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -3408,6 +3416,59 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

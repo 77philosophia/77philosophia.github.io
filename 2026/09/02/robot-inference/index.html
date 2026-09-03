@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"77philosophia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="异步推理 关键词： grape, server&#x2F;client架构   image-20260902180038931  以lerobot里的async为例： 独立的客户端&#x2F;服务端分离架构**，通过 gRPC 通信 *同步推理是串行的*：采观测 → 网络推理 → 机器人空闲等待 → 执行。每个控制周期机器人都要干等一次前向传播。 *异步推理*利用 ACT &#x2F; pi0 等策略*一次输出整个 actio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器人策略推理的提速方法">
+<meta property="og:url" content="http://77philosophia.github.io/2026/09/02/robot-inference/index.html">
+<meta property="og:site_name" content="Garfield&#39;s blog">
+<meta property="og:description" content="异步推理 关键词： grape, server&#x2F;client架构   image-20260902180038931  以lerobot里的async为例： 独立的客户端&#x2F;服务端分离架构**，通过 gRPC 通信 *同步推理是串行的*：采观测 → 网络推理 → 机器人空闲等待 → 执行。每个控制周期机器人都要干等一次前向传播。 *异步推理*利用 ACT &#x2F; pi0 等策略*一次输出整个 actio">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://77philosophia.github.io/2026/09/02/robot-inference/image-20260902180038931.png">
+<meta property="og:image" content="http://77philosophia.github.io/2026/09/02/robot-inference/image-20260903141921979.png">
+<meta property="article:published_time" content="2026-09-02T07:48:17.000Z">
+<meta property="article:modified_time" content="2026-09-03T08:42:35.196Z">
+<meta property="article:author" content="philosophia">
+<meta property="article:tag" content="async">
+<meta property="article:tag" content="rtc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://77philosophia.github.io/2026/09/02/robot-inference/image-20260902180038931.png">
+
+<link rel="canonical" href="http://77philosophia.github.io/2026/09/02/robot-inference/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>机器人策略推理的提速方法 | Garfield's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Garfield's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-professional">
+
+    <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" rel="section"><i class="fa fa-code fa-fw"></i>professional</a>
+
+  </li>
+        <li class="menu-item menu-item-journal">
+
+    <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%97%A5%E5%BF%97/" rel="section"><i class="fa fa-book fa-fw"></i>journal</a>
+
+  </li>
+        <li class="menu-item menu-item-papers">
+
+    <a href="/categories/papers/" rel="section"><i class="fa fa-book-open fa-fw"></i>papers</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/categories/Books/" rel="section"><i class="fa fa-book-reader fa-fw"></i>books</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://77philosophia.github.io/2026/09/02/robot-inference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="philosophia">
+      <meta itemprop="description" content="我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Garfield's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器人策略推理的提速方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-09-02 15:48:17" itemprop="dateCreated datePublished" datetime="2026-09-02T15:48:17+08:00">2026-09-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-09-03 16:42:35" itemprop="dateModified" datetime="2026-09-03T16:42:35+08:00">2026-09-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%93%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">专业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="异步推理">异步推理</h3>
+<p>关键词： grape, server/client架构</p>
+<figure>
+<img data-src="/2026/09/02/robot-inference/image-20260902180038931.png"
+alt="image-20260902180038931" />
+<figcaption aria-hidden="true">image-20260902180038931</figcaption>
+</figure>
+<p>以lerobot里的async为例：</p>
+<p><strong>独立的客户端/服务端分离架构*</strong>*，通过 gRPC 通信</p>
+<p><strong><em>*同步推理是串行的*</em></strong>：采观测 → 网络推理 →
+机器人空闲等待 → 执行。每个控制周期机器人都要干等一次前向传播。</p>
+<p><strong><em>*异步推理*</em></strong>利用 ACT / pi0
+等策略<strong><em>*一次输出整个 action chunk*</em></strong>
+的特性，把"执行第 N 块动作"与"用最新观测推理第 N+1
+块"在时间上重叠起来，机器人几乎不再等网络。本质上等价于 <strong><em>*MPC
+式滚动优化 + ACT 论文的 temporal
+ensemble（时间集成）*</em></strong>。</p>
+<h3 id="rtc">RTC</h3>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p>论文是 Black、Galliker、Levine 的 <strong>《Real-Time Execution of
+Action Chunking Flow Policies》</strong>，2025 年发表于
+NeurIPS；它明确把 RTC 定义为一种<strong>推理时增强，而不是新的
+policy</strong>，可以直接作用于 diffusion / flow-based
+VLA，无需重新训练</p>
+</blockquote>
+<p>RTC（Real-Time Chunking）来自 Physical Intelligence 的论文 "Real-Time
+Execution of Action Chunking Flow Policies"（Black, Galliker, Levine,
+2025, arXiv 2506.07339，见
+policies/rtc/README.md）。它不是一种策略，而是 flow-matching
+类策略的推理时增强，解决的正是你上一轮问的问题：chunk
+边界处因推理延迟产生的机器人停顿和动作跳变——但它在与 temporal ensemble
+不同的层面解决（后述）</p>
+<h6 id="一言以蔽之">一言以蔽之</h6>
+<p>举例子：inference delay = 4, execution=10</p>
+<figure>
+<img data-src="/2026/09/02/robot-inference/image-20260903141921979.png"
+alt="image-20260903141921979" />
+<figcaption aria-hidden="true">image-20260903141921979</figcaption>
+</figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES=1 &lt;lerobot env&gt;/python examples/rtc/eval_dataset.py \</span><br><span class="line">    --policy.path=outputs/pi05_training_wx_debug/checkpoints/003000/pretrained_model \</span><br><span class="line">    --dataset.repo_id=wangxin/demo_pi05_260114_merged \</span><br><span class="line">    --rtc.execution_horizon=10 --device=cuda --seed=10</span><br><span class="line"></span><br><span class="line">- Step 1：生成参考块 prev_chunk [25, 14]（14 维双臂动作，取前 25 步）</span><br><span class="line">- Step 2：无 RTC 推理，动作块 [1, 50, 14]，跟踪 10 个去噪步</span><br><span class="line">- Step 3：RTC 推理（LINEAR schedule，guidance 生效），动作块 [1, 50, 14]</span><br><span class="line">- 三次模型加载/销毁顺序执行，总耗时约 2 分 40 秒，GPU1</span><br></pre></td></tr></table></figure>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">================================================================================</span></span><br><span class="line"><span class="string">                        RTC (Real-Time Control) 原理伪代码</span></span><br><span class="line"><span class="string">================================================================================</span></span><br><span class="line"><span class="string">目的：在流式生成当前 Chunk (x_t) 时，利用重叠区域对齐上一个 Chunk (prev_chunk)，</span></span><br><span class="line"><span class="string">      实现前后块的无缝平滑拼接。</span></span><br><span class="line"><span class="string">================================================================================</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rtc_sample_chunk</span>(<span class="params">model, prev_chunk_overlap, num_steps=<span class="number">50</span>, max_guidance_weight=<span class="number">5.0</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    流式生成当前 Chunk 的主函数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        model: 训练好的 Flow Matching / Diffusion 神经网络</span></span><br><span class="line"><span class="string">        prev_chunk_overlap: 上一个 Chunk 结尾留下的重叠部分 (真实/已知的目标平滑参照)</span></span><br><span class="line"><span class="string">        num_steps: 去噪迭代步数</span></span><br><span class="line"><span class="string">        max_guidance_weight: 引导权重的安全上限</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># 步骤 0: 初始化当前 Chunk 的噪声状态 x_t (t = 1.0)</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    x_t = torch.randn(chunk_shape) </span><br><span class="line">    timesteps = torch.linspace(<span class="number">1.0</span>, <span class="number">0.0</span>, num_steps + <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 构建作用在重叠接缝区域的空间/时间掩码 (Mask)，非重叠区域权重为 0</span></span><br><span class="line">    overlap_mask = create_overlap_mask(chunk_shape)  <span class="comment"># 仅接缝处为 1，其余为 0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># 步骤 1: 开始 Flow Matching 迭代去噪循环 (从 t=1.0 推进到 t=0.0)</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_steps):</span><br><span class="line">        tau = timesteps[i]        <span class="comment"># 当前归一化时间步 (1.0 -&gt; 0.0)</span></span><br><span class="line">        dt = tau - timesteps[i+<span class="number">1</span>] <span class="comment"># 时间步长 Δt</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># A. 计算动态引导权重 (Guidance Weight Schedule)</span></span><br><span class="line">        <span class="comment"># 原理: tau 越小 (越接近终点)，噪声越低，需重拳出击拉平接缝；tau 越大则自由探索。</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        inv_r2 = ((<span class="number">1</span> - tau)**<span class="number">2</span> + tau**<span class="number">2</span>) / ((<span class="number">1</span> - tau)**<span class="number">2</span> + <span class="number">1e-8</span>)</span><br><span class="line">        c = (<span class="number">1</span> - tau) / (tau + <span class="number">1e-8</span>)</span><br><span class="line">        </span><br><span class="line">        guidance_weight = c * inv_r2</span><br><span class="line">        guidance_weight = <span class="built_in">min</span>(guidance_weight, max_guidance_weight) <span class="comment"># 防止梯度爆炸</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># B. 开启计算图，推导外推终点 x1_t 并求取接缝矫正梯度 (Correction)</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="keyword">with</span> torch.enable_grad():</span><br><span class="line">            <span class="comment"># 1. 前向预测基础去噪速度 (此时 x_t 尚无梯度，v_t 被视作常数)</span></span><br><span class="line">            v_t = model(x_t, tau)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 2. 显式开启 x_t 的梯度追踪，构建自变量计算图</span></span><br><span class="line">            x_t.requires_grad_(<span class="literal">True</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 3. 预言外推：基于当前 v_t 和 x_t，计算“如果走到底，最终生成的 x1 是什么”</span></span><br><span class="line">            x1_t = x_t - tau * v_t</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 4. 计算接缝残差：当前预言的 x1_t 与上一块重叠目标的偏差</span></span><br><span class="line">            err = (prev_chunk_overlap - x1_t) * overlap_mask</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 5. 断开计算图，截断为纯数值作为目标梯度</span></span><br><span class="line">            grad_outputs = err.clone().detach()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 6. VJP 向量雅可比积：利用自动求导计算能减小残差的向量方向</span></span><br><span class="line">            <span class="comment">#    correction = (d x1_t / d x_t)^T * grad_outputs</span></span><br><span class="line">            correction = torch.autograd.grad(</span><br><span class="line">                outputs=x1_t, </span><br><span class="line">                inputs=x_t, </span><br><span class="line">                grad_outputs=grad_outputs</span><br><span class="line">            )[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># C. 速度矢量合成 (Velocity Field Fusion)</span></span><br><span class="line">        <span class="comment"># 原理: 在原速度 v_t 上，叠加一个指向“消除接缝缝隙”的偏航拉力</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        v_guided = v_t - guidance_weight * correction</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        <span class="comment"># D. 状态更新 (ODE 采样步进)</span></span><br><span class="line">        <span class="comment"># 用修正后的速度 v_guided 更新 x_t，并 detach 脱离旧的计算图</span></span><br><span class="line">        <span class="comment"># ----------------------------------------------------------------------</span></span><br><span class="line">        x_t = x_t.detach() - dt * v_guided</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># 步骤 2: 采样完成，返回生成的干净 Chunk 及其结尾重叠区 (供下一个 Chunk 使用)</span></span><br><span class="line">    <span class="comment"># --------------------------------------------------------------------------</span></span><br><span class="line">    clean_chunk = x_t</span><br><span class="line">    next_overlap_reference = clean_chunk[..., -overlap_len:] <span class="comment"># 截取尾部作为下一块的参照</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> clean_chunk, next_overlap_reference</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/async/" rel="tag"># async</a>
+              <a href="/tags/rtc/" rel="tag"># rtc</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/31/live-strong/" rel="prev" title="坚强地活---my hero model">
+      <i class="fa fa-chevron-left"></i> 坚强地活---my hero model
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%8E%A8%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">异步推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rtc"><span class="nav-number">2.</span> <span class="nav-text">RTC</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%80%E8%A8%80%E4%BB%A5%E8%94%BD%E4%B9%8B"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">一言以蔽之</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="philosophia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">philosophia</p>
+  <div class="site-description" itemprop="description">我们孜孜以求的，不过是以人类有限的生命与身躯，触及一点点宇宙的真理</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">164</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">philosophia</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
